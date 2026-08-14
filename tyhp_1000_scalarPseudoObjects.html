@@ -264,15 +264,18 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 03</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp lets you call methods on scalar values (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) using object syntax when you define <strong>extension</strong> methods. The compiler rewrites <code>$value-&gt;method($args)</code> to a static call on the extension class. There is zero runtime overhead — no wrapper objects are created.</p>
-<div class="callout-block callout-block-info">
+<p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Planned</span>
+</p>
+<div class="callout-block callout-block-warning">
     <div class="content">
         <h4 class="callout-title">
             <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
+                <i class="fas fa-bullhorn"></i>
             </span>
-            Note
+            Not in this alpha
         </h4>
-        <div class="callout-content"><p>This alpha does <strong>not</strong> ship a built-in catalog of scalar methods (<code>toUpper</code>, <code>contains</code>, <code>len</code>, <code>map</code>, …). Those stdlib wrappers are commented out and are not in <code>package.tyhp.json</code>. User-defined <code>extension</code> methods work. Call PHP functions such as <code>\strtoupper($name)</code> unless you write (and import) your own extensions.</p>
+        <div class="callout-content"><p>A built-in catalog of scalar methods (<code>toUpper</code>, <code>contains</code>, <code>len</code>, <code>map</code>, …) is <strong>planned</strong> for Story 21 (<code>tyhp/php</code> support extensions). It is <strong>not included</strong> in Tyhp 805.0.0-alpha.1. User-defined <code>extension</code> methods work today. Until the catalog ships, call PHP functions such as <code>\strtoupper($name)</code> or write (and import) your own extensions.</p>
 </div>
     </div>
 </div>
@@ -375,7 +378,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Chain only extensions you defined (or imported). There is no built-in <code>$name-&gt;trim()-&gt;tolower()</code> catalog in this alpha — use <code>\strtolower(\trim($name))</code> or your own wrappers.</p>
+        <div class="callout-content"><p>Chain only extensions you defined (or imported). A built-in <code>$name-&gt;trim()-&gt;tolower()</code> catalog is planned (Story 21) and is not in this alpha — use <code>\strtolower(\trim($name))</code> or your own wrappers until then.</p>
 </div>
     </div>
 </div>
@@ -400,7 +403,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't assume PHP string/array functions are already methods on scalars. <code>$name-&gt;toUpper()</code> and <code>$numbers-&gt;map(...)</code> are not available unless you define those extensions. Use <code>\strtoupper($name)</code> / <code>\array_map(...)</code> instead.</p>
+        <div class="callout-content"><p>Don't assume PHP string/array functions are already methods on scalars in this alpha. <code>$name-&gt;toUpper()</code> and <code>$numbers-&gt;map(...)</code> are <strong>planned</strong> (Story 21). Until that catalog ships, use <code>\strtoupper($name)</code> / <code>\array_map(...)</code> or your own extensions.</p>
 </div>
     </div>
 </div>

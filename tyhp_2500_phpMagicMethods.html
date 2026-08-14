@@ -266,7 +266,7 @@
     <p>Tyhp supports all of PHP's magic methods with additional type safety requirements. Magic methods that return mixed in PHP must have their return values type-narrowed before use. The compiler enforces correct signatures, auto-generates certain magic methods for generic classes, and prioritizes extension methods over __call for compile-time-safe dispatch.</p>
 <h2>Supported Magic Methods</h2>
 <p>All standard PHP magic methods are supported in Tyhp. They must follow PHP's expected signatures but can use Tyhp's enhanced type system. The following table lists every supported magic method and its Tyhp-specific behavior.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>__construct()</code></h4><br/><p>Constructor. Supports Tyhp constructor property promotion with modifiers like <code>readonly</code>. The return type can optionally be : void or : parent(args) for explicit parent constructor invocation.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__construct()</code></h4><br/><p>Constructor. Supports Tyhp constructor property promotion with modifiers like <code>readonly</code>. The return type is required: <code>: void</code>, or <code>: parent(args)</code> for explicit parent constructor invocation.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__destruct()</code></h4><br/><p>Destructor. Called when an object is garbage collected. Used internally by DisposableScope for automatic resource disposal via the := operator.</p>
 </div>
@@ -433,7 +433,7 @@ class Money {
     public function __construct(
         private int $amount,
         private string $currency
-    ) {}
+    ): void {}
 
     // OK: returns string
     public function __toString(): string {
@@ -447,11 +447,11 @@ class Money {
 // }
 </code></pre></div>
 <h2>Constructor Return Type Syntax</h2>
-<p>Tyhp extends constructor syntax with optional return type annotations. The return type can be : void (documentation purposes) or : parent(args) to indicate that the parent constructor is called with specific arguments.</p>
+<p>Tyhp constructors <strong>must</strong> declare a return type: <code>: void</code>, or <code>: parent(args)</code> to insert <code>parent::__construct(...)</code> at the start of the body. PHP output strips the annotation.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Base {
-    public function __construct(public string $name) {}
+    public function __construct(public string $name): void {}
 }
 
 class Child extends Base {
@@ -486,7 +486,7 @@ class Point {
     public function __construct(
         public readonly int $x,
         public readonly int $y
-    ) {}
+    ): void {}
 }
 
 Point $p1 = new Point(1, 2);

@@ -307,14 +307,14 @@ class User {
     public function __construct(
         public string $name,
         public string $email
-    ) {}
+    ): void {}
 }
 
 class Post {
     public function __construct(
         public string $title,
         public User $author
-    ) {}
+    ): void {}
 }
 </code></pre></div>
 <p>The above single source file produces two PHP output files:</p>

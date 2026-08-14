@@ -639,7 +639,7 @@ class MySingleton extends Singleton { }  // Error: Cannot extend final class
 class User {
     public function __construct(
         public readonly string $name
-    ) {}
+    ): void {}
 
     public function rename(string $newName): void {
         $this-&gt;name = $newName;  // Error: Cannot assign to readonly property

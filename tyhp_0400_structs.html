@@ -364,10 +364,10 @@ struct Point {
 // Point $origin = new Point();
 
 // Instantiate with overrides using the with keyword
-Point $p = new Point() with {
+Point $p = new Point() with [
     x =&gt; 10.5,
     y =&gt; 20.3
-};
+];
 
 struct Origin {
     float $x = 0.0;
@@ -393,7 +393,7 @@ struct User {
     int $age;
 }
 
-User $user = new User() with { name =&gt; &#039;Alice&#039;, age =&gt; 30 };
+User $user = new User() with [name =&gt; &#039;Alice&#039;, age =&gt; 30];
 
 // Read access
 string $n = $user-&gt;name;
@@ -426,7 +426,7 @@ struct Person {
     int $age;
 }
 
-Person $person = new Person() with { name =&gt; &#039;Alice&#039;, age =&gt; 30 };
+Person $person = new Person() with [name =&gt; &#039;Alice&#039;, age =&gt; 30];
 
 // OK — Person has all properties that Named requires
 Named $named = $person;
@@ -449,12 +449,12 @@ struct UserEntity extends BaseEntity {
 }
 
 // UserEntity has: $id, $createdAt, $name, $email
-UserEntity $user = new UserEntity() with {
+UserEntity $user = new UserEntity() with [
     id =&gt; 1,
     createdAt =&gt; &#039;2025-01-01&#039;,
     name =&gt; &#039;Alice&#039;,
     email =&gt; &#039;alice@example.com&#039;
-};
+];
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — inherited properties are included in the array
@@ -503,14 +503,14 @@ $first = $args[0];
 struct { string $name; int $age; } $person = new struct {
     string $name;
     int $age;
-} with { name =&gt; &#039;Alice&#039;, age =&gt; 30 };
+} with [name =&gt; &#039;Alice&#039;, age =&gt; 30];
 
 // Anonymous struct as a function return type
 function getCoords(): struct { float $lat; float $lng; } {
     return new struct {
         float $lat;
         float $lng;
-    } with { lat =&gt; 40.7128, lng =&gt; -74.0060 };
+    } with [lat =&gt; 40.7128, lng =&gt; -74.0060];
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -531,10 +531,10 @@ struct Point {
     float $y;
 }
 
-Point $p1 = new Point() with { x =&gt; 1.0, y =&gt; 2.0 };
+Point $p1 = new Point() with [x =&gt; 1.0, y =&gt; 2.0];
 
 // Create a modified copy — $p1 is unchanged
-Point $p2 = clone $p1 with { x =&gt; 5.0 };
+Point $p2 = clone $p1 with [x =&gt; 5.0];
 // $p2 = {x: 5.0, y: 2.0}
 // $p1 = {x: 1.0, y: 2.0} — unchanged
 
@@ -596,7 +596,7 @@ function calculateArea(Dimensions $dims): float {
     return $dims-&gt;width * $dims-&gt;height;
 }
 
-Dimensions $box = new Dimensions() with { width =&gt; 10.0, height =&gt; 5.0 };
+Dimensions $box = new Dimensions() with [width =&gt; 10.0, height =&gt; 5.0];
 float $area = calculateArea($box);  // 50.0
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php

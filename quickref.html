@@ -291,7 +291,7 @@ Promise&lt;User&gt; $future = fetchUser(42);
 <p><a href="tyhp_0200_typeNarrowingAndGuards.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function processValue(mixed $value): string {
     if ($value is string) {
-        return $value-&gt;toUpper();    // narrowed to string
+        return \strtoupper($value);  // narrowed to string
     }
     if (\is_int($value)) {
         return (string)$value;       // narrowed to int
@@ -308,7 +308,7 @@ function isNonEmpty(mixed $v): $v is array {
 <p>Type parameters on classes, interfaces, traits, enums, functions, and methods. Fully erased at compile time. Supports <code>extends</code> constraints and default type parameters.</p>
 <p><a href="tyhp_0500_generics.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class Box&lt;T&gt; {
-    public function __construct(private T $value) {}
+    public function __construct(private T $value): void {}
     public function getValue(): T { return $this-&gt;value; }
 }
 
@@ -348,8 +348,8 @@ function getExitCode(): 0|1|2 { return 0; }
 <p><a href="tyhp_0400_structs.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">struct Point { float $x; float $y; }
 
-Point $p = new Point() with { x =&gt; 10.5, y =&gt; 20.3 };
-Point $p2 = clone $p with { x =&gt; 5.0 };
+Point $p = new Point() with [x =&gt; 10.5, y =&gt; 20.3];
+Point $p2 = clone $p with [x =&gt; 5.0];
 
 struct ApiResponse {
     int &#039;status_code&#039; as $statusCode;
@@ -373,7 +373,7 @@ function convert(string|int|float $v, bool $toInt = false): int|float {
 }
 </code></pre></div>
 <h2>Scalar Pseudo-Objects</h2>
-<p>Call methods on scalar types (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) using object syntax. Compiles to PHP function calls with zero overhead.</p>
+<p>Call methods on scalar types (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) using object syntax. Compiles to PHP function calls with zero overhead. A <strong>built-in</strong> method catalog (<code>contains</code>, <code>toUpper</code>, <code>map</code>, …) is planned (Story 21) and is not in this alpha; user <code>extension</code> methods work today. The calls below are the planned catalog style.</p>
 <p><a href="tyhp_1000_scalarPseudoObjects.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$name-&gt;contains(&#039;World&#039;);         // \str_contains($name, &#039;World&#039;)
 $name-&gt;trim()-&gt;tolower();         // \strtolower(\trim($name))
@@ -391,13 +391,13 @@ use extension App\Extensions\StringExtensions;
 $text-&gt;toCamelCase();  // StringExtensions::toCamelCase($text)
 </code></pre></div>
 <h2>Object Declaration Changes</h2>
-<p>Constructors support return types for explicit parent chaining (<code>: parent(args...)</code>). Constructor property promotion works as in PHP, including <code>readonly</code>.</p>
+<p>Constructors <strong>require</strong> <code>: void</code> or <code>: parent(args...)</code>. Constructor property promotion works as in PHP, including <code>readonly</code>.</p>
 <p><a href="tyhp_1300_newObjectDeclSyntax.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class Point {
     public function __construct(
         public readonly float $x,
         public readonly float $y
-    ) {}
+    ): void {}
 }
 
 class NamedPoint extends Point {

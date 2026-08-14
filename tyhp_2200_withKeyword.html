@@ -273,7 +273,7 @@
 <div class="alert alert-secondary" role="alert"><h4><code>$obj with [...]</code></h4><br/><p>Operates in-place on an existing object instance. It MUTATES the same instance and RETURNS THE SAME instance — there is no clone and no new. Use this form when you want to set several properties on an object you already hold and keep working with that exact object.</p>
 </div>
 <h2>Basic Syntax</h2>
-<p>The with keyword follows a new expression, a clone expression, or an existing object/struct value, and is followed by [] or {} syntax where keys are property names and values are the values to assign.</p>
+<p>The with keyword follows a new expression, a clone expression, or an existing object/struct value, and is followed by a <code>[...]</code> list where keys are property names and values are the values to assign.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class User {
@@ -281,7 +281,7 @@ class User {
     public int $age;
     public string $role = &#039;user&#039;;
 
-    public function __construct(string $name, int $age) {
+    public function __construct(string $name, int $age): void {
         $this-&gt;name = $name;
         $this-&gt;age = $age;
     }
@@ -339,7 +339,7 @@ class User {
     public int $age;
     public string $role = &#039;user&#039;;
 
-    public function __construct(string $name, int $age) {
+    public function __construct(string $name, int $age): void {
         $this-&gt;name = $name;
         $this-&gt;age = $age;
     }
@@ -445,7 +445,7 @@ class Point {
         public readonly float $x,
         public readonly float $y,
         public readonly float $z = 0.0
-    ) {}
+    ): void {}
 }
 
 $p = new Point(1.0, 2.0);
@@ -579,7 +579,7 @@ class Example {
     public readonly string $id;
     public readonly string $name;
 
-    public function __construct(string $id, string $name) {
+    public function __construct(string $id, string $name): void {
         $this-&gt;id = $id;
         $this-&gt;name = $name;
     }

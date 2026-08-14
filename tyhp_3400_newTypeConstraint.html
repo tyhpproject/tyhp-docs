@@ -354,7 +354,7 @@ function buildService&lt;T extends new&lt;Config, Database&gt; &amp; Service&gt;
 
 // Usage:
 class UserService extends Service {
-    public function __construct(Config $config, Database $db) {
+    public function __construct(Config $config, Database $db): void {
         // ...
     }
 }
@@ -393,7 +393,7 @@ class ConfiguredClass {
         string $name,
         int $priority = 0,
         bool $active = true
-    ) {
+    ): void {
         // ...
     }
 }
@@ -402,7 +402,7 @@ class ConfiguredClass {
 
 // All defaults — constructable with zero, one, or two args
 class AllDefaultsClass {
-    public function __construct(string $label = &#039;default&#039;, int $count = 0) {
+    public function __construct(string $label = &#039;default&#039;, int $count = 0): void {
         // ...
     }
 }
@@ -474,7 +474,7 @@ class Flexible {
         string $name,
         int $priority = 0,
         bool $active = true
-    ) {
+    ): void {
         // ...
     }
 }
@@ -494,7 +494,7 @@ Flexible $c = f3&lt;Flexible&gt;();
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Base {
-    public function __construct(string $name) {
+    public function __construct(string $name): void {
         // ...
     }
 }
@@ -531,11 +531,11 @@ class Container {
 }
 
 class CacheService {
-    public function __construct() { }
+    public function __construct(): void { }
 }
 
 class DatabaseService {
-    public function __construct(Config $config) { }
+    public function __construct(Config $config): void { }
 }
 
 Container $container = new Container();
@@ -547,18 +547,18 @@ DatabaseService $db = $container-&gt;make&lt;DatabaseService&gt;(DatabaseService
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 abstract class AbstractBase {
-    public function __construct(string $name) { }
+    public function __construct(string $name): void { }
 }
 
 interface Buildable {
 }
 
 class PrivateCtorClass {
-    private function __construct() { }
+    private function __construct(): void { }
 }
 
 class StringCtorClass {
-    public function __construct(string $name) { }
+    public function __construct(string $name): void { }
 }
 
 function createNew&lt;T extends new&gt;(): T { return new T(); }
@@ -621,7 +621,7 @@ function createInt&lt;T extends new&lt;int&gt;&gt;(int $v): T { return new T($v)
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Validator {
-    public function __construct(string $pattern) {
+    public function __construct(string $pattern): void {
         // ...
     }
 

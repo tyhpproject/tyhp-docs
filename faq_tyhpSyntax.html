@@ -317,7 +317,7 @@ struct Point {
     float $y;
 }
 
-Point $p = new Point() with { x =&gt; 1.0, y =&gt; 2.5 };
+Point $p = new Point() with [x =&gt; 1.0, y =&gt; 2.5];
 float $distance = \sqrt($p-&gt;x ** 2 + $p-&gt;y ** 2);
 </code></pre></div>
 <h2>How do I use async/await?</h2>

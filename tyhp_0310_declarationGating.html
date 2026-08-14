@@ -290,7 +290,7 @@ if (!\function_exists(&#039;\App\Payments\formatMoney&#039;)) {
 
 if (!\class_exists(&#039;\App\Payments\Money&#039;)) {
     class Money {
-        public function __construct(public readonly int $cents) {}
+        public function __construct(public readonly int $cents): void {}
     }
 }
 </code></pre></div>

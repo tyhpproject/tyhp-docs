@@ -265,9 +265,9 @@
 </p>
     <p>Tyhp adds new syntax to class declarations that does not exist in PHP. This includes constructor return types for explicit constructor chaining, promoted constructor parameters, and property accessors. These features make class declarations more expressive and self-documenting.</p>
 <h2>Constructor Return Types</h2>
-<p>In PHP, constructors never have a return type. Tyhp introduces two constructor return type annotations: : void and : parent(args...). These provide a structured way to declare constructor behavior and enforce correct parent constructor chaining.</p>
+<p>In PHP, constructors never have a return type. Tyhp <strong>requires</strong> a constructor return type: <code>: void</code> when the constructor does not chain to a parent, or <code>: parent(args...)</code> when it does. Omitting both is a parse error.</p>
 <h2>Explicit Void Constructor</h2>
-<p>The : void return type explicitly states that a constructor does not chain to a parent. This is the default behavior when no return type is specified, but writing it makes the intent clear and self-documenting.</p>
+<p>Every constructor that does not use <code>: parent(...)</code> must be declared <code>: void</code>. That is required grammar, not optional documentation. <code>: void</code> means this constructor does not insert a <code>parent::__construct(...)</code> call.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class SimpleClass
@@ -425,7 +425,7 @@ class Point
         public readonly float $x,
         public readonly float $y,
         public readonly float $z = 0.0
-    ) {}
+    ): void {}
 }
 
 $p = new Point(1.0, 2.0);
@@ -458,7 +458,7 @@ final class Widget {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use : parent(args...) to clearly express constructor chaining — it ensures the parent constructor is always called first and prevents accidental omission.</p>
+        <div class="callout-content"><p>Every constructor must be <code>: void</code> or <code>: parent(...)</code>. Use <code>: void</code> when there is no parent call; use <code>: parent(args...)</code> when chaining so the parent constructor always runs first.</p>
 </div>
     </div>
 </div>
@@ -470,7 +470,7 @@ final class Widget {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use : void on leaf classes to explicitly document that no parent constructor chaining occurs.</p>
+        <div class="callout-content"><p>Use : void on constructors that do not chain — it is required, and it is stripped from PHP output.</p>
 </div>
     </div>
 </div>
