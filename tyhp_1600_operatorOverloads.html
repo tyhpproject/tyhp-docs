@@ -376,42 +376,26 @@ body; see <a href="tyhpdef_classes.md#operator-overloads">Tyhpdef classes — Op
 <p>Unary operator overloads take a single self parameter and emit as static methods.</p>
 <p>Unary operators compile to methods with fixed names:</p>
 <ul>
-<li>
-<ul>
-<li>(as-numeric) -&gt; __asNumeric(self $o): int|float</li>
-</ul>
-</li>
-<li>
-<ul>
-<li>(negation) -&gt; __negate(self $o): &lt;return_type&gt;</li>
-</ul>
-</li>
-<li>! (boolean not) -&gt; __not(self $o): &lt;return_type&gt;</li>
-<li>~ (bitwise not) -&gt; __bwNot(self $o)</li>
-<li>++ (increment) -&gt; __increment(self $o): self</li>
-<li>-- (decrement) -&gt; __decrement(self $o): self</li>
+<li><code>+</code> (as-numeric) -&gt; <code>__asNumeric(self $o): int|float</code></li>
+<li><code>-</code> (negation) -&gt; <code>__negate(self $o): &lt;return_type&gt;</code></li>
+<li><code>!</code> (boolean not) -&gt; <code>__not(self $o): &lt;return_type&gt;</code></li>
+<li><code>~</code> (bitwise not) -&gt; <code>__bwNot(self $o)</code></li>
+<li><code>++</code> (increment) -&gt; <code>__increment(self $o): self</code></li>
+<li><code>--</code> (decrement) -&gt; <code>__decrement(self $o): self</code></li>
 </ul>
 <h2>Comparison Operators</h2>
 <p>Comparison operators return bool (int for spaceship). They emit as static methods just like other binary operators.</p>
 <p>Comparison operators compile to these method names:</p>
 <ul>
-<li>&lt; -&gt; __isLessThan($l, $r): bool</li>
-<li>&lt;= -&gt; __isLessThanOrEqual($l, $r): bool</li>
-<li>
-<blockquote>
-<p>-&gt; __isGreaterThan($l, $r): bool</p>
-</blockquote>
-</li>
-<li>
-<blockquote>
-<p>= -&gt; __isGreaterThanOrEqual($l, $r): bool</p>
-</blockquote>
-</li>
-<li>== -&gt; __isEqual($l, $r): bool</li>
-<li>!= -&gt; __isNotEqual($l, $r): bool</li>
-<li>=== -&gt; __isExact($l, $r): bool</li>
-<li>!== -&gt; __isNotExact($l, $r): bool</li>
-<li>&lt;=&gt; -&gt; __compare($l, $r): int</li>
+<li><code>&lt;</code> -&gt; <code>__isLessThan($l, $r): bool</code></li>
+<li><code>&lt;=</code> -&gt; <code>__isLessThanOrEqual($l, $r): bool</code></li>
+<li><code>&gt;</code> -&gt; <code>__isGreaterThan($l, $r): bool</code></li>
+<li><code>&gt;=</code> -&gt; <code>__isGreaterThanOrEqual($l, $r): bool</code></li>
+<li><code>==</code> -&gt; <code>__isEqual($l, $r): bool</code></li>
+<li><code>!=</code> -&gt; <code>__isNotEqual($l, $r): bool</code></li>
+<li><code>===</code> -&gt; <code>__isExact($l, $r): bool</code></li>
+<li><code>!==</code> -&gt; <code>__isNotExact($l, $r): bool</code></li>
+<li><code>&lt;=&gt;</code> -&gt; <code>__compare($l, $r): int</code></li>
 </ul>
 <h2>Conversion Operators</h2>
 <p>The convert operator enables type conversion. Converting FROM another type returns self (the return type is implied) and emits as a static __from method. Converting TO another type requires an explicit return type and emits as an INSTANCE __to{T}() method. Declaring a convert-to also auto-adds the matching \Tyhp\Contracts*Convertible interface to the class. A self-&gt;self convert is a compile-time error.</p>
