@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Use Statements and Imports - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Use_Statements_and_Imports">
+    <h2 class="section-heading">Use Statements and Imports</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp supports all standard PHP use statement forms and adds two Tyhp-specific extensions: generic arguments on import aliases and the <code>use extension</code> statement for importing extension method providers. Use statements work the same in Tyhp as they do in PHP -- they create aliases for fully-qualified class, function, and constant names.</p>
+<h2>Standard Use Statements</h2>
+<p>All PHP use statement forms are supported in Tyhp. These behave identically to PHP -- they create namespace aliases for the current file.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Import a class
+use App\Models\User;
+
+// Import with alias
+use App\Models\User as UserModel;
+
+// Import a function
+use function App\Helpers\formatDate;
+
+// Import a constant
+use const App\Config\MAX_RETRIES;
+</code></pre></div>
+<h2>Group Use Declarations</h2>
+<p>Group use declarations import multiple symbols from the same namespace prefix in a single statement.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Group import -- same type
+use App\Models\{User, Post, Comment};
+
+// Group import -- mixed types
+use App\Services\{
+    AuthService,
+    function validateToken,
+    const MAX_LOGIN_ATTEMPTS
+};
+</code></pre></div>
+<h2>Compiled PHP Output for Standard Use Statements</h2>
+<p>Standard use statements pass through to PHP largely unchanged. The emitter automatically prunes unused imports and sorts them alphabetically:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+use App\Models\{User, Post, Comment};
+
+use App\Services\{
+    AuthService,
+    function validateToken,
+    const MAX_LOGIN_ATTEMPTS
+};
+</code></pre></div>
+<h2>Generic Import Aliases</h2>
+<p>Tyhp allows generic type arguments on import aliases. This lets you create a local alias for a specific instantiation of a generic class. The generic arguments are compile-time only -- they are erased from the PHP output. The alias becomes a regular PHP use statement without the generic arguments.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Import a generic class with specific type arguments
+use App\Collections\TypedList as IntList&lt;int&gt;;
+use App\Collections\TypedMap as UserMap&lt;string, User&gt;;
+
+// Now IntList is an alias for TypedList&lt;int&gt;
+IntList $numbers = new IntList();
+$numbers-&gt;add(42);        // OK -- int
+// $numbers-&gt;add(&#039;hello&#039;);   // Compile error -- string is not int
+
+// UserMap is an alias for TypedMap&lt;string, User&gt;
+UserMap $users = new UserMap();
+$users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+use App\Collections\TypedList as IntList;
+use App\Collections\TypedMap as UserMap;
+
+$numbers = new IntList();
+$numbers-&gt;add(42);
+
+$users = new UserMap();
+$users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
+</code></pre></div>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>The generic arguments on the alias are a compile-time concept. They tell the Tyhp compiler to treat the alias as if it were the generic class with those specific type arguments. In the PHP output, only the plain alias remains.</p>
+</div>
+    </div>
+</div>
+<h2>Use Extension Statements</h2>
+<p>The <code>use extension</code> statement imports extension method providers into the current scope. Extension methods allow adding methods to existing types without modifying them. When you import an extension, its methods become available on the extended type within the importing file.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Import an extension -- its methods are now available on the extended type
+use extension App\Extensions\StringHelpers;
+
+// StringHelpers extends string with methods like toCamelCase()
+string $name = &#039;hello_world&#039;;
+string $camel = $name-&gt;toCamelCase();  // &#039;helloWorld&#039;
+</code></pre></div>
+<p>Use extension statements also support trait-like adaptation syntax. This allows you to rename or hide specific extension methods when importing.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Import extension with adaptations
+use extension App\Extensions\StringHelpers {
+    StringHelpers::toCamelCase as toCC;
+}
+
+string $name = &#039;hello_world&#039;;
+string $camel = $name-&gt;toCC();  // Uses the renamed method
+</code></pre></div>
+<h2>Compiled PHP Output for Use Extension</h2>
+<p>Extension method calls compile to static method calls on the extension class. The <code>use extension</code> statement itself is removed from the output (resolved at compile time) and replaced with a standard <code>use</code> import for the extension class:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use extension App\Extensions\StringHelpers;
+
+string $name = &#039;hello_world&#039;;
+string $camel = $name-&gt;toCamelCase();
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+use App\Extensions\StringHelpers;
+
+$name = &#039;hello_world&#039;;
+$camel = StringHelpers::toCamelCase($name);
+</code></pre></div>
+<h2>Tyhpdef Use Statements</h2>
+<p>In tyhpdef files, use statements serve the same purpose -- importing type symbols into the current scope. Tyhpdef files describe external PHP library signatures for the Tyhp compiler. The same use statement forms (including group use, typed use, and use extension) are supported in tyhpdef files.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// Tyhpdef use statements follow the same syntax
+use Some\External\Library\{ClassA, ClassB};
+use function Some\External\Library\helperFunction;
+use const Some\External\Library\SOME_CONSTANT;
+
+// Tyhpdef can also declare type aliases
+type StringOrNull = string|null;
+</code></pre></div>
+<h2>Import Pruning</h2>
+<p>During compilation, the emitter automatically prunes unused use statements from the PHP output. If a use statement is declared but never referenced in the emitted code, it is removed. The emitter also sorts remaining imports alphabetically and groups them by type (classes, functions, constants) following PHP community conventions.</p>
+<p>Imports for Tyhp-only constructs that are erased during emission (type aliases, generic type parameters, struct types) are automatically removed since they have no PHP equivalent.</p>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use group imports to keep use statements organized when importing multiple symbols from the same namespace.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use generic import aliases to create type-safe aliases for specific generic instantiations. This is cleaner than repeating generic arguments everywhere.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use the <code>use extension</code> statement to bring extension methods into scope. Extension methods are only available when explicitly imported -- this gives you full control over which extensions are active.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Place use statements at the top of the file, before any namespace or class declarations. The emitter handles automatic import pruning, so unused imports are cleaned up in the output.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use trait-like adaptation syntax on <code>use extension</code> when you need to rename extension methods to avoid naming conflicts.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't use generic arguments on imports without an alias. The syntax requires <code>as AliasName&lt;GenericArgs&gt;</code> -- you cannot write <code>use App\MyClass&lt;int&gt;;</code> directly.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't import extension classes with a plain <code>use</code> statement and expect extension methods to work. You must use the <code>use extension</code> syntax to activate extension methods on the target type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't import Tyhp-only types (type aliases, struct names) in PHP interop code. These are erased during compilation and do not exist at runtime.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't forget to import extensions before using their methods. Without a <code>use extension</code> import, calling an extension method produces a compile error because the method is not recognized on the base type.</p>
+</div>
+    </div>
+</div>
+<h2>Compiler Error Examples</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// ERROR: Generic arguments require an alias
+// use App\Collections\TypedList&lt;int&gt;;
+
+// Correct: use &#039;as&#039; to create a named alias with generic args
+use App\Collections\TypedList as IntList&lt;int&gt;;
+
+// ERROR: Extension methods not available without &#039;use extension&#039;
+// use App\Extensions\StringHelpers;  // plain import, not extension import
+// $name-&gt;toCamelCase();  // method not found on string
+
+// Correct: use &#039;use extension&#039; to activate extension methods
+use extension App\Extensions\StringHelpers;
+string $name = &#039;hello_world&#039;;
+string $camel = $name-&gt;toCamelCase();  // OK
+</code></pre></div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0310_declarationGating.html">&larr; Declaration Gating</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0400_structs.html">Structs &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

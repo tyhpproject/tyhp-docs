@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Importing PHP Variables and Constants - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Importing_PHP_Variables_and_Constants">
+    <h2 class="section-heading">Importing PHP Variables and Constants</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp uses tyhpdef files to declare the types of PHP global variables, constants, functions, classes, and interfaces that your Tyhp code interacts with. Since Tyhp requires explicit types for all values, tyhpdef provides the bridge between PHP's dynamic runtime and Tyhp's static type system. Tyhpdef files use the &lt;?tyhpdef opening tag and support importing constants, variables, functions, classes, traits, interfaces, and enums with full type annotations.</p>
+<h2>What Are Tyhpdef Files?</h2>
+<p>Tyhpdef files (.tyhpdef) are declaration files that tell the Tyhp compiler about the types of PHP symbols that exist outside of your Tyhp codebase. They are similar to TypeScript's .d.ts files — they contain only type signatures, no implementation. The compiler uses these declarations to type-check your code against PHP's standard library, extensions, and third-party packages.</p>
+<ul>
+<li>Bundled extension tyhpdefs (tyhpdef/php8.2/) provide types for PHP built-in functions and classes</li>
+<li>TyhpSpec files (Tyhp/TyhpSpec/) provide types for Tyhp-specific built-in types like decimal, Promise, and Type</li>
+<li>User tyhpdef files declare types for your project's PHP dependencies and global variables</li>
+<li>Generated tyhpdef files can be created from PHP packages using the tyhpdef generator</li>
+</ul>
+<h2>Importing Constants</h2>
+<p>PHP constants (defined with define() or const) are imported into tyhpdef files using the const keyword with an explicit type annotation. The null-coalescing operator (??) provides a default value when the constant may not be defined at runtime.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+namespace App\Config;
+
+// Import a constant with its type
+const string APP_NAME;
+
+// Import with a default value using ?? (null coalescing)
+const int MAX_CONNECTIONS ?? 100;
+
+// Import with alias — use DATABASE_HOST in Tyhp code
+const string DB_HOST as DATABASE_HOST;
+
+// Mark a constant as deprecated
+deprecated const string OLD_API_KEY;
+
+// PHP extension constants
+const int PHP_INT_MAX;
+const string PHP_EOL;
+const bool PHP_ZTS;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Constants compile to direct PHP constant access
+echo APP_NAME;
+
+// Constants with ?? compile to defined() checks
+echo \defined(&#039;MAX_CONNECTIONS&#039;) ? MAX_CONNECTIONS : 100;
+
+// Aliased constants compile to the original constant name
+echo DB_HOST;
+</code></pre></div>
+<h2>Importing Variables</h2>
+<p>PHP global variables can be imported into tyhpdef files with explicit type annotations. The as keyword aliases the variable name within Tyhp code, and the ?? operator provides a default value for variables that may not be set at runtime.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// Import a global variable with its type
+string $globalConfig;
+
+// Import with a default value
+int $maxRetries ?? 3;
+
+// Import with alias (different variable name in Tyhp)
+string $legacy_var as $modernVar;
+
+// Mark as deprecated
+deprecated string $oldSetting;
+
+// Import superglobals with proper types
+array&lt;string, mixed&gt; $GLOBALS;
+array&lt;string, string&gt; $_SERVER;
+array&lt;string, string&gt; $_ENV;
+array&lt;string, mixed&gt; $_GET;
+array&lt;string, mixed&gt; $_POST;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Imported variables compile to direct PHP variable access
+echo $globalConfig;
+
+// Variables with ?? compile to null coalescing
+echo $maxRetries ?? 3;
+
+// Aliased variables compile to the original variable name
+echo $legacy_var;
+</code></pre></div>
+<h2>Importing Functions</h2>
+<p>PHP functions are imported in tyhpdef files with full type signatures, including parameter types, return types, and optional parameter markers. This allows the Tyhp type checker to validate calls to PHP functions. Function overloads (multiple signatures for the same function) are supported.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// Import a PHP function with type annotations
+function array_map(?callable $callback, array $array, array ...$arrays): array;
+
+// Import with overloaded signatures
+function str_replace(
+    string|array $search,
+    string|array $replace,
+    string $subject
+): string;
+function str_replace(
+    string|array $search,
+    string|array $replace,
+    array $subject
+): array;
+
+// Import with alias
+function str_contains(string $haystack, string $needle) as stringContains: bool;
+
+// Mark as deprecated
+deprecated function mysql_connect(string $server): mixed;
+
+// Import as async function
+async function fetchRemoteData(string $url): string;
+</code></pre></div>
+<h2>Importing Classes and Interfaces</h2>
+<p>PHP classes and interfaces are imported with their full type signatures, including method signatures, properties, constants, and inheritance. Generic type parameters can be added to PHP classes that Tyhp provides generic overlays for.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+class DateTime {
+    public function __construct(
+        string $datetime = &#039;now&#039;,
+        ?DateTimeZone $timezone = null
+    );
+    public function format(string $format): string;
+    public function getTimestamp(): int;
+    public function modify(string $modifier): DateTime|false;
+    public static function createFromFormat(
+        string $format,
+        string $datetime
+    ): DateTime|false;
+}
+
+// Add generics to PHP classes for type safety
+class SplStack&lt;T&gt; {
+    public function push(T $value): void;
+    public function pop(): T;
+    public function top(): T;
+    public function isEmpty(): bool;
+    public function count(): int;
+}
+
+// Interface import
+interface JsonSerializable {
+    public function jsonSerialize(): mixed;
+}
+</code></pre></div>
+<h2>Default Values with ??</h2>
+<p>The null-coalescing operator ?? in tyhpdef declarations provides a fallback value when the imported constant or variable is not defined at runtime. This is compiled to a null-coalescing check in the generated PHP, ensuring your code handles missing symbols gracefully.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// If APP_DEBUG is not defined, default to false
+const bool APP_DEBUG ?? false;
+
+// If $dbPort is not set, default to 5432
+int $dbPort ?? 5432;
+
+// If LOG_LEVEL is not defined, default to &#039;info&#039;
+const string LOG_LEVEL ?? &#039;info&#039;;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// ?? defaults compile to null-coalescing or defined() checks
+$appDebug = \defined(&#039;APP_DEBUG&#039;) ? APP_DEBUG : false;
+$port = $dbPort ?? 5432;
+$logLevel = \defined(&#039;LOG_LEVEL&#039;) ? LOG_LEVEL : &#039;info&#039;;
+</code></pre></div>
+<h2>Aliasing with as</h2>
+<p>The as keyword renames an imported symbol within Tyhp code. This is useful when PHP constants or variables have names that conflict with Tyhp reserved words, or when you want a more descriptive name. The alias is compile-time only — the generated PHP uses the original name.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// Import and rename a constant
+const string PHP_EOL as LINE_ENDING;
+
+// Import and rename a variable
+array $GLOBALS as $phpGlobals;
+
+// Import and rename a function
+function str_contains(string $haystack, string $needle) as containsString: bool;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Use the alias in Tyhp code
+echo LINE_ENDING;  // refers to PHP_EOL
+
+bool $found = containsString(&#039;hello world&#039;, &#039;world&#039;); // calls \str_contains()
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Aliases compile to the original PHP symbol names
+echo PHP_EOL;
+
+$found = \str_contains(&#039;hello world&#039;, &#039;world&#039;);
+</code></pre></div>
+<h2>Deprecated and Obsolete Markers</h2>
+<p>Tyhpdef supports deprecated and obsolete markers on imported declarations. Using a deprecated symbol emits a compiler warning, while using an obsolete symbol emits an error. This helps projects gradually migrate away from legacy PHP APIs.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// deprecated: still works, but compiler warns on use
+deprecated function mysql_connect(string $server): mixed;
+
+// obsolete: should not be used, compiler errors on use
+obsolete function ereg(string $pattern, string $string): int|false;
+
+// deprecated constant
+deprecated const string LEGACY_API_URL;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// WARNING: &#039;mysql_connect&#039; is deprecated
+// $conn = \mysql_connect(&#039;localhost&#039;);
+
+// ERROR: &#039;ereg&#039; is obsolete and should not be used
+// $result = \ereg(&#039;[0-9]+&#039;, $input);
+</code></pre></div>
+<h2>Tyhpdef File Organization</h2>
+<p>Tyhpdef files are loaded from multiple sources in a specific priority order. Higher-priority sources take precedence when the same symbol is declared in multiple places.</p>
+<ol>
+<li>TyhpSpec files (Tyhp/TyhpSpec/) — Tyhp built-in types like decimal, Promise&lt;T&gt;, IsDisposable. Always loaded, highest priority.</li>
+<li>PHP extension tyhpdefs (tyhpdef/php8.2/) — bundled type definitions for PHP built-in extensions (Core, Standard, SPL, Date, JSON, etc.). Loaded based on the target PHP version.</li>
+<li>User project tyhpdefs — custom .tyhpdef files in your project, configured via tyhpdefInclude/tyhpdefExclude in tyhp.json.</li>
+<li>Generated Composer package tyhpdefs — auto-generated tyhpdef files for third-party Composer packages.</li>
+</ol>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Always provide types for all imported PHP variables and constants. Tyhp requires explicit type annotations in tyhpdef — untyped imports are not allowed.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use ?? default values for constants and variables that may not be defined in all environments. This prevents runtime errors from undefined symbols.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use as aliases to give PHP symbols more descriptive names in Tyhp code. The alias is compile-time only and does not affect the generated PHP.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Mark legacy or deprecated PHP APIs with the deprecated keyword in your tyhpdef files. This gives developers compiler warnings when they use APIs that should be replaced.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Add generic type parameters to PHP classes like SplStack&lt;T&gt;, SplQueue&lt;T&gt;, and SplFixedArray&lt;T&gt; in tyhpdef for better type safety with SPL collections.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Accessing PHP globals without importing via tyhpdef first. Tyhp does not allow untyped global access — all PHP globals, constants, and functions must have tyhpdef declarations for the compiler to validate usage.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Assuming imported variables are non-null unless declared so. If a PHP variable might not be set at runtime, declare it as nullable (?type) or provide a ?? default value.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Duplicating declarations that already exist in bundled extension tyhpdefs. Check the bundled tyhpdef/php8.2/ files before creating your own declarations for PHP standard library functions and classes.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Using &lt;?tyhp in tyhpdef files. Tyhpdef files must use the &lt;?tyhpdef opening tag. The tyhpdef mode is a separate language mode with its own set of valid declarations.</p>
+</div>
+    </div>
+</div>
+<h2>Compiler Errors</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// ERROR: Missing type annotation
+// const APP_NAME;  // Must specify type: const string APP_NAME;
+
+// ERROR: Missing type on variable import
+// $globalConfig;  // Must specify type: string $globalConfig;
+
+// OK: All of these are valid tyhpdef declarations
+const string APP_NAME;
+const int MAX_RETRIES ?? 3;
+string $globalConfig;
+deprecated function old_func(): void;
+</code></pre></div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>Tyhpdef files use the &lt;?tyhpdef opening tag, NOT &lt;?tyhp. The tyhpdef mode is a separate language mode that supports only declaration syntax: const, variable imports, function, class, trait, interface, and enum declarations. No implementation code is allowed.</p>
+</div>
+    </div>
+</div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_2700_compileTimeConstructs.html">&larr; Compile-Time Constructs</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

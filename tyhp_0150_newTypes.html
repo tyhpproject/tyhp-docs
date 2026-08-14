@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>New and Changed Types in Tyhp - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="New_and_Changed_Types_in_Tyhp">
+    <h2 class="section-heading">New and Changed Types in Tyhp</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp introduces several new types and enhances existing PHP types with generic support. This page covers generic PHP types, new Tyhp-specific types, and internal compiler types. All types listed here are defined in the TyhpSpec type definition files (<code>tyhpTypes.tyhpdef</code> and related files) that ship with the compiler.</p>
+<h2>Generic PHP Types</h2>
+<p>Tyhp adds generic type parameters to many built-in PHP types. The non-generic versions remain available for backward compatibility, but the generic versions are preferred for maximum type safety.</p>
+<h2>The <code>array&lt;TKey, TValue&gt;</code> and <code>iterable&lt;TKey, TValue&gt;</code> Types</h2>
+<p>The <code>array</code> and <code>iterable</code> types from PHP now have additional generic signatures that allow for precise element type control.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>array&lt;TKey extends string|int, TValue&gt;</code></h4><br/><p>A typed array with 2 generic parameters. The first is the key type (must be <code>string</code>, <code>int</code>, or <code>string|int</code>), and the second is the value type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>array&lt;TValue&gt;</code></h4><br/><p>A typed array with 1 generic parameter (the value type). The key type defaults to <code>int</code> (a sequential numeric array).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>array</code></h4><br/><p>The non-generic version, equivalent to <code>array&lt;int|string, mixed&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>iterable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed iterable with 2 generic parameters. The key type is not restricted to <code>string|int</code> unlike <code>array</code>. This type is a type alias for <code>array&lt;TKey, TValue&gt;|\Traversable&lt;TKey, TValue&gt;</code> and is completely interchangeable with it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>iterable&lt;TValue&gt;</code></h4><br/><p>Single-parameter version where the key type defaults to <code>int</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>iterable</code></h4><br/><p>The non-generic version, equivalent to <code>iterable&lt;mixed, mixed&gt;</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+array&lt;string&gt; $names = [&quot;Alice&quot;, &quot;Bob&quot;];
+array&lt;string, int&gt; $ages = [&quot;Alice&quot; =&gt; 30, &quot;Bob&quot; =&gt; 25];
+
+function processItems(iterable&lt;string&gt; $items): void {
+    foreach ($items as string $item) {
+        echo $item;
+    }
+}
+</code></pre></div>
+<h2>The <code>\Traversable&lt;TKey, TValue&gt;</code> Type</h2>
+<p>The <code>\Traversable</code> interface from PHP gains optional generic parameters for the key and value types.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Traversable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed traversable with 2 generic parameters. The <code>iterable&lt;TKey, TValue&gt;</code> type is a type alias that includes this type.</p>
+</div>
+<h2>The <code>\Iterator&lt;TKey, TValue&gt;</code> Type</h2>
+<p>The <code>\Iterator</code> interface extends <code>\Traversable</code> and gains generic parameters. <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code> instead of <code>mixed</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Iterator&lt;TKey, TValue&gt;</code></h4><br/><p>A generic iterator where <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code>. Extends <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
+</div>
+<h2>The <code>\IteratorAggregate&lt;TKey, TValue&gt;</code> Type</h2>
+<p>The <code>\IteratorAggregate</code> interface extends <code>\Traversable</code> and gains generic parameters. The <code>getIterator()</code> method returns <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\IteratorAggregate&lt;TKey, TValue&gt;</code></h4><br/><p>A generic iterable aggregate where <code>getIterator()</code> returns <code>\Traversable&lt;TKey, TValue&gt;</code>. Extends <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
+</div>
+<h2>The <code>\ArrayAccess&lt;TKey, TValue&gt;</code> Type</h2>
+<p>The <code>\ArrayAccess</code> interface gains generic parameters for type-safe array-like access.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\ArrayAccess&lt;TKey, TValue&gt;</code></h4><br/><p>Provides type-safe array-like access. <code>offsetGet(TKey $offset): TValue</code>, <code>offsetSet(TKey $offset, TValue $value): void</code>, <code>offsetExists(TKey $offset): bool</code>, <code>offsetUnset(TKey $offset): void</code>.</p>
+</div>
+<h2>The <code>\Closure&lt;TArgs..., TReturn&gt;</code> Type</h2>
+<p>The <code>\Closure</code> class gains generic parameters for its argument types and return type. It follows the same return-last convention as <code>callable</code> -- the last generic parameter is the return type, and all preceding parameters are the argument types. Optional trailing parameters expand to an intersection of arity facets the same way as <code>callable</code> (see below).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Closure&lt;TArgs..., TReturn&gt;</code></h4><br/><p>A typed closure where the compiler knows the parameter types and return type. Follows the return-last generic convention. Defaults yield arity-sibling intersections.</p>
+</div>
+<h2>The <code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code> Type</h2>
+<p>The <code>\Generator</code> class gains four generic parameters for full type safety in generator functions.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code></h4><br/><p><code>TKey</code> is the yield key type, <code>TValue</code> is the yield value type, <code>TSend</code> is the type accepted by <code>send()</code>, and <code>TReturn</code> is the type returned by <code>getReturn()</code>.</p>
+</div>
+<h2>The <code>\Fiber&lt;TStart, TResume, TSuspend, TReturn&gt;</code> Type</h2>
+<p>The <code>\Fiber</code> class gains four generic parameters for the start value, resume value, suspend value, and return value.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Fiber&lt;TStart, TResume, TSuspend, TReturn&gt;</code></h4><br/><p><code>TStart</code> is the type of the initial value passed to <code>start()</code>, <code>TResume</code> is the type accepted by <code>resume()</code>, <code>TSuspend</code> is the type returned by <code>suspend()</code>, and <code>TReturn</code> is the final return type from <code>getReturn()</code>.</p>
+</div>
+<h2>The <code>\WeakReference&lt;T&gt;</code> Type</h2>
+<p>The <code>\WeakReference</code> class gains a generic parameter for the referenced object type. The <code>get()</code> method returns <code>?T</code> instead of <code>?object</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\WeakReference&lt;T&gt;</code></h4><br/><p>A weak reference to an object of type <code>T</code>. <code>get()</code> returns <code>?T</code>.</p>
+</div>
+<h2>The <code>\WeakMap&lt;TKey extends object, TValue&gt;</code> Type</h2>
+<p>The <code>\WeakMap</code> class gains generic parameters for the key type (constrained to <code>object</code>) and value type.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\WeakMap&lt;TKey extends object, TValue&gt;</code></h4><br/><p>A type-safe weak object-keyed map. Keys are weakly referenced and do not prevent garbage collection.</p>
+</div>
+<h2>The <code>\UnitEnum</code> and <code>\BackedEnum&lt;TValue&gt;</code> Types</h2>
+<p>The <code>\UnitEnum</code> interface remains as-is. <code>\BackedEnum</code> gains a generic parameter <code>TValue extends string|int</code> for the backing value type. The <code>from()</code> and <code>tryFrom()</code> methods use <code>TValue</code> for their parameter and return types.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\BackedEnum&lt;TValue extends string|int&gt;</code></h4><br/><p>A backed enum where <code>from(TValue): static</code> and <code>tryFrom(TValue): ?static</code> use the backing type parameter.</p>
+</div>
+<h2>The <code>\SensitiveParameterValue&lt;T&gt;</code> Type</h2>
+<p>The <code>\SensitiveParameterValue</code> class gains a generic parameter <code>T</code> so <code>getValue()</code> returns <code>T</code> instead of <code>mixed</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\SensitiveParameterValue&lt;T&gt;</code></h4><br/><p>Wraps a sensitive parameter value. <code>getValue()</code> returns <code>T</code>.</p>
+</div>
+<h2>Generic SPL Types</h2>
+<p>Many SPL (Standard PHP Library) classes and interfaces gain generic type parameters in Tyhp. The following is a comprehensive list of SPL types with generic support:</p>
+<ul>
+<li><code>\OuterIterator&lt;TKey, TValue&gt;</code> -- extends <code>\Iterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\RecursiveIterator&lt;TKey, TValue&gt;</code> -- extends <code>\Iterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\SeekableIterator&lt;TKey, TValue&gt;</code> -- extends <code>\Iterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\SplObserver&lt;TSubject&gt;</code> -- typed observer pattern</li>
+<li><code>\SplSubject&lt;TObserver&gt;</code> -- typed subject pattern</li>
+<li><code>\SplDoublyLinkedList&lt;TValue&gt;</code> -- typed doubly linked list</li>
+<li><code>\SplStack&lt;TValue&gt;</code> -- extends <code>\SplDoublyLinkedList&lt;TValue&gt;</code></li>
+<li><code>\SplQueue&lt;TValue&gt;</code> -- extends <code>\SplDoublyLinkedList&lt;TValue&gt;</code></li>
+<li><code>\SplHeap&lt;TValue&gt;</code> -- typed heap</li>
+<li><code>\SplMaxHeap&lt;TValue&gt;</code> -- extends <code>\SplHeap&lt;TValue&gt;</code></li>
+<li><code>\SplMinHeap&lt;TValue&gt;</code> -- extends <code>\SplHeap&lt;TValue&gt;</code></li>
+<li><code>\SplPriorityQueue&lt;TValue, TPriority&gt;</code> -- typed priority queue</li>
+<li><code>\SplFixedArray&lt;TValue&gt;</code> -- typed fixed-size array</li>
+<li><code>\ArrayObject&lt;TKey, TValue&gt;</code> -- typed array object wrapper</li>
+<li><code>\SplObjectStorage&lt;TObject extends object, TInfo&gt;</code> -- typed object storage</li>
+<li><code>\IteratorIterator&lt;TKey, TValue&gt;</code> -- extends <code>\OuterIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\AppendIterator&lt;TKey, TValue&gt;</code> -- extends <code>\IteratorIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\ArrayIterator&lt;TKey, TValue&gt;</code> -- extends <code>\SeekableIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\CachingIterator&lt;TKey, TValue&gt;</code> -- extends <code>\IteratorIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\FilterIterator&lt;TKey, TValue&gt;</code> -- extends <code>\IteratorIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\CallbackFilterIterator&lt;TKey, TValue&gt;</code> -- extends <code>\FilterIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\InfiniteIterator&lt;TKey, TValue&gt;</code> -- extends <code>\IteratorIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\LimitIterator&lt;TKey, TValue&gt;</code> -- extends <code>\IteratorIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\NoRewindIterator&lt;TKey, TValue&gt;</code> -- extends <code>\IteratorIterator&lt;TKey, TValue&gt;</code></li>
+<li><code>\RegexIterator&lt;TKey, TValue&gt;</code> -- extends <code>\FilterIterator&lt;TKey, TValue&gt;</code></li>
+<li>All <code>Recursive*</code> variants of the above iterators also gain the same generic parameters</li>
+</ul>
+<h2>The <code>callable&lt;TArgs..., TReturn&gt;</code> Type</h2>
+<p>In Tyhp, the <code>callable</code> type can accept generic parameters that specify the argument types and return type. The convention is return-last: argument types come first, followed by the return type as the final generic parameter. This mirrors the natural reading order of a function signature.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// A callable that takes a string and returns int
+callable&lt;string, int&gt; $parser;
+
+// A callable that takes two ints and returns bool
+callable&lt;int, int, bool&gt; $comparator;
+
+// A callable with no parameters that returns void
+callable&lt;void&gt; $callback;
+
+// Using generic callables in function signatures
+function apply&lt;T, U&gt;(callable&lt;T, U&gt; $fn, T $value): U {
+    return $fn($value);
+}
+</code></pre></div>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>The <code>void</code> and <code>never</code> types are restricted types -- they cannot be used as generic type arguments unless the generic parameter's constraint explicitly allows them. The <code>callable</code> type's return parameter uses <code>TReturn extends void|never|mixed</code>, which opts in to both restricted types, making <code>callable&lt;void&gt;</code> and <code>callable&lt;never&gt;</code> valid.</p>
+</div>
+    </div>
+</div>
+<h3>Optional parameters and arity facets</h3>
+<p>Trailing parameters with default values expand into an <strong>intersection of arity siblings</strong> (not a subtype chain). The same model applies to <code>\Closure&lt;…&gt;</code> and will be reused by <code>new&lt;…&gt;</code> constructable facets (Story 27).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Inferred type: callable&lt;string, int, void&gt; &amp; callable&lt;string, void&gt;
+function greet(string $name, int $times = 1): void { ... }
+
+callable&lt;string, void&gt; $oneArg = greet(...);           // OK
+callable&lt;string, int, void&gt; $twoArg = greet(...);      // OK
+
+// Explicit intersection is also allowed (prefer a type alias so each callable&#039;s
+// generics close before `&amp;`):
+type Greeter = callable&lt;string, int, void&gt; &amp; callable&lt;string, void&gt;;
+Greeter $either;
+</code></pre></div>
+<p>Each facet is an independent arity: <code>callable&lt;string, int, void&gt;</code> does <strong>not</strong> imply <code>callable&lt;string, void&gt;</code> by itself — only the intersection (or a value inferred with defaults) is assignable to both.</p>
+<p>A trailing variadic never produces infinite facets. <code>function joinAll(string ...$parts): void</code> is typed <code>callable&lt;void&gt; &amp; callable&lt;string, void&gt;</code> — the prefix facets plus one that accepts a single variadic argument. Calls with more arguments than any facet are left unchecked rather than rejected.</p>
+<h2>New Tyhp-Specific Types</h2>
+<h2>The <code>decimal</code> Type</h2>
+<p>Tyhp introduces a <code>decimal</code> type for precise arithmetic calculations. In the compiled PHP, a <code>decimal</code> value is an instance of the <code>\Tyhp\Decimal</code> wrapper class that handles all arithmetic operations using bcmath, gmp, or a pure-PHP fallback (configurable in <code>tyhp.json</code>). Decimal literals use the <code>d</code> suffix.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $price = 19.99d;
+decimal $tax = 2.00d;
+decimal $total = $price + $tax;  // Precise arithmetic
+
+class Invoice {
+    public decimal $amount;
+    public decimal $taxRate;
+
+    public function calculateTotal(): decimal {
+        return $this-&gt;amount * (1d + $this-&gt;taxRate);
+    }
+}
+</code></pre></div>
+<p>The <code>decimal</code> type supports all standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code>), comparison operators (<code>==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>), unary negation (<code>-$val</code>), and casts to <code>int</code>, <code>float</code>, and <code>string</code>. These compile to method calls on the underlying <code>\Tyhp\Decimal</code> class.</p>
+<h2>The <code>(decimal)</code> Cast</h2>
+<p>Tyhp provides a <code>(decimal)</code> cast operator for converting values to the <code>decimal</code> type, similar to PHP's built-in casts like <code>(int)</code> and <code>(float)</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+float $price = 19.99;
+decimal $precisePrice = (decimal) $price;
+
+string $amount = &quot;99.95&quot;;
+decimal $parsed = (decimal) $amount;
+</code></pre></div>
+<h2>Compiled PHP Output for <code>decimal</code></h2>
+<p>The <code>decimal</code> type compiles to <code>\Tyhp\Decimal</code> instances. Arithmetic operations become method calls:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $a = 10.5d;
+decimal $b = 3.2d;
+decimal $result = $a + $b;
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+$a = new \Tyhp\Decimal(&#039;10.5&#039;);
+$b = new \Tyhp\Decimal(&#039;3.2&#039;);
+$result = $a-&gt;__add($b);
+</code></pre></div>
+<h2>The <code>struct</code> Base Type</h2>
+<p>The <code>struct</code> base type is the parent of all struct declarations. At the PHP level it compiles to an associative <code>array</code>, but Tyhp gives it typed properties, schema-based typing, and value-type semantics. See the Structs documentation page for full details on struct declarations, anonymous structs, and the <code>with</code> keyword.</p>
+<h2>The <code>void</code> Type</h2>
+<p>The <code>void</code> type in Tyhp is treated as a first-class keyword with its own lexer token (<code>T_TYHP_VOID</code>). It can be used in more type expression contexts than in PHP, including in type alias definitions, generic type arguments (where the generic parameter opts in via its constraint), and as part of callable/closure return types.</p>
+<h2>The <code>never</code> Type</h2>
+<p>The <code>never</code> type from PHP is retained in Tyhp with the same semantics: it indicates that a function never returns (it always throws, calls <code>exit()</code>, or enters an infinite loop). Like <code>void</code>, it is a restricted type that can only appear as a generic type argument when the constraint explicitly allows it.</p>
+<h2>The <code>mixed</code> Type</h2>
+<p>The <code>mixed</code> type from PHP is available in Tyhp but is discouraged. Tyhp's strong type system should eliminate most needs for <code>mixed</code>. There is a recommended compiler setting to flag or disallow explicit use of <code>mixed</code>, encouraging developers to use specific types or union types instead. See the dedicated Mixed Type documentation page for more details.</p>
+<h2>The <code>self</code> / <code>static</code> / <code>parent</code> Relative Class Types</h2>
+<p>Tyhp supports relative class types with and without generic type arguments. The rules differ for<br />
+bare vs parameterized forms, and for instance vs static methods.</p>
+<h3>Bare <code>self</code> / bare <code>static</code> (no type-argument list)</h3>
+<p>| Context | Bare <code>self</code> | Bare <code>static</code> |<br />
+|--------|-------------|---------------|<br />
+| Instance method | Declaring class with <strong>this receiver’s</strong> type args | Late-bound class of <code>$this</code>, with <strong>that</strong> instance’s type args (polymorphic “same as <code>$this</code>”) |<br />
+| Static method | Declaring class — under-specified args follow the bare-class-name rule | Class of the <strong>call-site receiver</strong> (<code>Child</code> in <code>Child::foo()</code> / <code>Child&lt;string&gt;::foo()</code>), with that reference’s type args |</p>
+<p>Bare forms <strong>inherit</strong> receiver / call-site type arguments. They do <strong>not</strong> mean “fill class<br />
+defaults.” Defaults apply only when the class reference is under-specified the same way a bare<br />
+<code>Foo</code> / <code>Foo::</code> would elsewhere: if every omitted parameter has a default, apply them; otherwise<br />
+error. Inside the open generic’s own body, <code>$this</code> / bare <code>self</code> stay in terms of the class’s own<br />
+parameters (do not silently default to <code>mixed</code>).</p>
+<h3>Parameterized <code>self&lt;…&gt;</code> / <code>parent&lt;…&gt;</code></h3>
+<p>Allowed — explicit instantiation of a declaration whose arity is known at the spelling site:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Collection&lt;T&gt; {
+    public function merge(self&lt;T&gt; $other): self&lt;T&gt; {
+        // self&lt;T&gt; refers to Collection&lt;T&gt; with the written generic args
+        // ...
+    }
+}
+
+class TypedList&lt;T&gt; extends Collection&lt;T&gt; {
+    public function concat(parent&lt;T&gt; $other): self&lt;T&gt; {
+        // parent&lt;T&gt; refers to Collection&lt;T&gt;
+        // ...
+    }
+}
+</code></pre></div>
+<h3>Parameterized <code>static&lt;…&gt;</code> — forbidden</h3>
+<p><code>static&lt;…&gt;</code> is <strong>not allowed</strong> in any scope (including <code>final</code> classes). Late-static binding must<br />
+not invent or rebind type arguments. Prefer bare <code>static</code>, or explicit <code>DeclaringClass&lt;…&gt;</code> /<br />
+<code>self&lt;…&gt;</code> / <code>parent&lt;…&gt;</code> when an instantiation must be written. The checker reports<br />
+<strong>TYHP4168</strong> (<code>CheckerParameterizedStaticForbidden</code>).</p>
+<h3>Factories that stamp a method generic onto the class</h3>
+<p>Use <code>: self&lt;T&gt;</code> or the declaring class name (<code>: Promise&lt;T&gt;</code>), <strong>not</strong> <code>: static&lt;T&gt;</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+final class Promise&lt;TReturn extends void|mixed = void&gt; {
+    public static function _async&lt;T extends void|mixed&gt;(callable&lt;T&gt; $fn): self&lt;T&gt; {
+        return new self&lt;T&gt;($fn);
+    }
+}
+</code></pre></div>
+<p>On a <code>final</code> class, bare <code>self</code> and bare <code>static</code> remain interchangeable for <em>non-parameterized</em><br />
+returns; parameterized returns use <code>self&lt;…&gt;</code> or the class name.</p>
+<h3>Fluent inheritance</h3>
+<p>A non-generic parent may return bare <code>static</code> without knowing whether a child is generic. Call<br />
+sites with <code>GenericBuilder&lt;int&gt; $b</code> get <code>GenericBuilder&lt;int&gt;</code> back from inherited fluent methods —<br />
+parent declaration sites never name the child’s type parameters:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Builder {
+    public function tap(): static {
+        return $this;
+    }
+}
+
+class GenericBuilder&lt;T&gt; extends Builder {
+    public function __construct(public T $value): void {}
+}
+
+function demo(GenericBuilder&lt;int&gt; $b): GenericBuilder&lt;int&gt; {
+    return $b-&gt;tap();
+}
+</code></pre></div>
+<h3><code>static</code> as a checked type (return / assignability)</h3>
+<p>Bare <code>static</code> is a first-class late-bound type. A value is valid where <code>static</code> is expected only<br />
+when it is <strong>verifiably</strong> that late-bound type, for example:</p>
+<ul>
+<li><code>return $this;</code> (instance methods — <code>$this</code> is typed as <code>static</code>)</li>
+<li>the result of another call whose return type is (or resolves to) <code>static</code></li>
+<li>a generic method/function / member whose substituted return type is <code>static</code></li>
+<li>a value narrowed by <code>if ($var instanceof static) { … }</code> (or equivalent guards targeting <code>static</code>)</li>
+</ul>
+<p>Ordinary <code>self</code> / declaring-class instances (including <code>new self()</code>) are <strong>not</strong> assignable to<br />
+<code>static</code> without such a proof. At call sites, a <code>: static</code> return expands to the receiver /<br />
+call-site class reference (including its type arguments).</p>
+<h2>The <code>Promise&lt;T&gt;</code> Type</h2>
+<p>Tyhp provides a <code>Promise&lt;T&gt;</code> type for async/await support. The <code>Promise</code> class is defined as <code>Promise&lt;TReturn extends void|mixed&gt;</code> where <code>TReturn</code> is the fulfillment value type. The constraint allows <code>Promise&lt;void&gt;</code> for async functions that do not return a value.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// An async function returns a Promise
+async function fetchUser(int $id): User {
+    // The actual return type is Promise&lt;User&gt;
+    $response = await \httpGet(&quot;/users/{$id}&quot;);
+    return User::fromJson($response);
+}
+
+// Using the promise
+Promise&lt;User&gt; $userPromise = fetchUser(42);
+User $user = await $userPromise;
+</code></pre></div>
+<p>Key <code>Promise</code> methods include static combinators (<code>all&lt;T&gt;</code>, <code>race&lt;T&gt;</code>, <code>resolved&lt;T&gt;</code>, <code>rejected&lt;T&gt;</code>, <code>delay</code>, <code>timeout&lt;T&gt;</code>, <code>batch&lt;TItem, TResult&gt;</code>, <code>run&lt;T&gt;</code>), instance methods (<code>then&lt;TResult&gt;</code>, <code>catch&lt;TResult&gt;</code>, <code>finally</code>), and the internal <code>_async</code>/<code>_await</code> methods that the <code>async</code>/<code>await</code> keywords desugar to. See the Async/Await documentation for full details.</p>
+<h2>Internal Compiler Types</h2>
+<p>The following types are part of Tyhp's internal type system. They are used by the compiler for type checking and type manipulation. Most are prefixed with <code>__</code> to indicate they are internal.</p>
+<h2>The <code>__TyhpInternal&lt;TType&gt;</code> Type</h2>
+<p>The foundational internal wrapper type. A variable with a <code>__TyhpInternal&lt;T&gt;</code> type resolves to <code>T</code> but cannot be directly assigned by the developer. It can only be set via the return value of a function/method or via a type guard. Nearly all <code>__</code>-prefixed types are defined in terms of <code>__TyhpInternal&lt;&gt;</code>.</p>
+<h2>Symbol Name Types</h2>
+<p>These types represent string values that the compiler knows refer to specific symbols in scope. They enable Tyhp's type-safe dynamic language features. Each is obtained by using the corresponding type guard function (e.g., <code>\class_exists()</code> narrows a string to <code>__ClassName</code>).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__VarName</code></h4><br/><p>A <code>string</code> representing a variable name valid in the current scope. Obtained via <code>isset($$varName)</code>. Alias for <code>__TypedVarName&lt;mixed&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__TypedVarName&lt;T&gt;</code></h4><br/><p>Like <code>__VarName</code> but the compiler also knows the type of the referenced variable. If the string value can be resolved at compile time, the generic parameter <code>T</code> is the variable's declared type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__FunctionName</code></h4><br/><p>A <code>string</code> representing a function name in scope. Obtained via <code>\function_exists()</code> as a type guard.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A <code>string</code> representing a class name in scope. Obtained via <code>\class_exists()</code> as a type guard.<br />
+Bare <code>__ClassName</code> is equivalent to <code>__ClassName&lt;object&gt;</code>; <code>\class_exists&lt;T&gt;($n)</code> narrows to <code>__ClassName&lt;T&gt;</code>.<br />
+Parametric <code>__ClassName&lt;T&gt;</code> is invariant in <code>T</code> (exact class name). For &quot;name of <code>T</code> or a descendant&quot;, use <code>__CompatibleTypeName&lt;T&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__InterfaceName</code></h4><br/><p>A <code>string</code> representing an interface name in scope. Obtained via <code>\interface_exists()</code> as a type guard.<br />
+Bare form ≡ <code>__InterfaceName&lt;object&gt;</code>; parametric form mirrors <code>__ClassName&lt;T&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__EnumName</code></h4><br/><p>A <code>string</code> representing an enum name in scope. Obtained via <code>\enum_exists()</code> as a type guard. Alias of <code>__ClassName</code>.<br />
+Bare form ≡ <code>__EnumName&lt;object&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__TraitName</code></h4><br/><p>A <code>string</code> representing a trait name in scope. Obtained via <code>\trait_exists()</code> as a type guard.<br />
+Bare form ≡ <code>__TraitName&lt;object&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__StructName</code></h4><br/><p>A <code>string</code> representing the name of a struct type in scope.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__UsedTraitName&lt;T&gt;</code></h4><br/><p>A <code>__TraitName</code> that is specifically a trait used by the class or enum specified by <code>T</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CompatibleTypeName&lt;T&gt;</code></h4><br/><p>A class, enum, or interface name that is compatible with (same as or descendant of) <code>T</code>. Used with <code>\is_a()</code> and <code>\is_subclass_of()</code>.<br />
+Accepts string literals naming a subtype of <code>T</code>, and branded <code>__ClassName&lt;S&gt;</code> / <code>__EnumName&lt;S&gt;</code> / <code>__InterfaceName&lt;S&gt;</code> / <code>__CompatibleTypeName&lt;S&gt;</code> when <code>S</code> is the same as or a subtype of <code>T</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__PropertyName&lt;T&gt;</code></h4><br/><p>A <code>string</code> representing a property name on the type <code>T</code>. Obtained via <code>\property_exists()</code> as a type guard.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__MethodName&lt;T&gt;</code></h4><br/><p>A <code>string</code> representing a method name on the type <code>T</code>. Obtained via <code>\method_exists()</code> as a type guard.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__ConstName</code></h4><br/><p>A <code>string</code> representing a constant name in scope.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__ObjectConstName&lt;T&gt;</code></h4><br/><p>A constant name scoped to a specific class or enum <code>T</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__EnumCaseName&lt;T&gt;</code></h4><br/><p>The name of a specific enum case on the given enum <code>T</code>. Extends <code>__ObjectConstName</code>.</p>
+</div>
+<h2>Type Name String Types</h2>
+<p>These types represent string representations of types themselves, used for dynamic type reflection and compile-time type manipulation.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__BaseTypeName</code></h4><br/><p>A string literal union of all single type names: <code>'int'</code>, <code>'float'</code>, <code>'bool'</code>, <code>'array'</code>, <code>'string'</code>, <code>'null'</code>, <code>'mixed'</code>, <code>'self'</code>, <code>'parent'</code>, <code>'static'</code>, <code>'callable'</code>, <code>'iterable'</code>, <code>'object'</code>, plus <code>__StructName</code>, <code>__ClassName</code>, <code>__EnumName</code>, and <code>__InterfaceName</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__NullableBaseTypeName</code></h4><br/><p>A nullable type name string, like <code>'?int'</code> or <code>'?MyClass'</code>. Defined as a <code>?</code>-prefixed <code>__BaseTypeName</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__UnionTypeName</code></h4><br/><p>A full union type string like <code>'int|string|null'</code>. Built from <code>__BaseTypeName</code> segments joined by <code>|</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__IntersectTypeName</code></h4><br/><p>A full intersection type string like <code>'MyClass&amp;MyInterface'</code>. Built from base type segments joined by <code>&amp;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__NotNullableTypeName</code></h4><br/><p>Any type name string (base, union, or intersection) that is guaranteed not to be nullable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__TypeName</code></h4><br/><p>The universal type name string type. Can represent any type expressed as a string: base, nullable, union, intersection, or non-nullable variants.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__NonMatchingStringType</code></h4><br/><p>A special string type with a constant value that is un-matchable except to itself. Acts as a bottom/never-matching string type, used as a fallback in type computations.</p>
+</div>
+<h2>Struct Utility Types</h2>
+<p>These types provide compile-time operations on struct types.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__StructRecord&lt;TStructType, TKey&gt;</code></h4><br/><p>Represents a single record (key-value pair) within a struct type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__StructRecords&lt;TStructType, TValueType&gt;</code></h4><br/><p>Represents the collection of all records in a struct as an array of <code>__StructRecord</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__StructDef&lt;TRecordSet&gt;</code></h4><br/><p>Defines a struct type from its record set. Used for programmatic struct type construction.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__StructPartial&lt;TStructType, TIncludeKeys, TExcludeKeys&gt;</code></h4><br/><p>Represents a subset of a struct by including or excluding specific keys. If <code>TIncludeKeys</code> is null, <code>TExcludeKeys</code> is used for exclusion (and vice versa). Both null produces an empty struct.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__StructKey&lt;TStructType&gt;</code></h4><br/><p>The key type (property name type) of a struct's records.</p>
+</div>
+<h2>Type Utility Types</h2>
+<p>These types provide compile-time type manipulation capabilities, similar to utility types in TypeScript.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__Properties&lt;T&gt;</code></h4><br/><p>Returns the property names (for objects) or record keys (for structs) of a given type. Resolves to <code>__PropertyName&lt;T&gt; | __StructKey&lt;T&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__FunctionReturnType&lt;T&gt;</code></h4><br/><p>Extracts the return type of a function given its name string.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__MethodReturnType&lt;T, M&gt;</code></h4><br/><p>Extracts the return type of a method given the owning type <code>T</code> and method name string <code>M</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableReturnType&lt;TCallable&gt;</code></h4><br/><p>Extracts the return type of a callable type <code>TCallable</code> — a <code>callable&lt;…&gt;</code> / <code>\Closure&lt;…&gt;</code> facet, a first-class function or method, or a type parameter inferred from a callback argument. Complements <code>__FunctionReturnType</code> / <code>__MethodReturnType</code>, which key off name strings rather than the callable type. Erases to that return type, or to <code>mixed</code> while <code>TCallable</code> is still unbound.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersStruct&lt;TCallable&gt;</code></h4><br/><p>Named-argument bag for a callable type <code>TCallable</code>. Resolves to a synthetic struct with one property per non-variadic named parameter (key <code>$name</code>, type = parameter type). Parameters with defaults are optional fields and may be omitted from a literal; required parameters must be present (TYHP4325). Facets without names (<code>callable&lt;string, int&gt;</code>) degrade to an empty struct. Variadic parameters are omitted (extra keys stay unknown-property errors). Erases to <code>array</code>. An unbound <code>TCallable</code> stays deferred until the callable is inferred at a call site.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersTuple&lt;TCallable&gt;</code></h4><br/><p>Positional-argument bag for a callable type <code>TCallable</code>. Resolves to a synthetic struct with int key aliases <code>0 as $_1</code>, <code>1 as $_2</code>, … matching the hand-written <code>CallableArgs*</code> convention. Unlike the named bag, parameter names are not required — a bare <code>callable&lt;string, int&gt;</code> facet still produces <code>$_1: string</code>. Defaulted trailing parameters are optional indexes and may be omitted from a list literal; required indexes must be present. Variadic parameters are omitted. Erases to <code>array</code>. An unbound <code>TCallable</code> stays deferred until the callable is inferred at a call site. List literals (<code>['Ada', 36]</code>) and explicit int keys (<code>[0 =&gt; 'Ada', 1 =&gt; 36]</code>) assign when types match.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersRest&lt;TCallable&gt;</code></h4><br/><p>Rest-unpack of a callable type <code>TCallable</code>'s parameter list (TypeScript <code>...args: Parameters&lt;T&gt;</code>). Used as a trailing variadic: <code>function invoke&lt;TCallable extends callable&gt;(TCallable $cb, __CallableParametersRest&lt;TCallable&gt; ...$args): __CallableReturnType&lt;TCallable&gt;</code>. After <code>TCallable</code> is inferred from <code>$cb</code>, each remaining positional argument is checked 1:1 against the callable's parameters (TYHP4010 / TYHP4142 / TYHP4143). Defaulted parameters may be omitted; a trailing variadic on the callable accepts extra arguments at that element type. Bare opaque <code>callable</code> stays gradual (unknown arity). Unions of same-arity callables merge parameter types; mismatched arities stay gradual. A trailing spread (<code>...$packed</code>) or a named pack into the rest parameter is not treated as an empty argument list. Positionals after a rest-region spread are not typed as the first inner parameter. The wrapper is kept at check time (it does not collapse to a Tuple struct). Erases to <code>mixed</code> so PHP does not demand each unpacked argument be an array.</p>
+</div>
+<p><code>\call_user_func</code> and <code>\call_user_func_array</code> in ExtStandard use these utilities:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function call_user_func&lt;TCallable extends callable&gt;(
+    TCallable $callback,
+    __CallableParametersRest&lt;TCallable&gt; ...$args
+): __CallableReturnType&lt;TCallable&gt;;
+
+function call_user_func_array&lt;TCallable extends callable&gt;(
+    TCallable $callback,
+    __CallableParametersStruct&lt;TCallable&gt; $args
+): __CallableReturnType&lt;TCallable&gt;;
+
+function call_user_func_array&lt;TCallable extends callable&gt;(
+    TCallable $callback,
+    __CallableParametersTuple&lt;TCallable&gt; $args
+): __CallableReturnType&lt;TCallable&gt;;
+</code></pre></div>
+<p><code>TCallable</code> is inferred from <code>$callback</code> (no <code>typeof</code> in type position). Named assoc arrays select the Struct overload; list / int-keyed arrays select the Tuple overload. Untyped <code>array</code> bags still use <code>\call_user_func_array_unsafe</code>. Hand-written <code>CallableArgs*</code> structs remain as examples; builtins no longer use the arity ladder. Peers (<code>forward_static_call*</code>, <code>register_shutdown_function</code>, <code>iterator_apply</code>, <code>\Closure::call</code>) follow the same pattern when retyped.</p>
+<p>Locked decisions: utilities are keyed by the callable type, not a name string; optional parameters are modeled as optional struct fields (required-key assignability), not a power-set of subset bags; positional bags are first-class via Tuple (int keys <code>0..n-1</code>, <code>$_N</code> aliases).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__TypeDiff&lt;T, U&gt;</code></h4><br/><p>Type subtraction: produces <code>T</code> with <code>U</code> removed. If nothing remains, resolves to <code>void</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsNotNullable&lt;T&gt;</code></h4><br/><p>Strips <code>null</code> from a type. Returns <code>void</code> if the input was just <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsNullable&lt;T&gt;</code></h4><br/><p>Makes any type nullable by adding <code>| null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsReadOnly&lt;T&gt;</code></h4><br/><p>Marks a type as readonly. The compiler errors if you try to modify a variable or property of this type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsTypeName&lt;T&gt;</code></h4><br/><p>Converts a type to its string name representation. The inverse of <code>__AsType</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsType&lt;T&gt;</code></h4><br/><p>Converts a type name string back to the actual type. The inverse of <code>__AsTypeName</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsNotNullableTypeName&lt;T&gt;</code></h4><br/><p>Converts a type name string to its non-nullable version. Returns <code>__NonMatchingStringType</code> if the input was <code>'null'</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__AsNullableTypeName&lt;T&gt;</code></h4><br/><p>Converts a type name string to its nullable version.</p>
+</div>
+<h2>Compiled PHP Output for Generic Types</h2>
+<p>All generic type parameters are erased in the compiled PHP output. The base type is preserved, but the generic arguments are stripped:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function getNames(array&lt;string&gt; $items): array&lt;string&gt; {
+    return \array_filter($items, fn(string $s): bool =&gt; \strlen($s) &gt; 0);
+}
+
+\WeakMap&lt;object, string&gt; $cache = new \WeakMap();
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+function getNames(array $items): array {
+    return \array_filter($items, fn(string $s): bool =&gt; \strlen($s) &gt; 0);
+}
+
+$cache = new \WeakMap();
+</code></pre></div>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use generic array types (<code>array&lt;string&gt;</code>, <code>array&lt;string, int&gt;</code>) instead of plain <code>array</code> for element-level type safety. The compiler can then catch type mismatches when adding or retrieving elements.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use <code>callable&lt;TArgs..., TReturn&gt;</code> to specify the signature of callable parameters. This gives you compile-time checking on both the arguments passed to the callable and its return type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Prefer specific types over <code>mixed</code>. Use union types when a value can legitimately be one of several types, and reserve <code>mixed</code> for truly unknown types like deserialized data.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use <code>decimal</code> for financial calculations and any domain where floating-point precision errors are unacceptable.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't use plain <code>array</code> when you can specify <code>array&lt;string&gt;</code> or <code>array&lt;string, int&gt;</code>. The unparameterized form provides no element type safety.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't ignore generic type parameters on built-in types. Using <code>\Iterator</code> instead of <code>\Iterator&lt;string, User&gt;</code> loses type information for <code>current()</code> and <code>key()</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't use <code>float</code> for financial calculations. Use <code>decimal</code> instead -- <code>float</code> is subject to IEEE 754 precision errors that can accumulate in arithmetic.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't try to use <code>void</code> or <code>never</code> as generic type arguments unless the generic parameter's constraint explicitly allows them (e.g., <code>T extends void|mixed</code>).</p>
+</div>
+    </div>
+</div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0100_stronglyTyped.html">&larr; Strongly Typed</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Disposables and the := Operator - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Disposables_and_the_Operator">
+    <h2 class="section-heading">Disposables and the := Operator</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp provides deterministic resource management through the IsDisposable and AsyncIsDisposable interfaces, the := (using assignment) operator, and the using block syntax. These features ensure that resources like database connections, file handles, and network sockets are properly cleaned up when they are no longer needed.</p>
+<h2>The IsDisposable Interface</h2>
+<p>Any class that manages resources should implement \Tyhp\Contracts\IsDisposable. This interface requires a single dispose() method that performs cleanup.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class DatabaseConnection implements \Tyhp\Contracts\IsDisposable {
+    private mixed $handle;
+
+    public function __construct(string $dsn) {
+        $this-&gt;handle = \pg_connect($dsn);
+    }
+
+    public function query(string $sql): mixed {
+        return \pg_query($this-&gt;handle, $sql);
+    }
+
+    public function dispose(): void {
+        \pg_close($this-&gt;handle);
+    }
+}
+</code></pre></div>
+<h2>The AsyncIsDisposable Interface</h2>
+<p>For resources that require asynchronous cleanup (e.g., closing a connection over the network), implement \Tyhp\Contracts\AsyncIsDisposable. This interface requires a disposeAsync() method that returns a Promise.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class AsyncConnection implements \Tyhp\Contracts\AsyncIsDisposable {
+    public async function disposeAsync(): void {
+        await $this-&gt;sendCloseCommand();
+        await $this-&gt;waitForAcknowledgement();
+    }
+}
+</code></pre></div>
+<h2>The := Operator (Using Assignment)</h2>
+<p>The := operator declares a variable as disposable. When the variable leaves scope, its dispose() method is called automatically. This is the simplest way to ensure resources are cleaned up.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function processData(): void {
+    // := marks $db as disposable — it is disposed when it leaves scope
+    $db := new DatabaseConnection(&#039;host=localhost dbname=mydb&#039;);
+
+    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
+    // ... process result ...
+
+    // $db-&gt;dispose() is called automatically when the function returns
+}
+</code></pre></div>
+<h2>Compiled PHP Output — DisposableScope</h2>
+<p>The := operator compiles to a \Tyhp\DisposableScope pattern. A scope variable is created and resources are registered with it via $__scope-&gt;using(). When the scope variable goes out of scope, PHP's __destruct() fires and disposes all registered resources in reverse order.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+function processData(): void {
+    $__scope = \Tyhp\DisposableScope::create();
+    $db = $__scope-&gt;using(new DatabaseConnection(&#039;host=localhost dbname=mydb&#039;));
+
+    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
+    // ... process result ...
+
+    // When $__scope goes out of scope, __destruct() fires
+    // and calls $db-&gt;dispose() automatically
+}
+</code></pre></div>
+<h2>Multiple Disposable Resources</h2>
+<p>Multiple disposable resources in the same scope share a single DisposableScope. Resources are disposed in reverse order of registration (LIFO — Last In, First Out), matching the behavior of C#'s using statement.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function transferData(): void {
+    $source := new DatabaseConnection($sourceDsn);
+    $target := new DatabaseConnection($targetDsn);
+    $logger := new FileLogger(&#039;/var/log/transfer.log&#039;);
+
+    // ... transfer data ...
+
+    // Disposed in reverse order: $logger, $target, $source
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+function transferData(): void {
+    $__scope = \Tyhp\DisposableScope::create();
+    $source = $__scope-&gt;using(new DatabaseConnection($sourceDsn));
+    $target = $__scope-&gt;using(new DatabaseConnection($targetDsn));
+    $logger = $__scope-&gt;using(new FileLogger(&#039;/var/log/transfer.log&#039;));
+
+    // ... transfer data ...
+
+    // $__scope-&gt;__destruct() disposes: $logger, $target, $source
+}
+</code></pre></div>
+<h2>Nested Disposable Scopes</h2>
+<p>Each nested scope that contains disposable resources gets its own DisposableScope with a unique suffix. Inner scopes dispose independently of outer scopes.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function process(): void {
+    $outer := new ResourceA();
+
+    if ($condition) {
+        $inner := new ResourceB();
+        // $inner is disposed when this if-block exits
+    }
+
+    // $outer is disposed when the function returns
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+function process(): void {
+    $__scope = \Tyhp\DisposableScope::create();
+    $outer = $__scope-&gt;using(new ResourceA());
+
+    if ($condition) {
+        $__scope_1 = \Tyhp\DisposableScope::create();
+        $inner = $__scope_1-&gt;using(new ResourceB());
+        // $__scope_1-&gt;__destruct() fires here
+    }
+
+    // $__scope-&gt;__destruct() fires here
+}
+</code></pre></div>
+<h2>The using Block Syntax</h2>
+<p>For guaranteed deterministic disposal regardless of circular references or GC behavior, Tyhp provides the using block syntax. Unlike the := operator which uses DisposableScope and __destruct(), the using block always compiles to a try/finally block.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Single resource using block
+using ($db = new DatabaseConnection($dsn)) {
+    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
+    // $db-&gt;dispose() is guaranteed in the finally block
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Single resource compiles to try/finally
+$db = new \DatabaseConnection($dsn);
+try {
+    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
+} finally {
+    if ($db instanceof \Tyhp\Contracts\IsDisposable) {
+        $db-&gt;dispose();
+    }
+}
+</code></pre></div>
+<h2>Multiple Resources in a using Block</h2>
+<p>Multiple resources in a using block compile to a flat try/finally with null initialization and error collection. Disposal errors are caught individually and aggregated into an AggregateException, ensuring all resources are disposed even if one fails.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+using ($db = new DatabaseConnection($dsn), $cache = new CacheConnection()) {
+    // both are disposed in reverse order in finally
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+$db = null;
+$cache = null;
+try {
+    $db = new \DatabaseConnection($dsn);
+    $cache = new \CacheConnection();
+    // body
+} finally {
+    $__disposeErrors = [];
+    if ($cache instanceof \Tyhp\Contracts\IsDisposable) {
+        try { $cache-&gt;dispose(); } catch (\Throwable $__e) { $__disposeErrors[] = $__e; }
+    }
+    if ($db instanceof \Tyhp\Contracts\IsDisposable) {
+        try { $db-&gt;dispose(); } catch (\Throwable $__e) { $__disposeErrors[] = $__e; }
+    }
+    if (!empty($__disposeErrors)) {
+        throw new \Tyhp\Exceptions\AggregateException($__disposeErrors, &#039;One or more errors during disposal&#039;);
+    }
+}
+</code></pre></div>
+<h2>Reverse Order Disposal</h2>
+<p>Both := and using dispose resources in reverse order (LIFO — Last In, First Out). This ensures that resources are cleaned up in the opposite order they were acquired, which is important when resources depend on each other (e.g., a query depends on a connection).</p>
+<h2>Choosing := vs using Block</h2>
+<p>Both approaches achieve automatic disposal, but they differ in guarantees and syntax:</p>
+<div class="alert alert-secondary" role="alert"><h4><code>:= operator</code></h4><br/><p>Uses DisposableScope + __destruct(). Lighter syntax, works anywhere. Relies on PHP's reference counting for timely disposal. May be delayed by circular references.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>using block</code></h4><br/><p>Uses try/finally. Deterministic disposal guaranteed regardless of circular references or GC behavior. Scopes the resource to the block body.</p>
+</div>
+<h2>Async Disposal</h2>
+<p>When disposing async resources, DisposableScope automatically detects the context. Inside a Fiber (async context), it uses Promise::_await(). Outside a Fiber, it uses EventLoop::run() to block-wait. The using await syntax provides explicit async disposal in the finally block.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+async function fetchData(): void {
+    $conn := new AsyncConnection($url);
+    $data = await $conn-&gt;fetch(&#039;/api/data&#039;);
+    // $conn-&gt;disposeAsync() is awaited when scope exits
+}
+
+// using await for explicit async disposal
+using await ($conn = new AsyncConnection($url)) {
+    $data = await $conn-&gt;fetch(&#039;/api/data&#039;);
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// using await compiles to try/finally with async dispose
+$conn = new \AsyncConnection($url);
+try {
+    $data = \Tyhp\Promise::_await($conn-&gt;fetch(&#039;/api/data&#039;));
+} finally {
+    if ($conn instanceof \Tyhp\Contracts\AsyncIsDisposable) {
+        \Tyhp\Promise::_await($conn-&gt;disposeAsync());
+    }
+}
+</code></pre></div>
+<h2>Circular Reference Mitigation</h2>
+<p>The DisposableScope relies on PHP's __destruct() for disposal, which requires reference counting to work. The compiler handles the most common circular reference pattern automatically: closures that capture $this and are stored as properties on the same object are rewritten to use WeakReference-based captures.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Instead of this (creates circular reference):
+$this-&gt;onReady = function() {
+    $this-&gt;emit(&#039;ready&#039;);
+};
+
+// The compiler generates this (breaks the cycle):
+$__weakSelf = \WeakReference::create($this);
+$this-&gt;onReady = function() use ($__weakSelf) {
+    $__weakSelf-&gt;get()?-&gt;emit(&#039;ready&#039;);
+};
+</code></pre></div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>When the compiler detects unresolvable circular references between disposable objects (e.g., bidirectional parent-child object graphs), it falls back to try/finally for that specific scope and emits a warning.</p>
+</div>
+    </div>
+</div>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use := for resources that should be auto-disposed when leaving scope — it is the simplest and most concise approach for most cases.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use the using block when you need guaranteed deterministic disposal, especially in code with complex object graphs or circular references.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Implement IsDisposable on any class that manages external resources like database connections, file handles, or network sockets.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Implement AsyncIsDisposable for resources that require async cleanup (e.g., closing a network connection that requires a server acknowledgement).</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Make dispose() calls idempotent — safe to call multiple times without side effects.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not use := with types that don't implement IsDisposable — the compiler reports an error.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not manually call dispose() on := variables — disposal is automatic and calling it manually can result in double-disposal.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not mix := operator and using block syntax for the same resource — pick one approach per scope.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not create circular references between disposable objects without the compiler's WeakReference mitigation — this can delay __destruct() calls.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not forget that disposal errors are collected into an AggregateException in using blocks — handle them appropriately.</p>
+</div>
+    </div>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class NotDisposable {
+    public string $value;
+}
+
+// ERROR: Right-hand side does not implement IsDisposable
+// $x := new NotDisposable();
+
+// ERROR: Do not manually call dispose on := variables
+// function bad(): void {
+//     $db := new DatabaseConnection($dsn);
+//     $db-&gt;dispose();  // Wrong! dispose() will be called again automatically
+// }
+</code></pre></div>
+<h2>Compiler Errors</h2>
+<ul>
+<li>Using := with a type that does not implement IsDisposable or AsyncIsDisposable.</li>
+<li>Using := outside a valid scope (must be inside a function, method, or block).</li>
+<li>Using using block with a non-disposable type.</li>
+<li>Async dispose (using await) outside an async function.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_2200_withKeyword.html">&larr; The with Keyword</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

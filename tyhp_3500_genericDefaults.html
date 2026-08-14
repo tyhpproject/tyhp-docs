@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Generic Type Parameter Defaults - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Generic_Type_Parameter_Defaults">
+    <h2 class="section-heading">Generic Type Parameter Defaults</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 3 · Story 28</span><span class="badge bg-secondary">Planned</span>
+</p>
+    <div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Not in this alpha
+        </h4>
+        <div class="callout-content"><p>This feature is <strong>not included</strong> in Tyhp 805.0.0-alpha.1 (roadmap Tier 2/3). The rest of this page describes the planned design. Do not expect these commands or syntax to work yet.</p>
+</div>
+    </div>
+</div>
+<p>Tyhp allows generic type parameters to have default types, specified with = after the optional constraint. When a consumer does not provide a type argument for a defaulted parameter, the default is used automatically. This enables cleaner APIs where the common case requires no explicit type parameterization — for example, Promise&lt;T = void&gt; lets you write new Promise() instead of new Promise<void>() for the typical async procedure.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>Generic type parameter defaults are a compile-time-only feature. All generics — including defaults — are erased from PHP output. There is zero runtime cost.</p>
+</div>
+    </div>
+</div>
+<h2>Basic Syntax</h2>
+<p>The default type is specified with = after the type parameter name and optional constraint. When using a generic type, omitted trailing arguments use their defaults.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// T defaults to mixed when no type argument is provided
+class Collection&lt;T = mixed&gt; {
+    private array&lt;T&gt; $items = [];
+
+    public function add(T $item): void {
+        $this-&gt;items[] = $item;
+    }
+
+    public function getAll(): array&lt;T&gt; {
+        return $this-&gt;items;
+    }
+}
+
+// These are equivalent — T defaults to mixed
+Collection $c1 = new Collection();
+Collection&lt;mixed&gt; $c2 = new Collection&lt;mixed&gt;();
+
+// Override the default
+Collection&lt;string&gt; $names = new Collection&lt;string&gt;();
+Collection&lt;int&gt; $ids = new Collection&lt;int&gt;();
+</code></pre></div>
+<h2>Compiled PHP Output</h2>
+<p>Generic defaults are erased along with all other generic information. The PHP output has no concept of type parameters or their defaults — they exist only during Tyhp compilation for type checking.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Collection&lt;T = mixed&gt; {
+    private array&lt;T&gt; $items = [];
+
+    public function add(T $item): void {
+        $this-&gt;items[] = $item;
+    }
+}
+
+Collection $c = new Collection();
+Collection&lt;string&gt; $names = new Collection&lt;string&gt;();
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+class Collection {
+    private array $items = [];
+
+    public function add(mixed $item): void {
+        $this-&gt;items[] = $item;
+    }
+}
+
+$c = new Collection();
+$names = new Collection();
+</code></pre></div>
+<h2>Defaults with Constraints</h2>
+<p>A type parameter can have both a constraint and a default. The syntax is T extends Constraint = Default. The default type must satisfy the constraint — if it does not, the compiler reports an error.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Promise defaults TReturn to void
+// The constraint allows void or mixed (both are valid return types)
+class Promise&lt;TReturn extends void|mixed = void&gt; {
+    private ?TReturn $result = null;
+
+    public function resolve(TReturn $value): void {
+        $this-&gt;result = $value;
+    }
+}
+
+// Common case — async procedure with no return value
+Promise $p1 = new Promise();           // TReturn = void (from default)
+Promise&lt;void&gt; $p2 = new Promise&lt;void&gt;(); // Explicit, same as default
+
+// Override for async functions that return values
+Promise&lt;int&gt; $p3 = new Promise&lt;int&gt;();   // TReturn = int
+Promise&lt;string&gt; $p4 = new Promise&lt;string&gt;();
+
+// Valid — array implements Countable
+class Counter&lt;T extends Countable = array&gt; {
+    public function count(T $items): int {
+        return \count($items);
+    }
+}
+</code></pre></div>
+<h2>Multi-Parameter Defaults</h2>
+<p>When a generic type has multiple parameters, type arguments are applied left-to-right. Omitted trailing arguments use their defaults. This enables partial type argument application.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class MyMap&lt;TKey = string, TValue = mixed&gt; {
+    private array&lt;TKey, TValue&gt; $data = [];
+
+    public function set(TKey $key, TValue $value): void {
+        $this-&gt;data[$key] = $value;
+    }
+
+    public function get(TKey $key): ?TValue {
+        return $this-&gt;data[$key] ?? null;
+    }
+}
+
+// All defaults: TKey = string, TValue = mixed
+MyMap $m1 = new MyMap();
+
+// Override first, default second: TKey = int, TValue = mixed
+MyMap&lt;int&gt; $m2 = new MyMap&lt;int&gt;();
+
+// Override both: TKey = int, TValue = User
+MyMap&lt;int, User&gt; $m3 = new MyMap&lt;int, User&gt;();
+</code></pre></div>
+<h2>Trailing-Only Rule</h2>
+<p>Defaulted type parameters must be trailing — a non-defaulted parameter cannot follow a defaulted one. This mirrors PHP function parameter defaults and prevents ambiguity in partial type argument application.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Valid — non-defaulted first, defaulted last
+class Valid1&lt;T, U = int&gt; {}
+class Valid2&lt;T, U = int, V = string&gt; {}
+class Valid3&lt;T = mixed&gt; {}
+class Valid4&lt;T = int, U = string, V = bool&gt; {}
+
+// ERROR TYHP4062: Generic parameter &#039;U&#039; without a default
+// cannot follow parameter &#039;T&#039; which has a default
+// class Invalid&lt;T = int, U&gt; {}
+</code></pre></div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Error TYHP4062 (CheckerGenericNonDefaultAfterDefault): &quot;Generic parameter 'U' without a default cannot follow parameter 'T' which has a default&quot;</p>
+</div>
+    </div>
+</div>
+<h2>Default Must Satisfy Constraint</h2>
+<p>When a type parameter has both a constraint and a default, the default type must satisfy the constraint. The compiler verifies this at the declaration site — if the default does not implement or extend the constraint, it is a compile-time error.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Valid — array implements Countable
+class GoodCounter&lt;T extends Countable = array&gt; {
+}
+
+// Valid — JsonSerializable extends Serializable
+class GoodSerializer&lt;T extends Serializable = JsonSerializable&gt; {
+}
+
+// ERROR TYHP4061: Default type &#039;string&#039; does not satisfy
+// constraint &#039;Countable&#039; on generic parameter &#039;T&#039;
+// class BadCounter&lt;T extends Countable = string&gt; {}
+
+// ERROR TYHP4061: Default type &#039;int&#039; does not satisfy
+// constraint &#039;Stringable&#039; on generic parameter &#039;T&#039;
+// class BadStringable&lt;T extends Stringable = int&gt; {}
+</code></pre></div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>Error TYHP4061 (CheckerGenericDefaultDoesNotSatisfyConstraint): &quot;Default type '{0}' does not satisfy constraint '{1}' on generic parameter '{2}'&quot;</p>
+</div>
+    </div>
+</div>
+<h2>Defaults Referencing Earlier Parameters</h2>
+<p>A default type can reference type parameters declared earlier in the same parameter list. This enables patterns where one parameter's default depends on another parameter's resolved type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// U defaults to T — Pair&lt;int&gt; is equivalent to Pair&lt;int, int&gt;
+class Pair&lt;T, U = T&gt; {
+    public T $first;
+    public U $second;
+}
+
+Pair&lt;int&gt; $p1 = new Pair&lt;int&gt;();        // U = int (from T)
+Pair&lt;int, string&gt; $p2 = new Pair&lt;int, string&gt;(); // U = string (explicit)
+
+// TValue defaults to array&lt;TKey&gt; — index reversal map
+class Index&lt;TKey, TValue = array&lt;TKey&gt;&gt; {
+    public function add(TKey $key, TValue $value): void {
+        // ...
+    }
+}
+
+Index&lt;string&gt; $idx = new Index&lt;string&gt;();  // TValue = array&lt;string&gt;
+</code></pre></div>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>When a default references an earlier parameter that also has a constraint, the checker validates that the resolved default satisfies the later parameter's constraint (if any). For example, &lt;T extends Comparable, U extends Comparable = T&gt; is valid because T is guaranteed to satisfy Comparable.</p>
+</div>
+    </div>
+</div>
+<h2>Defaults on Functions and Methods</h2>
+<p>Generic defaults are supported on functions and methods, not just classes. However, for functions and methods, type inference from arguments takes priority over defaults. Defaults are used only when a type parameter cannot be inferred from the call-site arguments and is not explicitly provided.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Function with default
+function wrap&lt;T = string&gt;(T $value): array&lt;T&gt; {
+    return [$value];
+}
+
+wrap(42);         // T = int (inferred from argument, NOT string)
+wrap(&#039;hello&#039;);    // T = string (inferred, coincidentally matches default)
+wrap&lt;bool&gt;(true); // T = bool (explicit overrides everything)
+
+// Function with non-inferable parameter
+function create&lt;T = stdClass&gt;(): T {
+    return new T();
+}
+
+create();               // T = stdClass (default, nothing to infer from)
+create&lt;MyClass&gt;();      // T = MyClass (explicit)
+</code></pre></div>
+<h2>Type Inference Priority</h2>
+<p>When calling a generic function or method, the resolution order for each type parameter is strictly defined. Type inference from arguments always takes priority over defaults. Defaults are a last resort for parameters that cannot be determined any other way.</p>
+<ol>
+<li>Explicit type arguments — provided by the caller (e.g., foo<int>())</li>
+<li>Type inference — inferred from argument types at the call site</li>
+<li>Defaults — used for parameters that are neither explicitly provided nor inferable</li>
+</ol>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function transform&lt;TIn = string, TOut = TIn&gt;(
+    TIn $input,
+    callable(TIn): TOut $fn
+): TOut {
+    return $fn($input);
+}
+
+// TIn = int (inferred from 42), TOut = string (inferred from callable return)
+string $result = transform(42, fn(int $x): string =&gt; (string)$x);
+
+// TIn = string (default), TOut = string (default = TIn)
+// Only when nothing can be inferred
+// string $r = transform&lt;&gt;(...);  // hypothetical no-arg call
+</code></pre></div>
+<h2>Defaults on Interfaces and Type Aliases</h2>
+<p>Generic defaults are supported on interfaces and type aliases. Classes implementing a generic interface with defaults can omit the defaulted type arguments.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Interface with default — TId defaults to int
+interface Repository&lt;TEntity, TId = int&gt; {
+    public function find(TId $id): ?TEntity;
+    public function save(TEntity $entity): void;
+    public function delete(TId $id): void;
+}
+
+// TId defaults to int — most entities use integer IDs
+class UserRepository implements Repository&lt;User&gt; {
+    public function find(int $id): ?User { /* ... */ }
+    public function save(User $entity): void { /* ... */ }
+    public function delete(int $id): void { /* ... */ }
+}
+
+// Override the default — use string UUID
+class OrderRepository implements Repository&lt;Order, string&gt; {
+    public function find(string $id): ?Order { /* ... */ }
+    public function save(Order $entity): void { /* ... */ }
+    public function delete(string $id): void { /* ... */ }
+}
+
+// Type alias with default
+type Collection&lt;T = mixed&gt; = array&lt;T&gt;;
+
+Collection $anything = [1, &#039;two&#039;, 3.0];  // T = mixed
+Collection&lt;int&gt; $numbers = [1, 2, 3];     // T = int
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+// All generics — including defaults — are erased
+interface Repository {
+    public function find(mixed $id): mixed;
+    public function save(mixed $entity): void;
+    public function delete(mixed $id): void;
+}
+
+class UserRepository implements Repository {
+    public function find(int $id): ?User { /* ... */ }
+    public function save(User $entity): void { /* ... */ }
+    public function delete(int $id): void { /* ... */ }
+}
+
+class OrderRepository implements Repository {
+    public function find(string $id): ?Order { /* ... */ }
+    public function save(Order $entity): void { /* ... */ }
+    public function delete(string $id): void { /* ... */ }
+}
+</code></pre></div>
+<h2>Edge Cases</h2>
+<p>Generic defaults support various type expressions including union types, nullable types, and generic types as default values.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Default is a union type
+class Flexible&lt;T = int|string&gt; {
+    public T $value;
+}
+
+// Default is a nullable type
+class Optional&lt;T = ?string&gt; {
+    public T $value;
+}
+
+// Default is a generic type
+class Wrapper&lt;T = array&lt;int&gt;&gt; {
+    public T $data;
+}
+
+// Default is void (useful for return types in async)
+class AsyncTask&lt;TReturn extends void|mixed = void&gt; {
+    public function getResult(): TReturn {
+        // ...
+    }
+}
+</code></pre></div>
+<h2>Compiler Error Examples</h2>
+<p>The compiler catches two categories of errors with generic defaults: ordering violations (non-defaulted after defaulted) and constraint violations (default not satisfying constraint).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// ERROR TYHP4062: non-defaulted U follows defaulted T
+// class Bad1&lt;T = int, U&gt; {}
+
+// ERROR TYHP4062: non-defaulted V follows defaulted U
+// class Bad2&lt;T, U = int, V&gt; {}
+
+// ERROR TYHP4061: string does not implement Countable
+// class Bad3&lt;T extends Countable = string&gt; {}
+
+// ERROR TYHP4061: int does not implement Stringable
+// class Bad4&lt;T extends Stringable = int&gt; {}
+
+// ERROR: circular reference — T cannot default to itself
+// class Bad5&lt;T = T&gt; {}
+</code></pre></div>
+<h2>Tyhpdef Preservation</h2>
+<p>When generating tyhpdef files for a compiled Tyhp library, generic parameter defaults are preserved in the output. Consumers of the library get the same defaulting behavior as if they were using the original source.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// Generated tyhpdef preserves defaults
+class Promise&lt;TReturn extends void|mixed = void&gt; {
+    public static function _async&lt;T extends void|mixed = void&gt;(callable&lt;T&gt; $fn): Promise&lt;T&gt;;
+    public static function _await&lt;T&gt;(Promise&lt;T&gt; $promise): T;
+}
+
+type Collection&lt;T = mixed&gt; = array&lt;T&gt;;
+</code></pre></div>
+<h2>Summary of Syntax Forms</h2>
+<ul>
+<li>&lt;T&gt; — No constraint, no default. T is required.</li>
+<li>&lt;T extends SomeType&gt; — Constraint, no default. T is required and must extend SomeType.</li>
+<li>&lt;T = DefaultType&gt; — No constraint, with default. T is optional and defaults to DefaultType.</li>
+<li>&lt;T extends SomeType = DefaultType&gt; — Constraint and default. T is optional, defaults to DefaultType, and DefaultType must satisfy SomeType.</li>
+</ul>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use defaults for commonly-used type parameters where there is a clear &quot;common case.&quot; For example, Promise&lt;T = void&gt; covers the majority of async procedures that do not return a value.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use inference-friendly function signatures where the type can be inferred from arguments. Defaults are a fallback — type inference produces more precise types when arguments are available.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use defaults on interfaces to reduce boilerplate for implementors. Repository&lt;TEntity, TId = int&gt; lets most repositories skip specifying the ID type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use self-referencing defaults (T, U = T) for symmetric types like Pair&lt;T, U = T&gt; where both parameters are commonly the same type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Keep defaulted parameters at the end of the parameter list. The trailing-only rule is enforced by the compiler, and it also makes partial application intuitive.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't provide defaults that violate constraints — &lt;T extends Countable = string&gt; is a compile error because string does not implement Countable.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't put defaulted parameters before non-defaulted ones — &lt;T = int, U&gt; is a compile error. Defaulted parameters must be trailing.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't rely on defaults for function calls when arguments can provide inference. Type inference is always more precise than defaults: wrap(42) infers T = int even if the default is T = string.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't create self-referencing defaults (e.g., &lt;T = T&gt;) — this is a circular reference and produces a compiler error.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't expect generic defaults to have any runtime impact — all generics, including defaults, are erased from the PHP output. They exist only for compile-time type safety.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't forget to verify that defaults referencing earlier parameters satisfy the later parameter's constraints. For example, &lt;T, U extends Comparable = T&gt; is only valid if T itself is known to extend Comparable.</p>
+</div>
+    </div>
+</div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_3400_newTypeConstraint.html">&larr; The new&lt;TArgs...&gt; Constructable Object Type</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="diagnostics_overview.html">Compiler Diagnostics Overview &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

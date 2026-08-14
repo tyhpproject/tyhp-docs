@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Diagnostic Code Reference - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Diagnostic_Code_Reference">
+    <h2 class="section-heading">Diagnostic Code Reference</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <!-- GENERATED by Tyhp.Domain.Diagnostics.DiagnosticsReferenceGenerator — do not edit message entries by hand. Regenerate: TYHP_UPDATE_DIAGNOSTICS_REFERENCE=1 dotnet test --filter DiagnosticsReferenceGeneratorTests -->
+<p>This page is the comprehensive index of Tyhp compiler diagnostic codes. Every entry is<br />
+generated from the compiler's code registry (<code>MessageCode.cs</code>) and the localized short-message<br />
+catalog (<code>.resx</code>), so the message text always matches what the compiler emits.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>Diagnostic codes are stable identifiers. Once assigned, a code number always refers to the same<br />
+diagnostic, even across compiler versions. The canonical list of codes lives in<br />
+<code>Tyhp/Domain/Exceptions/MessageCode.cs</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Run <code>tyhp --explain TYHP####</code> (or <code>tyhp explain ####</code>) to print the<br />
+long-form explanation for any code. That command reads the same dynamic catalog as this page.</p>
+</div>
+    </div>
+</div>
+<h2>Looking up a code</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp --explain TYHP4008
+tyhp explain 4008
+tyhp explain --code=TYHP3003
+</code></pre></div>
+<h2>Parser Errors (TYHP1xxx)</h2>
+<p>Parser errors occur during the ANTLR4 lexing and parsing phase when the compiler encounters syntax it cannot understand.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP1001 (Error)</code></h4><br/><p><strong>ParserUnknownError.</strong> Message: <code>Unknown parser error: {0}</code>.</p>
+<p>A catch-all for parser/lexer errors that do not match a more specific code. The <code>{0}</code> placeholder contains the underlying error message from the ANTLR4 parser.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+// Invalid token that confuses the lexer
+class #invalid { }
+</code></pre></div>
+<p>Fix: Examine the indicated line and column for syntax errors. Ensure all tokens are valid Tyhp/PHP syntax.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP1002 (Error)</code></h4><br/><p><strong>ParserUnexpectedError.</strong> Message: <code>Unexpected token <code>{0}</code> at position {1}</code>.</p>
+<p>The parser encountered a token it did not expect at the current position. This usually indicates a missing semicolon, unmatched brace, or misplaced keyword.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function greet(string $name) string {
+    // Missing colon before return type ^^^
+    return &quot;Hello, $name&quot;;
+}
+</code></pre></div>
+<p>Fix: Check the line for missing punctuation (semicolons, colons, braces, parentheses) or misplaced keywords. The correct syntax above is <code>function greet(string $name): string</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP1003 (Error)</code></h4><br/><p><strong>ParserCompileAborted.</strong> Message: <code>Compilation aborted: {0}</code>.</p>
+<p>The parser encountered too many errors and aborted processing for the current file. Earlier errors in the same file typically cause this.</p>
+<p>Fix: Fix the earlier parser errors in the same file and recompile. Once the foundational syntax issues are resolved, this error will no longer appear.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP1004 (Error)</code></h4><br/><p><strong>LexerCloseTagNotAllowedInTaglessMode.</strong> Message: <code>Closing tag <code>?&amp;gt;</code> is not allowed when <code>source.tagless</code> is enabled</code>.<br />
+Run <code>tyhp --explain TYHP1004</code> for the long-form explanation.</p>
+</div>
+<h2>Visitor Errors (TYHP2xxx)</h2>
+<p>Visitor errors occur during parse-tree to AST conversion when the visitor encounters an unexpected structure or unsupported construct.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP2001 (Error)</code></h4><br/><p><strong>VisitorUnknownError.</strong> Message: <code>Unknown visitor error</code>.</p>
+<p>A catch-all for unexpected errors during AST generation. This typically indicates an internal compiler issue.</p>
+<p>Fix: If you encounter this error, simplify the code near the indicated location and try again. If the error persists, please report it as a compiler bug.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP2002 (Error)</code></h4><br/><p><strong>VisitorUnexpectedAlternative.</strong> Message: <code>Unexpected grammar alternative <code>{1}</code> in rule <code>{0}</code></code>.</p>
+<p>The visitor hit an unexpected grammar alternative while walking the parse tree (a production the AST builder does not handle). This may occur with unusual or edge-case syntax combinations.</p>
+<p>Fix: Simplify the expression or statement. If the syntax is valid PHP/Tyhp, this may indicate a compiler limitation -- please report it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP2003 (Error)</code></h4><br/><p><strong>VisitorMissingRequiredNode.</strong> Message: <code>Required AST node missing in rule <code>{0}</code></code>.</p>
+<p>A required component of a language construct was not found in the parse tree. This often results from incomplete or malformed syntax.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+// Missing class body
+class User
+</code></pre></div>
+<p>Fix: Ensure the construct is syntactically complete. Classes need bodies (<code>{ }</code>), functions need parameter lists and bodies, etc.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP2004 (Error)</code></h4><br/><p><strong>VisitorUnsupportedConstruct.</strong> Message: <code>Language construct <code>{0}</code> is not yet supported</code>.</p>
+<p>The code uses a PHP language construct that the Tyhp compiler does not yet support.</p>
+<p>Fix: Use an alternative approach that is supported by the compiler. Check the Tyhp documentation for supported constructs and any known limitations.</p>
+</div>
+<h2>Binder Errors (TYHP3xxx)</h2>
+<p>Binder errors occur during symbol resolution and scope management.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3001 (Error, Warning)</code></h4><br/><p><strong>BinderUnknownError.</strong> Message: <code>Unknown binder error: {0}</code>.</p>
+<p>A catch-all for unexpected errors during the binding phase.</p>
+<p>Fix: If you encounter this error, please report it as a compiler bug with a minimal reproduction.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3002 (Error)</code></h4><br/><p><strong>BinderDuplicateSymbolDeclaration.</strong> Message: <code>Duplicate declaration of symbol <code>{0}</code></code>.</p>
+<p>Two declarations with the same name exist in the same scope. This includes classes, functions, constants, and variables declared at the same scope level.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class User { }
+class User { }  // Error: Duplicate declaration of symbol &#039;User&#039;
+</code></pre></div>
+<p>Fix: Rename one of the duplicate declarations, or remove the duplicate. If the declarations are in different files, ensure they are in different namespaces.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3003 (Error)</code></h4><br/><p><strong>BinderSymbolNotFound.</strong> Message: <code>Symbol <code>{0}</code> is not found</code>.</p>
+<p>A referenced class, function, constant, variable, or other symbol could not be resolved in any accessible scope.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function process(UnknownType $item): void {
+    // Error: Symbol &#039;UnknownType&#039; not found
+}
+</code></pre></div>
+<p>Fix: Add a <code>use</code> statement to import the symbol, check for typos in the name, verify the symbol is defined in a loaded tyhpdef file, or ensure the file defining the symbol is included in the project.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3004 (Error)</code></h4><br/><p><strong>BinderInvalidSymbolTypeForParent.</strong> Message: <code>Symbol type <code>{0}</code> is not valid for parent scope <code>{1}</code></code>.</p>
+<p>A symbol was declared in a scope where that type of declaration is not allowed.</p>
+<p>Fix: Move the declaration to an appropriate scope. For example, class declarations belong at the namespace level, not inside function bodies.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3005 (Error)</code></h4><br/><p><strong>BinderInvalidFileScopeArgument.</strong> Message: <code>Invalid argument for file scope</code>.</p>
+<p>An internal error indicating an invalid configuration was passed to the file scope during binding.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3006 (Error)</code></h4><br/><p><strong>BinderCircularInheritance.</strong> Message: <code>Circular inheritance detected involving <code>{0}</code></code>.</p>
+<p>A class or interface directly or indirectly extends or implements itself, creating an inheritance cycle.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class A extends B { }
+class B extends A { }  // Error: Circular inheritance
+</code></pre></div>
+<p>Fix: Break the inheritance cycle by removing or restructuring the class hierarchy.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3007 (Error)</code></h4><br/><p><strong>BinderTraitConflict.</strong> Message: <code>Trait method conflict: <code>{0}</code></code>.</p>
+<p>Two or more traits used by the same class declare methods with the same name, and no conflict resolution (<code>insteadof</code> or <code>as</code>) was provided.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+trait A { public function hello(): void { } }
+trait B { public function hello(): void { } }
+
+class MyClass {
+    use A, B;  // Error: Trait method conflict: &#039;hello&#039;
+}
+</code></pre></div>
+<p>Fix: Use <code>insteadof</code> to resolve the conflict: <code>use A, B { A::hello insteadof B; }</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3008 (Error)</code></h4><br/><p><strong>BinderDuplicateUseAlias.</strong> Message: <code>Duplicate use alias <code>{0}</code></code>.</p>
+<p>Two <code>use</code> import statements bring in symbols with the same alias name.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+use App\Models\User;
+use App\DTOs\User;  // Error: Duplicate use alias &#039;User&#039;
+</code></pre></div>
+<p>Fix: Use an alias to disambiguate: <code>use App\DTOs\User as UserDTO;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3009 (Error)</code></h4><br/><p><strong>BinderInvalidSelfReference.</strong> Message: <code>Invalid <code>self</code> reference outside of a class</code>.</p>
+<p>The keyword <code>self</code> was used outside of a class, interface, trait, or enum body.</p>
+<p>Fix: Use <code>self</code> only within class-like declarations. Outside of a class, use the fully-qualified class name instead.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3010 (Error)</code></h4><br/><p><strong>BinderInvalidParentReference.</strong> Message: <code>Invalid <code>parent</code> reference: class has no parent</code>.</p>
+<p>The keyword <code>parent</code> was used in a class that does not extend another class.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Standalone {
+    public function test(): void {
+        parent::test();  // Error: class has no parent
+    }
+}
+</code></pre></div>
+<p>Fix: Add an <code>extends</code> clause to the class, or remove the <code>parent</code> reference.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3011 (Error)</code></h4><br/><p><strong>BinderDuplicateGenericParameter.</strong> Message: <code>Duplicate generic type parameter <code>{0}</code></code>.</p>
+<p>A generic class or function declares two type parameters with the same name.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Container&lt;T, T&gt; { }  // Error: Duplicate generic type parameter &#039;T&#039;
+</code></pre></div>
+<p>Fix: Give each generic type parameter a unique name.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3012 (Error)</code></h4><br/><p><strong>BinderGenericParameterShadow.</strong> Message: <code>Generic type parameter <code>{0}</code> shadows an existing type</code>.</p>
+<p>A generic type parameter has the same name as an existing class, interface, or type alias in scope.</p>
+<p>Fix: Rename the generic type parameter to avoid shadowing (e.g., use <code>TItem</code> instead of <code>User</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3013 (Error)</code></h4><br/><p><strong>BinderMultipleConstructors.</strong> Message: <code>Class <code>{0}</code> declares multiple constructors</code>.</p>
+<p>A class declares more than one <code>__construct</code> method. PHP and Tyhp only allow a single constructor per class.</p>
+<p>Fix: Merge the constructors into a single <code>__construct</code> method with optional parameters, or use static factory methods for alternative construction patterns.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3014 (Error)</code></h4><br/><p><strong>ExtensionOperatorMissingTarget.</strong> Message: <code>Operator overload in an extension is missing the required <code>&amp;lt;Type&amp;gt;</code> target</code>.</p>
+<p>An <code>operator</code> declared inside an <code>extension</code> body must specify the type it extends using the <code>&lt;Type&gt;</code> target syntax.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3015 (Error)</code></h4><br/><p><strong>ExtensionOperatorTargetNotAllowed.</strong> Message: <code><code>&amp;lt;Type&amp;gt;</code> on an operator overload is only allowed inside an extension declaration</code>.</p>
+<p>The <code>&lt;Type&gt;</code> target on an operator is only valid within an <code>extension</code> declaration, not on a class-member operator.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3016 (Error)</code></h4><br/><p><strong>ExtensionOperatorTargetNotFound.</strong> Message: <code>The <code>&amp;lt;Type&amp;gt;</code> target of an extension operator does not resolve to a class or built-in type</code>.</p>
+<p>The type named as the target of an extension operator overload does not resolve to a known class.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3017 (Error)</code></h4><br/><p><strong>BinderUnresolvedExtendsType.</strong> Message: <code>Extends type <code>{0}</code> is not resolved</code>.<br />
+Run <code>tyhp --explain TYHP3017</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3018 (Error)</code></h4><br/><p><strong>BinderUnresolvedImplementsType.</strong> Message: <code>Implements type <code>{0}</code> is not resolved</code>.<br />
+Run <code>tyhp --explain TYHP3018</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3019 (Error)</code></h4><br/><p><strong>BinderUnresolvedReturnType.</strong> Message: <code>Return type <code>{0}</code> is not resolved</code>.<br />
+Run <code>tyhp --explain TYHP3019</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3020 (Error)</code></h4><br/><p><strong>BinderUnresolvedParameterType.</strong> Message: <code>Parameter type <code>{0}</code> is not resolved</code>.<br />
+Run <code>tyhp --explain TYHP3020</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3021 (Error)</code></h4><br/><p><strong>BinderUnresolvedGenericConstraintType.</strong> Message: <code>Generic constraint type <code>{0}</code> is not resolved</code>.<br />
+Run <code>tyhp --explain TYHP3021</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3022 (Error)</code></h4><br/><p><strong>BinderUnresolvedGenericDefaultType.</strong> Message: <code>Generic default type <code>{0}</code> is not resolved</code>.<br />
+Run <code>tyhp --explain TYHP3022</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3023 (Error)</code></h4><br/><p><strong>BinderInvalidExtendsTypeKind.</strong> Message: <code>Extends type <code>{0}</code> is a <code>{1}</code>, not a <code>{2}</code></code>.<br />
+Run <code>tyhp --explain TYHP3023</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3024 (Error)</code></h4><br/><p><strong>BinderInvalidImplementsTypeKind.</strong> Message: <code>Implements type <code>{0}</code> is a <code>{1}</code>, not an interface</code>.<br />
+Run <code>tyhp --explain TYHP3024</code> for the long-form explanation.</p>
+</div>
+<h2>Checker Errors (TYHP4xxx)</h2>
+<p>Checker errors occur during type checking and semantic analysis.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4001 (Error)</code></h4><br/><p><strong>CheckerUnknownError.</strong> Message: <code>Unknown checker error: {0}</code>.</p>
+<p>A catch-all for unexpected errors during the checking phase.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4002 (Error)</code></h4><br/><p><strong>CheckerMultipleVisibilities.</strong> Message: <code><code>{0}</code> cannot have multiple visibility modifiers</code>.</p>
+<p>A class member has multiple visibility keywords (<code>public</code>, <code>protected</code>, <code>private</code>).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Example {
+    public protected string $name;  // Error: Multiple visibility modifiers
+}
+</code></pre></div>
+<p>Fix: Use only one visibility modifier per declaration.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4003 (Error)</code></h4><br/><p><strong>CheckerNotAllowedMemberModifier.</strong> Message: <code>Modifier <code>{0}</code> is not allowed here</code>.</p>
+<p>A modifier is used in a context where it is not valid.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+interface Cacheable {
+    static function getCacheKey(): string;
+    // Error: &#039;static&#039; is not allowed on interface methods
+}
+</code></pre></div>
+<p>Fix: Remove the disallowed modifier. Check what modifiers are valid for the current context (interface, trait, enum, etc.).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4004 (Error)</code></h4><br/><p><strong>CheckerAccessorVisibilityCannotBeMoreVisibleThanProperty.</strong> Message: <code>Accessor visibility cannot be more visible than property visibility; <code>{0}</code> is more visible than <code>{1}</code></code>.</p>
+<p>A property hook's (<code>get</code>/<code>set</code>) visibility is more permissive than the property itself.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Example {
+    private string $name {
+        public get =&gt; $this-&gt;name;  // Error: accessor more visible than property
+    }
+}
+</code></pre></div>
+<p>Fix: Make the accessor visibility equal to or more restrictive than the property visibility.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4005 (Error)</code></h4><br/><p><strong>CheckerMemberModifierConflict.</strong> Message: <code>Member modifier <code>{0}</code> cannot be used at the same time as <code>{1}</code></code>.</p>
+<p>Two modifiers on the same declaration are mutually exclusive.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Example {
+    abstract final function process(): void;
+    // Error: Conflicting modifiers: &#039;abstract&#039; and &#039;final&#039;
+}
+</code></pre></div>
+<p>Fix: Remove one of the conflicting modifiers. A method cannot be both <code>abstract</code> and <code>final</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4006 (Error)</code></h4><br/><p><strong>CheckerInvalidPropertyAccessorType.</strong> Message: <code>Invalid property accessor type <code>{0}</code></code>.</p>
+<p>The property hook type is not recognized (must be <code>get</code> or <code>set</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4007 (Error)</code></h4><br/><p><strong>CheckerParameterNotAllowedOnPropertyAccessorType.</strong> Message: <code>Parameter declaration is not allowed on property accessor of type <code>{0}</code></code>.</p>
+<p>A <code>get</code> accessor declares a parameter, which is not valid. Only <code>set</code> accessors accept a value parameter.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4008 (Error)</code></h4><br/><p><strong>CheckerTypeMismatch.</strong> Message: <code>Cannot assign type <code>{0}</code> to type <code>{1}</code></code>.</p>
+<p>The checker reports a type mismatch when a value's type is not assignable to the type its target declares — an assignment, an argument, a return statement, or a property initializer. The first placeholder is the type of the value being supplied; the second is the type the target requires.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+int $count = &quot;hello&quot;;
+// Error: Cannot assign type &#039;string&#039; to type &#039;int&#039;
+</code></pre></div>
+<p>Make the two types agree: widen or change the declared type, convert the value explicitly, or narrow a nullable or union type with a guard before the assignment.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4009 (Error)</code></h4><br/><p><strong>CheckerIncompatibleReturnType.</strong> Message: <code>Return type <code>{0}</code> is not compatible with declared return type <code>{1}</code></code>.</p>
+<p>A function or method returns a value whose type does not match its declared return type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function getName(): string {
+    return 42;  // Error: Return type &#039;int&#039; is not compatible with &#039;string&#039;
+}
+</code></pre></div>
+<p>Fix: Change the return value to match the declared return type, or update the return type declaration.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4010 (Error)</code></h4><br/><p><strong>CheckerIncompatibleArgumentType.</strong> Message: <code>Argument of type <code>{0}</code> is not assignable to parameter of type <code>{1}</code></code>.</p>
+<p>A function or method call passes an argument whose type does not match the expected parameter type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function process(int $id): void { }
+process(&quot;abc&quot;);  // Error: Argument of type &#039;string&#039; not assignable to &#039;int&#039;
+</code></pre></div>
+<p>Fix: Pass a value of the correct type, or cast the argument explicitly.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4011 (Error)</code></h4><br/><p><strong>CheckerMissingReturnStatement.</strong> Message: <code>Function with return type <code>{0}</code> must return a value on all code paths</code>.</p>
+<p>A non-void function has code paths that do not return a value.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function getStatus(bool $active): string {
+    if ($active) {
+        return &quot;active&quot;;
+    }
+    // Error: not all code paths return a value
+}
+</code></pre></div>
+<p>Fix: Add a return statement for every code path, including <code>else</code> branches and after loops.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4012 (Warning)</code></h4><br/><p><strong>CheckerUnreachableCode.</strong> Message: <code>Unreachable code detected</code>.</p>
+<p>Code exists after a <code>return</code>, <code>throw</code>, <code>break</code>, <code>continue</code>, or <code>exit</code> statement and will never execute.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function example(): string {
+    return &quot;done&quot;;
+    echo &quot;this never runs&quot;;  // Warning: Unreachable code
+}
+</code></pre></div>
+<p>Fix: Remove the unreachable code or restructure the control flow.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4013 (Error)</code></h4><br/><p><strong>CheckerVariableUsedBeforeAssignment.</strong> Message: <code>Variable <code>${0}</code> is used before being assigned</code>.</p>
+<p>A variable is read before it has been assigned a value on any code path.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function example(): void {
+    echo $x;  // Error: Variable &#039;$x&#039; is used before being assigned
+    int $x = 5;
+}
+</code></pre></div>
+<p>Fix: Assign the variable before using it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4014 (Error)</code></h4><br/><p><strong>CheckerVariablePossiblyUndefined.</strong> Message: <code>Variable <code>${0}</code> is possibly undefined</code>.</p>
+<p>A variable may not be defined on all code paths leading to its use.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function example(bool $flag): void {
+    if ($flag) {
+        string $msg = &quot;yes&quot;;
+    }
+    echo $msg;  // Error: &#039;$msg&#039; is possibly undefined
+}
+</code></pre></div>
+<p>Fix: Initialize the variable before the conditional, or add an <code>else</code> branch that also assigns it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4015 (Error)</code></h4><br/><p><strong>CheckerVariablePossiblyNull.</strong> Message: <code>Variable <code>${0}</code> is possibly null here but is used where a non-null value is required</code>.</p>
+<p>A variable with a nullable type is used in a context that requires a non-null value without a prior null check.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function example(?string $name): void {
+    echo \strlen($name);  // Warning: &#039;$name&#039; is possibly null
+}
+</code></pre></div>
+<p>Fix: Add a null check before using the variable, or use the null coalescing operator <code>??</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4016 (Error)</code></h4><br/><p><strong>CheckerVariableTypeRequired.</strong> Message: <code>Variable <code>${0}</code> must have a type annotation or inferable initializer</code>.</p>
+<p>A variable lacks both an explicit type declaration and an initializer from which the type can be inferred.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function example(): void {
+    $x;  // Error: must have a type annotation or inferable initializer
+}
+</code></pre></div>
+<p>Fix: Add an explicit type: <code>int $x;</code> or initialize the variable: <code>$x = 0;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4017 (Error)</code></h4><br/><p><strong>CheckerAbstractMethodNotImplemented.</strong> Message: <code>Class <code>{0}</code> does not implement abstract method <code>{1}</code> from <code>{2}</code></code>.</p>
+<p>A concrete class extends an abstract class but does not implement all of its abstract methods.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+abstract class Shape {
+    abstract public function area(): float;
+}
+
+class Circle extends Shape {
+    // Error: does not implement abstract method &#039;area&#039; from &#039;Shape&#039;
+}
+</code></pre></div>
+<p>Fix: Implement all abstract methods from the parent class with matching signatures.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4018 (Error)</code></h4><br/><p><strong>CheckerInterfaceMethodNotImplemented.</strong> Message: <code>Class <code>{0}</code> does not implement interface method <code>{1}</code> from <code>{2}</code></code>.</p>
+<p>A class implements an interface but does not provide implementations for all of its methods.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4019 (Error)</code></h4><br/><p><strong>CheckerFinalClassExtended.</strong> Message: <code>Cannot extend final class <code>{0}</code></code>.</p>
+<p>A class attempts to extend a class that is declared as <code>final</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+final class Singleton { }
+class MySingleton extends Singleton { }  // Error: Cannot extend final class
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4020 (Error)</code></h4><br/><p><strong>CheckerFinalMethodOverridden.</strong> Message: <code>Cannot override final method <code>{0}</code></code>.</p>
+<p>A subclass attempts to override a method that is declared as <code>final</code> in the parent class.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4021 (Error)</code></h4><br/><p><strong>CheckerReadonlyPropertyReassigned.</strong> Message: <code>Cannot assign to readonly property <code>{0}</code></code>.</p>
+<p>A <code>readonly</code> property is being assigned outside of the constructor.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class User {
+    public function __construct(
+        public readonly string $name
+    ) {}
+
+    public function rename(string $newName): void {
+        $this-&gt;name = $newName;  // Error: Cannot assign to readonly property
+    }
+}
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4022 (Error)</code></h4><br/><p><strong>CheckerAbstractClassInstantiated.</strong> Message: <code>Cannot instantiate abstract class <code>{0}</code></code>.</p>
+<p>Code attempts to create an instance of an abstract class with <code>new</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4023 (Error)</code></h4><br/><p><strong>CheckerEnumCaseTypeMismatch.</strong> Message: <code>Enum case value type <code>{0}</code> does not match backed type <code>{1}</code></code>.</p>
+<p>A backed enum case has a value of a type that does not match the enum's backing type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+enum Status: string {
+    case Active = 1;  // Error: int value for string-backed enum
+}
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4024 (Error)</code></h4><br/><p><strong>CheckerEnumMethodNotAllowed.</strong> Message: <code>Enum cannot have a constructor</code>.</p>
+<p>An enum declares a method that is not allowed (e.g., a constructor).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4025 (Error)</code></h4><br/><p><strong>CheckerMemberNotAccessible.</strong> Message: <code><code>{0}</code> is <code>{1}</code> and cannot be accessed from <code>{2}</code></code>.</p>
+<p>A private or protected member is accessed from outside its allowed scope.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Account {
+    private float $balance = 0.0;
+}
+
+Account $a = new Account();
+$a-&gt;balance;  // Error: Cannot access private member &#039;balance&#039;
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4026 (Error)</code></h4><br/><p><strong>CheckerBreakOutsideLoop.</strong> Message: <code><code>break</code> statement is not within a loop or switch</code>.</p>
+<p>A <code>break</code> statement appears outside of a <code>for</code>, <code>foreach</code>, <code>while</code>, <code>do-while</code>, or <code>switch</code> block.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4027 (Error)</code></h4><br/><p><strong>CheckerContinueOutsideLoop.</strong> Message: <code><code>continue</code> statement is not within a loop</code>.</p>
+<p>A <code>continue</code> statement appears outside of a loop construct.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4028 (Error)</code></h4><br/><p><strong>CheckerAwaitOutsideAsync.</strong> Message: <code><code>await</code> can only be used inside an async function</code>.</p>
+<p>The <code>await</code> keyword is used inside a function that is not marked as <code>async</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function fetchData(): string {
+    return await getRemoteData();  // Error: await outside of async function
+}
+</code></pre></div>
+<p>Fix: Mark the function as <code>async</code>: <code>async function fetchData(): Promise&lt;string&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4029 (Error)</code></h4><br/><p><strong>CheckerInvalidOperatorForType.</strong> Message: <code>Operator <code>{0}</code> cannot be applied to types <code>{1}</code> and <code>{2}</code></code>.</p>
+<p>A binary or unary operator is used with operands whose types do not support that operation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4030 (Error)</code></h4><br/><p><strong>CheckerDisposableRequiresInterface.</strong> Message: <code>Disposable assignment <code>:=</code> requires type implementing <code>IsDisposable</code></code>.</p>
+<p>The disposable assignment operator <code>:=</code> is used with a type that does not implement the <code>IsDisposable</code> interface.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class PlainObject { }
+$obj := new PlainObject();
+// Error: &#039;:=&#039; requires the type to implement IsDisposable
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4031 (Error)</code></h4><br/><p><strong>CheckerWithKeywordInvalidProperty.</strong> Message: <code>Property <code>{0}</code> does not exist on type <code>{1}</code></code>.</p>
+<p>The <code>with</code> keyword references a property name that does not exist on the target type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4032 (Error)</code></h4><br/><p><strong>CheckerTypeGuardInvalidReturn.</strong> Message: <code>Type guard function must return <code>bool</code></code>.</p>
+<p>A function with a type guard return type (<code>$param is Type</code>) does not return a boolean value.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4035 (Error)</code></h4><br/><p><strong>CheckerGenericConstraintNotSatisfied.</strong> Message: <code>Type <code>{0}</code> does not satisfy constraint <code>{1}</code></code>.</p>
+<p>A type argument provided for a generic parameter does not meet the declared constraint.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Repository&lt;T extends Entity&gt; { }
+
+// Error: &#039;string&#039; does not satisfy constraint &#039;Entity&#039;
+Repository&lt;string&gt; $repo = new Repository&lt;string&gt;();
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4036 (Error)</code></h4><br/><p><strong>CheckerGenericArgumentCountMismatch.</strong> Message: <code>Generic type <code>{0}</code> expects {1} type argument(s), found {2}</code>.</p>
+<p>The number of generic type arguments does not match the number of generic type parameters declared.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Pair&lt;TKey, TValue&gt; { }
+
+Pair&lt;int&gt; $p;  // Error: expects 2 type arguments, but 1 was provided
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4037 (Error)</code></h4><br/><p><strong>CheckerStructPropertyRequired.</strong> Message: <code>All struct properties must be typed</code>.</p>
+<p>All properties in a <code>struct</code> declaration must have explicit type annotations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4038 (Error)</code></h4><br/><p><strong>CheckerExtensionVisibilityNotAllowed.</strong> Message: <code>Visibility adaptation is not allowed on extension members; extensions are always public</code>.</p>
+<p>A member inside an <code>extension</code> declaration attempts to adapt or restrict its visibility. Extension members are always public and cannot change visibility.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4039 (Error)</code></h4><br/><p><strong>CheckerThrowNotThrowable.</strong> Message: <code><code>throw</code> expression must be an instance of <code>\Throwable</code></code>.</p>
+<p>A <code>throw</code> statement throws a value that does not implement <code>\Throwable</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+throw &quot;something went wrong&quot;;
+// Error: Cannot throw value of type &#039;string&#039;: must be \Throwable
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4040 (Error)</code></h4><br/><p><strong>CheckerCatchNotThrowable.</strong> Message: <code>Caught type <code>{0}</code> must implement <code>\Throwable</code></code>.</p>
+<p>A <code>catch</code> clause specifies a type that does not implement <code>\Throwable</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4041 (Error)</code></h4><br/><p><strong>CheckerCatchNoIntersection.</strong> Message: <code>Catch clause cannot use intersection types</code>.</p>
+<p>A <code>catch</code> clause uses an intersection type, which is not valid. Use union types (<code>|</code>) instead.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4042 (Error)</code></h4><br/><p><strong>CheckerCatchNoScalar.</strong> Message: <code>Cannot catch scalar type <code>{0}</code></code>.</p>
+<p>A <code>catch</code> clause specifies a scalar type like <code>int</code> or <code>string</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4043 (Error)</code></h4><br/><p><strong>CheckerConditionNotBool.</strong> Message: <code>Expected <code>bool</code>, found <code>{0}</code></code>.</p>
+<p>The condition in an <code>if</code>, <code>while</code>, or ternary expression is not a boolean type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4044 (Error)</code></h4><br/><p><strong>CheckerTraitRequirementNotMet.</strong> Message: <code>Trait <code>{0}</code> requires the using class to extend <code>{1}</code></code>.</p>
+<p>A trait declares a requirement that the using class must extend a specific base class, but the class does not.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4045 (Error)</code></h4><br/><p><strong>CheckerTraitRequirementImplNotMet.</strong> Message: <code>Trait <code>{0}</code> requires the using class to implement <code>{1}</code></code>.</p>
+<p>A trait declares a requirement that the using class must implement a specific interface, but the class does not.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4046 (Error)</code></h4><br/><p><strong>CheckerAsyncIterableMissingAwait.</strong> Message: <code>Cannot iterate <code>AsyncIterable&amp;lt;{0}&amp;gt;</code> synchronously; use <code>foreach (await $expr as ...)</code> inside an async function</code>.</p>
+<p>A regular <code>foreach</code> is used on a value that implements <code>AsyncIterable</code>. Async iterables must be iterated with <code>await foreach</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4047 (Error)</code></h4><br/><p><strong>CheckerAwaitNonAsyncIterable.</strong> Message: <code><code>await</code> in foreach requires <code>AsyncIterable&amp;lt;T&amp;gt;</code> or <code>Promise&amp;lt;Iterable&amp;lt;T&amp;gt;&amp;gt;</code>, found <code>{0}</code></code>.</p>
+<p>The <code>await foreach</code> construct is used on a type that does not implement <code>AsyncIterable</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4048 (Error)</code></h4><br/><p><strong>CheckerVoidInNonReturnPosition.</strong> Message: <code>Type <code>void</code> can only be used as a return type or in generic positions that explicitly allow it via constraint</code>.</p>
+<p>The <code>void</code> type is used in a position other than a function/method return type, such as a generic type argument or parameter type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+Collection&lt;void&gt; $items;  // Error: &#039;void&#039; can only be used as a return type
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4049 (Error)</code></h4><br/><p><strong>CheckerNeverInNonReturnPosition.</strong> Message: <code>Type <code>never</code> can only be used as a return type or in generic positions that explicitly allow it via constraint</code>.</p>
+<p>The <code>never</code> type is used in a position other than a function/method return type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4050 (Error)</code></h4><br/><p><strong>CheckerUtilityTypeInvalidKey.</strong> Message: <code>Key <code>{0}</code> does not match a property on type <code>{1}</code></code>.</p>
+<p>A utility type such as <code>Pick</code>, <code>Omit</code>, or <code>keyof</code> was given a key that is not a known property on the target type.</p>
+<p>Fix: Use a key that exists on the type, or adjust the type before selecting keys.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4051 (Error)</code></h4><br/><p><strong>CheckerUtilityTypeInvalidArgument.</strong> Message: <code>Utility type argument does not satisfy constraint</code>.</p>
+<p>A type argument passed to a utility type does not meet that utility's constraints (for example, requiring an object type).</p>
+<p>Fix: Pass a type that satisfies the utility's constraints.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4052 (Warning)</code></h4><br/><p><strong>CheckerReferenceTypeChanged.</strong> Message: <code>Reference parameter <code>{0}</code> reassigned to type <code>{1}</code>, which differs from declared type <code>{2}</code></code>.</p>
+<p>A by-reference parameter was reassigned to a value whose type differs from the parameter's declared type. Callers sharing that reference may observe an unexpected type.</p>
+<p>Fix: Keep reference reassignments compatible with the declared parameter type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4053 (Error)</code></h4><br/><p><strong>CheckerDuplicateTypeInComposite.</strong> Message: <code>Type <code>{0}</code> appears more than once in a union or intersection type</code>.</p>
+<p>The same type appears more than once in a union or intersection (for example <code>int|int</code> or <code>A&amp;A</code>).</p>
+<p>Fix: Remove the duplicate member from the composite type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4054 (Error)</code></h4><br/><p><strong>CheckerMixedInComposite.</strong> Message: <code><code>mixed</code> or <code>never</code> cannot be used in union or intersection types</code>.</p>
+<p><code>mixed</code> and <code>never</code> cannot appear as members of a union or intersection because they absorb or contradict the other members.</p>
+<p>Fix: Remove <code>mixed</code>/<code>never</code> from the composite, or replace the composite with <code>mixed</code> / <code>never</code> alone when that is the intended type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4055 (Error)</code></h4><br/><p><strong>CheckerRedundantTypeInUnion.</strong> Message: <code>Redundant type <code>{0}</code> in union type</code>.</p>
+<p>A union member is redundant because a wider member of the same union already covers it, so removing it does not change the set of values. Typical cases are <code>bool|false</code>, <code>object|User</code>, and <code>iterable|array</code>.</p>
+<p>This is different from a duplicated member (<code>int|int</code>), which is TYHP4053.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+bool|false $flag;
+object|User $entity;
+</code></pre></div>
+<p>Fix: Remove the redundant member from the union.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4056 (Error)</code></h4><br/><p><strong>CheckerUseBoolInsteadOfTrueFalse.</strong> Message: <code>Use <code>bool</code> instead of <code>true|false</code></code>.</p>
+<p>The union <code>true|false</code> is exactly the <code>bool</code> type. Spell it as <code>bool</code> instead of listing both boolean literals.</p>
+<p>Fix: Replace <code>true|false</code> with <code>bool</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4057 (Error)</code></h4><br/><p><strong>CheckerNonClassInIntersection.</strong> Message: <code>Non-class type <code>{0}</code> cannot appear in intersection types</code>.</p>
+<p>Intersection types (<code>A&amp;B</code>) may only contain class-like members (classes, interfaces, and similar). A non-class type such as a scalar or <code>array</code> cannot appear in an intersection.</p>
+<p>Fix: Use a union (<code>|</code>) when mixing scalars with objects, or drop the non-class member.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4058 (Error)</code></h4><br/><p><strong>CheckerCallableNotAllowedOnProperty.</strong> Message: <code><code>callable</code> cannot be used as a property type declaration</code>.</p>
+<p>A property (including a promoted constructor parameter) cannot be declared with the <code>callable</code> type. PHP does not allow <code>callable</code> on properties.</p>
+<p>Fix: Use <code>\Closure</code>, an interface, or a named class type instead of <code>callable</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4059 (Error)</code></h4><br/><p><strong>CheckerVoidNotAllowedHere.</strong> Message: <code><code>void</code> can only be used as a return type</code>.</p>
+<p><code>void</code> is only valid as a function or method return type. It cannot be used as a parameter type or property type (see also TYHP4048 for <code>void</code> as a generic type argument).</p>
+<p>Fix: Use a different type, or <code>mixed</code> when &quot;no value&quot; is intended.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4060 (Warning)</code></h4><br/><p><strong>CheckerVoidRefReturn.</strong> Message: <code>Returning by reference from a <code>void</code> function is deprecated</code>.</p>
+<p>A function or method declared <code>void</code> uses a by-reference return (<code>function &amp;foo(): void</code>). Returning by reference from a <code>void</code> function is deprecated in PHP.</p>
+<p>Fix: Drop the <code>&amp;</code> or give the function a non-void return type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4061 (Error)</code></h4><br/><p><strong>CheckerNeverNotAllowedHere.</strong> Message: <code><code>never</code> can only be used as a return type</code>.</p>
+<p><code>never</code> is only valid as a function or method return type. It cannot be used as a parameter type or property type (see also TYHP4049 for <code>never</code> as a generic type argument).</p>
+<p>Fix: Use a different type for parameters and properties.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4062 (Error)</code></h4><br/><p><strong>CheckerResourceNotAllowed.</strong> Message: <code><code>resource</code> cannot be used in user type declarations</code>.</p>
+<p><code>resource</code> is a historical PHP runtime type and cannot be written in user type declarations. Tyhp does not accept <code>resource</code> as a parameter, return, property, or alias type.</p>
+<p>Fix: Use a class or interface that wraps the resource, or <code>mixed</code> if the value is intentionally untyped.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4063 (Error)</code></h4><br/><p><strong>CheckerRefArgMustBeVariable.</strong> Message: <code>By-reference argument must be a variable, not a literal or expression</code>.</p>
+<p>A by-reference parameter must be passed a variable (or a dereferenceable location such as an array element or object property). Literals and temporary expressions cannot be passed by reference.</p>
+<p>Fix: Store the value in a variable and pass that variable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4064 (Error)</code></h4><br/><p><strong>CheckerRelativeTypeOutsideClass.</strong> Message: <code><code>self</code> or <code>parent</code> used outside class context</code>.</p>
+<p><code>self</code> and <code>parent</code> name the enclosing class or its parent. They are not valid outside a class, interface, trait, or enum body (for example in a file-level function).</p>
+<p>Fix: Use a named type, or move the declaration into a class-like body.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4065 (Error)</code></h4><br/><p><strong>CheckerParentWithoutParent.</strong> Message: <code><code>parent</code> used in class <code>{0}</code> that has no parent class</code>.</p>
+<p><code>parent</code> is used in a class that does not extend another class, so there is no parent type to resolve.</p>
+<p>Fix: Add an <code>extends</code> clause, or replace <code>parent</code> with a named type or <code>self</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4066 (Error)</code></h4><br/><p><strong>CheckerStaticNotReturnType.</strong> Message: <code><code>static</code> cannot be used as a parameter or property type</code>.</p>
+<p><code>static</code> is a late-binding return type (and is allowed in locals, <code>instanceof</code>, and generic arguments). It cannot be used as a parameter type or a property type.</p>
+<p>Fix: Use <code>self</code>, a named class, or a generic parameter instead of <code>static</code> on parameters and properties.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4067 (Error)</code></h4><br/><p><strong>CheckerDnfRedundantIntersection.</strong> Message: <code>Redundant intersection in DNF type</code>.</p>
+<p>A DNF type is a union of intersections, such as <code>(A&amp;B)|(A&amp;C)</code>. One of those intersections is redundant because another member already covers it — for example <code>(A&amp;B)|A</code>, where <code>A&amp;B</code> is implied by <code>A</code>.</p>
+<p>Fix: Remove the redundant intersection from the DNF type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4068 (Error)</code></h4><br/><p><strong>CheckerNeverMustNotReturn.</strong> Message: <code>Function with <code>never</code> return type must not contain a return statement</code>.<br />
+Run <code>tyhp --explain TYHP4068</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4069 (Error)</code></h4><br/><p><strong>CheckerCannotInstantiateNonClass.</strong> Message: <code>Cannot instantiate non-class type <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4069</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4070 (Error)</code></h4><br/><p><strong>CheckerCannotInstantiateTrait.</strong> Message: <code>Cannot instantiate trait <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4070</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4071 (Error)</code></h4><br/><p><strong>CheckerCannotInstantiateInterface.</strong> Message: <code>Cannot instantiate interface <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4071</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4072 (Error)</code></h4><br/><p><strong>CheckerCannotInstantiateEnum.</strong> Message: <code>Cannot instantiate enum <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4072</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4073 (Error)</code></h4><br/><p><strong>CheckerCloneNonObject.</strong> Message: <code><code>clone</code> cannot be applied to non-object type <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4073</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4074 (Error)</code></h4><br/><p><strong>CheckerMagicMethodSignature.</strong> Message: <code>Magic method <code>{0}</code> has invalid signature: {1}</code>.<br />
+Run <code>tyhp --explain TYHP4074</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4075 (Error)</code></h4><br/><p><strong>CheckerDuplicateParameter.</strong> Message: <code>Duplicate parameter name <code>${0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4075</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4076 (Warning)</code></h4><br/><p><strong>CheckerRequiredAfterOptional.</strong> Message: <code>Required parameter <code>${0}</code> follows optional parameter</code>.<br />
+Run <code>tyhp --explain TYHP4076</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4077 (Error)</code></h4><br/><p><strong>CheckerVariadicNotLast.</strong> Message: <code>Variadic parameter must be the last parameter</code>.<br />
+Run <code>tyhp --explain TYHP4077</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4078 (Error)</code></h4><br/><p><strong>CheckerVariadicWithDefault.</strong> Message: <code>Variadic parameter cannot have a default value</code>.<br />
+Run <code>tyhp --explain TYHP4078</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4079 (Error)</code></h4><br/><p><strong>CheckerDuplicateNamedArgument.</strong> Message: <code>Duplicate named argument <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4079</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4080 (Error)</code></h4><br/><p><strong>CheckerPositionalAfterNamed.</strong> Message: <code>Positional argument after named argument</code>.<br />
+Run <code>tyhp --explain TYHP4080</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4081 (Error)</code></h4><br/><p><strong>CheckerUnknownNamedArgument.</strong> Message: <code>Named argument <code>{0}</code> does not match any parameter</code>.<br />
+Run <code>tyhp --explain TYHP4081</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4082 (Error)</code></h4><br/><p><strong>CheckerNamedAfterUnpack.</strong> Message: <code>Named argument after argument unpacking</code>.<br />
+Run <code>tyhp --explain TYHP4082</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4083 (Error)</code></h4><br/><p><strong>CheckerClosureUseUndefined.</strong> Message: <code>Variable <code>${0}</code> in closure <code>use</code> clause is not defined in the enclosing scope</code>.<br />
+Run <code>tyhp --explain TYHP4083</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4084 (Warning)</code></h4><br/><p><strong>CheckerClosureUseThis.</strong> Message: <code><code>use($this)</code> is redundant in non-static closures</code>.<br />
+Run <code>tyhp --explain TYHP4084</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4085 (Error)</code></h4><br/><p><strong>CheckerStaticClosureThis.</strong> Message: <code>Static closure cannot reference <code>$this</code></code>.<br />
+Run <code>tyhp --explain TYHP4085</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4086 (Error)</code></h4><br/><p><strong>CheckerYieldOutsideGenerator.</strong> Message: <code><code>yield</code> can only be used inside a generator function</code>.<br />
+Run <code>tyhp --explain TYHP4086</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4087 (Error)</code></h4><br/><p><strong>CheckerGeneratorInvalidReturnType.</strong> Message: <code>Generator function return type must be <code>Generator</code>, <code>iterable</code>, or <code>Iterator</code></code>.<br />
+Run <code>tyhp --explain TYHP4087</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4088 (Error)</code></h4><br/><p><strong>CheckerYieldInFinally.</strong> Message: <code><code>yield</code> inside a <code>finally</code> block is not allowed</code>.<br />
+Run <code>tyhp --explain TYHP4088</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4089 (Error)</code></h4><br/><p><strong>CheckerYieldFromNonIterable.</strong> Message: <code><code>yield from</code> expression must be <code>iterable</code> or a <code>Generator</code></code>.<br />
+Run <code>tyhp --explain TYHP4089</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4090 (Error)</code></h4><br/><p><strong>CheckerNonConstantExpression.</strong> Message: <code>Non-constant expression in constant-required context</code>.<br />
+Run <code>tyhp --explain TYHP4090</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4091 (Error)</code></h4><br/><p><strong>CheckerDivisionByZero.</strong> Message: <code>Division by zero in constant expression</code>.<br />
+Run <code>tyhp --explain TYHP4091</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4092 (Error)</code></h4><br/><p><strong>CheckerDuplicateArrayKey.</strong> Message: <code>Duplicate array key <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4092</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4093 (Error)</code></h4><br/><p><strong>CheckerInvalidArrayAccess.</strong> Message: <code>Cannot use array access on type <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4093</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4094 (Error)</code></h4><br/><p><strong>CheckerDestructuringNonArray.</strong> Message: <code>Cannot destructure non-array type <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4094</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4095 (Error)</code></h4><br/><p><strong>CheckerDestructuringSpread.</strong> Message: <code>Spread operator in list/destructuring is not allowed</code>.<br />
+Run <code>tyhp --explain TYHP4095</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4096 (Error)</code></h4><br/><p><strong>CheckerSpreadNonIterable.</strong> Message: <code>Spread operator requires an iterable type, found <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4096</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4097 (Error)</code></h4><br/><p><strong>CheckerThisInStaticContext.</strong> Message: <code><code>$this</code> cannot be used in static context</code>.<br />
+Run <code>tyhp --explain TYHP4097</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4098 (Error)</code></h4><br/><p><strong>CheckerNonStaticCalledStatically.</strong> Message: <code>Non-static method <code>{0}</code> cannot be called statically</code>.<br />
+Run <code>tyhp --explain TYHP4098</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4099 (Warning)</code></h4><br/><p><strong>CheckerStaticCalledOnInstance.</strong> Message: <code>Static method <code>{0}</code> called on instance</code>.<br />
+Run <code>tyhp --explain TYHP4099</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4100 (Error)</code></h4><br/><p><strong>CheckerStaticOutsideClass.</strong> Message: <code><code>static::</code> used outside class context</code>.<br />
+Run <code>tyhp --explain TYHP4100</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4101 (Error)</code></h4><br/><p><strong>CheckerSymbolNameNotFound.</strong> Message: <code>Symbol <code>{0}</code> is not found for type <code>{1}</code></code>.<br />
+Run <code>tyhp --explain TYHP4101</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4104 (Error)</code></h4><br/><p><strong>CheckerGotoProhibited.</strong> Message: <code><code>goto</code> is prohibited in Tyhp</code>.<br />
+Run <code>tyhp --explain TYHP4104</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4105 (Error)</code></h4><br/><p><strong>CheckerPromotedPropertyNoType.</strong> Message: <code>Promoted constructor property must have a type annotation</code>.<br />
+Run <code>tyhp --explain TYHP4105</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4106 (Error)</code></h4><br/><p><strong>CheckerPromotedPropertyInAbstract.</strong> Message: <code>Promoted properties are not allowed in abstract or interface constructors</code>.<br />
+Run <code>tyhp --explain TYHP4106</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4107 (Error)</code></h4><br/><p><strong>CheckerPromotedVariadic.</strong> Message: <code>Variadic parameter cannot be a promoted property</code>.<br />
+Run <code>tyhp --explain TYHP4107</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4108 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassMutableProperty.</strong> Message: <code>Mutable property <code>{0}</code> in readonly class</code>.<br />
+Run <code>tyhp --explain TYHP4108</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4109 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassStaticProperty.</strong> Message: <code>Static property in readonly class</code>.<br />
+Run <code>tyhp --explain TYHP4109</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4110 (Error)</code></h4><br/><p><strong>CheckerEnumCaseMissingValue.</strong> Message: <code>Backed enum case <code>{0}</code> must have a value</code>.<br />
+Run <code>tyhp --explain TYHP4110</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4111 (Error)</code></h4><br/><p><strong>CheckerEnumCaseValueOnNonBacked.</strong> Message: <code>Non-backed enum case <code>{0}</code> must not have a value</code>.<br />
+Run <code>tyhp --explain TYHP4111</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4112 (Error)</code></h4><br/><p><strong>CheckerEnumCaseDuplicateValue.</strong> Message: <code>Duplicate enum case value <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4112</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4113 (Error)</code></h4><br/><p><strong>CheckerEnumPropertyNotAllowed.</strong> Message: <code>Enums cannot have instance properties</code>.<br />
+Run <code>tyhp --explain TYHP4113</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4114 (Error)</code></h4><br/><p><strong>CheckerInterfacePropertyInitializer.</strong> Message: <code>Interface property cannot have an initializer</code>.<br />
+Run <code>tyhp --explain TYHP4114</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4115 (Error)</code></h4><br/><p><strong>CheckerInterfacePropertyNotAllowed.</strong> Message: <code>Interfaces cannot have instance property declarations</code>.<br />
+Run <code>tyhp --explain TYHP4115</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4116 (Error)</code></h4><br/><p><strong>CheckerTraitConflict.</strong> Message: <code>Unresolved trait method conflict for <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4116</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4117 (Error)</code></h4><br/><p><strong>CheckerCircularTraitUse.</strong> Message: <code>Circular trait use detected: {0}</code>.<br />
+Run <code>tyhp --explain TYHP4117</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4118 (Error)</code></h4><br/><p><strong>CheckerOverloadSignatureIncompatible.</strong> Message: <code>Overload signature is not compatible with implementation signature</code>.<br />
+Run <code>tyhp --explain TYHP4118</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4119 (Warning)</code></h4><br/><p><strong>CheckerIncomparableTypes.</strong> Message: <code>Comparing types <code>{0}</code> and <code>{1}</code> has no meaningful comparison</code>.<br />
+Run <code>tyhp --explain TYHP4119</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4120 (Error)</code></h4><br/><p><strong>CheckerConcatNonStringable.</strong> Message: <code>String concatenation with non-stringable type <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4120</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4121 (Warning)</code></h4><br/><p><strong>CheckerEmptyCatch.</strong> Message: <code>Empty <code>catch</code> block silently swallows exceptions</code>.<br />
+Run <code>tyhp --explain TYHP4121</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4122 (Warning)</code></h4><br/><p><strong>CheckerReturnInFinally.</strong> Message: <code>Return statement in a <code>finally</code> block overwrites the <code>try</code>/<code>catch</code> return value</code>.<br />
+Run <code>tyhp --explain TYHP4122</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4123 (Warning)</code></h4><br/><p><strong>CheckerBreakInFinally.</strong> Message: <code><code>break</code>/<code>continue</code> in a <code>finally</code> block</code>.<br />
+Run <code>tyhp --explain TYHP4123</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4124 (Warning)</code></h4><br/><p><strong>CheckerDuplicateCatch.</strong> Message: <code>Exception type <code>{0}</code> is already caught by a previous catch clause</code>.<br />
+Run <code>tyhp --explain TYHP4124</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4125 (Warning)</code></h4><br/><p><strong>CheckerCatchOrderBroadFirst.</strong> Message: <code>Catching parent exception <code>{0}</code> before child makes subsequent catch unreachable</code>.<br />
+Run <code>tyhp --explain TYHP4125</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4126 (Error)</code></h4><br/><p><strong>CheckerNotAnAttributeClass.</strong> Message: <code>Class <code>{0}</code> is not declared as an attribute class</code>.<br />
+Run <code>tyhp --explain TYHP4126</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4127 (Error)</code></h4><br/><p><strong>CheckerAttributeTargetMismatch.</strong> Message: <code>Attribute <code>{0}</code> cannot be applied to {1}</code>.<br />
+Run <code>tyhp --explain TYHP4127</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4128 (Error)</code></h4><br/><p><strong>CheckerAttributeNotRepeatable.</strong> Message: <code>Attribute <code>{0}</code> is not repeatable</code>.<br />
+Run <code>tyhp --explain TYHP4128</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4129 (Error)</code></h4><br/><p><strong>CheckerOverrideNotOverriding.</strong> Message: <code>Method <code>{0}</code> has the <code>#[Override]</code> attribute but does not override a parent method</code>.<br />
+Run <code>tyhp --explain TYHP4129</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4130 (Warning)</code></h4><br/><p><strong>CheckerUnusedImport.</strong> Message: <code>Unused import <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4130</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4131 (Warning)</code></h4><br/><p><strong>CheckerDuplicateImport.</strong> Message: <code>Duplicate import <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4131</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4132 (Error)</code></h4><br/><p><strong>CheckerConflictingImportAlias.</strong> Message: <code>Conflicting import alias <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4132</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4133 (Error)</code></h4><br/><p><strong>CheckerVariableVariableProhibited.</strong> Message: <code>Variable variables (<code>$$var</code>) are prohibited in Tyhp</code>.<br />
+Run <code>tyhp --explain TYHP4133</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4134 (Error)</code></h4><br/><p><strong>CheckerDynamicPropertyProhibited.</strong> Message: <code>Dynamic property creation is prohibited</code>.<br />
+Run <code>tyhp --explain TYHP4134</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4135 (Error)</code></h4><br/><p><strong>CheckerCompactProhibited.</strong> Message: <code><code>compact()</code> is prohibited in Tyhp</code>.<br />
+Run <code>tyhp --explain TYHP4135</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4136 (Error)</code></h4><br/><p><strong>CheckerExtractProhibited.</strong> Message: <code><code>extract()</code> is prohibited in Tyhp</code>.<br />
+Run <code>tyhp --explain TYHP4136</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4137 (Warning)</code></h4><br/><p><strong>CheckerGlobalVariableWarning.</strong> Message: <code><code>global $var</code> usage; prefer dependency injection</code>.<br />
+Run <code>tyhp --explain TYHP4137</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4138 (Error)</code></h4><br/><p><strong>CheckerClosureParameterTypeRequired.</strong> Message: <code>Cannot infer type for closure parameter <code>${0}</code>; provide an explicit type annotation</code>.<br />
+Run <code>tyhp --explain TYHP4138</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4139 (Error)</code></h4><br/><p><strong>CheckerCloneWithReadonlyRequiresConfig.</strong> Message: <code>Clone <code>with</code> on readonly property <code>{0}</code> requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> for PHP &lt; 8.5</code>.<br />
+Run <code>tyhp --explain TYHP4139</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4140 (Error)</code></h4><br/><p><strong>CheckerWithReadonlyFinalClass.</strong> Message: <code>Cannot use <code>with</code> on readonly properties of final class <code>{0}</code> on PHP &lt; 8.5</code>.<br />
+Run <code>tyhp --explain TYHP4140</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4141 (Error)</code></h4><br/><p><strong>CheckerWithReadonlyInPlace.</strong> Message: <code>Cannot modify readonly property <code>{0}</code> with in-place <code>with</code>; use <code>clone ... with</code> or <code>new ... with</code> instead</code>.<br />
+Run <code>tyhp --explain TYHP4141</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4142 (Error)</code></h4><br/><p><strong>CheckerMissingArgument.</strong> Message: <code>Missing required argument for parameter <code>${0}</code> of <code>{1}</code></code>.<br />
+Run <code>tyhp --explain TYHP4142</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4143 (Error)</code></h4><br/><p><strong>CheckerTooManyArguments.</strong> Message: <code>Too many arguments passed to <code>{0}</code>; expected at most {1}, found {2}</code>.<br />
+Run <code>tyhp --explain TYHP4143</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4144 (Error)</code></h4><br/><p><strong>CheckerTemplateStringUnknownEscape.</strong> Message: <code>Unknown escape sequence <code>{0}</code> in template string type</code>.<br />
+Run <code>tyhp --explain TYHP4144</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4145 (Error)</code></h4><br/><p><strong>CheckerTemplateStringInvalidQuantifierRange.</strong> Message: <code>Invalid quantifier range <code>{0}</code> in template string type</code>.<br />
+Run <code>tyhp --explain TYHP4145</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4146 (Error)</code></h4><br/><p><strong>CheckerTemplateStringMaxStatesExceeded.</strong> Message: <code>Template string type comparison exceeds the complexity limit ({0} states)</code>.<br />
+Run <code>tyhp --explain TYHP4146</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4147 (Error)</code></h4><br/><p><strong>CheckerExtensionMissingExtends.</strong> Message: <code>Extension function <code>{0}</code> must declare its target type with an <code>extends</code> clause</code>.<br />
+Run <code>tyhp --explain TYHP4147</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4148 (Error)</code></h4><br/><p><strong>CheckerGenericTypeofInStaticContext.</strong> Message: <code><code>typeof({0})</code> is not available in a static member because <code>{0}</code> is bound per instance</code>.<br />
+Run <code>tyhp --explain TYHP4148</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4150 (Error)</code></h4><br/><p><strong>CheckerReservedGenericVariantSuffix.</strong> Message: <code><code>{0}</code> ends with <code>{1}</code>, which is reserved for the generic variant the compiler emits</code>.<br />
+Run <code>tyhp --explain TYHP4150</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4151 (Error)</code></h4><br/><p><strong>CheckerGenericOverrideParameterMismatch.</strong> Message: <code><code>{0}</code> overrides a generic method and must declare the same generic parameters <code>{1}</code></code>.<br />
+Run <code>tyhp --explain TYHP4151</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4152 (Error)</code></h4><br/><p><strong>CheckerGenericDefaultInStaticContext.</strong> Message: <code><code>default({0})</code> is not available in a static member because <code>{0}</code> is bound per instance</code>.<br />
+Run <code>tyhp --explain TYHP4152</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4153 (Error)</code></h4><br/><p><strong>CheckerConstructorDestructorCannotReturnValue.</strong> Message: <code><code>{0}</code> cannot return a value</code>.<br />
+Run <code>tyhp --explain TYHP4153</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4154 (Error)</code></h4><br/><p><strong>CheckerPropertyHookInvalidModifier.</strong> Message: <code>Cannot use the <code>{0}</code> modifier on a property hook</code>.<br />
+Run <code>tyhp --explain TYHP4154</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4155 (Error)</code></h4><br/><p><strong>CheckerHookedPropertyReadonly.</strong> Message: <code>Hooked properties cannot be readonly</code>.<br />
+Run <code>tyhp --explain TYHP4155</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4156 (Error)</code></h4><br/><p><strong>CheckerGenericInstanceofInStaticContext.</strong> Message: <code><code>instanceof {0}</code> / <code>is {0}</code> is not available in a static member because <code>{0}</code> is bound per instance</code>.<br />
+Run <code>tyhp --explain TYHP4156</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4157 (Error)</code></h4><br/><p><strong>CheckerPropertyPossiblyUninitialized.</strong> Message: <code>Typed property <code>${0}</code> is possibly uninitialized here; declare <code>?T ${0} = null</code>, add an initializer, or guard the read with <code>??</code> / <code>isset</code></code>.</p>
+<p>PHP throws &quot;Typed property must not be accessed before initialization&quot; when a typed property has no initializer, is not set by constructor property promotion, and has not been definitely assigned on every constructor path before it is read.</p>
+<p>Prefer declaring the property as nullable with an explicit null default (<code>?T $prop = null</code>) when the code does not need to distinguish &quot;no value&quot; from &quot;value is null&quot;. Otherwise assign it in the constructor on all paths, or guard the read with <code>??</code> / <code>isset</code> (which do not throw on uninitialized typed properties).</p>
+<p>Assignment via a helper method called from the constructor does not count — only a direct <code>$this-&gt;prop = …</code> in the constructor body (or a declaration-level initializer / promoted parameter) is a guaranteed source.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4158 (Error)</code></h4><br/><p><strong>CheckerUnsetTypedPropertyWithoutAllowUnset.</strong> Message: <code>Cannot <code>unset</code> typed property <code>${0}</code> without <code>#[\Tyhp\AllowUnset]</code>; prefer <code>?T ${0} = null</code>, or add the attribute when distinguishing uninitialized from null is required</code>.</p>
+<p>PHP's unset() on a typed property returns the slot to the uninitialized state, which defeats property-initialization analysis.</p>
+<p>Prefer declaring the property as nullable with an explicit null default (<code>?T $prop = null</code>) when &quot;no value&quot; and null are the same. Only opt in with <code>#[\Tyhp\AllowUnset]</code> when code genuinely needs the uninitialized state; then every unguarded read may report TYHP4157, and unset itself clears definite-initialization within the method.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4159 (Error)</code></h4><br/><p><strong>CheckerStructRequiredPropertyNotSet.</strong> Message: <code>Required struct property <code>{0}</code> on <code>{1}</code> must be set via <code>new ... with [...]</code></code>.</p>
+<p>Struct properties that are non-nullable and have no default value are required. They cannot be omitted from construction — supply them with <code>new StructName() with [prop =&gt; value, ...]</code>.</p>
+<p>Nullable properties (and properties with defaults) remain optional at construction.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4160 (Error)</code></h4><br/><p><strong>CheckerMixedRequiresNarrowing.</strong> Message: <code>Type <code>mixed</code> must be narrowed before this use</code>.</p>
+<p><code>mixed</code> is Tyhp's strict top type: any value may be assigned to it, but it cannot be used in type-specific operations until narrowed.</p>
+<p>Narrow with a type guard (<code>instanceof</code> / <code>is</code>, <code>\is_string()</code>, <code>\is_int()</code>, a user-defined <code>$param is T</code> guard, or a null check) before member access, calls, indexing, arithmetic, bitwise ops, string concatenation, or similar. Comparison and <code>instanceof</code>/<code>is</code> themselves are allowed so narrowing remains possible.</p>
+<p>Assignment and return already reject passing <code>mixed</code> where a more specific type is required (TYHP4008 / TYHP4009 / TYHP4010).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4161 (Error)</code></h4><br/><p><strong>CheckerReservedPropertyHookMethodSuffix.</strong> Message: <code><code>{0}</code> ends with <code>{1}</code>, which is reserved for property-hook polyfill methods the compiler emits</code>.</p>
+<p>PHP &lt; 8.4 property-hook lowering emits private methods named <code>__get_&lt;prop&gt;__tyhpPropertyHook</code> and <code>__set_&lt;prop&gt;__tyhpPropertyHook</code>, then passes them as first-class callables into <code>PropertyAccessor</code> registration.</p>
+<p>A user declaration ending with <code>__tyhpPropertyHook</code> would collide with those generated symbols. Rename the declaration.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4162 (Error)</code></h4><br/><p><strong>CheckerPipeRhsNotCallable.</strong> Message: <code>Right-hand side of <code>|&amp;gt;</code> is not callable</code>.</p>
+<p>The pipe operator (<code>|&gt;</code>) passes the left-hand value as the sole argument to the right-hand callable. The RHS must be a Closure, first-class callable, <code>callable</code>/<code>\Closure</code>-typed value, or an object with <code>__invoke</code>.</p>
+<p>Replace the RHS with a single-argument callable (for example <code>strlen(...)</code> or <code>(fn($x) =&gt; …)</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4163 (Error)</code></h4><br/><p><strong>CheckerPipeRhsInvalidArity.</strong> Message: <code>Right-hand side of <code>|&amp;gt;</code> must accept exactly one argument</code>.</p>
+<p>The pipe operator (<code>|&gt;</code>) has invalid arity: PHP pipes the left-hand value as a single argument. Callables with more than one required parameter, or with zero parameters, cannot be used on the RHS.</p>
+<p>Wrap multi-argument callees in a Closure or arrow function that supplies the extra arguments, e.g. <code>(fn($x) =&gt; \str_replace('a', 'b', $x))</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4164 (Error)</code></h4><br/><p><strong>CheckerPipeRhsByRefParameter.</strong> Message: <code>Right-hand side of <code>|&amp;gt;</code> must not take parameter <code>${0}</code> by reference</code>.</p>
+<p>Piped values are temporaries, so callables whose first parameter is by-reference are rejected (for example <code>\array_pop(...)</code>).</p>
+<p>Wrap the call in a Closure that takes the value by value and forwards a local variable by reference if mutation is required.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4165 (Warning)</code></h4><br/><p><strong>CheckerNoDiscardReturnUnused.</strong> Message: <code>Return value of <code>{0}</code> is marked <code>#[\NoDiscard]</code> and must be used or discarded with <code>(void)</code></code>.</p>
+<p>Functions and methods marked <code>#[\NoDiscard]</code> (PHP 8.5) indicate that ignoring the return value is likely a bug.</p>
+<p>Use the return value (assignment, argument, condition, etc.), or cast with <code>(void)</code> to mark an intentional discard: <code>(void)important();</code>.</p>
+<p>The ExtCore <code>NoDiscard</code> attribute class is added in Story 21; until then Tyhp still recognizes the attribute name on declarations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4166 (Error)</code></h4><br/><p><strong>CheckerFinalPropertyHookOverridden.</strong> Message: <code>Cannot override final property hook <code>{0}::${1}::{2}()</code></code>.</p>
+<p>PHP 8.4 rejects overriding a <code>final</code> property hook at class-declaration time, the same as overriding a final method. <code>final get</code> and <code>final set</code> are independent — only the hook marked <code>final</code> is sealed.</p>
+<p>Remove the overriding hook from the child, or drop <code>final</code> from the ancestor hook if the override is intentional.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4167 (Error)</code></h4><br/><p><strong>CheckerByRefPropertyGetHookRequiresPhp84.</strong> Message: <code>By-ref property hook <code>&amp;amp;get</code> requires PHP <code>8.4</code> or later; target is <code>{0}</code></code>.</p>
+<p>PHP 8.4 native property hooks support <code>&amp;get</code> so <code>$ref = &amp;$obj-&gt;prop</code> (and array-element writes that rely on by-ref get) can alias backing storage.</p>
+<p>When <code>output.phpVersion</code> is below 8.4, Tyhp lowers hooks through magic <code>__get</code>, which cannot return by reference. Emitting an ordinary by-value get would silently change program semantics, so Tyhp reports an error instead.</p>
+<p>Raise <code>output.phpVersion</code> to <code>8.4</code> or later to keep native <code>&amp;get</code>, or rewrite the property to a by-value <code>get</code> hook if by-ref aliasing is not required.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4168 (Error)</code></h4><br/><p><strong>CheckerParameterizedStaticForbidden.</strong> Message: <code>Parameterized <code>static&amp;lt;...&amp;gt;</code> is not allowed; use bare <code>static</code>, <code>self&amp;lt;...&amp;gt;</code>, <code>parent&amp;lt;...&amp;gt;</code>, or an explicit class name</code>.</p>
+<p>Tyhp forbids parameterized <code>static&lt;...&gt;</code> in every scope, including <code>final</code> classes.</p>
+<p>Late-static binding names the late-bound class; it does not invent or rebind generic type arguments. Type arguments come from the call-site class spelling (<code>Child&lt;string&gt;::factory()</code>) or from the receiver/<code>$this</code> instantiation for instance methods.</p>
+<p>Use: - bare <code>static</code> for fluent / LSB returns that should follow the late-bound class - <code>self&lt;...&gt;</code> or the declaring class name for factories that stamp method generics onto the class (e.g. <code>_async&lt;T&gt;(...): self&lt;T&gt;</code>) - <code>parent&lt;...&gt;</code> when an explicit parent instantiation is required</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">final class Promise&lt;TReturn extends void|mixed = void&gt; {
+    public static function _async&lt;T extends void|mixed&gt;(callable&lt;T&gt; $fn): self&lt;T&gt; { /* ... */ }
+    public function then&lt;TResult&gt;(callable&lt;TReturn, TResult&gt; $cb): static { /* ... */ }
+}
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4200 (Warning)</code></h4><br/><p><strong>CheckerUnusedVariable.</strong> Message: <code>Variable <code>${0}</code> is assigned but never read</code>.<br />
+Run <code>tyhp --explain TYHP4200</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4201 (Warning)</code></h4><br/><p><strong>CheckerUnusedParameter.</strong> Message: <code>Parameter <code>${0}</code> is never used</code>.<br />
+Run <code>tyhp --explain TYHP4201</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4202 (Warning)</code></h4><br/><p><strong>CheckerUnusedPrivateMember.</strong> Message: <code>Private member <code>{0}</code> is never referenced</code>.<br />
+Run <code>tyhp --explain TYHP4202</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4203 (Warning)</code></h4><br/><p><strong>CheckerAssignmentInCondition.</strong> Message: <code>Assignment in condition; use <code>===</code> for comparison or add extra parentheses if intentional</code>.<br />
+Run <code>tyhp --explain TYHP4203</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4204 (Warning)</code></h4><br/><p><strong>CheckerConditionAlwaysTrueFalse.</strong> Message: <code>Condition is always {0}</code>.<br />
+Run <code>tyhp --explain TYHP4204</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4205 (Warning)</code></h4><br/><p><strong>CheckerRedundantCast.</strong> Message: <code>Redundant cast to <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4205</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4206 (Warning)</code></h4><br/><p><strong>CheckerDeadStore.</strong> Message: <code>Value assigned to <code>${0}</code> is overwritten before being read</code>.<br />
+Run <code>tyhp --explain TYHP4206</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4207 (Warning)</code></h4><br/><p><strong>CheckerUnnecessaryNullCheck.</strong> Message: <code>Unnecessary null check on non-nullable type <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4207</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4208 (Warning)</code></h4><br/><p><strong>CheckerUnreachableArm.</strong> Message: <code>Unreachable match/switch arm</code>.<br />
+Run <code>tyhp --explain TYHP4208</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4209 (Warning)</code></h4><br/><p><strong>CheckerLossyCast.</strong> Message: <code>Lossy cast from <code>{0}</code> to <code>{1}</code></code>.<br />
+Run <code>tyhp --explain TYHP4209</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4210 (Info)</code></h4><br/><p><strong>CheckerErrorThresholdReached.</strong> Message: <code>Error threshold reached for this file; further errors are suppressed</code>.<br />
+Run <code>tyhp --explain TYHP4210</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4211 (Warning)</code></h4><br/><p><strong>CheckerStaticReturnSelfInNonFinal.</strong> Message: <code>Returning <code>new self()</code> from a method with return type <code>static</code> in non-final class <code>{0}</code>; child classes will receive parent instance</code>.<br />
+Run <code>tyhp --explain TYHP4211</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4212 (Warning)</code></h4><br/><p><strong>CheckerDisposableCircularReference.</strong> Message: <code>Disposable scope has unresolvable circular references; disposal uses <code>try</code>/<code>finally</code> instead of <code>DisposableScope</code></code>.<br />
+Run <code>tyhp --explain TYHP4212</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4213 (Error)</code></h4><br/><p><strong>CheckerExistenceGateInvalidName.</strong> Message: <code>Declaration existence gate must check for <code>{0}</code> (fully-qualified name or <code>__NAMESPACE__.&amp;#39;\Name&amp;#39;</code>)</code>.<br />
+Run <code>tyhp --explain TYHP4213</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4300 (Error)</code></h4><br/><p><strong>CheckerPhpVersionInvalidConstraint.</strong> Message: <code>Invalid PHP version constraint <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4300</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4301 (Error)</code></h4><br/><p><strong>CheckerPhpVersionDeclareNotAlone.</strong> Message: <code><code>declare(php=...)</code> must not be combined with other declare directives</code>.<br />
+Run <code>tyhp --explain TYHP4301</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4302 (Error)</code></h4><br/><p><strong>CheckerPhpVersionUnreachable.</strong> Message: <code>Unreachable under PHP version constraint <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP4302</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4303 (Error)</code></h4><br/><p><strong>CheckerPhpVersionDuplicateDeclaration.</strong> Message: <code>Duplicate declaration of <code>{0}</code> with overlapping PHP version constraints</code>.<br />
+Run <code>tyhp --explain TYHP4303</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4304 (Error)</code></h4><br/><p><strong>CheckerPhpVersionAttributeInvalidTarget.</strong> Message: <code><code>#[\Tyhp\Php]</code> is not allowed on struct or extension declarations; wrap with <code>declare(php=...)</code> instead</code>.<br />
+Run <code>tyhp --explain TYHP4304</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4305 (Error)</code></h4><br/><p><strong>CheckerPhpVersionAttributeInvalidArgument.</strong> Message: <code><code>#[\Tyhp\Php]</code> requires a string <code>version</code> argument</code>.<br />
+Run <code>tyhp --explain TYHP4305</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4306 (Warning)</code></h4><br/><p><strong>CheckerPhpVersionDefaulted.</strong> Message: <code><code>output.phpVersion</code> is unset; defaulting to <code>8.2</code></code>.<br />
+Run <code>tyhp --explain TYHP4306</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4310 (Error)</code></h4><br/><p><strong>CheckerGenericDefaultDoesNotSatisfyConstraint.</strong> Message: <code>Default type <code>{0}</code> does not satisfy constraint <code>{1}</code> on generic parameter <code>{2}</code></code>.<br />
+Run <code>tyhp --explain TYHP4310</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4311 (Error)</code></h4><br/><p><strong>CheckerGenericNonDefaultAfterDefault.</strong> Message: <code>Generic parameter <code>{0}</code> without a default cannot follow parameter <code>{1}</code> which has a default</code>.<br />
+Run <code>tyhp --explain TYHP4311</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4312 (Error)</code></h4><br/><p><strong>CheckerGenericDefaultCircularReference.</strong> Message: <code>Generic parameter <code>{0}</code> has a circular default type reference</code>.<br />
+Run <code>tyhp --explain TYHP4312</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4320 (Error)</code></h4><br/><p><strong>CheckerPropertyPathRequiresInlineFn.</strong> Message: <code>Parameter of type <code>PropertyPath&amp;lt;{0}, {1}&amp;gt;</code> requires an inline fn expression (e.g., fn ($x) =&gt; $x-&gt;property)</code>.</p>
+<p>A value that is not an inline <code>fn</code> was passed where <code>PropertyPath&lt;TSource, TReturn&gt;</code> is expected. The compiler reads the property chain out of the arrow function at compile time, so an already-built closure carries no chain it can lower.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function takes(\Tyhp\PropertyPath&lt;User, string&gt; $path): void {}
+
+takes($someClosure);
+</code></pre></div>
+<p>Pass an inline arrow function instead — <code>takes(fn ($u) =&gt; $u-&gt;name)</code>. Forwarding an existing <code>PropertyPath</code> value (for example a parameter of the same type) is also accepted.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4321 (Error)</code></h4><br/><p><strong>CheckerPropertyPathInvalidBody.</strong> Message: <code>PropertyPath expression must be a simple property access chain (e.g., fn ($x) =&gt; $x-&gt;prop-&gt;subProp)</code>.</p>
+<p>The inline <code>fn</code> body is not a simple property-access chain rooted at the lambda parameter. Method calls, operators, function wrappers, and roots other than the parameter cannot be represented as a property path.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function takes(\Tyhp\PropertyPath&lt;User, string&gt; $path): void {}
+
+takes(fn ($u) =&gt; \strtolower($u-&gt;name));
+</code></pre></div>
+<p>Use only <code>-&gt;</code> or <code>?-&gt;</code> property accesses starting at the parameter — <code>takes(fn ($u) =&gt; $u-&gt;address-&gt;city)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4322 (Error)</code></h4><br/><p><strong>CheckerExpressionUnsupportedNode.</strong> Message: <code>Expression trees do not support <code>{0}</code> expressions; simplify the fn body</code>.</p>
+<p>The inline <code>fn</code> body contains an expression kind that cannot be represented in an expression tree. Assignments, <code>await</code>, <code>yield</code>, <code>match</code>, <code>instanceof</code>/<code>is</code>, nested <code>fn</code>/closures, free function calls, <code>throw</code>, and similar constructs are rejected so the emitted tree stays a faithful, inspectable data structure.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function takes(\Tyhp\Expression&lt;User, bool&gt; $pred): void {}
+
+takes(fn ($u) =&gt; await $u-&gt;load());
+</code></pre></div>
+<p>Simplify the body to supported forms: property/method access, operators, casts, ternary/<code>??</code>, array access, <code>new</code>, literals, and definitely-assigned captures.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4323 (Error)</code></h4><br/><p><strong>CheckerExpressionRequiresInlineFn.</strong> Message: <code>Parameter of type <code>Expression&amp;lt;{0}, {1}&amp;gt;</code> requires an inline fn expression</code>.</p>
+<p>A value that is not an inline <code>fn</code> was passed where <code>Expression&lt;T, R&gt;</code> is expected. The compiler builds the expression tree from the arrow function at compile time, so an already-built closure carries no tree it can lower.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function takes(\Tyhp\Expression&lt;User, bool&gt; $pred): void {}
+
+takes($someClosure);
+</code></pre></div>
+<p>Pass an inline arrow function instead — <code>takes(fn ($u) =&gt; $u-&gt;age &gt; 18)</code>. Forwarding an existing <code>Expression</code> value (for example a parameter of the same type) is also accepted.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4324 (Error)</code></h4><br/><p><strong>CheckerExpressionCapturedVarUndefined.</strong> Message: <code>Captured variable <code>${0}</code> in expression tree must be definitely assigned</code>.</p>
+<p>A variable from the enclosing scope is referenced inside an expression-tree <code>fn</code>, so it becomes a <code>ConstantExpression</code> capture. That variable must be definitely assigned at the construction site; reading an uninitialized local would produce an undefined runtime value in the tree.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function takes(\Tyhp\Expression&lt;User, bool&gt; $pred): void {}
+
+function demo(): void {
+    int $minAge;
+    takes(fn ($u) =&gt; $u-&gt;age &gt; $minAge);
+}
+</code></pre></div>
+<p>Assign the captured variable before constructing the expression — <code>$minAge = 18;</code> then <code>takes(fn ($u) =&gt; $u-&gt;age &gt; $minAge)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4325 (Error)</code></h4><br/><p><strong>CheckerStructRequiredKeyMissing.</strong> Message: <code>Required struct property <code>{0}</code> is missing from <code>{1}</code></code>.</p>
+<p>A required field of a callable-parameter bag (<code>__CallableParametersStruct</code> / <code>__CallableParametersTuple</code>) is missing from the array literal. Parameters without defaults are required struct keys; parameters with defaults are optional keys and may be omitted.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+function apply&lt;TCallable extends callable&gt;(
+    TCallable $cb,
+    __CallableParametersStruct&lt;TCallable&gt; $args
+): __CallableReturnType&lt;TCallable&gt; {
+    return $cb();
+}
+
+function greet(string $name, int $age = 0): string {
+    return $name;
+}
+
+function demo(): void {
+    apply(greet(...), [&#039;name&#039; =&gt; &#039;Ada&#039;]);
+    apply(greet(...), []);
+}
+</code></pre></div>
+<p>The first call is valid (<code>$age</code> has a default). The second is not — <code>$name</code> is required. Optionality is modeled as required-key assignability on one struct, not an intersection of every key-subset bag.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4500 (Warning)</code></h4><br/><p><strong>CheckerDeprecatedUsage.</strong> Message: <code><code>{0}</code> is deprecated</code>.</p>
+<p>Code references a symbol that has been marked as deprecated. The symbol still works but may be removed in a future version.</p>
+<p>Fix: Check the deprecation notice for the recommended replacement and migrate your code.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4501 (Error)</code></h4><br/><p><strong>CheckerObsoleteUsage.</strong> Message: <code><code>{0}</code> is obsolete and must not be used</code>.</p>
+<p>Code references a symbol that has been marked as obsolete. This is stronger than deprecated and the symbol may be removed imminently.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4800 (Info)</code></h4><br/><p><strong>CheckerEvalUsage.</strong> Message: <code><code>eval()</code> usage detected — this is disabled in Tyhp by default</code>.</p>
+<p>The code uses <code>eval()</code>, which Tyhp disallows by default for security and type-safety reasons.</p>
+<p>Fix: Replace <code>eval()</code> with a safer alternative. If <code>eval()</code> is absolutely necessary, enable it with <code>build.allowEval: true</code> in <code>tyhp.json</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4801 (Error)</code></h4><br/><p><strong>CheckerIncludeNotAllowed.</strong> Message: <code><code>include</code>/<code>require</code> is not allowed in Tyhp; use <code>import</code> instead</code>.</p>
+<p>Tyhp does not allow <code>include</code>, <code>require</code>, <code>include_once</code>, or <code>require_once</code> statements. Use <code>use</code>/<code>import</code> statements and Composer autoloading instead.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4802 (Error)</code></h4><br/><p><strong>CheckerNestedNamedFunctionNotAllowed.</strong> Message: <code>Named function or method <code>{0}</code> cannot be declared inside another function or method; nested named declarations are not allowed in Tyhp</code>.<br />
+Run <code>tyhp --explain TYHP4802</code> for the long-form explanation.</p>
+</div>
+<h2>Emitter Errors (TYHP5xxx)</h2>
+<p>Emitter errors occur during PHP code generation.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5001 (Error)</code></h4><br/><p><strong>EmitterUnknownError.</strong> Message: <code>Unknown emitter error: {0}</code>.</p>
+<p>A catch-all for unexpected errors during PHP code generation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5002 (Error)</code></h4><br/><p><strong>EmitterUnsupportedAstNode.</strong> Message: <code>Cannot emit AST node type <code>{0}</code> — no emission handler implemented</code>.</p>
+<p>The emitter encountered an AST node type that it does not know how to convert to PHP. This typically indicates a new language feature whose emitter support is not yet complete.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5003 (Error)</code></h4><br/><p><strong>EmitterOutputPathConflict.</strong> Message: <code>Output path conflict: <code>{0}</code> is targeted by multiple declarations</code>.</p>
+<p>Two or more class/file declarations would produce output at the same file path.</p>
+<p>Fix: Ensure each class has a unique fully-qualified name. If two classes share a name, place them in different namespaces.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5004 (Error)</code></h4><br/><p><strong>EmitterNamespaceMismatch.</strong> Message: <code>Cannot merge output files: namespace mismatch (<code>{0}</code> vs <code>{1}</code>)</code>.</p>
+<p>An attempt to merge two output files failed because they declare different namespaces.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5005 (Error)</code></h4><br/><p><strong>EmitterInvalidOutputPath.</strong> Message: <code>Invalid output path: <code>{0}</code> — {1}</code>.</p>
+<p>The computed output path for a generated PHP file is invalid or inaccessible.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5006 (Warning)</code></h4><br/><p><strong>EmitterTypeErasureWarning.</strong> Message: <code>Type <code>{0}</code> is erased to <code>mixed</code> in PHP output</code>.</p>
+<p>A Tyhp type could not be represented in PHP and was erased to <code>mixed</code>. This is informational -- the type checking was still performed at compile time.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5007 (Error)</code></h4><br/><p><strong>EmitterWriteError.</strong> Message: <code>Failed to write output file <code>{0}</code>: {1}</code>.</p>
+<p>The emitter could not write a generated PHP file to disk due to a file system error.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5008 (Warning)</code></h4><br/><p><strong>EmitterTyhpConstructNotImplemented.</strong> Message: <code>Tyhp construct <code>{0}</code> is not yet supported by the emitter</code>.</p>
+<p>A Tyhp-specific language feature does not yet have emitter support. The code compiles but the feature is not emitted.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5009 (Error)</code></h4><br/><p><strong>EmitterInvalidDeclareDirective.</strong> Message: <code>Invalid declare directive: {0}</code>.</p>
+<p>A <code>declare()</code> statement contains an invalid or conflicting directive.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5010 (Warning)</code></h4><br/><p><strong>EmitterEmptyOutputFile.</strong> Message: <code>Output file <code>{0}</code> has no statements and will not be written</code>.</p>
+<p>An output file was generated with no PHP statements (e.g., a source file contained only type aliases or struct declarations that are erased).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5011 (Warning)</code></h4><br/><p><strong>EmitterMergeConflict.</strong> Message: <code>Conflicting declarations during merge of <code>{0}</code>: {1}</code>.</p>
+<p>Two output files being merged into one contain conflicting declarations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5012 (Error)</code></h4><br/><p><strong>EmitterUnsupportedConstruct.</strong> Message: <code>Tyhp construct <code>{0}</code> cannot be emitted to PHP</code>.</p>
+<p>An unsupported Tyhp construct cannot be lowered to PHP — it is not merely unimplemented yet (that is TYHP5008). The emitter has no valid PHP representation for the named construct.</p>
+<p>Fix: Rewrite the code using a construct Tyhp can emit, or check whether a newer compiler adds support.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5013 (Error)</code></h4><br/><p><strong>EmitterNameConflict.</strong> Message: <code>Generated method name <code>{0}</code> conflicts with an existing method in <code>{1}</code></code>.</p>
+<p>A method name the emitter generated (for example a lowered hook, generic variant, or helper) conflicts with a method that already exists on the same class.</p>
+<p>Fix: Rename the authored method so it does not clash with the generated name.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5014 (Error)</code></h4><br/><p><strong>EmitterMissingRuntime.</strong> Message: <code>TyhpLib runtime is required but not configured for <code>{0}</code></code>.</p>
+<p>The compiled output needs the TyhpLib runtime (the <code>tyhp/core</code> family of packages) for the named construct, but the project is not configured to include it.</p>
+<p>Fix: Restore the runtime package reference (Composer <code>tyhp/core</code> / <code>tyhp.json</code> runtime settings) and rebuild.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5015 (Error)</code></h4><br/><p><strong>EmitterStructBackingError.</strong> Message: <code>Configured struct backing class <code>{0}</code> is not found</code>.<br />
+Run <code>tyhp --explain TYHP5015</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5016 (Error)</code></h4><br/><p><strong>EmitterDisposableError.</strong> Message: <code>Disposable variable of type <code>{0}</code> does not implement <code>IsDisposable</code></code>.<br />
+Run <code>tyhp --explain TYHP5016</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5017 (Warning)</code></h4><br/><p><strong>EmitterAttributeStrippedForPhpVersion.</strong> Message: <code>Attribute <code>{0}</code> on <code>{1}</code> is stripped; target PHP <code>{2}</code> cannot represent it</code>.</p>
+<p>PHP only allows attributes on certain constructs starting at specific versions. Top-level (non-class) <code>const</code> attributes require PHP 8.5+. Attributes on property hooks require native property hooks (PHP 8.4+); when hooks are lowered for an older <code>output.phpVersion</code>, those attributes cannot be preserved in a Reflection-compatible form.</p>
+<p>Raise <code>output.phpVersion</code>, or remove the attribute if it is not needed at runtime.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5018 (Error)</code></h4><br/><p><strong>EmitterInteropContractMismatch.</strong> Message: <code>Runtime package <code>{0}</code> interop contract version is <code>{1}</code>, expected <code>{2}</code></code>.</p>
+<p>Compiled Tyhp depends on concrete <code>\Tyhp\*</code> runtime shapes. Each runtime Composer package stamps <code>extra.tyhp.interopContractVersion</code>, which must match the compiler's <code>InteropContract.CurrentVersion</code>.</p>
+<p>Upgrade or reinstall matching <code>tyhp/core</code>, <code>tyhp/async</code>, <code>tyhp/decimal</code>, and/or <code>tyhp/lambda</code> packages, or upgrade the Tyhp compiler so both sides share the same contract version. See the interop contract docs.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5019 (Error)</code></h4><br/><p><strong>EmitterPostfixOperatorOverloadRequiresStatementSplit.</strong> Message: <code>Overloaded postfix <code>{0}</code> cannot be statement-split in this expression; capture the prior value in a separate statement</code>.</p>
+<p>Overloaded <code>++</code> / <code>--</code> rewrites to a method call plus write-back. Postfix forms must yield the value from before that write-back, which the emitter does by splitting into preceding statements (<code>$__old = $a; $a = Type::__increment($a);</code> … <code>$__old</code>).</p>
+<p>That split is not safe inside short-circuit operands (<code>&amp;&amp;</code>, <code>||</code>, <code>??</code>), ternary arms, <code>else if</code> conditions (reached only when earlier conditions in the chain were false), or loop conditions that re-evaluate each iteration. Move the postfix into its own statement (or use prefix <code>++$a</code> when the new value is intended), then use the captured variable in the expression.</p>
+</div>
+<h2>Configuration Errors (TYHP6xxx)</h2>
+<p>Configuration errors are reported when <code>tyhp.json</code> or CLI options are invalid.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6001 (Error)</code></h4><br/><p><strong>ConfigUnknownError.</strong> Message: <code>Configuration error</code>.</p>
+<p>A generic configuration error that does not match a more specific code.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6002 (Error)</code></h4><br/><p><strong>ConfigMissingRequiredField.</strong> Message: <code>Required configuration field is missing</code>.</p>
+<p>A required field in <code>tyhp.json</code> is not present.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6003 (Warning)</code></h4><br/><p><strong>ConfigInvalidValue.</strong> Message: <code>Invalid configuration value for <code>{0}</code>: <code>{1}</code></code>.</p>
+<p>A configuration value is out of range, the wrong type, or otherwise invalid.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6004 (Error)</code></h4><br/><p><strong>ConfigInvalidGlobPattern.</strong> Message: <code>Invalid glob pattern in configuration</code>.</p>
+<p>An include or exclude glob pattern in <code>tyhp.json</code> is malformed.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6005 (Error)</code></h4><br/><p><strong>ConfigOutputPathNotWritable.</strong> Message: <code>Output path is not writable</code>.</p>
+<p>The configured output directory does not exist and cannot be created, or the process does not have write permissions.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6006 (Warning)</code></h4><br/><p><strong>ConfigInvalidPhpVersion.</strong> Message: <code>Unsupported PHP version <code>{0}</code>; using default <code>8.4</code></code>.</p>
+<p>The <code>output.phpVersion</code> configuration specifies a PHP version that is not recognized or supported.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6007 (Error)</code></h4><br/><p><strong>ConfigPsr4InvalidMapping.</strong> Message: <code>Invalid PSR-4 mapping in configuration</code>.</p>
+<p>A <code>psr4</code> configuration entry maps a namespace to a path that is invalid or does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP6008 (Warning)</code></h4><br/><p><strong>ConfigInvalidProjectType.</strong> Message: <code>Unrecognized project type <code>{0}</code>; using <code>application</code></code>.<br />
+Run <code>tyhp --explain TYHP6008</code> for the long-form explanation.</p>
+</div>
+<h2>CLI Errors (TYHP7xxx)</h2>
+<p>CLI errors are reported by compiler actions (build, lint, init, and related commands).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7100 (Error)</code></h4><br/><p><strong>BuildUnknownError.</strong> Message: <code>Build failed</code>.</p>
+<p>A generic build action error.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7101 (Info)</code></h4><br/><p><strong>BuildNoSourceFiles.</strong> Message: <code>No source files found matching include patterns</code>.</p>
+<p>The build action found no <code>.tyhp</code> or <code>.php</code> files matching the configured include patterns.</p>
+<p>Fix: Check the <code>include</code> and <code>exclude</code> patterns in <code>tyhp.json</code>. Ensure your source files have the correct file extensions.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7102 (Error)</code></h4><br/><p><strong>BuildOutputPathConflict.</strong> Message: <code>Output path conflict: multiple files write to <code>{0}</code></code>.</p>
+<p>During the build, multiple output file declarations would write to the same output path on disk.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7103 (Error)</code></h4><br/><p><strong>BuildFileWriteError.</strong> Message: <code>Failed to write output file <code>{0}</code>: {1}</code>.</p>
+<p>A generated PHP file could not be written to disk (write failed: disk full, permission denied, or similar).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7104 (Error)</code></h4><br/><p><strong>BuildCleanFailed.</strong> Message: <code>Cannot clean output directory <code>{0}</code>: {1}</code>.</p>
+<p>The <code>--clean</code> flag was used but the output directory could not be cleaned (e.g., safety check failed or permission denied).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7105 (Warning)</code></h4><br/><p><strong>BuildRuntimePackageNotAvailable.</strong> Message: <code>Tyhp runtime Composer package <code>{0}</code> is not available; compiled code may not run correctly without it</code>.</p>
+<p>A Tyhp runtime Composer package (e.g., <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>) is needed by the compiled output but could not be found or installed.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7200 (Error)</code></h4><br/><p><strong>LintFileNotFound.</strong> Message: <code>File not found: <code>{0}</code></code>.</p>
+<p>The <code>--file</code> argument to <code>tyhp lint</code> specifies a file path that does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7201 (Error)</code></h4><br/><p><strong>LintPathNotFound.</strong> Message: <code>Path <code>{0}</code> does not exist</code>.</p>
+<p>A positional path passed to <code>tyhp lint</code> does not exist on disk.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7202 (Error)</code></h4><br/><p><strong>LintInvalidPath.</strong> Message: <code>Path <code>{0}</code> is invalid: {1}</code>.</p>
+<p>A positional path passed to <code>tyhp lint</code> could not be interpreted as a file or directory.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7203 (Error)</code></h4><br/><p><strong>LintAccessDenied.</strong> Message: <code>Access denied: {0}</code>.</p>
+<p>Access was denied while reading a source file or directory during lint (permissions, sandbox, or similar).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7204 (Error)</code></h4><br/><p><strong>LintIoError.</strong> Message: <code>I/O error: {0}</code>.</p>
+<p>An I/O failure occurred while discovering or reading source files.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7205 (Error)</code></h4><br/><p><strong>LintUnexpectedError.</strong> Message: <code>Unexpected error ({0}): {1}</code>.</p>
+<p>An unexpected failure occurred during linting; the first placeholder identifies the failure category.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7206 (Warning, Info)</code></h4><br/><p><strong>LintNoSourceFiles.</strong> Message: <code>No source files match the include/exclude paths in <code>tyhp.json</code></code>.</p>
+<p>No source files matched. Reported as informational for an empty project include set, and as a warning when explicit paths resolve to nothing.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7207 (Error)</code></h4><br/><p><strong>LintCancelled.</strong> Message: <code>Lint cancelled</code>.</p>
+<p>Linting was cancelled (for example Ctrl+C). Diagnostics collected up to that point are still reported.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7208 (Error)</code></h4><br/><p><strong>LintFileNotInProject.</strong> Message: <code>File <code>{0}</code> is not within the project source paths</code>.</p>
+<p>The file specified with <code>--file</code> is not part of the configured project source paths.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7209 (Info)</code></h4><br/><p><strong>LintFixApplied.</strong> Message: <code>Auto-fix applied: {0}</code>.</p>
+<p>An auto-fix was successfully applied to resolve a lint issue (when using <code>tyhp lint --fix</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7210 (Warning)</code></h4><br/><p><strong>LintFixFailed.</strong> Message: <code>Auto-fix <code>{0}</code> could not be applied: {1}</code>.</p>
+<p>An auto-fix was attempted but could not be applied. The placeholders name the fix and the reason (auto-fix implementations are still stubs, so this currently reports <code>Not yet implemented</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7211 (Error)</code></h4><br/><p><strong>LintUnsupportedFormat.</strong> Message: <code>Unsupported output format <code>{0}</code>; valid formats: <code>text</code>, <code>json</code>, <code>sarif</code></code>.</p>
+<p>The <code>--format</code> argument to <code>tyhp lint</code> specifies a format that is not recognized.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7505 (Error)</code></h4><br/><p><strong>TyhpdefLibraryEntrypointDetected.</strong> Message: <code>Library projects cannot contain entrypoint files with executable top-level code: <code>{0}</code></code>.<br />
+Run <code>tyhp --explain TYHP7505</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7800 (Error)</code></h4><br/><p><strong>IntegrityCheckConfigInvalid.</strong> Message: <code>Integrity check failed: project configuration is invalid</code>.<br />
+Run <code>tyhp --explain TYHP7800</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7801 (Error)</code></h4><br/><p><strong>IntegrityCheckTyhpdefError.</strong> Message: <code>Integrity check failed: one or more tyhpdef files could not be parsed</code>.<br />
+Run <code>tyhp --explain TYHP7801</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7802 (Error)</code></h4><br/><p><strong>IntegrityCheckCacheCorrupted.</strong> Message: <code>Integrity check failed: AST cache entries are corrupted or unreadable</code>.<br />
+Run <code>tyhp --explain TYHP7802</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7803 (Error)</code></h4><br/><p><strong>IntegrityCheckEnvironmentError.</strong> Message: <code>Integrity check failed: runtime environment problem detected</code>.<br />
+Run <code>tyhp --explain TYHP7803</code> for the long-form explanation.</p>
+</div>
+<h2>Tyhpdef Errors (TYHP8xxx)</h2>
+<p>Tyhpdef errors are reported when loading or validating type-definition files.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8001 (Error)</code></h4><br/><p><strong>TyhpdefParseError.</strong> Message: <code>Failed to parse tyhpdef file: {0}</code>.</p>
+<p>A <code>.tyhpdef</code> file contains syntax errors and could not be parsed.</p>
+<p>Fix: Check the tyhpdef file for syntax errors. Tyhpdef syntax is similar to Tyhp but only supports declarations (no function bodies).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8002 (Error)</code></h4><br/><p><strong>TyhpdefDuplicateDeclaration.</strong> Message: <code>Tyhpdef declares symbol <code>{0}</code> which already exists</code>.</p>
+<p>A tyhpdef file declares a symbol (class, function, constant) that is already declared by another tyhpdef or by the project's source code.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8003 (Error)</code></h4><br/><p><strong>TyhpdefFileNotFound.</strong> Message: <code>Configured tyhpdef path <code>{0}</code> does not exist</code>.</p>
+<p>A tyhpdef file path specified in <code>tyhp.json</code> or via CLI arguments does not exist on disk.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8004 (Error)</code></h4><br/><p><strong>TyhpdefInvalidFormat.</strong> Message: <code>Tyhpdef file <code>{0}</code> has an unexpected structure</code>.</p>
+<p>A tyhpdef file was parsed but its structure or format does not match what the compiler expects (e.g., missing required sections, invalid nesting).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8005 (Error)</code></h4><br/><p><strong>TyhpdefBindError.</strong> Message: <code>Tyhpdef bind error: {0}</code>.</p>
+<p>A <code>.tyhpdef</code> file parsed, but binding it into the symbol table failed. The placeholder is the underlying bind exception text.</p>
+<p>This is a semantic bind failure, not a parse error (TYHP8001).</p>
+<p>Fix: Check the tyhpdef for unresolved names, illegal members, or other bind-time problems named in the message.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8010 (Error)</code></h4><br/><p><strong>TyhpdefExtensionConflict.</strong> Message: <code>Extension member <code>{0}</code> conflicts with a declared member on class <code>{1}</code></code>.</p>
+<p>A tyhpdef inline extension declares a member that collides with a member already declared on the same class.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8011 (Error)</code></h4><br/><p><strong>TyhpdefExtensionNotFound.</strong> Message: <code>A <code>use extension</code> reference in tyhpdef does not resolve to <code>{0}</code></code>.</p>
+<p>A <code>use extension</code> reference inside a tyhpdef file points to an extension that does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8012 (Error)</code></h4><br/><p><strong>TyhpdefInlineExtensionInvalidMember.</strong> Message: <code>Invalid member with the <code>extension</code> qualifier in tyhpdef</code>.</p>
+<p>A member marked with the <code>extension</code> qualifier inside a tyhpdef declaration is not a valid extension member.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8013 (Error)</code></h4><br/><p><strong>TyhpdefExtensionOperatorRequiresBody.</strong> Message: <code><code>extension operator {0}</code> requires a body; use bodyless <code>operator {0}(…);</code> (without <code>extension</code>) for native PHP operators</code>.<br />
+Run <code>tyhp --explain TYHP8013</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8025 (Error)</code></h4><br/><p><strong>TyhpdefDuplicateFqnAcrossPackages.</strong> Message: <code>Fully-qualified name <code>{0}</code> is defined in packages <code>{1}</code> and <code>{2}</code></code>.<br />
+Run <code>tyhp --explain TYHP8025</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8026 (Warning)</code></h4><br/><p><strong>TyhpdefPhpExtensionPackageNotFound.</strong> Message: <code>PHP extension package not found; install <code>tyhp/php</code> via Composer for full PHP built-in type checking</code>.<br />
+Run <code>tyhp --explain TYHP8026</code> for the long-form explanation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP8027 (Warning)</code></h4><br/><p><strong>TyhpdefRuntimePackageNotFound.</strong> Message: <code>Runtime package not found for <code>tyhp/{0}</code>; install the package via Composer for full type checking</code>.<br />
+Run <code>tyhp --explain TYHP8027</code> for the long-form explanation.</p>
+</div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="diagnostics_overview.html">&larr; Compiler Diagnostics Overview</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_about.html">About Tyhpdef &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

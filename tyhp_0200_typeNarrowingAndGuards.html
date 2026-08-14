@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Type Narrowing and Guards in Tyhp - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Type_Narrowing_and_Guards_in_Tyhp">
+    <h2 class="section-heading">Type Narrowing and Guards in Tyhp</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>When dealing with values that can be of multiple types (such as union types or nullable types), you often need to verify or narrow the type before performing type-specific operations. Tyhp uses type guards -- boolean checks that narrow a variable's type within a guarded scope. This happens automatically: whenever a variable passes a type guard check, the compiler tracks its narrowed type within the guarded block. No explicit casts or re-declarations are needed.</p>
+<h2>How Type Narrowing Works</h2>
+<p>Type narrowing is scope-sensitive. When a variable passes a type guard check in a conditional, its type is narrowed within the guarded block. Outside the block, the variable reverts to its full declared type. Narrowing is automatic -- the compiler tracks the narrowed type and uses it for all subsequent type checks within the scope.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string|int|float|bool $myVar = \getResultFromDatabaseQuery();
+
+if (\is_string($myVar)) {
+    // $myVar is automatically narrowed to `string` in this block
+    $myVar = \substr($myVar, 0, 5);  // OK: substr expects string
+
+    // Reassignment within a narrowed scope ends the current narrowing
+    $myVar = 44;
+    // $myVar is now narrowed to `int` for the rest of this block
+}
+// Outside the if block, $myVar is its full union type again:
+// string|int|float|bool
+</code></pre></div>
+<h2>Built-in Type Guards</h2>
+<p>PHP's built-in type checking functions act as type guards in Tyhp. When used in a conditional check, they narrow the type of the checked variable.</p>
+<ul>
+<li><code>\is_string($val)</code> -- narrows to <code>string</code></li>
+<li><code>\is_int($val)</code> -- narrows to <code>int</code></li>
+<li><code>\is_float($val)</code> -- narrows to <code>float</code></li>
+<li><code>\is_bool($val)</code> -- narrows to <code>bool</code></li>
+<li><code>\is_array($val)</code> -- narrows to <code>array</code></li>
+<li><code>\is_object($val)</code> -- narrows to <code>object</code></li>
+<li><code>\is_null($val)</code> -- narrows to <code>null</code></li>
+<li><code>\is_numeric($val)</code> -- narrows to <code>int|float|string</code></li>
+<li><code>\is_callable($val)</code> -- narrows to <code>callable</code></li>
+<li><code>\is_resource($val)</code> -- narrows to <code>resource</code></li>
+</ul>
+<h2>The <code>instanceof</code> and <code>is</code> Keywords</h2>
+<p>Tyhp supports <code>instanceof</code> from PHP and adds several aliases. The following keywords are all equivalent and can be used interchangeably as type guard expressions:</p>
+<ul>
+<li><code>instanceof</code> -- the standard PHP keyword</li>
+<li><code>is</code> -- Tyhp alias</li>
+<li><code>isa</code> -- Tyhp alias (reads naturally: &quot;$x isa Foo&quot;)</li>
+<li><code>isan</code> -- Tyhp alias (reads naturally: &quot;$x isan Iterator&quot;)</li>
+<li><code>is_a</code> -- Tyhp alias (with underscore)</li>
+<li><code>is_an</code> -- Tyhp alias (with underscore)</li>
+</ul>
+<p>All of these check if a value is an instance of a specific class or interface (or a descendant of that type) and narrow the variable's type accordingly. They are defined in the lexer as the <code>T_TYHP_IS</code> token and are only available in Tyhp mode. For scalar types, the <code>is</code> keyword compiles to the appropriate type check function. For object types, it compiles to <code>instanceof</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+BuilderInterface|ConnectionInterface|null $builder = \getRemoteBuilderInstance();
+
+// Null check as type guard
+if (!\is_null($builder)) {
+    // $builder is narrowed to BuilderInterface|ConnectionInterface
+    $isConnected = $builder-&gt;connected();
+}
+
+// instanceof narrows to specific type
+if ($builder instanceof BuilderInterface) {
+    // $builder is narrowed to BuilderInterface
+    $builder-&gt;build();
+}
+
+// &#039;is&#039; keyword works the same as instanceof
+if ($builder is ConnectionInterface) {
+    // $builder is narrowed to ConnectionInterface
+    $builder-&gt;disconnect();
+}
+
+// Natural English-like syntax
+if ($builder isa BuilderInterface) {
+    $builder-&gt;build();
+}
+</code></pre></div>
+<h2>Null Checks as Type Guards</h2>
+<p>Null comparisons also act as type guards. Checking <code>!== null</code>, <code>=== null</code>, or <code>!\is_null()</code> narrows nullable types:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+?string $name = \getOptionalName();
+
+if ($name !== null) {
+    // $name is narrowed to `string` (null removed from the union)
+    echo \strtoupper($name);
+} else {
+    // $name is narrowed to `null` in the else branch
+    echo &quot;No name provided&quot;;
+}
+</code></pre></div>
+<h2>Negated Guards (Else Branches)</h2>
+<p>When a type guard check fails (the else branch), the variable is narrowed to the remaining types -- the original type minus the guarded type. This is called negative narrowing.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string|int|null $value = \getData();
+
+if (\is_string($value)) {
+    // $value is `string`
+} else {
+    // $value is `int|null` (string was removed)
+
+    if ($value !== null) {
+        // $value is `int` (null was also removed)
+    }
+}
+</code></pre></div>
+<h2>Narrowing Through Logical Operators</h2>
+<p>Type narrowing compounds through <code>&amp;&amp;</code> (AND) and distributes through <code>||</code> (OR) operators:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string|int|null $val = \getData();
+
+// AND narrows cumulatively
+if ($val !== null &amp;&amp; \is_string($val)) {
+    // $val is `string` (both conditions apply)
+}
+
+// OR produces the union of the narrowed types
+if (\is_string($val) || \is_int($val)) {
+    // $val is `string|int`
+}
+</code></pre></div>
+<h2>Custom Type Guard Functions</h2>
+<p>You can define your own type guard functions using a special return type syntax. Instead of returning <code>bool</code>, the return type declares which parameter is narrowed to which type using the syntax: <code>$paramName is TypeExpr</code> or <code>$paramName instanceof TypeExpr</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Custom type guard function
+function isNonEmptyArray(mixed $value): $value is array {
+    return \is_array($value) &amp;&amp; \count($value) &gt; 0;
+}
+
+bool|array $val = \myFunc(34);
+
+if (isNonEmptyArray($val)) {
+    // $val is narrowed to `array` in this block
+    $first = $val[0];
+} else {
+    // $val is narrowed to `bool` in this block
+    // (array was removed from the union)
+}
+</code></pre></div>
+<p>The guard return type syntax is defined in the grammar's <code>returnTypeGrammarAddon</code> rule. You can use any of the <code>is</code>/<code>instanceof</code> variants in the return type declaration.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Guard with a class type
+function isActiveUser(object $obj): $obj instanceof ActiveUser {
+    return $obj instanceof ActiveUser &amp;&amp; $obj-&gt;isActive();
+}
+
+// Guard with a union type
+function isStringOrInt(mixed $val): $val is string|int {
+    return \is_string($val) || \is_int($val);
+}
+
+// Guard narrowing to a scalar
+function isPositiveInt(mixed $val): $val is int {
+    return \is_int($val) &amp;&amp; $val &gt; 0;
+}
+</code></pre></div>
+<h2>Dynamic Guard Functions</h2>
+<p>PHP's symbol existence functions also act as type guards, narrowing string values to Tyhp's symbol name types. This enables type-safe dynamic programming:</p>
+<ul>
+<li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
+<li><code>\class_exists($name)</code> -- narrows <code>$name</code> to <code>__ClassName&lt;object&gt;</code> (omit <code>&lt;T&gt;</code>; use <code>\class_exists&lt;Foo&gt;($name)</code> for <code>__ClassName&lt;Foo&gt;</code>)</li>
+<li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
+<li><code>\interface_exists($name)</code> / <code>\trait_exists($name)</code> / <code>\enum_exists($name)</code> -- same pattern with <code>__InterfaceName</code> / <code>__TraitName</code> / <code>__EnumName</code></li>
+<li><code>\interface_exists($name)</code> -- narrows <code>$name</code> to <code>__InterfaceName</code></li>
+<li><code>\trait_exists($name)</code> -- narrows <code>$name</code> to <code>__TraitName</code></li>
+<li><code>\enum_exists($name)</code> -- narrows <code>$name</code> to <code>__EnumName</code></li>
+<li><code>\property_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__PropertyName&lt;typeof($obj)&gt;</code></li>
+<li><code>\method_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__MethodName&lt;typeof($obj)&gt;</code></li>
+<li><code>isset($$varName)</code> -- narrows <code>$varName</code> to <code>__VarName</code></li>
+<li><code>variable_exists($name)</code> -- narrows <code>$name</code> to <code>__VarName</code></li>
+</ul>
+<h2>Early Return Narrowing</h2>
+<p>When a type guard is used with an early return (or <code>throw</code>, <code>continue</code>, <code>break</code>), the type is narrowed for all subsequent code after the guard. This is a common pattern for eliminating null or invalid types at the top of a function.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function processUser(?User $user): string {
+    if ($user === null) {
+        return &quot;No user&quot;;
+    }
+
+    // $user is narrowed to `User` for all remaining code
+    // because the null case was handled by the early return
+    return $user-&gt;getName();
+}
+
+function handleValue(string|int|array $val): void {
+    if (\is_array($val)) {
+        throw new \InvalidArgumentException(&quot;Arrays not supported&quot;);
+    }
+
+    // $val is narrowed to `string|int` for all remaining code
+    echo $val;
+}
+</code></pre></div>
+<h2>Ternary and Match Narrowing</h2>
+<p>Type narrowing also works within ternary expressions and <code>match</code> expressions:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+?string $name = \getOptionalName();
+
+// Ternary narrowing: in the true branch, $name is `string`
+string $display = $name !== null ? \strtoupper($name) : &quot;Anonymous&quot;;
+
+// Match narrowing
+string|int|float $value = \getMixedValue();
+string $result = match(true) {
+    \is_string($value) =&gt; $value,           // narrowed to string
+    \is_int($value)    =&gt; (string) $value,   // narrowed to int
+    default            =&gt; \number_format($value, 2), // narrowed to float
+};
+</code></pre></div>
+<h2>Compiled PHP Output</h2>
+<p>Type narrowing is entirely a compile-time concept. The guard functions compile to normal PHP -- no runtime type tracking is added. The narrowing information only exists during the Tyhp compilation phase for type checking purposes.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function describe(string|int $val): string {
+    if (\is_string($val)) {
+        return &quot;String: &quot; . $val;
+    }
+    return &quot;Int: &quot; . $val;
+}
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+function describe(string|int $val): string {
+    if (\is_string($val)) {
+        return &#039;String: &#039; . $val;
+    }
+    return &#039;Int: &#039; . $val;
+}
+</code></pre></div>
+<p>Custom type guard functions compile identically to regular boolean functions -- the guard return type syntax is erased:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function isPositiveInt(mixed $val): $val is int {
+    return \is_int($val) &amp;&amp; $val &gt; 0;
+}
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+function isPositiveInt(mixed $val): bool {
+    return \is_int($val) &amp;&amp; $val &gt; 0;
+}
+</code></pre></div>
+<p>The <code>is</code> keyword compiles to <code>instanceof</code> for object types:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function checkBuilder(object $obj): void {
+    if ($obj is BuilderInterface) {
+        $obj-&gt;build();
+    }
+}
+</code></pre></div>
+<p>Compiles to:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+function checkBuilder(object $obj): void {
+    if ($obj instanceof BuilderInterface) {
+        $obj-&gt;build();
+    }
+}
+</code></pre></div>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use early return patterns with null checks to avoid deep nesting. This narrows the type for all remaining code and makes functions easier to read.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Create custom type guard functions for complex type checks that you repeat across your codebase. This centralizes the logic and gives each call site automatic narrowing.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use <code>is</code> or <code>instanceof</code> to narrow to specific class or interface types. Both work identically -- choose whichever reads more naturally in your code.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use specific types in function parameters and return types to minimize the need for narrowing. The more precise your types, the less narrowing you need.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Take advantage of negated guards (else branches). After checking <code>\is_string()</code>, the else branch automatically has <code>string</code> removed from the union.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't assume a variable's type without using a type guard. The compiler rejects operations that are not valid for all types in the union.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't use <code>mixed</code> without narrowing it first. <code>mixed</code> requires a type guard before any type-specific operation can be performed.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't rely on PHP's implicit type coercion. Tyhp enforces strict types -- passing an <code>int</code> where a <code>string</code> is expected is always an error, even if PHP would coerce it.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't assume narrowing persists after scope exit. Once you leave the guarded block (if/else/while), the variable reverts to its full declared type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't forget that reassigning a variable within a narrowed scope resets the narrowing to the new assigned type.</p>
+</div>
+    </div>
+</div>
+<h2>Compiler Error Examples</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// ERROR: Cannot call string method on a union type without narrowing
+string|int $value = \getValue();
+// $length = \strlen($value);  // strlen expects string, not string|int
+
+// Fix: narrow first
+if (\is_string($value)) {
+    $length = \strlen($value);  // OK: $value is narrowed to string
+}
+
+// ERROR: Property access on potentially null type
+?User $user = \findUser(42);
+// $name = $user-&gt;getName();  // $user might be null
+
+// Fix: null guard
+if ($user !== null) {
+    $name = $user-&gt;getName();  // OK: $user is narrowed to User
+}
+
+// Or use nullsafe operator (does not narrow, returns nullable)
+?string $name = $user?-&gt;getName();
+</code></pre></div>
+<h2>Important Notes</h2>
+<ul>
+<li>Type narrowing is scope-sensitive -- it only applies within the guarded block.</li>
+<li>Assigning a value of a different type within a narrowed scope ends the current narrowing and starts a new one based on the assigned type.</li>
+<li>Early returns, throws, continues, and breaks narrow the type for the remaining code after them.</li>
+<li>The narrowed type can only be one of the types in the original union type -- narrowing never introduces new types.</li>
+<li>Outside of the guarded scope, the variable reverts to its full declared type.</li>
+<li>Multiple guards compound: after checking <code>!== null</code> and then <code>is Foo</code>, the type is <code>Foo</code>.</li>
+<li>Custom type guard functions must actually return a boolean value at runtime -- the guard return type only tells the compiler about the narrowing effect.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0151_newFunctions.html">&larr; New and Changed Functions and Methods in Tyhp</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0300_includingFiles.html">Including Files &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>New Object Declaration Syntax - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="New_Object_Declaration_Syntax">
+    <h2 class="section-heading">New Object Declaration Syntax</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 06</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp adds new syntax to class declarations that does not exist in PHP. This includes constructor return types for explicit constructor chaining, promoted constructor parameters, the init property modifier, and property accessors. These features make class declarations more expressive and self-documenting.</p>
+<h2>Constructor Return Types</h2>
+<p>In PHP, constructors never have a return type. Tyhp introduces two constructor return type annotations: : void and : parent(args...). These provide a structured way to declare constructor behavior and enforce correct parent constructor chaining.</p>
+<h2>Explicit Void Constructor</h2>
+<p>The : void return type explicitly states that a constructor does not chain to a parent. This is the default behavior when no return type is specified, but writing it makes the intent clear and self-documenting.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class SimpleClass
+{
+    public function __construct(
+        public string $name,
+        public int $age
+    ): void {}
+}
+</code></pre></div>
+<h2>Compiled PHP Output</h2>
+<p>The : void annotation is stripped from the PHP output. The constructor is emitted as a standard PHP constructor with no return type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class SimpleClass
+{
+    public function __construct(
+        public string $name,
+        public int $age
+    ) {}
+}
+</code></pre></div>
+<h2>Constructor Chaining with : parent(args...)</h2>
+<p>The : parent(args...) syntax calls the parent constructor at the START of the child constructor body. The arguments in the parent(...) call are passed to parent::__construct(). This replaces the manual parent::__construct(...) call that PHP developers write by hand and guarantees it always runs first.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class BaseModel
+{
+    public function __construct(
+        protected bool $isActive,
+        protected int $priority,
+        protected string $label
+    ): void {}
+}
+
+class UserModel extends BaseModel
+{
+    public string $displayName;
+
+    public function __construct(string $name): parent(false, 19, $name)
+    {
+        $this-&gt;displayName = $name-&gt;toupper();
+    }
+}
+</code></pre></div>
+<h2>Compiled PHP Output</h2>
+<p>The : parent(args...) annotation compiles to a parent::__construct(args...) call inserted at the very beginning of the constructor body. The return type annotation is removed.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class BaseModel
+{
+    public function __construct(
+        protected bool $isActive,
+        protected int $priority,
+        protected string $label
+    ) {}
+}
+
+class UserModel extends BaseModel
+{
+    public string $displayName;
+
+    public function __construct(string $name)
+    {
+        parent::__construct(false, 19, $name);
+        $this-&gt;displayName = \strtoupper($name);
+    }
+}
+</code></pre></div>
+<h2>Original Incoming Values</h2>
+<p>An important detail: the arguments passed to parent(...) use the original incoming parameter values, not values modified within the constructor body. Even if a parameter is reassigned inside the constructor, the parent receives the value as it was when the constructor was called.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Child extends BaseModel
+{
+    public string $processed;
+
+    public function __construct(string $input): parent(true, 5, $input)
+    {
+        $input = $input-&gt;tolower();
+        $this-&gt;processed = $input;
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class Child extends BaseModel
+{
+    public string $processed;
+
+    public function __construct(string $input)
+    {
+        parent::__construct(true, 5, $input);
+        $input = \strtolower($input);
+        $this-&gt;processed = $input;
+    }
+}
+</code></pre></div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Because parent(...) is called before the constructor body executes, the parent always receives the original parameter values. This prevents subtle bugs where a developer modifies a parameter before calling parent::__construct().</p>
+</div>
+    </div>
+</div>
+<h2>Passing Static Values and Parameters</h2>
+<p>The arguments in parent(...) can be static values (literals, constants) or parameters from the current constructor. They cannot be expressions that depend on $this or computed values, since the parent call happens before the constructor body.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Vehicle extends BaseModel
+{
+    public function __construct(
+        string $type,
+        int $year
+    ): parent(true, $year, $type) {}
+}
+
+class DefaultVehicle extends BaseModel
+{
+    public function __construct(): parent(false, 0, &#039;unknown&#039;) {}
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class Vehicle extends BaseModel
+{
+    public function __construct(
+        string $type,
+        int $year
+    ) {
+        parent::__construct(true, $year, $type);
+    }
+}
+
+class DefaultVehicle extends BaseModel
+{
+    public function __construct()
+    {
+        parent::__construct(false, 0, &#039;unknown&#039;);
+    }
+}
+</code></pre></div>
+<h2>The init Property Modifier</h2>
+<p>The init modifier declares a property as settable only during construction and via the with keyword. This is distinct from PHP's readonly modifier, which prevents ALL mutation after construction — including via with. The init modifier fills the gap between fully mutable properties and fully readonly properties.</p>
+<ul>
+<li><code>(no modifier)</code> — Set in constructor: Yes. Set after construction: Yes. Set via <code>with</code>: Yes.</li>
+<li><code>readonly</code> — Set in constructor: Yes. Set after construction: No. Set via <code>with</code>: No.</li>
+<li><code>init</code> — Set in constructor: Yes. Set after construction: No. Set via <code>with</code>: Yes.</li>
+</ul>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class User
+{
+    public init string $name;
+    public init int $age;
+    public string $label = &#039;&#039;;
+
+    public function __construct(string $name, int $age)
+    {
+        $this-&gt;name = $name;
+        $this-&gt;age = $age;
+    }
+}
+
+$user = new User(&#039;Alice&#039;, 30);
+
+// init properties CANNOT be assigned directly after construction
+// $user-&gt;name = &#039;Bob&#039;;  // ERROR: init property
+
+// init properties CAN be set via with (creates a new instance)
+$newUser = clone $user with [name =&gt; &#039;Bob&#039;];
+// $user-&gt;name is still &#039;Alice&#039;
+// $newUser-&gt;name is &#039;Bob&#039;
+</code></pre></div>
+<h2>Compiled PHP Output for init Properties</h2>
+<p>The init modifier emits as PHP readonly. For classes with init properties, the compiler generates a __clone() method and a $__tyhpWithInit helper property that enables with to set readonly properties on the cloned instance.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class User
+{
+    public readonly string $name;
+    public readonly int $age;
+    public string $label = &#039;&#039;;
+
+    /** @internal */
+    public array $__tyhpWithInit = [];
+
+    public function __construct(string $name, int $age, array $__withInit = [])
+    {
+        $this-&gt;name = $name;
+        $this-&gt;age = $age;
+        if (isset($__withInit[&#039;name&#039;])) { $this-&gt;name = $__withInit[&#039;name&#039;]; }
+        if (isset($__withInit[&#039;age&#039;])) { $this-&gt;age = $__withInit[&#039;age&#039;]; }
+    }
+
+    public function __clone(): void
+    {
+        foreach ($this-&gt;__tyhpWithInit as $__prop =&gt; $__val) {
+            match ($__prop) {
+                &#039;name&#039; =&gt; $this-&gt;name = $__val,
+                &#039;age&#039; =&gt; $this-&gt;age = $__val,
+                default =&gt; null,
+            };
+        }
+        $this-&gt;__tyhpWithInit = [];
+    }
+}
+</code></pre></div>
+<h2>Constructor Property Promotion with init</h2>
+<p>The init modifier works with constructor property promotion, just like readonly does in PHP.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Point
+{
+    public function __construct(
+        public init float $x,
+        public init float $y,
+        public init float $z = 0.0
+    ) {}
+}
+
+$p = new Point(1.0, 2.0);
+$q = clone $p with [z =&gt; 5.0];
+// $p = Point(1.0, 2.0, 0.0)
+// $q = Point(1.0, 2.0, 5.0)
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class Point
+{
+    /** @internal */
+    public array $__tyhpWithInit = [];
+
+    public function __construct(
+        public readonly float $x,
+        public readonly float $y,
+        public readonly float $z = 0.0,
+        array $__withInit = []
+    ) {
+        if (isset($__withInit[&#039;x&#039;])) { $this-&gt;x = $__withInit[&#039;x&#039;]; }
+        if (isset($__withInit[&#039;y&#039;])) { $this-&gt;y = $__withInit[&#039;y&#039;]; }
+        if (isset($__withInit[&#039;z&#039;])) { $this-&gt;z = $__withInit[&#039;z&#039;]; }
+    }
+
+    public function __clone(): void
+    {
+        foreach ($this-&gt;__tyhpWithInit as $__prop =&gt; $__val) {
+            match ($__prop) {
+                &#039;x&#039; =&gt; $this-&gt;x = $__val,
+                &#039;y&#039; =&gt; $this-&gt;y = $__val,
+                &#039;z&#039; =&gt; $this-&gt;z = $__val,
+                default =&gt; null,
+            };
+        }
+        $this-&gt;__tyhpWithInit = [];
+    }
+}
+</code></pre></div>
+<h2>init vs readonly</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Example
+{
+    public readonly string $fixed;
+    public init string $updatable;
+
+    public function __construct(string $fixed, string $updatable)
+    {
+        $this-&gt;fixed = $fixed;
+        $this-&gt;updatable = $updatable;
+    }
+}
+
+$a = new Example(&#039;A&#039;, &#039;B&#039;);
+
+// Both are errors — neither can be set directly after construction:
+// $a-&gt;fixed = &#039;X&#039;;      // ERROR: readonly
+// $a-&gt;updatable = &#039;X&#039;;  // ERROR: init
+
+// readonly CANNOT be set via with:
+// $b = clone $a with [fixed =&gt; &#039;X&#039;];      // ERROR
+
+// init CAN be set via with:
+$c = clone $a with [updatable =&gt; &#039;X&#039;];      // OK
+</code></pre></div>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>Combining init and readonly on the same property is allowed but redundant — the readonly modifier is strictly more restrictive. The combination is semantically equivalent to just readonly.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>The init modifier requires PHP 8.2+ because readonly property reinitialization in __clone() is a PHP 8.2 feature.</p>
+</div>
+    </div>
+</div>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use : parent(args...) to clearly express constructor chaining — it ensures the parent constructor is always called first and prevents accidental omission.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use : void on leaf classes to explicitly document that no parent constructor chaining occurs.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use init properties when you want immutability after construction but need to support functional updates via the with keyword.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use constructor property promotion with init for concise, immutable data classes.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not use : parent(...) on a class that has no parent class — the compiler reports an error.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not use computed expressions or $this in parent(...) arguments — only static values and incoming parameters are allowed since the parent call happens before the constructor body.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not manually call parent::__construct() when using : parent(...) — the compiler inserts the call automatically and a manual call would result in a double invocation error.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not use init with property hooks — init requires PHP readonly semantics, which are incompatible with property hooks.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not try to set init properties directly after construction — they can only be set in the constructor or via the with keyword.</p>
+</div>
+    </div>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// ERROR: no parent class to chain to
+// class NoParent {
+//     public function __construct(): parent() {}
+// }
+
+// ERROR: $this not available in parent args
+// class Bad extends BaseModel {
+//     public function __construct(string $name): parent(true, 0, $this-&gt;process($name)) {}
+// }
+
+// ERROR: double parent call
+// class Double extends BaseModel {
+//     public function __construct(string $name): parent(true, 0, $name) {
+//         parent::__construct(true, 0, $name);
+//     }
+// }
+
+// ERROR: init with property hooks
+// class BadHooks {
+//     public init string $name {
+//         get =&gt; $this-&gt;name;
+//         set =&gt; \strtolower($value);
+//     }
+// }
+
+// ERROR: init on a method
+// class BadMethod {
+//     public init function doSomething(): void {}
+// }
+</code></pre></div>
+<h2>Compiler Errors</h2>
+<ul>
+<li>Using : parent(...) on a class that does not extend another class.</li>
+<li>Passing arguments to parent(...) that don't match the parent constructor's parameter types.</li>
+<li>Using $this or method calls in parent(...) arguments.</li>
+<li>Manually calling parent::__construct() in the body when : parent(...) is already specified.</li>
+<li>Using init with property hooks (error code 4056).</li>
+<li>Assigning to an init property outside the constructor or with keyword (error code 4055).</li>
+<li>Using init on a method (error code 4003).</li>
+<li>Combining init with static (modifier conflict).</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_1200_functionOverloads.html">&larr; Function and Method Overloads</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_1600_operatorOverloads.html">Operator Overloads &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

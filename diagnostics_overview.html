@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Compiler Diagnostics Overview - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Compiler_Diagnostics_Overview">
+    <h2 class="section-heading">Compiler Diagnostics Overview</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 01</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>The Tyhp compiler uses a structured diagnostic system to report errors, warnings, and informational messages during compilation. Every diagnostic has a unique code, a severity level, and a human-readable message that includes the source file location. This page explains how to read and interpret compiler diagnostics.</p>
+<h2>Diagnostic Format</h2>
+<p>Each diagnostic message follows a consistent format that includes the file path, line and column numbers, severity, diagnostic code, and a descriptive message:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">filename(line,column): severity TYHPXXXX: message
+</code></pre></div>
+<p>For example, a type mismatch error would appear as:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">src/Models/User.tyhp(42,5): error TYHP4008: Cannot assign type &#039;string&#039; to type &#039;int&#039;
+</code></pre></div>
+<p>The components are:</p>
+<ul>
+<li><code>src/Models/User.tyhp</code> -- the source file where the issue was detected</li>
+<li><code>(42,5)</code> -- line 42, column 5 (1-indexed)</li>
+<li><code>error</code> -- the severity level (error, warning, or info)</li>
+<li><code>TYHP4008</code> -- the unique diagnostic code</li>
+<li><code>Cannot assign type 'string' to type 'int'</code> -- a human-readable description of the problem</li>
+</ul>
+<h2>Severity Levels</h2>
+<p>The Tyhp compiler uses three severity levels for diagnostics:</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Error</code></h4><br/><p>A problem that prevents successful compilation. The build will fail and no PHP output will be produced. Errors must be fixed before the code can compile. Examples include type mismatches, missing return statements, and unresolved symbols.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Warning</code></h4><br/><p>A potential issue that does not prevent compilation but may indicate a bug or questionable code. The build succeeds, but warnings should be investigated. When the <code>--strict</code> flag is used, warnings are treated as errors. Examples include unreachable code, possibly-null variables, and deprecated symbol usage.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Info</code></h4><br/><p>An informational message or style suggestion. These do not affect compilation and are purely advisory. Examples include unnecessary null-safe operator usage and eval() detection.</p>
+</div>
+<h2>Diagnostic Code Numbering Scheme</h2>
+<p>Every diagnostic code follows the pattern <code>TYHPXXXX</code> where the first digit identifies the compiler phase that produced the diagnostic. This makes it easy to understand where in the compilation pipeline an issue was detected:</p>
+<div class="alert alert-secondary" role="alert"><h4><code>1000-1999: Parser/Lexer Errors</code></h4><br/><p>Errors from the ANTLR4 parsing phase. These occur when the source code contains syntax that the parser cannot understand -- missing semicolons, unmatched braces, invalid token sequences, etc. Parser errors prevent AST construction for the affected file.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>2000-2999: Visitor/AST Errors</code></h4><br/><p>Errors from the parse tree to AST conversion phase. These occur when the parser produces a valid parse tree but the visitor encounters an unexpected grammar structure or unsupported language construct during AST construction.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>3000-3999: Binder Errors</code></h4><br/><p>Errors from the symbol resolution and scope management phase. These occur when the binder cannot resolve names, finds duplicate declarations, detects circular inheritance, or encounters invalid scope configurations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>4000-4999: Checker Errors</code></h4><br/><p>Errors from the type checking and semantic analysis phase. This is the largest category and includes type mismatches, missing implementations, invalid modifier usage, accessibility violations, and all other semantic validation. Checker errors are the most common diagnostics encountered during development.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>5000-5999: Emitter Errors</code></h4><br/><p>Errors from the PHP code generation phase. These occur when the emitter cannot produce valid PHP output for a given AST construct, encounters output path conflicts, or fails to write files to disk.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>6000-6999: Configuration Errors</code></h4><br/><p>Errors related to project configuration. These occur when the <code>tyhp.json</code> configuration file contains invalid values, missing required fields, or references nonexistent paths.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>7000-7999: CLI Errors</code></h4><br/><p>Errors specific to the CLI build and lint actions. These include file-not-found errors for lint targets, output path conflicts during build, file write failures, and unsupported output format specifications.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>8000-8999: Tyhpdef Errors</code></h4><br/><p>Errors related to tyhpdef type definition files. These occur when tyhpdef files fail to parse, contain duplicate declarations, reference nonexistent paths, or encounter errors during tyhpdef generation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>9000-9999: Internal Compiler Errors (Reserved)</code></h4><br/><p>Reserved for internal compiler errors that indicate bugs in the compiler itself. If you encounter an error in this range, please report it as a bug.</p>
+</div>
+<h2>Example Error Output</h2>
+<p>Here is an example of what a typical build output looks like when there are errors and warnings:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">src/Models/User.tyhp(15,10): error TYHP3003: Symbol &#039;InvalidUser&#039; not found
+src/Models/User.tyhp(42,5): error TYHP4008: Cannot assign type &#039;string&#039; to type &#039;int&#039;
+src/Services/Auth.tyhp(23,1): error TYHP4002: Multiple visibility modifiers specified
+src/Services/Auth.tyhp(67,12): warning TYHP4012: Unreachable code detected
+
+Build failed with 3 errors and 1 warning.
+
+  Files:     12 source files
+  Duration:  0.91s (parse: 0.45s, bind: 0.12s, check: 0.34s)
+  Errors:    3
+  Warnings:  1
+</code></pre></div>
+<h2>Enhanced Error Messages</h2>
+<p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Planned</span>
+</p>
+<p>Beyond the basic <code>file(line,column): severity CODE: message</code> format, the Tyhp compiler renders diagnostics with rich, developer-focused detail. The renderer reuses the same diagnostic data carried by every phase, so text, JSON, and SARIF output stay consistent.</p>
+<ul>
+<li>Source spans and underlines — The text renderer prints the offending source line with a caret/underline beneath the primary span, plus labeled secondary spans that point at related locations (similar to the Rust compiler). Output degrades gracefully to a single line when <code>--quiet</code> is set.</li>
+<li>&quot;Did you mean&quot; suggestions — When the binder or checker reports an unknown symbol, type, or member, it attaches a Levenshtein-based suggestion drawn from the in-scope symbol table, surfaced as a <code>help:</code> hint in text output and as a machine-applicable fix in JSON and SARIF.</li>
+<li>Actionable fixes — Suggestions carry a span and replacement text, providing the data contract that drives <code>tyhp lint --fix</code>. Language server code actions are planned.</li>
+<li>The <code>--explain</code> command — Run <code>tyhp --explain TYHP4008</code> to print the long-form explanation for any diagnostic code. The error index is generated directly from the compiler's code registry, so it always matches the codes the compiler emits.</li>
+</ul>
+<p>Diagnostic messages follow a consistent style: present tense, the offending symbol or type named in backticks, and &quot;expected X, found Y&quot; framing. A build-time consistency gate enforces that every diagnostic code has conforming message text and vice versa.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp --explain TYHP4008
+</code></pre></div>
+<h2>How the Compilation Pipeline Works</h2>
+<p>Understanding the compilation pipeline helps in diagnosing errors. The Tyhp compiler processes your code through these sequential phases:</p>
+<ol>
+<li>Parse -- The ANTLR4 lexer and parser read your source files and produce parse trees. Syntax errors (TYHP1xxx) are detected here. Parsing continues for other files even if one file has syntax errors.</li>
+<li>Visit -- The visitor converts parse trees into Abstract Syntax Trees (AST). Unexpected grammar structures (TYHP2xxx) are detected here.</li>
+<li>Bind -- The binder walks the AST to build a symbol table, resolve names, and establish scope hierarchies. Duplicate declarations and unresolved symbols (TYHP3xxx) are detected here.</li>
+<li>Check -- The checker performs type checking and semantic analysis on the bound AST. Type mismatches, missing implementations, and all semantic violations (TYHP4xxx) are detected here.</li>
+<li>Emit -- The emitter transforms the checked AST into PHP source code. Unsupported constructs and output conflicts (TYHP5xxx) are detected here.</li>
+<li>Write -- The generated PHP files are written to disk. File system errors (TYHP7xxx) may occur at this stage.</li>
+</ol>
+<p>If errors occur in an earlier phase, the compiler may skip later phases. For example, if there are parser errors in a file, that file will not proceed through binding and checking. However, other files in the project continue to be processed, so you can see as many errors as possible in a single build.</p>
+<h2>Common Error Categories and How to Fix Them</h2>
+<p>Here are the most common categories of errors you will encounter and general strategies for resolving them:</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Type Mismatch Errors (TYHP4008-4010)</code></h4><br/><p>These are the most common checker errors. They occur when you try to assign, return, or pass a value of an incompatible type. Fix by ensuring the types align: add type casts where appropriate, change the declared type, or update the value. Check union types and nullable types carefully.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Unresolved Symbol Errors (TYHP3003)</code></h4><br/><p>These occur when the compiler cannot find a class, function, constant, or variable you referenced. Common causes: missing <code>use</code>/<code>import</code> statement, typo in the name, the symbol is in a tyhpdef file that is not loaded, or the symbol is defined in a file that failed to parse.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Missing Implementation Errors (TYHP4017-4018)</code></h4><br/><p>These occur when a concrete class does not implement all abstract methods from its parent class or all methods from its interfaces. Fix by implementing the missing methods with the correct signatures.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Variable Errors (TYHP4013-4016)</code></h4><br/><p>These occur when variables are used before assignment, may be undefined on some code paths, or lack type information. Fix by initializing variables before use, adding null checks for conditional paths, or adding explicit type annotations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Modifier Errors (TYHP4002-4007)</code></h4><br/><p>These occur when visibility or member modifiers are used incorrectly. Examples: two visibility keywords on the same member, <code>static</code> on an interface method, or an accessor that is more visible than its property. Fix by correcting the modifier combinations.</p>
+</div>
+<h2>Tips for Debugging Compiler Errors</h2>
+<ol>
+<li>Fix errors in order -- Earlier-phase errors (parser, binder) can cause cascading false positives in later phases. Fix TYHP1xxx and TYHP3xxx errors first, then rebuild to see if TYHP4xxx errors remain.</li>
+<li>Use the lint command for faster feedback -- Run <code>tyhp lint</code> instead of <code>tyhp build</code> when you only need to check for errors. Lint skips the emit and write phases, making it faster.</li>
+<li>Lint a single file -- Use <code>tyhp lint --file src/MyClass.tyhp</code> to check a single file while you are actively editing it.</li>
+<li>Look up the error code -- Use the Diagnostic Code Reference page to find detailed explanations and fix guidance for any error code.</li>
+<li>Check your tyhpdef files -- If you see TYHP3003 (symbol not found) for a PHP library class, ensure the corresponding tyhpdef files are loaded. Check your <code>tyhp.json</code> tyhpdef include paths.</li>
+<li>Use strict mode judiciously -- The <code>--strict</code> flag treats warnings as errors. This is useful for CI pipelines but may be noisy during active development.</li>
+<li>Check the target PHP version -- Some features require specific PHP versions (e.g., property hooks require PHP 8.4+, readonly properties require PHP 8.1+). Verify your <code>output.phpVersion</code> in <code>tyhp.json</code>.</li>
+</ol>
+<h2>JSON Output Format</h2>
+<p>For CI/CD integration, the <code>tyhp lint</code> command supports JSON output via the <code>--format json</code> flag. Each diagnostic is serialized as a JSON object:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">{
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;TYHP4008&quot;,
+  &quot;file&quot;: &quot;src/Models/User.tyhp&quot;,
+  &quot;range&quot;: {
+    &quot;start&quot;: { &quot;line&quot;: 42, &quot;column&quot;: 5 },
+    &quot;end&quot;: { &quot;line&quot;: 42, &quot;column&quot;: 15 }
+  },
+  &quot;message&quot;: &quot;Cannot assign type &#039;string&#039; to type &#039;int&#039;&quot;
+}
+</code></pre></div>
+<p>This format is compatible with common CI reporting tools and IDE integrations.</p>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_3500_genericDefaults.html">&larr; Generic Type Parameter Defaults</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="diagnostics_reference.html">Diagnostic Code Reference &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

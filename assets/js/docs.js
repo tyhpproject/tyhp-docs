@@ -4,7 +4,8 @@
 /* ====== Define JS Constants ====== */
 const sidebarToggler = document.getElementById('docs-sidebar-toggler');
 const sidebar = document.getElementById('docs-sidebar');
-const sidebarLinks = document.querySelectorAll('#docs-sidebar .scrollto');
+// const sidebarLinks = document.querySelectorAll('#docs-sidebar .scrollto');
+const sidebarLinks = document.querySelectorAll('#docs-sidebar');
 
 
 
@@ -59,21 +60,26 @@ sidebarLinks.forEach((sidebarLink) => {
 	
 	sidebarLink.addEventListener('click', (e) => {
 		
-		e.preventDefault();
+		// e.preventDefault();
 		
-		var target = sidebarLink.getAttribute("href").replace('#', '');
+		// var target = sidebarLink.getAttribute("href").replace('#', '');
 		
-		//console.log(target);
+		// //console.log(target);
 		
-        document.getElementById(target).scrollIntoView({ behavior: 'smooth' });
+        // document.getElementById(target).scrollIntoView({ behavior: 'smooth' });
         
         
-        //Collapse sidebar after clicking
-		if (sidebar.classList.contains('sidebar-visible') && window.innerWidth < 1200){
+        // //Collapse sidebar after clicking
+		// if (sidebar.classList.contains('sidebar-visible') && window.innerWidth < 1200){
 			
-			sidebar.classList.remove('sidebar-visible');
-		    sidebar.classList.add('sidebar-hidden');
-		} 
+		// 	sidebar.classList.remove('sidebar-visible');
+		//     sidebar.classList.add('sidebar-hidden');
+		// }
+
+        setTimeout(() => {
+           spy.setup();
+           spy.detect(); 
+        }, 500);
 		
     });
 	
@@ -85,7 +91,12 @@ sidebarLinks.forEach((sidebarLink) => {
 // Initialize Gumshoe
 var spy = new Gumshoe('#docs-nav a', {
 	offset: 69, //sticky header height
+    reflow: true,
 });
+setTimeout(() => {
+    spy.setup();
+    spy.detect(); 
+ }, 1000);
 
 
 /* ====== SimpleLightbox Plugin ======= */

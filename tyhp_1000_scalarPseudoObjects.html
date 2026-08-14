@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Scalar Pseudo-Objects - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Scalar_Pseudo_Objects">
+    <h2 class="section-heading">Scalar Pseudo-Objects</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 03</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp allows you to call methods on scalar types (string, int, float, bool, array) as if they were objects. These methods map directly to PHP's built-in functions and are rewritten by the compiler at compile time. There is zero runtime overhead — no objects are created, no wrapper classes are instantiated. The compiler simply rewrites $value-&gt;method($args) into the corresponding PHP function call like \func($value, $args).</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>Scalar pseudo-object methods are syntactic sugar only. They compile to direct PHP function calls with no performance penalty.</p>
+</div>
+    </div>
+</div>
+<h2>How It Works</h2>
+<p>Each scalar type has a set of methods derived from PHP's built-in functions. The naming convention removes common prefixes to create shorter, more natural method names:</p>
+<ul>
+<li>string methods: Functions starting with str have the str prefix removed (e.g., strlen() becomes len(), strtolower() becomes tolower()). Functions starting with str_ have the str_ prefix removed (e.g., str_contains() becomes contains()).</li>
+<li>array methods: Functions starting with array_ have the array_ prefix removed (e.g., array_map() becomes map(), array_filter() becomes filter()).</li>
+<li>float methods: number_format() becomes format() (the number_ prefix is removed).</li>
+<li>int and bool methods: Use original function names directly (e.g., abs(), chr()).</li>
+</ul>
+<p>For functions where the scalar value is not the first parameter in PHP (such as explode() or implode()), the method is adapted so the scalar becomes the calling object and the arguments are rearranged accordingly.</p>
+<h2>String Methods</h2>
+<p>String methods cover PHP's extensive string function library. Functions prefixed with str or str_ have those prefixes removed.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $name = &quot;Hello World&quot;;
+
+// str_ prefix removed
+$has = $name-&gt;contains(&quot;World&quot;);     // \str_contains($name, &quot;World&quot;)
+$starts = $name-&gt;starts_with(&quot;He&quot;);  // \str_starts_with($name, &quot;He&quot;)
+$ends = $name-&gt;ends_with(&quot;ld&quot;);      // \str_ends_with($name, &quot;ld&quot;)
+$padded = $name-&gt;pad(20);            // \str_pad($name, 20)
+$repeated = $name-&gt;repeat(3);        // \str_repeat($name, 3)
+$replaced = $name-&gt;replace(&quot;World&quot;, &quot;Tyhp&quot;); // \str_replace(&quot;World&quot;, &quot;Tyhp&quot;, $name)
+$csv = $name-&gt;getcsv(&quot;,&quot;);           // \str_getcsv($name, &quot;,&quot;)
+$shuffled = $name-&gt;shuffle();        // \str_shuffle($name)
+$split = $name-&gt;split(2);            // \str_split($name, 2)
+$rot = $name-&gt;rot13();               // \str_rot13($name)
+$words = $name-&gt;word_count();        // \str_word_count($name)
+
+// str prefix removed (no underscore)
+$length = $name-&gt;len();              // \strlen($name)
+$upper = $name-&gt;toupper();           // \strtoupper($name)
+$lower = $name-&gt;tolower();           // \strtolower($name)
+$rev = $name-&gt;rev();                 // \strrev($name)
+$pos = $name-&gt;pos(&quot;World&quot;);          // \strpos($name, &quot;World&quot;)
+$cmp = $name-&gt;cmp(&quot;other&quot;);          // \strcmp($name, &quot;other&quot;)
+$tok = $name-&gt;tok(&quot; &quot;);              // \strtok($name, &quot; &quot;)
+
+// Standard function names (no prefix change)
+$sub = $name-&gt;substr(0, 5);          // \substr($name, 0, 5)
+$trimmed = $name-&gt;trim();            // \trim($name)
+$ltrimmed = $name-&gt;ltrim();          // \ltrim($name)
+$rtrimmed = $name-&gt;rtrim();          // \rtrim($name)
+$ucfirst = $name-&gt;ucfirst();         // \ucfirst($name)
+$lcfirst = $name-&gt;lcfirst();         // \lcfirst($name)
+$ucwords = $name-&gt;ucwords();         // \ucwords($name)
+$ord = $name-&gt;ord();                 // \ord($name)
+$md5 = $name-&gt;md5();                 // \md5($name)
+$sha1 = $name-&gt;sha1();               // \sha1($name)
+
+// Adapted parameter order: string is not the first PHP parameter
+$parts = $name-&gt;explode(&quot; &quot;);        // \explode(&quot; &quot;, $name)
+
+// Encoding/decoding
+$encoded = $name-&gt;urlencode();       // \urlencode($name)
+$decoded = $name-&gt;urldecode();       // \urldecode($name)
+$b64 = $name-&gt;base64_encode();       // \base64_encode($name)
+$json = $name-&gt;json_decode();        // \json_decode($name)
+$html = $name-&gt;htmlspecialchars();   // \htmlspecialchars($name)
+
+// Utility
+$isEmpty = $name-&gt;empty();           // empty($name)
+$isNum = $name-&gt;is_numeric();        // \is_numeric($name)
+</code></pre></div>
+<h2>Compiled PHP Output — String Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+// PHP output — all pseudo-object calls become function calls
+
+$name = &quot;Hello World&quot;;
+
+$has = \str_contains($name, &quot;World&quot;);
+$starts = \str_starts_with($name, &quot;He&quot;);
+$length = \strlen($name);
+$upper = \strtoupper($name);
+$lower = \strtolower($name);
+$rev = \strrev($name);
+$pos = \strpos($name, &quot;World&quot;);
+$sub = \substr($name, 0, 5);
+$trimmed = \trim($name);
+$parts = \explode(&quot; &quot;, $name);
+$encoded = \urlencode($name);
+$isEmpty = empty($name);
+</code></pre></div>
+<h2>Integer Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+int $myNegativeInt = -15;
+int $myPositiveInt = $myNegativeInt-&gt;abs();  // \abs($myNegativeInt)
+
+// Math operations
+$bin = $myPositiveInt-&gt;decbin();              // \decbin($myPositiveInt)
+$hex = $myPositiveInt-&gt;dechex();              // \dechex($myPositiveInt)
+$oct = $myPositiveInt-&gt;decoct();              // \decoct($myPositiveInt)
+$ceil = $myPositiveInt-&gt;ceil();               // \ceil($myPositiveInt)
+$floor = $myPositiveInt-&gt;floor();             // \floor($myPositiveInt)
+$div = $myPositiveInt-&gt;intdiv(3);             // \intdiv($myPositiveInt, 3)
+$max = $myPositiveInt-&gt;max(10, 20);           // \max($myPositiveInt, 10, 20)
+$min = $myPositiveInt-&gt;min(10, 20);           // \min($myPositiveInt, 10, 20)
+
+// Conversion
+$chr = (65)-&gt;chr();                           // \chr(65)
+$float = $myPositiveInt-&gt;__toFloat();         // (float)$myPositiveInt
+$str = $myPositiveInt-&gt;__toString();          // (string)$myPositiveInt
+
+// Utility
+$isEmpty = $myPositiveInt-&gt;empty();           // empty($myPositiveInt)
+</code></pre></div>
+<h2>Compiled PHP Output — Integer Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+$myNegativeInt = -15;
+$myPositiveInt = \abs($myNegativeInt);
+
+$bin = \decbin($myPositiveInt);
+$hex = \dechex($myPositiveInt);
+$ceil = \ceil($myPositiveInt);
+$div = \intdiv($myPositiveInt, 3);
+$chr = \chr(65);
+$float = (float)$myPositiveInt;
+$str = (string)$myPositiveInt;
+</code></pre></div>
+<h2>Float Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+float $price = 19.99;
+
+// Rounding
+$rounded = $price-&gt;round(1);         // \round($price, 1)
+$ceil = $price-&gt;ceil();               // \ceil($price)
+$floor = $price-&gt;floor();             // \floor($price)
+
+// Formatting (number_format with number_ removed)
+$formatted = $price-&gt;format(2);                  // \number_format($price, 2)
+$formatted2 = $price-&gt;format(2, &quot;,&quot;, &quot;.&quot;);       // \number_format($price, 2, &quot;,&quot;, &quot;.&quot;)
+
+// Math
+$sqrt = $price-&gt;sqrt();               // \sqrt($price)
+$abs = $price-&gt;abs();                 // \abs($price)
+$log = $price-&gt;log();                 // \log($price)
+$exp = $price-&gt;exp();                 // \exp($price)
+$sin = $price-&gt;sin();                 // \sin($price)
+$cos = $price-&gt;cos();                 // \cos($price)
+
+// Checks
+$finite = $price-&gt;is_finite();        // \is_finite($price)
+$nan = $price-&gt;is_nan();              // \is_nan($price)
+
+// Division
+$divided = $price-&gt;fdiv(3.0);         // \fdiv($price, 3.0)
+$mod = $price-&gt;fmod(3.0);             // \fmod($price, 3.0)
+
+// Conversion
+$int = $price-&gt;__toInt();             // (int)$price
+$str = $price-&gt;__toString();          // (string)$price
+</code></pre></div>
+<h2>Compiled PHP Output — Float Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+$price = 19.99;
+
+$rounded = \round($price, 1);
+$ceil = \ceil($price);
+$floor = \floor($price);
+$formatted = \number_format($price, 2);
+$sqrt = \sqrt($price);
+$abs = \abs($price);
+$finite = \is_finite($price);
+$int = (int)$price;
+$str = (string)$price;
+</code></pre></div>
+<h2>Boolean Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+bool $flag = true;
+$str = $flag-&gt;__toString();           // (string)$flag
+$isEmpty = $flag-&gt;empty();            // empty($flag)
+</code></pre></div>
+<h2>Array Methods</h2>
+<p>Array methods are derived from PHP's array_* functions with the array_ prefix removed. Functions that don't start with array_ (like sort(), count(), implode()) keep their original names.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+array&lt;int&gt; $numbers = [3, 1, 4, 1, 5];
+
+// array_ prefix removed
+$mapped = $numbers-&gt;map(fn($n) =&gt; $n * 2);     // \array_map(fn($n) =&gt; $n * 2, $numbers)
+$filtered = $numbers-&gt;filter(fn($n) =&gt; $n &gt; 2); // \array_filter($numbers, fn($n) =&gt; $n &gt; 2)
+$keys = $numbers-&gt;keys();                       // \array_keys($numbers)
+$values = $numbers-&gt;values();                   // \array_values($numbers)
+$reversed = $numbers-&gt;reverse();                // \array_reverse($numbers)
+$unique = $numbers-&gt;unique();                   // \array_unique($numbers)
+$merged = $numbers-&gt;merge([6, 7]);              // \array_merge($numbers, [6, 7])
+$sliced = $numbers-&gt;slice(1, 3);                // \array_slice($numbers, 1, 3)
+$searched = $numbers-&gt;search(4);                // \array_search(4, $numbers)
+$popped = $numbers-&gt;pop();                      // \array_pop($numbers)
+$shifted = $numbers-&gt;shift();                   // \array_shift($numbers)
+$sum = $numbers-&gt;sum();                         // \array_sum($numbers)
+$product = $numbers-&gt;product();                 // \array_product($numbers)
+$isList = $numbers-&gt;is_list();                  // \array_is_list($numbers)
+$flipped = $numbers-&gt;flip();                    // \array_flip($numbers)
+$chunked = $numbers-&gt;chunk(2);                  // \array_chunk($numbers, 2)
+$reduced = $numbers-&gt;reduce(fn($c, $n) =&gt; $c + $n, 0); // \array_reduce($numbers, fn($c, $n) =&gt; $c + $n, 0)
+
+// No prefix change (these don&#039;t start with array_)
+$count = $numbers-&gt;count();                     // \count($numbers)
+$numbers-&gt;sort();                               // \sort($numbers)
+$numbers-&gt;rsort();                              // \rsort($numbers)
+$numbers-&gt;shuffle();                            // \shuffle($numbers)
+$current = $numbers-&gt;current();                 // \current($numbers)
+
+// Adapted parameter order: array is not the first PHP parameter
+$joined = $numbers-&gt;implode(&quot;, &quot;);              // \implode(&quot;, &quot;, $numbers)
+
+// Encoding
+$json = $numbers-&gt;json_encode();                // \json_encode($numbers)
+
+// Utility
+$isEmpty = $numbers-&gt;empty();                   // empty($numbers)
+</code></pre></div>
+<h2>Compiled PHP Output — Array Methods</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+$numbers = [3, 1, 4, 1, 5];
+
+$mapped = \array_map(fn($n) =&gt; $n * 2, $numbers);
+$filtered = \array_filter($numbers, fn($n) =&gt; $n &gt; 2);
+$keys = \array_keys($numbers);
+$values = \array_values($numbers);
+$count = \count($numbers);
+\sort($numbers);
+$joined = \implode(&quot;, &quot;, $numbers);
+$json = \json_encode($numbers);
+$isEmpty = empty($numbers);
+</code></pre></div>
+<h2>Method Chaining</h2>
+<p>Scalar pseudo-object methods can be chained for fluent-style operations. Each method call in the chain is independently rewritten to the corresponding PHP function call.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $input = &quot;  Hello World  &quot;;
+$result = $input-&gt;trim()-&gt;tolower()-&gt;replace(&quot; &quot;, &quot;-&quot;);
+// Result: &quot;hello-world&quot;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+// PHP output — each chained method is expanded independently
+
+$input = &quot;  Hello World  &quot;;
+$result = \str_replace(&quot; &quot;, &quot;-&quot;, \strtolower(\trim($input)));
+</code></pre></div>
+<h2>Calling on Literal Values</h2>
+<p>Pseudo-object methods can be called on literal values. For integer and float literals, wrap the value in parentheses.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+$char = (65)-&gt;chr();          // \chr(65) — returns &#039;A&#039;
+$rounded = (3.14159)-&gt;round(2); // \round(3.14159, 2) — returns 3.14
+$parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;, &quot;a,b,c&quot;)
+</code></pre></div>
+<h2>Complete Method Reference</h2>
+<h2>int Methods</h2>
+<ul>
+<li><code>abs(): int</code> — Absolute value</li>
+<li><code>ceil(): int</code> — Round up</li>
+<li><code>floor(): int</code> — Round down</li>
+<li><code>decbin(): string</code> — Decimal to binary string</li>
+<li><code>dechex(): string</code> — Decimal to hexadecimal string</li>
+<li><code>decoct(): string</code> — Decimal to octal string</li>
+<li><code>intdiv(int $num2): int</code> — Integer division</li>
+<li><code>max(int|float ...$values): float|int</code> — Maximum of values</li>
+<li><code>min(int|float ...$values): float|int</code> — Minimum of values</li>
+<li><code>chr(): string</code> — ASCII character for code point</li>
+<li><code>__toFloat(): float</code> — Convert to float</li>
+<li><code>__toString(): string</code> — Convert to string</li>
+<li><code>empty(): bool</code> — Check if empty (zero)</li>
+</ul>
+<h2>float Methods</h2>
+<ul>
+<li><code>abs(): float</code> — Absolute value</li>
+<li><code>ceil(): int</code> — Round up</li>
+<li><code>floor(): int</code> — Round down</li>
+<li><code>round(int $precision = 0, int $mode = PHP_ROUND_HALF_UP): float</code> — Round to precision</li>
+<li><code>sqrt(): float</code> — Square root</li>
+<li><code>log(float $base = M_E): float</code> — Natural logarithm</li>
+<li><code>log10(): float</code> — Base-10 logarithm</li>
+<li><code>exp(): float</code> — e raised to the power</li>
+<li><code>sin(): float</code> — Sine</li>
+<li><code>cos(): float</code> — Cosine</li>
+<li><code>tan(): float</code> — Tangent</li>
+<li><code>asin(): float</code> — Arc sine</li>
+<li><code>acos(): float</code> — Arc cosine</li>
+<li><code>atan(): float</code> — Arc tangent</li>
+<li><code>deg2rad(): float</code> — Degrees to radians</li>
+<li><code>rad2deg(): float</code> — Radians to degrees</li>
+<li><code>fdiv(float $num2): float</code> — Float division (IEEE 754)</li>
+<li><code>fmod(float $num2): float</code> — Float modulus</li>
+<li><code>is_finite(): bool</code> — Check if finite</li>
+<li><code>is_infinite(): bool</code> — Check if infinite</li>
+<li><code>is_nan(): bool</code> — Check if NaN</li>
+<li><code>max(int|float ...$values): float|int</code> — Maximum of values</li>
+<li><code>min(int|float ...$values): float|int</code> — Minimum of values</li>
+<li><code>format(int $decimals = 0, ?string $decimal_separator = &quot;.&quot;, ?string $thousands_separator = &quot;,&quot;): string</code> — Format as string (maps to number_format)</li>
+<li><code>__toInt(): int</code> — Convert to int</li>
+<li><code>__toString(): string</code> — Convert to string</li>
+<li><code>empty(): bool</code> — Check if empty (zero)</li>
+</ul>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use pseudo-object syntax for readability — $name-&gt;trim()-&gt;tolower() reads more naturally than \strtolower(\trim($name)).</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Chain methods for fluent-style operations. Each call in the chain compiles to a nested PHP function call with no overhead.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use pseudo-object methods on literal values by wrapping them in parentheses: (65)-&gt;chr() returns 'A', (3.14)-&gt;round(1) returns 3.1.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Remember that array methods like map() and filter() reorder parameters — the array becomes the calling object and the callback becomes the first argument.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't expect actual object instances — these are compile-time rewrites. Calling a non-existent pseudo-object method produces a compile error.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't try to assign scalar methods to variables — $fn = $name-&gt;trim is not valid. These are method calls, not callable properties.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't confuse Tyhp's scalar pseudo-object methods with PHP's arrow functions. fn($x) =&gt; $x + 1 is a PHP anonymous arrow function, while $x-&gt;abs() is a scalar pseudo-object method call.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't assume in-place mutation — methods like sort() and shuffle() on arrays may or may not mutate in place depending on the underlying PHP function. Check the PHP documentation for each function's behavior.</p>
+</div>
+    </div>
+</div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0800_staticValueTypes.html">&larr; Static Value Types</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

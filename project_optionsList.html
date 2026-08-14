@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Project Options List - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Project_Options_List">
+    <h2 class="section-heading">Project Options List</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 10</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>This is the complete reference for all options available in <code>tyhp.json</code>. Options can also be passed as CLI arguments where noted. CLI arguments take precedence over file-based configuration.</p>
+<h2>General Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>quiet</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, suppresses the banner and non-error output. Useful for scripting and CI environments.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>locale</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;en-US&quot;</code>). Sets the locale for compiler messages and diagnostic output.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>cache-dir</code></h4><br/><p>Type: <code>string</code> (default: system local application data directory). Sets the directory used for caching parsed ASTs and build state. Caching speeds up subsequent builds by reusing parsed results for unchanged files.</p>
+</div>
+<h2>Source File Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>include</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for source files to include in the project. Supports <code>*</code> (any file), <code>**</code> (any directory depth), and <code>?</code> (single character) wildcards. Example: <code>[&quot;./src/**/*.tyhp&quot;, &quot;./src/**/*.php&quot;]</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>exclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for files to exclude from the project. Files matching these patterns are skipped even if they match an <code>include</code> pattern. Useful for excluding test files, vendor directories, or generated code.</p>
+</div>
+<h2>Output Options</h2>
+<p>These options are nested under the <code>&quot;output&quot;</code> key in <code>tyhp.json</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>output.path</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;build/&quot;</code>). The directory where compiled PHP files are written, relative to the project root. The directory is created automatically if it does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>output.phpVersion</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;8.4&quot;</code>). The target PHP version for the compiled output. Supported values: <code>&quot;8.2&quot;</code>, <code>&quot;8.3&quot;</code>, <code>&quot;8.4&quot;</code>. This affects which PHP features the emitter uses in the generated code and which tyhpdef definitions are loaded.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>output.strictTypes</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). When true, adds <code>declare(strict_types=1);</code> to all compiled PHP output files. Recommended for type safety.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>output.namespacePrefix</code></h4><br/><p>Type: <code>string | null</code> (default: <code>null</code>). A namespace prefix added to or stripped from all namespaces in the output. Used when the compiled output needs a different namespace root than the source code.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>output.comments</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). Controls whether comments from the Tyhp source are preserved in the compiled PHP output. Set to <code>false</code> to strip comments for smaller output.</p>
+</div>
+<h2>Build Options</h2>
+<p>These options are nested under the <code>&quot;build&quot;</code> key in <code>tyhp.json</code>, except where noted.</p>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Not in this alpha
+        </h4>
+        <div class="callout-content"><p><code>build.generateSourcemap</code> and <code>build.generateTyhpdef</code> are planned (Stories 17 and 20) and do not produce output in 805.0.0-alpha.1.</p>
+</div>
+    </div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.generateSourcemap</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, generates source map files (<code>.php.map</code>) alongside compiled PHP output. Source maps enable debugging with Tyhp source files through the XDebug proxy.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.generateTyhpdef</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, auto-generates tyhpdef files for the compiled code. Useful when publishing a Tyhp library that other Tyhp projects will consume.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.updateComposer</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, generates or updates a <code>composer.json</code> in the output directory with PSR-4 autoload mappings and Tyhp runtime package dependencies.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.entryPointAutoloader</code></h4><br/><p>Type: <code>object | null</code> (default: <code>null</code>). A map of named autoloader paths. When set, entry point files (root code files) will have <code>require_once</code> statements added for the Composer autoloader. Example: <code>{&quot;default&quot;: &quot;vendor/autoload.php&quot;}</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.structBacking</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;array&quot;</code>). Controls how Tyhp structs are represented in compiled PHP. The default <code>&quot;array&quot;</code> compiles structs to associative arrays.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.decimalBacking</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;bcmath&quot;</code>). The PHP extension used for decimal arithmetic. Supported values: <code>&quot;bcmath&quot;</code>, <code>&quot;gmp&quot;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.decimalScale</code></h4><br/><p>Type: <code>int</code> (default: <code>28</code>). The default number of decimal places for decimal arithmetic operations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.decimalRounding</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;halfUp&quot;</code>). The default rounding mode for decimal arithmetic.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.allowEval</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, re-enables <code>eval()</code> usage in Tyhp code. By default, <code>eval()</code> is disabled for security and type-safety reasons.</p>
+</div>
+<h2>Optimization Options</h2>
+<p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 3 · Story 23</span><span class="badge bg-secondary">Planned</span>
+</p>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Not in this alpha
+        </h4>
+        <div class="callout-content"><p>Optimizer options are Stories 23/24. In this alpha the optimize pass is a no-op.</p>
+</div>
+    </div>
+</div>
+<p>These options are nested under the <code>&quot;build&quot;</code> key in <code>tyhp.json</code> and control the compiler optimizer. Each option also has a corresponding CLI flag that overrides the file value.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>build.profile</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;debug&quot;</code>). The build profile that sets coordinated defaults for optimization, source maps, and comment output. Supported values: <code>&quot;debug&quot;</code>, <code>&quot;balanced&quot;</code>, <code>&quot;release&quot;</code>. CLI: <code>--profile=&lt;value&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.optimize</code></h4><br/><p>Type: <code>string</code> (default: derived from <code>profile</code>). The optimization level applied to the compiled output, overriding the profile default. Supported values: <code>&quot;none&quot;</code>, <code>&quot;basic&quot;</code>, <code>&quot;aggressive&quot;</code>. <code>basic</code> enables extension inlining, constant folding, dead code elimination, and unused import pruning. CLI: <code>--optimize=&lt;value&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.optimizations</code></h4><br/><p>Type: <code>object</code> (default: <code>{}</code>). Per-module enable/disable overrides applied on top of the <code>optimize</code> level. Keys are optimization module names; values are booleans. Use this to turn individual optimizations on or off without changing the overall level. CLI: <code>--optimize-enable=&lt;module&gt;</code> and <code>--optimize-disable=&lt;module&gt;</code>.</p>
+</div>
+<h2>PSR-4 Autoload Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>psr4</code></h4><br/><p>Type: <code>object | null</code> (default: <code>null</code>). PSR-4 namespace-to-directory mappings for the compiled output. Keys are namespace prefixes (with trailing <code>\\</code>), values are directory paths. Example: <code>{&quot;App\\&quot;: &quot;src/&quot;}</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>psr4Includes</code></h4><br/><p>Type: <code>array&lt;string&gt; | null</code> (default: <code>null</code>). Additional PSR-4 autoload paths to include in the generated <code>composer.json</code>.</p>
+</div>
+<h2>Checker Options</h2>
+<p>These options are nested under the <code>&quot;checker&quot;</code> key in <code>tyhp.json</code>. They control resource limits and tooling behavior — not language strictness.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>Null safety, required type annotations, and narrowing <code>mixed</code> before use are unconditional language rules. There are no <code>checker.*</code> toggles that relax them.</p>
+</div>
+    </div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>checker.templateStringMaxStates</code></h4><br/><p>Type: <code>int</code> (default: <code>256</code>). Upper bound on template-string automaton complexity for subtyping/inclusion checks. When exceeded, the checker is conservative and emits a diagnostic.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>checker.maxFixIterations</code></h4><br/><p>Type: <code>int</code> (default: <code>10</code>). Maximum auto-fix re-run iterations for <code>tyhp lint --fix</code>.</p>
+</div>
+<h2>Tyhpdef Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>tyhpdefInclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code> (default: <code>[&quot;**/*.tyhpdef&quot;]</code>). Glob patterns for tyhpdef files to load. These files provide type information for existing PHP code, Composer packages, and PHP extensions.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>tyhpdefExclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code> (default: <code>[]</code>). Glob patterns for tyhpdef files to exclude from loading.</p>
+</div>
+<h2>CLI-Only Options</h2>
+<p>These options are only available as command-line arguments and override corresponding config file values.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>--clean</code></h4><br/><p>Wipe the output directory before building. Deletes all <code>.php</code> and <code>.php.map</code> files in the output directory. Safety checks prevent cleaning the project root or system directories.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>--verbose</code></h4><br/><p>Enable detailed output during compilation. Shows per-phase timing, cache statistics, file counts, and memory usage.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>--dry-run</code></h4><br/><p>Run the full compilation pipeline (parse, bind, check, emit) but do not write any output files. Reports what would be written.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>--strict</code></h4><br/><p>Treat warnings as errors. The build fails if any warnings are produced, in addition to errors.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>--tyhp-project</code></h4><br/><p>Specify the path to the <code>tyhp.json</code> project file. Overrides the default behavior of looking in the current working directory.</p>
+</div>
+<h2>Lint-Specific Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>--format</code></h4><br/><p>Output format for lint diagnostics. Supported values: <code>text</code> (default, human-readable), <code>json</code> (machine-readable).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>--file</code></h4><br/><p>Lint a single file instead of the whole project. Still loads tyhpdefs and built-in types for full type checking.</p>
+</div>
+<h2>Action-Specific Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>ext-name</code></h4><br/><p>Type: <code>string</code>. Used with the planned <code>generate_tyhpdef</code> action (Story 20; <strong>not in this alpha</strong>). Specifies the PHP extension name to generate type definitions for.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>subject</code></h4><br/><p>Type: <code>string</code>. Used with the <code>help</code> action. Specifies which action to display help for.</p>
+</div>
+<h2>Complete Example</h2>
+<p>Below is a comprehensive <code>tyhp.json</code> showing all available options with their default values. In practice, you only need to specify the options you want to change from their defaults.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;quiet&quot;: false,
+    &quot;locale&quot;: &quot;en-US&quot;,
+
+    &quot;include&quot;: [&quot;./src/**/*.tyhp&quot;, &quot;./src/**/*.php&quot;],
+    &quot;exclude&quot;: [&quot;./src/legacy/**&quot;],
+
+    &quot;output&quot;: {
+        &quot;path&quot;: &quot;./build&quot;,
+        &quot;phpVersion&quot;: &quot;8.4&quot;,
+        &quot;strictTypes&quot;: true,
+        &quot;namespacePrefix&quot;: null,
+        &quot;comments&quot;: true
+    },
+
+    &quot;build&quot;: {
+        &quot;generateSourcemap&quot;: false,
+        &quot;generateTyhpdef&quot;: false,
+        &quot;updateComposer&quot;: false,
+        &quot;structBacking&quot;: &quot;array&quot;,
+        &quot;decimalBacking&quot;: &quot;bcmath&quot;,
+        &quot;decimalScale&quot;: 28,
+        &quot;decimalRounding&quot;: &quot;halfUp&quot;,
+        &quot;allowEval&quot;: false
+    },
+
+    &quot;psr4&quot;: {
+        &quot;App\\&quot;: &quot;src/&quot;
+    },
+
+    &quot;checker&quot;: {
+        &quot;templateStringMaxStates&quot;: 256,
+        &quot;maxFixIterations&quot;: 10
+    },
+
+    &quot;tyhpdefInclude&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;],
+    &quot;tyhpdefExclude&quot;: []
+}
+</code></pre></div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="project_composerPackages.html">&larr; Composer Runtime Packages</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="faq_general.html">FAQ: General &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

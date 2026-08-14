@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Compile-Time Constructs - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Compile_Time_Constructs">
+    <h2 class="section-heading">Compile-Time Constructs</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhp provides four compile-time language constructs that are evaluated during compilation: nameof(), typeof(), default(), and variable_exists(). These constructs emit constant values or simple runtime calls in the PHP output, enabling refactoring-safe code, type-appropriate default values, and compile-time variable existence checks. Beyond these constructs, Tyhp has several other features that are fully resolved at compile time with zero runtime overhead.</p>
+<h2>nameof() — Get Symbol Name as String</h2>
+<p>The nameof() construct returns the string name of a variable, class, method, property, or constant. The argument must be a valid, resolvable symbol reference. The compiler resolves the name at compile time and emits it as a string literal — no runtime reflection is involved.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class User {
+    public string $name;
+    public int $age;
+    public const int MAX_AGE = 150;
+
+    public function greet(): string {
+        return &#039;Hello!&#039;;
+    }
+}
+
+User $user = new User();
+
+// Variable name
+echo nameof($user);              // &#039;user&#039;
+
+// Class name (short name only)
+echo nameof(User);                // &#039;User&#039;
+
+// Namespaced class (still short name only)
+echo nameof(\App\Models\User);    // &#039;User&#039;
+
+// Property name
+echo nameof($user-&gt;name);         // &#039;name&#039;
+echo nameof(User::$age);          // &#039;age&#039;
+
+// Method name
+echo nameof($user-&gt;greet);        // &#039;greet&#039;
+
+// Class constant
+echo nameof(User::MAX_AGE);       // &#039;MAX_AGE&#039;
+
+// PropertyPath-style arrow fn — last segment only (Story 16)
+echo nameof(fn (User $u) =&gt; $u-&gt;name);        // &#039;name&#039;
+echo nameof(fn (User $u) =&gt; $u-&gt;address-&gt;city); // &#039;city&#039;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// nameof() compiles to string literals — zero runtime cost
+echo &#039;user&#039;;
+echo &#039;User&#039;;
+echo &#039;User&#039;;
+echo &#039;name&#039;;
+echo &#039;age&#039;;
+echo &#039;greet&#039;;
+echo &#039;MAX_AGE&#039;;
+</code></pre></div>
+<p>A common use case for nameof() is in error messages, logging, and validation — any place where you reference a symbol by name as a string. Using nameof() instead of a hardcoded string ensures the reference stays valid when the symbol is renamed.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function validateAge(int $age): void {
+    if ($age &lt; 0 || $age &gt; 150) {
+        throw new \InvalidArgumentException(
+            nameof($age) . &#039; must be between 0 and 150, got &#039; . $age
+        );
+    }
+}
+
+// If $age is renamed to $userAge, nameof() updates automatically:
+// &#039;userAge must be between 0 and 150, got ...&#039;
+
+// ORM/serialization example
+class UserQuery {
+    public function orderBy(string $field): self {
+        $this-&gt;orderField = $field;
+        return $this;
+    }
+}
+
+// Refactoring-safe field reference:
+$query-&gt;orderBy(nameof(User::$name)); // &#039;name&#039;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+function validateAge(int $age): void {
+    if ($age &lt; 0 || $age &gt; 150) {
+        throw new \InvalidArgumentException(
+            &#039;age&#039; . &#039; must be between 0 and 150, got &#039; . $age
+        );
+    }
+}
+
+$query-&gt;orderBy(&#039;name&#039;);
+</code></pre></div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>nameof() is refactoring-safe. If you rename a property, method, variable, or class, all nameof() references update automatically during compilation, preventing stale string references.</p>
+</div>
+    </div>
+</div>
+<h2>typeof() — Get Type at Compile Time</h2>
+<p>The typeof() construct returns a \Tyhp\Type instance representing the compile-time type of its argument. It accepts type names (like int, string, User) and compiles to \Tyhp\Type::of() calls. This is different from PHP's gettype() which is a runtime function returning a string — typeof() is a compile-time construct that produces a \Tyhp\Type object for use with Tyhp's runtime type system.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// typeof with scalar type names
+\Tyhp\Type $intType = typeof(int);
+\Tyhp\Type $stringType = typeof(string);
+
+// typeof with class names
+\Tyhp\Type $userType = typeof(User);
+\Tyhp\Type $dateType = typeof(\DateTimeInterface);
+
+// Use for runtime type checks with the Tyhp type system
+if (\Tyhp\Type::is($value, typeof(string))) {
+    echo &#039;Value is a string&#039;;
+}
+
+// Use in generic contexts for runtime type information
+class Repository&lt;T&gt; {
+    public function getEntityType(): \Tyhp\Type {
+        return typeof(T);
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// typeof() compiles to \Tyhp\Type::of() calls
+// Scalar types use string identifiers
+$intType = \Tyhp\Type::of(&#039;int&#039;);
+$stringType = \Tyhp\Type::of(&#039;string&#039;);
+
+// Class types use ::class syntax
+$userType = \Tyhp\Type::of(User::class);
+$dateType = \Tyhp\Type::of(\DateTimeInterface::class);
+
+if (\Tyhp\Type::is($value, \Tyhp\Type::of(&#039;string&#039;))) {
+    echo &#039;Value is a string&#039;;
+}
+</code></pre></div>
+<h2>default() — Get Default Value for a Type</h2>
+<p>The default() construct returns the default value for a given type. The argument must be a valid type name. The result is a constant value emitted directly into the PHP output. This is particularly useful in generic contexts where you need a type-appropriate zero value, or when initializing variables with sensible defaults.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Scalar type defaults
+int $i = default(int);         // 0
+float $f = default(float);     // 0.0
+string $s = default(string);   // &#039;&#039;
+bool $b = default(bool);       // false
+array $a = default(array);     // []
+
+// Nullable types always default to null
+?int $ni = default(?int);      // null
+?string $ns = default(?string); // null
+
+// Object types default to null
+?User $u = default(User);      // null
+
+// Useful in generic code
+function getOrDefault&lt;T&gt;(array $data, string $key): T {
+    return $data[$key] ?? default(T);
+}
+
+// Initializing accumulators
+function sum(array&lt;int&gt; $values): int {
+    int $total = default(int); // 0
+    foreach ($values as int $v) {
+        $total += $v;
+    }
+    return $total;
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// default() compiles to literal constant values
+$i = 0;
+$f = 0.0;
+$s = &#039;&#039;;
+$b = false;
+$a = [];
+$ni = null;
+$ns = null;
+$u = null;
+
+function sum(array $values): int {
+    $total = 0;
+    foreach ($values as $v) {
+        $total += $v;
+    }
+    return $total;
+}
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(int)</code></h4><br/><p>Returns 0</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(float)</code></h4><br/><p>Returns 0.0</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(string)</code></h4><br/><p>Returns '' (empty string)</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(bool)</code></h4><br/><p>Returns false</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(array)</code></h4><br/><p>Returns [] (empty array)</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(?T)</code></h4><br/><p>Returns null for any nullable type</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>default(ClassName)</code></h4><br/><p>Returns null for any object/class type</p>
+</div>
+<h2>variable_exists() — Compile-Time Variable Existence Check</h2>
+<p>The variable_exists() construct checks if a variable is declared in the current scope. When the compiler can determine the answer statically, it emits a boolean literal (true or false). When the answer depends on runtime conditions, it emits an isset() check.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $name = &#039;Alice&#039;;
+
+// Compile-time known: $name is declared, emits true
+if (variable_exists($name)) {
+    echo $name;
+}
+
+// Compile-time known: $undeclared is not declared, emits false
+if (variable_exists($undeclared)) {
+    // This block is dead code — compiler may warn
+}
+
+// Useful for conditional logic based on variable availability
+function processConfig(): void {
+    if (variable_exists($customHandler)) {
+        $customHandler();
+    } else {
+        defaultHandler();
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// variable_exists() compiles to true/false literals
+// or isset() depending on compile-time knowledge
+$name = &#039;Alice&#039;;
+
+if (true) {
+    echo $name;
+}
+
+if (false) {
+    // dead code
+}
+
+function processConfig(): void {
+    if (isset($customHandler)) {
+        $customHandler();
+    } else {
+        defaultHandler();
+    }
+}
+</code></pre></div>
+<h2>Other Compile-Time Features</h2>
+<p>Beyond the four compile-time constructs above, Tyhp has several other features that are resolved entirely at compile time and produce no runtime overhead. These features exist only during compilation and are erased from the PHP output.</p>
+<ul>
+<li>Type aliases (type MyType = int|string) — resolved during compilation, erased from PHP output. All references to the alias are replaced with the underlying type.</li>
+<li>Structs — compiled to PHP associative arrays. Struct declarations are erased; struct property access compiles to array key access.</li>
+<li>Generics — type parameters are erased via type erasure. Generic annotations produce no PHP code. Optional runtime type tracking is available via the GenericObject trait.</li>
+<li>Static value types (__ClassName, __FunctionName, etc.) — compile-time string subtypes that are erased to plain string in PHP output.</li>
+<li>Type guard return types ($param is Type) — compiled to bool return type in PHP output. The type narrowing information is used only by the checker.</li>
+<li>Function overload signatures — only the implementation body is emitted to PHP. Overload signatures are compile-time declarations for the checker.</li>
+<li>Trait extends/implements requirements — validated at compile time, stripped from PHP output. PHP traits cannot extend or implement.</li>
+<li>The is keyword (alias for instanceof) — compiled to standard PHP instanceof operator.</li>
+</ul>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use nameof() instead of hardcoded strings when referencing symbol names. It is refactoring-safe — renaming a property, method, or variable automatically updates all nameof() references at compile time.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use default(T) in generic code to get type-appropriate zero values. This eliminates the need for manual default value handling when working with generic type parameters.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use typeof() for runtime type introspection that integrates with Tyhp's \Tyhp\Type system. It provides structured type information instead of raw strings.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use variable_exists() instead of isset() when you need to check whether a variable is declared in scope. variable_exists() is a compile-time construct that the compiler can optimize to a boolean literal.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Passing expressions to nameof(). Only variables, properties, methods, constants, and class names are accepted — not arbitrary expressions like nameof($a + $b) or nameof(getValue()). The compiler reports an error for invalid arguments.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Confusing typeof() with PHP's \gettype(). typeof() is a compile-time construct that returns a \Tyhp\Type object. PHP's \gettype() is a runtime function that returns a string like 'integer' or 'string'. They serve different purposes and are not interchangeable.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Using default() with non-nullable union types other than nullable. Only nullable types (?T) have a well-defined default (null). Union types like int|string do not have a single default value — the compiler reports an error.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Passing an unresolvable symbol reference to nameof(). The argument must refer to a declared symbol in scope. Using nameof($nonExistentVar) or nameof(NonExistentClass) produces a compiler error.</p>
+</div>
+    </div>
+</div>
+<h2>Compiler Errors</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// ERROR: Cannot resolve symbol &#039;nonExistentVar&#039;
+// echo nameof($nonExistentVar);
+
+// ERROR: Cannot resolve type &#039;NonExistentClass&#039;
+// $type = typeof(NonExistentClass);
+
+// ERROR: Cannot use default() with non-nullable union types
+// $val = default(int|string);
+
+// ERROR: nameof() only accepts symbol references
+// echo nameof(1 + 2);
+// echo nameof(getValue());
+
+// OK: All of these work correctly
+string $existingVar = &#039;hello&#039;;
+echo nameof($existingVar);     // &#039;existingVar&#039;
+echo default(int);             // 0
+$t = typeof(string);           // \Tyhp\Type instance
+bool $exists = variable_exists($existingVar); // true
+</code></pre></div>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>All four compile-time constructs (nameof, typeof, default, variable_exists) are resolved during compilation. They add zero runtime overhead — the PHP output contains only the resolved constant values or simple function calls.</p>
+</div>
+    </div>
+</div>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_2600_asyncAndAwait.html">&larr; Async and Await in Tyhp</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>
