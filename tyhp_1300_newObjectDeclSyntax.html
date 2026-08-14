@@ -416,7 +416,7 @@ class DefaultVehicle extends BaseModel
 }
 </code></pre></div>
 <h2>Constructor Property Promotion</h2>
-<p>Constructor property promotion works as in PHP 8. Constructor parameters may be promoted with visibility and <code>readonly</code>. There is no separate <code>init</code> modifier — use <code>readonly</code> when a property should be set only during construction. <code>clone $obj with [...]</code> can still update <code>readonly</code> properties on the copy; see the <code>with</code> keyword page.</p>
+<p>Constructor property promotion works as in PHP 8. Constructor parameters may be promoted with visibility and <code>readonly</code>. Use <code>readonly</code> when a property should be set only during construction. <code>clone $obj with [...]</code> can still update <code>readonly</code> properties on the copy; see the <code>with</code> keyword page.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Point
