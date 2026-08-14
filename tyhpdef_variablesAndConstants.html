@@ -263,9 +263,9 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhpdef lets you describe existing PHP global variables and constants to the Tyhp compiler. This enables type-safe access to PHP superglobals, user-defined globals, and defined constants from your Tyhp code. You can specify types, provide default values with the ?? operator, and alias names for cleaner Tyhp usage.</p>
+    <p>Tyhpdef lets you describe existing PHP global variables and constants to the Tyhp compiler. This enables type-safe access to PHP superglobals, user-defined globals, and defined constants from your Tyhp code. You can specify types, alias names with <code>as</code>, and mark top-level imports <code>deprecated</code> or <code>obsolete</code>.</p>
 <h2>Declaring Variables</h2>
-<p>Variable declarations specify a type followed by the variable name. When Tyhp imports a variable at runtime, it checks the value and attempts to coerce it to the declared type. If coercion fails, an ErrorException is thrown.</p>
+<p>Variable declarations specify a type followed by the variable name. The compiler uses that type when your Tyhp code reads the global. There is <strong>no</strong> runtime existence check or <code>ErrorException</code> coercion generated from the tyhpdef.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // Import a global variable with its type
@@ -277,54 +277,17 @@ string $globalAppName;
 // Import a typed array
 array&lt;string, mixed&gt; $globalSettings;
 </code></pre></div>
-<h2>Default Values with ??</h2>
-<p>The <code>??</code> operator provides a fallback value when the PHP variable is unset or null. This prevents runtime errors when accessing variables that may not exist.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-
-// If $debugMode is not set in PHP, default to false
-bool $debugMode ?? false;
-
-// If $maxRetries is not set, default to 3
-int $maxRetries ?? 3;
-
-// If $appName is not set, use a default string
-string $appName ?? &quot;MyApp&quot;;
-</code></pre></div>
+<h2><code>??</code> fallbacks (parsed, not applied)</h2>
+<p>The grammar accepts <code>??</code> after a tyhpdef variable or constant (<code>int $maxRetries ?? 3</code>). This alpha does <strong>not</strong> bind that default or emit <code>isset</code> / <code>defined()</code> / <code>ErrorException</code> checks. Treat <code>??</code> as reserved syntax: declare the type you actually use, and handle missing PHP globals in Tyhp/PHP yourself.</p>
 <h2>Variable Aliasing</h2>
 <p>Variables can be aliased using <code>as $newName</code> so your Tyhp code uses a different name than the PHP global.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // Import $blah1 from PHP as $globalGuest in Tyhp
 Guest $blah1 as $globalGuest;
-
-// Import and alias with a default
-string $legacy_app_name as $appName ?? &quot;DefaultApp&quot;;
 </code></pre></div>
-<h2>Import by Reference</h2>
-<p>By default, imported scalar variables are copies — changes in Tyhp do not affect the PHP global and vice versa. To keep changes synchronized, import by reference using <code>&amp;</code>. Object variables are always references to the same instance, even without <code>&amp;</code>.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-
-// Copy: changes in Tyhp won&#039;t affect the PHP global
-int $requestCount;
-
-// Reference: changes are synchronized with PHP
-int &amp;$sharedCounter;
-
-// Reference with alias and default
-string &amp;$rawInput as $userInput ?? &quot;&quot;;
-</code></pre></div>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>Object variables are always references to the same instance regardless of whether &amp; is used. The &amp; modifier only matters for scalar types (int, float, string, bool, array).</p>
-</div>
-    </div>
-</div>
+<h2>Import by reference</h2>
+<p>Tyhpdef variable declarations do <strong>not</strong> accept <code>&amp;</code>. <code>int &amp;$sharedCounter</code> is not a tyhpdef form. Object values are PHP references as usual; scalars are whatever PHP already stored.</p>
 <h2>Declaring Constants</h2>
 <p>Constants are declared using the <code>const</code> keyword followed by the type and name. Constants are always immutable and globally accessible.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -336,16 +299,6 @@ const int MAX_CONNECTIONS;
 const float PI_PRECISE;
 const array&lt;string&gt; SUPPORTED_LOCALES;
 </code></pre></div>
-<h2>Constant Defaults with ??</h2>
-<p>Like variables, constants can have fallback values using <code>??</code>. The default is used if the constant is not defined in PHP at runtime.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-
-// Constants with defaults
-const float TAX_RATE ?? 0.08;
-const string DEFAULT_LOCALE ?? &quot;en_US&quot;;
-const int CACHE_TTL ?? 3600;
-const bool FEATURE_FLAG_ENABLED ?? false;
-</code></pre></div>
 <h2>Constant Aliasing</h2>
 <p>Constants can be aliased using the fully-qualified PHP name with <code>as</code> to use a different name in Tyhp.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -355,21 +308,16 @@ const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 const string \App\Config\DATABASE_URL as DB_URL;
 </code></pre></div>
 <h2>Superglobal Type Declarations</h2>
-<p>The compiler ships with built-in type information for PHP superglobals (<code>$_GET</code>, <code>$_POST</code>, <code>$_SERVER</code>, etc.), so you do not need to declare them yourself. However, if you need to narrow their types for a specific project, you can redeclare them in a project-level tyhpdef file.</p>
+<p>PHP superglobals (<code>$_GET</code>, <code>$_POST</code>, <code>$_SERVER</code>, and similar) are typed by the <code>tyhp/php</code> package. You do not need to redeclare them unless you want a narrower project-specific type.</p>
 <h2>Deprecated and Obsolete</h2>
-<p>Both variables and constants can be marked as <code>deprecated</code> or <code>obsolete</code>.</p>
+<p>Both <strong>top-level</strong> variables and constants can be marked as <code>deprecated</code> or <code>obsolete</code>. Member-level markers on class constants are parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated const string OLD_API_KEY;
 deprecated string $legacyConfig;
 </code></pre></div>
 <h2>Runtime Behavior</h2>
-<p>When Tyhp imports a variable or constant at runtime, it performs two steps:</p>
-<ol>
-<li>Checks if the variable/constant exists. If it does not and no ?? default is provided, an ErrorException is thrown.</li>
-<li>Attempts to coerce the value to the declared type. If coercion fails, an ErrorException is thrown.</li>
-</ol>
-<p>Global variables and constants can also be imported inside regular Tyhp code (not just Tyhpdef files). This allows you to wrap the import in a try-catch block for graceful error handling.</p>
+<p>Tyhpdef imports are <strong>type information</strong>. The compiler does not emit existence checks, coercion, or <code>ErrorException</code> for missing globals. If a PHP variable or constant is unset, PHP's usual notices/errors apply at runtime.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -379,7 +327,7 @@ deprecated string $legacyConfig;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>DO provide ?? defaults for variables and constants that may not be defined in all environments. This prevents runtime errors in development vs production scenarios.</p>
+        <div class="callout-content"><p>DO declare accurate types for the globals you actually read. Handle missing values in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types), not via tyhpdef <code>??</code> (not applied in this alpha).</p>
 </div>
     </div>
 </div>
@@ -403,7 +351,7 @@ deprecated string $legacyConfig;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T import PHP superglobals ($_GET, $_POST, $_SERVER, etc.) in your tyhpdef files. The compiler already has built-in type information for them.</p>
+        <div class="callout-content"><p>DON'T import PHP superglobals ($_GET, $_POST, $_SERVER, etc.) unless you are intentionally narrowing the <code>tyhp/php</code> stubs. Duplicate declarations can conflict.</p>
 </div>
     </div>
 </div>

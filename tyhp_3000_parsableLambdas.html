@@ -310,11 +310,8 @@ $query-&gt;select(fn ($u) =&gt; $u-&gt;address-&gt;city);
 // path: [&#039;address&#039;, &#039;city&#039;], getPropertyName(): &#039;city&#039;, getPath(): &#039;address.city&#039;
 </code></pre></div>
 <h2>PropertyPath Members</h2>
-<div class="alert alert-secondary" role="alert"><h4><code>readonly string $sourceType</code></h4><br/><p>The fully qualified source type that the property chain starts from. For fn (User $u) =&gt; $u-&gt;address-&gt;city, this is 'User'.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>readonly string $resultType</code></h4><br/><p>The resolved type at the end of the property chain. For fn (User $u) =&gt; $u-&gt;address-&gt;city, this is 'string'.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>readonly array $path</code></h4><br/><p>The property names in the access chain, in order. For fn (User $u) =&gt; $u-&gt;address-&gt;city, this is ['address', 'city'].</p>
+<p>The constructor takes <code>$sourceType</code> and <code>$resultType</code> as strings and passes them to the parent <code>Expression</code>. PropertyPath itself does <strong>not</strong> expose <code>$sourceType</code> / <code>$resultType</code> properties. The parent stores the result type as <code>$returnType</code>. PropertyPath adds <code>readonly array&lt;string&gt; $path</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly array&lt;string&gt; $path</code></h4><br/><p>The property names in the access chain, in order. For fn (User $u) =&gt; $u-&gt;address-&gt;city, this is ['address', 'city'].</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly \Closure $callable</code></h4><br/><p>The compiled closure that can execute the property access. This allows PropertyPath to be used as a callable fallback.</p>
 </div>
@@ -398,6 +395,8 @@ $query = new QueryBuilder&lt;User&gt;()
 <div class="alert alert-secondary" role="alert"><h4><code>readonly \Closure $callable</code></h4><br/><p>The compiled closure for execution. Every Expression carries its original compiled closure so it can be executed as a fallback.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly string $returnType</code></h4><br/><p>The resolved return type of the expression.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>mixed $lastResult</code></h4><br/><p>The last value produced by <code>__invoke</code> or <code>PropertyPath::getValue</code>. Stashed before the return-type check so callers who catch <code>IncompatibleTypeException</code> can inspect the mismatched value.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__invoke(mixed ...$args): mixed</code></h4><br/><p>Execute the expression by delegating to the stored callable. This makes Expression callable via $expr($arg).</p>
 </div>
@@ -564,12 +563,17 @@ use \Tyhp\Expression\ExpressionSerializer;
 Expression&lt;User, bool&gt; $expr = fn ($u) =&gt; $u-&gt;age &gt; 18;
 string $json = ExpressionSerializer::toJson($expr);
 
-// Result:
+// Result wraps { parameters, returnType, body }.
+// The `{ &quot;nodeType&quot;: &quot;binary&quot;, ... }` object is the **body** only:
 // {
-//   &quot;nodeType&quot;: &quot;binary&quot;,
-//   &quot;operator&quot;: &quot;&gt;&quot;,
-//   &quot;left&quot;: { &quot;nodeType&quot;: &quot;propertyAccess&quot;, &quot;property&quot;: &quot;age&quot;, ... },
-//   &quot;right&quot;: { &quot;nodeType&quot;: &quot;constant&quot;, &quot;value&quot;: 18, &quot;type&quot;: &quot;int&quot; }
+//   &quot;parameters&quot;: [ { &quot;name&quot;: &quot;u&quot;, &quot;index&quot;: 0, &quot;type&quot;: &quot;...&quot; } ],
+//   &quot;returnType&quot;: &quot;bool&quot;,
+//   &quot;body&quot;: {
+//     &quot;nodeType&quot;: &quot;binary&quot;,
+//     &quot;operator&quot;: &quot;&gt;&quot;,
+//     &quot;left&quot;: { &quot;nodeType&quot;: &quot;propertyAccess&quot;, &quot;property&quot;: &quot;age&quot;, ... },
+//     &quot;right&quot;: { &quot;nodeType&quot;: &quot;constant&quot;, &quot;value&quot;: 18, &quot;type&quot;: &quot;int&quot; }
+//   }
 // }
 
 // Structural equality ignores the compiled closures — two independently

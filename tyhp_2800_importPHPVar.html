@@ -273,16 +273,13 @@
 <li>Auto-generated tyhpdefs (<code>generate_tyhpdef</code>) are <strong>not</strong> in this alpha — write declarations by hand</li>
 </ul>
 <h2>Importing Constants</h2>
-<p>PHP constants (defined with define() or const) are imported into tyhpdef files using the const keyword with an explicit type annotation. The null-coalescing operator (??) provides a default value when the constant may not be defined at runtime.</p>
+<p>PHP constants (defined with define() or const) are imported into tyhpdef files using the const keyword with an explicit type annotation.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 namespace App\Config;
 
 // Import a constant with its type
 const string APP_NAME;
-
-// Import with a default value using ?? (null coalescing)
-const int MAX_CONNECTIONS ?? 100;
 
 // Import with alias — use DATABASE_HOST in Tyhp code
 const string DB_HOST as DATABASE_HOST;
@@ -300,21 +297,15 @@ const bool PHP_ZTS;
 // Constants compile to direct PHP constant access
 echo APP_NAME;
 
-// Constants with ?? compile to defined() checks
-echo \defined(&#039;MAX_CONNECTIONS&#039;) ? MAX_CONNECTIONS : 100;
-
 // Aliased constants compile to the original constant name
 echo DB_HOST;
 </code></pre></div>
 <h2>Importing Variables</h2>
-<p>PHP global variables can be imported into tyhpdef files with explicit type annotations. The as keyword aliases the variable name within Tyhp code, and the ?? operator provides a default value for variables that may not be set at runtime.</p>
+<p>PHP global variables can be imported into tyhpdef files with explicit type annotations. The as keyword aliases the variable name within Tyhp code.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // Import a global variable with its type
 string $globalConfig;
-
-// Import with a default value
-int $maxRetries ?? 3;
 
 // Import with alias (different variable name in Tyhp)
 string $legacy_var as $modernVar;
@@ -333,9 +324,6 @@ array&lt;string, mixed&gt; $_POST;
 
 // Imported variables compile to direct PHP variable access
 echo $globalConfig;
-
-// Variables with ?? compile to null coalescing
-echo $maxRetries ?? 3;
 
 // Aliased variables compile to the original variable name
 echo $legacy_var;
@@ -400,26 +388,8 @@ interface JsonSerializable {
     public function jsonSerialize(): mixed;
 }
 </code></pre></div>
-<h2>Default Values with ??</h2>
-<p>The null-coalescing operator ?? in tyhpdef declarations provides a fallback value when the imported constant or variable is not defined at runtime. This is compiled to a null-coalescing check in the generated PHP, ensuring your code handles missing symbols gracefully.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-
-// If APP_DEBUG is not defined, default to false
-const bool APP_DEBUG ?? false;
-
-// If $dbPort is not set, default to 5432
-int $dbPort ?? 5432;
-
-// If LOG_LEVEL is not defined, default to &#039;info&#039;
-const string LOG_LEVEL ?? &#039;info&#039;;
-</code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-// ?? defaults compile to null-coalescing or defined() checks
-$appDebug = \defined(&#039;APP_DEBUG&#039;) ? APP_DEBUG : false;
-$port = $dbPort ?? 5432;
-$logLevel = \defined(&#039;LOG_LEVEL&#039;) ? LOG_LEVEL : &#039;info&#039;;
-</code></pre></div>
+<h2><code>??</code> on tyhpdef imports (not applied)</h2>
+<p>The grammar accepts <code>??</code> after a tyhpdef variable or constant (<code>int $dbPort ?? 5432</code>). This alpha does <strong>not</strong> bind that default or emit <code>defined()</code> / null-coalesce / <code>ErrorException</code> checks. Declare the type you actually use, and handle missing PHP globals in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types).</p>
 <h2>Aliasing with as</h2>
 <p>The as keyword renames an imported symbol within Tyhp code. This is useful when PHP constants or variables have names that conflict with Tyhp reserved words, or when you want a more descriptive name. The alias is compile-time only — the generated PHP uses the original name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -472,8 +442,8 @@ deprecated const string LEGACY_API_URL;
 <p>Tyhpdef files are loaded from multiple sources in a specific priority order. Higher-priority sources take precedence when the same symbol is declared in multiple places.</p>
 <ol>
 <li>Built-in compiler registrations — language types always available (highest priority).</li>
-<li>Composer packages with <code>package.tyhp.json</code> — <code>tyhp/php</code> (PHP 8.2-baseline builtins in this alpha) plus <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>.</li>
-<li>User project tyhpdefs — custom <code>.tyhpdef</code> files in your project, configured via include / <code>tyhpdefInclude</code> in <code>tyhp.json</code>.</li>
+<li>Composer packages with <code>package.tyhp.json</code> — <code>tyhp/php</code> (PHP builtins; stubs cover 8.2+ APIs) plus <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>.</li>
+<li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus <code>include</code> entries that end in <code>.tyhpdef</code> or <code>package.tyhp.json</code>. Omitting <code>tyhpdefInclude</code> loads <strong>no</strong> project <code>.tyhpdef</code> files (<code>tyhp init</code> does not set the glob).</li>
 </ol>
 <p>Auto-generated Composer package tyhpdefs are not produced in this alpha.</p>
 <h2>Best Practices</h2>
@@ -497,7 +467,7 @@ deprecated const string LEGACY_API_URL;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use ?? default values for constants and variables that may not be defined in all environments. This prevents runtime errors from undefined symbols.</p>
+        <div class="callout-content"><p>Handle missing PHP globals at the use site (<code>isset</code>, <code>??</code> in Tyhp code, or nullable types). Tyhpdef <code>??</code> is parsed but not applied in this alpha.</p>
 </div>
     </div>
 </div>
@@ -558,7 +528,7 @@ deprecated const string LEGACY_API_URL;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Assuming imported variables are non-null unless declared so. If a PHP variable might not be set at runtime, declare it as nullable (?type) or provide a ?? default value.</p>
+        <div class="callout-content"><p>Assuming imported variables are non-null unless declared so. If a PHP variable might not be set at runtime, declare it as nullable (<code>?type</code>) and check it in Tyhp.</p>
 </div>
     </div>
 </div>
@@ -597,7 +567,7 @@ deprecated const string LEGACY_API_URL;
 
 // OK: All of these are valid tyhpdef declarations
 const string APP_NAME;
-const int MAX_RETRIES ?? 3;
+const int MAX_RETRIES;
 string $globalConfig;
 deprecated function old_func(): void;
 </code></pre></div>

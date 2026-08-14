@@ -289,7 +289,7 @@ type UserId = int;
 type StringOrNull = string|null;
 
 // Complex type alias
-type Callback = callable(string, int): bool;
+type Callback = callable&lt;string, int, bool&gt;;
 
 // Using type aliases
 function findUser(UserId $id): ?User {
@@ -333,7 +333,8 @@ type Map&lt;TKey, TValue&gt; = array&lt;TKey, TValue&gt;;
 
 // Using generic type aliases
 Collection&lt;string&gt; $names = [&#039;Alice&#039;, &#039;Bob&#039;];
-Optional&lt;int&gt; $age = null;
+Optional&lt;int&gt; $age = null;           // T = int
+Optional $unknown = null;            // T defaults to mixed (generic defaults are shipped)
 Map&lt;string, User&gt; $users = [];
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -342,7 +343,16 @@ declare(strict_types=1);
 
 $names = [&#039;Alice&#039;, &#039;Bob&#039;];
 $age = null;
+$unknown = null;
 $users = [];
+</code></pre></div>
+<h2>Template String Types</h2>
+<p>Type aliases can name template (encaps) string types — double-quoted patterns in type position with <code>${T}</code> holes and quantifiers after <code>}</code> (<code>?</code>, <code>+</code>, <code>*</code>). They erase to <code>string</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type AnyString = &quot;${string}*&quot;;
+type ApiPath = &quot;api/${string}/items&quot;;
+type OptionalPrefix = &quot;${string}?id&quot;;
 </code></pre></div>
 <h2>Class-Level Type Aliases</h2>
 <p>Type aliases can be declared inside a class body. Class-level type aliases support visibility modifiers (public, protected, private), controlling whether the alias is accessible outside the class. They are useful for defining types that are conceptually owned by a class.</p>
@@ -353,20 +363,20 @@ class UserService {
     public type UserIdType = int;
 
     // Protected — accessible from subclasses
-    protected type UserData = array{name: string, email: string};
+    protected type UserData = array&lt;string, string&gt;;
 
     // Private — only accessible within this class
-    private type InternalState = array{cache: array, dirty: bool};
+    private type InternalState = array&lt;string, mixed&gt;;
 
     private InternalState $state;
 
-    public function findUser(UserIdType $id): ?User {
+    public function findUser(self\UserIdType $id): ?User {
         // ...
     }
 }
 
-// Accessing a public class-level type alias from outside
-UserService\UserIdType $id = 42;
+// Prefer self\Alias inside the class (as above). ClassName\Alias from outside
+// (e.g. UserService\UserIdType) may not bind/check completely yet.
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — class-level type aliases are erased,
@@ -380,11 +390,9 @@ class UserService {
         // ...
     }
 }
-
-$id = 42;
 </code></pre></div>
 <h2>Self, Static, and Parent Scoping</h2>
-<p>Class-level type aliases can be referenced using self, static, and parent, just like class constants and methods.</p>
+<p>Class-level type aliases can be referenced using self, static, and parent, just like class constants and methods. Prefer <code>self\Alias</code> (and <code>parent\Alias</code>) inside the class. Qualifying as <code>ClassName\Alias</code> from outside the class may not bind or check completely yet.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Base {
@@ -482,7 +490,7 @@ enum Status {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use type aliases to give meaningful names to complex type expressions — this improves code readability. For example, type Callback = callable(Request): Response is clearer than repeating the callable signature everywhere.</p>
+        <div class="callout-content"><p>Use type aliases to give meaningful names to complex type expressions — this improves code readability. For example, type Callback = callable&lt;string, int, bool&gt; is clearer than repeating the callable signature everywhere.</p>
 </div>
     </div>
 </div>

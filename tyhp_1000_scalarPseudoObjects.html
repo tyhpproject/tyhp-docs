@@ -263,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 03</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp allows you to call methods on scalar types (string, int, float, bool, array) as if they were objects. These methods map directly to PHP's built-in functions and are rewritten by the compiler at compile time. There is zero runtime overhead — no objects are created, no wrapper classes are instantiated. The compiler simply rewrites $value-&gt;method($args) into the corresponding PHP function call like \func($value, $args).</p>
+    <p>Tyhp lets you call methods on scalar values (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) using object syntax when you define <strong>extension</strong> methods. The compiler rewrites <code>$value-&gt;method($args)</code> to a static call on the extension class. There is zero runtime overhead — no wrapper objects are created.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -272,311 +272,88 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Scalar pseudo-object methods are syntactic sugar only. They compile to direct PHP function calls with no performance penalty.</p>
+        <div class="callout-content"><p>This alpha does <strong>not</strong> ship a built-in catalog of scalar methods (<code>toUpper</code>, <code>contains</code>, <code>len</code>, <code>map</code>, …). Those stdlib wrappers are commented out and are not in <code>package.tyhp.json</code>. User-defined <code>extension</code> methods work. Call PHP functions such as <code>\strtoupper($name)</code> unless you write (and import) your own extensions.</p>
 </div>
     </div>
 </div>
-<h2>How It Works</h2>
-<p>Each scalar type has a set of methods derived from PHP's built-in functions. The naming convention removes common prefixes to create shorter, more natural method names:</p>
-<ul>
-<li>string methods: Functions starting with str have the str prefix removed (e.g., strlen() becomes len(), strtolower() becomes tolower()). Functions starting with str_ have the str_ prefix removed (e.g., str_contains() becomes contains()).</li>
-<li>array methods: Functions starting with array_ have the array_ prefix removed (e.g., array_map() becomes map(), array_filter() becomes filter()).</li>
-<li>float methods: number_format() becomes format() (the number_ prefix is removed).</li>
-<li>int and bool methods: Use original function names directly (e.g., abs(), chr()).</li>
-</ul>
-<p>For functions where the scalar value is not the first parameter in PHP (such as explode() or implode()), the method is adapted so the scalar becomes the calling object and the arguments are rearranged accordingly.</p>
-<h2>String Methods</h2>
-<p>String methods cover PHP's extensive string function library. Functions prefixed with str or str_ have those prefixes removed.</p>
+<h2>How to Write an Extension</h2>
+<p>Declare an <code>extension</code> with methods whose first parameter is marked <code>extends Type $this</code> (the receiver). The method body is ordinary Tyhp; <code>$this</code> has the extended type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-string $name = &quot;Hello World&quot;;
+extension StringHelpers {
+    function toCamelCase(extends string $this): string {
+        return $this;
+    }
 
-// str_ prefix removed
-$has = $name-&gt;contains(&quot;World&quot;);     // \str_contains($name, &quot;World&quot;)
-$starts = $name-&gt;starts_with(&quot;He&quot;);  // \str_starts_with($name, &quot;He&quot;)
-$ends = $name-&gt;ends_with(&quot;ld&quot;);      // \str_ends_with($name, &quot;ld&quot;)
-$padded = $name-&gt;pad(20);            // \str_pad($name, 20)
-$repeated = $name-&gt;repeat(3);        // \str_repeat($name, 3)
-$replaced = $name-&gt;replace(&quot;World&quot;, &quot;Tyhp&quot;); // \str_replace(&quot;World&quot;, &quot;Tyhp&quot;, $name)
-$csv = $name-&gt;getcsv(&quot;,&quot;);           // \str_getcsv($name, &quot;,&quot;)
-$shuffled = $name-&gt;shuffle();        // \str_shuffle($name)
-$split = $name-&gt;split(2);            // \str_split($name, 2)
-$rot = $name-&gt;rot13();               // \str_rot13($name)
-$words = $name-&gt;word_count();        // \str_word_count($name)
+    function trimLower(extends string $this): string {
+        return \strtolower(\trim($this));
+    }
+}
 
-// str prefix removed (no underscore)
-$length = $name-&gt;len();              // \strlen($name)
-$upper = $name-&gt;toupper();           // \strtoupper($name)
-$lower = $name-&gt;tolower();           // \strtolower($name)
-$rev = $name-&gt;rev();                 // \strrev($name)
-$pos = $name-&gt;pos(&quot;World&quot;);          // \strpos($name, &quot;World&quot;)
-$cmp = $name-&gt;cmp(&quot;other&quot;);          // \strcmp($name, &quot;other&quot;)
-$tok = $name-&gt;tok(&quot; &quot;);              // \strtok($name, &quot; &quot;)
-
-// Standard function names (no prefix change)
-$sub = $name-&gt;substr(0, 5);          // \substr($name, 0, 5)
-$trimmed = $name-&gt;trim();            // \trim($name)
-$ltrimmed = $name-&gt;ltrim();          // \ltrim($name)
-$rtrimmed = $name-&gt;rtrim();          // \rtrim($name)
-$ucfirst = $name-&gt;ucfirst();         // \ucfirst($name)
-$lcfirst = $name-&gt;lcfirst();         // \lcfirst($name)
-$ucwords = $name-&gt;ucwords();         // \ucwords($name)
-$ord = $name-&gt;ord();                 // \ord($name)
-$md5 = $name-&gt;md5();                 // \md5($name)
-$sha1 = $name-&gt;sha1();               // \sha1($name)
-
-// Adapted parameter order: string is not the first PHP parameter
-$parts = $name-&gt;explode(&quot; &quot;);        // \explode(&quot; &quot;, $name)
-
-// Encoding/decoding
-$encoded = $name-&gt;urlencode();       // \urlencode($name)
-$decoded = $name-&gt;urldecode();       // \urldecode($name)
-$b64 = $name-&gt;base64_encode();       // \base64_encode($name)
-$json = $name-&gt;json_decode();        // \json_decode($name)
-$html = $name-&gt;htmlspecialchars();   // \htmlspecialchars($name)
-
-// Utility
-$isEmpty = $name-&gt;empty();           // empty($name)
-$isNum = $name-&gt;is_numeric();        // \is_numeric($name)
+string $name = &#039;hello_world&#039;;
+string $camel = $name-&gt;toCamelCase();
 </code></pre></div>
-<h2>Compiled PHP Output — String Methods</h2>
+<p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — all pseudo-object calls become function calls
+declare(strict_types=1);
 
-$name = &quot;Hello World&quot;;
-
-$has = \str_contains($name, &quot;World&quot;);
-$starts = \str_starts_with($name, &quot;He&quot;);
-$length = \strlen($name);
-$upper = \strtoupper($name);
-$lower = \strtolower($name);
-$rev = \strrev($name);
-$pos = \strpos($name, &quot;World&quot;);
-$sub = \substr($name, 0, 5);
-$trimmed = \trim($name);
-$parts = \explode(&quot; &quot;, $name);
-$encoded = \urlencode($name);
-$isEmpty = empty($name);
+$name = &#039;hello_world&#039;;
+$camel = \StringHelpers::toCamelCase($name);
 </code></pre></div>
-<h2>Integer Methods</h2>
+<p>When the extension lives in another file or namespace, import it with <code>use extension</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-int $myNegativeInt = -15;
-int $myPositiveInt = $myNegativeInt-&gt;abs();  // \abs($myNegativeInt)
+use extension App\Extensions\StringHelpers;
 
-// Math operations
-$bin = $myPositiveInt-&gt;decbin();              // \decbin($myPositiveInt)
-$hex = $myPositiveInt-&gt;dechex();              // \dechex($myPositiveInt)
-$oct = $myPositiveInt-&gt;decoct();              // \decoct($myPositiveInt)
-$ceil = $myPositiveInt-&gt;ceil();               // \ceil($myPositiveInt)
-$floor = $myPositiveInt-&gt;floor();             // \floor($myPositiveInt)
-$div = $myPositiveInt-&gt;intdiv(3);             // \intdiv($myPositiveInt, 3)
-$max = $myPositiveInt-&gt;max(10, 20);           // \max($myPositiveInt, 10, 20)
-$min = $myPositiveInt-&gt;min(10, 20);           // \min($myPositiveInt, 10, 20)
-
-// Conversion
-$chr = (65)-&gt;chr();                           // \chr(65)
-$float = $myPositiveInt-&gt;__toFloat();         // (float)$myPositiveInt
-$str = $myPositiveInt-&gt;__toString();          // (string)$myPositiveInt
-
-// Utility
-$isEmpty = $myPositiveInt-&gt;empty();           // empty($myPositiveInt)
+string $name = &#039;hello_world&#039;;
+string $camel = $name-&gt;toCamelCase();
 </code></pre></div>
-<h2>Compiled PHP Output — Integer Methods</h2>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-$myNegativeInt = -15;
-$myPositiveInt = \abs($myNegativeInt);
-
-$bin = \decbin($myPositiveInt);
-$hex = \dechex($myPositiveInt);
-$ceil = \ceil($myPositiveInt);
-$div = \intdiv($myPositiveInt, 3);
-$chr = \chr(65);
-$float = (float)$myPositiveInt;
-$str = (string)$myPositiveInt;
-</code></pre></div>
-<h2>Float Methods</h2>
+<p>See Use Statements for adaptation syntax (<code>as</code> / hide) on <code>use extension</code>.</p>
+<h2>Method Chaining (User Extensions)</h2>
+<p>If your extensions return the extended type (or another type that also has extensions in scope), you can chain calls. Each call is rewritten independently.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-float $price = 19.99;
+extension StringHelpers {
+    function trimmed(extends string $this): string {
+        return \trim($this);
+    }
 
-// Rounding
-$rounded = $price-&gt;round(1);         // \round($price, 1)
-$ceil = $price-&gt;ceil();               // \ceil($price)
-$floor = $price-&gt;floor();             // \floor($price)
+    function lower(extends string $this): string {
+        return \strtolower($this);
+    }
 
-// Formatting (number_format with number_ removed)
-$formatted = $price-&gt;format(2);                  // \number_format($price, 2)
-$formatted2 = $price-&gt;format(2, &quot;,&quot;, &quot;.&quot;);       // \number_format($price, 2, &quot;,&quot;, &quot;.&quot;)
-
-// Math
-$sqrt = $price-&gt;sqrt();               // \sqrt($price)
-$abs = $price-&gt;abs();                 // \abs($price)
-$log = $price-&gt;log();                 // \log($price)
-$exp = $price-&gt;exp();                 // \exp($price)
-$sin = $price-&gt;sin();                 // \sin($price)
-$cos = $price-&gt;cos();                 // \cos($price)
-
-// Checks
-$finite = $price-&gt;is_finite();        // \is_finite($price)
-$nan = $price-&gt;is_nan();              // \is_nan($price)
-
-// Division
-$divided = $price-&gt;fdiv(3.0);         // \fdiv($price, 3.0)
-$mod = $price-&gt;fmod(3.0);             // \fmod($price, 3.0)
-
-// Conversion
-$int = $price-&gt;__toInt();             // (int)$price
-$str = $price-&gt;__toString();          // (string)$price
-</code></pre></div>
-<h2>Compiled PHP Output — Float Methods</h2>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-$price = 19.99;
-
-$rounded = \round($price, 1);
-$ceil = \ceil($price);
-$floor = \floor($price);
-$formatted = \number_format($price, 2);
-$sqrt = \sqrt($price);
-$abs = \abs($price);
-$finite = \is_finite($price);
-$int = (int)$price;
-$str = (string)$price;
-</code></pre></div>
-<h2>Boolean Methods</h2>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-bool $flag = true;
-$str = $flag-&gt;__toString();           // (string)$flag
-$isEmpty = $flag-&gt;empty();            // empty($flag)
-</code></pre></div>
-<h2>Array Methods</h2>
-<p>Array methods are derived from PHP's array_* functions with the array_ prefix removed. Functions that don't start with array_ (like sort(), count(), implode()) keep their original names.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-array&lt;int&gt; $numbers = [3, 1, 4, 1, 5];
-
-// array_ prefix removed
-$mapped = $numbers-&gt;map(fn($n) =&gt; $n * 2);     // \array_map(fn($n) =&gt; $n * 2, $numbers)
-$filtered = $numbers-&gt;filter(fn($n) =&gt; $n &gt; 2); // \array_filter($numbers, fn($n) =&gt; $n &gt; 2)
-$keys = $numbers-&gt;keys();                       // \array_keys($numbers)
-$values = $numbers-&gt;values();                   // \array_values($numbers)
-$reversed = $numbers-&gt;reverse();                // \array_reverse($numbers)
-$unique = $numbers-&gt;unique();                   // \array_unique($numbers)
-$merged = $numbers-&gt;merge([6, 7]);              // \array_merge($numbers, [6, 7])
-$sliced = $numbers-&gt;slice(1, 3);                // \array_slice($numbers, 1, 3)
-$searched = $numbers-&gt;search(4);                // \array_search(4, $numbers)
-$popped = $numbers-&gt;pop();                      // \array_pop($numbers)
-$shifted = $numbers-&gt;shift();                   // \array_shift($numbers)
-$sum = $numbers-&gt;sum();                         // \array_sum($numbers)
-$product = $numbers-&gt;product();                 // \array_product($numbers)
-$isList = $numbers-&gt;is_list();                  // \array_is_list($numbers)
-$flipped = $numbers-&gt;flip();                    // \array_flip($numbers)
-$chunked = $numbers-&gt;chunk(2);                  // \array_chunk($numbers, 2)
-$reduced = $numbers-&gt;reduce(fn($c, $n) =&gt; $c + $n, 0); // \array_reduce($numbers, fn($c, $n) =&gt; $c + $n, 0)
-
-// No prefix change (these don&#039;t start with array_)
-$count = $numbers-&gt;count();                     // \count($numbers)
-$numbers-&gt;sort();                               // \sort($numbers)
-$numbers-&gt;rsort();                              // \rsort($numbers)
-$numbers-&gt;shuffle();                            // \shuffle($numbers)
-$current = $numbers-&gt;current();                 // \current($numbers)
-
-// Adapted parameter order: array is not the first PHP parameter
-$joined = $numbers-&gt;implode(&quot;, &quot;);              // \implode(&quot;, &quot;, $numbers)
-
-// Encoding
-$json = $numbers-&gt;json_encode();                // \json_encode($numbers)
-
-// Utility
-$isEmpty = $numbers-&gt;empty();                   // empty($numbers)
-</code></pre></div>
-<h2>Compiled PHP Output — Array Methods</h2>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-$numbers = [3, 1, 4, 1, 5];
-
-$mapped = \array_map(fn($n) =&gt; $n * 2, $numbers);
-$filtered = \array_filter($numbers, fn($n) =&gt; $n &gt; 2);
-$keys = \array_keys($numbers);
-$values = \array_values($numbers);
-$count = \count($numbers);
-\sort($numbers);
-$joined = \implode(&quot;, &quot;, $numbers);
-$json = \json_encode($numbers);
-$isEmpty = empty($numbers);
-</code></pre></div>
-<h2>Method Chaining</h2>
-<p>Scalar pseudo-object methods can be chained for fluent-style operations. Each method call in the chain is independently rewritten to the corresponding PHP function call.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+    function dashed(extends string $this): string {
+        return \str_replace(&#039; &#039;, &#039;-&#039;, $this);
+    }
+}
 
 string $input = &quot;  Hello World  &quot;;
-$result = $input-&gt;trim()-&gt;tolower()-&gt;replace(&quot; &quot;, &quot;-&quot;);
-// Result: &quot;hello-world&quot;
+$result = $input-&gt;trimmed()-&gt;lower()-&gt;dashed();
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — each chained method is expanded independently
 
 $input = &quot;  Hello World  &quot;;
-$result = \str_replace(&quot; &quot;, &quot;-&quot;, \strtolower(\trim($input)));
+$result = \StringHelpers::dashed(\StringHelpers::lower(\StringHelpers::trimmed($input)));
 </code></pre></div>
 <h2>Calling on Literal Values</h2>
-<p>Pseudo-object methods can be called on literal values. For integer and float literals, wrap the value in parentheses.</p>
+<p>User extension methods can be called on literals. Wrap integer and float literals in parentheses.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-$char = (65)-&gt;chr();          // \chr(65) — returns &#039;A&#039;
-$rounded = (3.14159)-&gt;round(2); // \round(3.14159, 2) — returns 3.14
-$parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;, &quot;a,b,c&quot;)
+extension IntHelpers {
+    function asChar(extends int $this): string {
+        return \chr($this);
+    }
+}
+
+extension StringHelpers {
+    function parts(extends string $this, string $sep): array {
+        return \explode($sep, $this);
+    }
+}
+
+$char = (65)-&gt;asChar();
+$parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
 </code></pre></div>
-<h2>Complete Method Reference</h2>
-<h2>int Methods</h2>
-<ul>
-<li><code>abs(): int</code> — Absolute value</li>
-<li><code>ceil(): int</code> — Round up</li>
-<li><code>floor(): int</code> — Round down</li>
-<li><code>decbin(): string</code> — Decimal to binary string</li>
-<li><code>dechex(): string</code> — Decimal to hexadecimal string</li>
-<li><code>decoct(): string</code> — Decimal to octal string</li>
-<li><code>intdiv(int $num2): int</code> — Integer division</li>
-<li><code>max(int|float ...$values): float|int</code> — Maximum of values</li>
-<li><code>min(int|float ...$values): float|int</code> — Minimum of values</li>
-<li><code>chr(): string</code> — ASCII character for code point</li>
-<li><code>__toFloat(): float</code> — Convert to float</li>
-<li><code>__toString(): string</code> — Convert to string</li>
-<li><code>empty(): bool</code> — Check if empty (zero)</li>
-</ul>
-<h2>float Methods</h2>
-<ul>
-<li><code>abs(): float</code> — Absolute value</li>
-<li><code>ceil(): int</code> — Round up</li>
-<li><code>floor(): int</code> — Round down</li>
-<li><code>round(int $precision = 0, int $mode = PHP_ROUND_HALF_UP): float</code> — Round to precision</li>
-<li><code>sqrt(): float</code> — Square root</li>
-<li><code>log(float $base = M_E): float</code> — Natural logarithm</li>
-<li><code>log10(): float</code> — Base-10 logarithm</li>
-<li><code>exp(): float</code> — e raised to the power</li>
-<li><code>sin(): float</code> — Sine</li>
-<li><code>cos(): float</code> — Cosine</li>
-<li><code>tan(): float</code> — Tangent</li>
-<li><code>asin(): float</code> — Arc sine</li>
-<li><code>acos(): float</code> — Arc cosine</li>
-<li><code>atan(): float</code> — Arc tangent</li>
-<li><code>deg2rad(): float</code> — Degrees to radians</li>
-<li><code>rad2deg(): float</code> — Radians to degrees</li>
-<li><code>fdiv(float $num2): float</code> — Float division (IEEE 754)</li>
-<li><code>fmod(float $num2): float</code> — Float modulus</li>
-<li><code>is_finite(): bool</code> — Check if finite</li>
-<li><code>is_infinite(): bool</code> — Check if infinite</li>
-<li><code>is_nan(): bool</code> — Check if NaN</li>
-<li><code>max(int|float ...$values): float|int</code> — Maximum of values</li>
-<li><code>min(int|float ...$values): float|int</code> — Minimum of values</li>
-<li><code>format(int $decimals = 0, ?string $decimal_separator = &quot;.&quot;, ?string $thousands_separator = &quot;,&quot;): string</code> — Format as string (maps to number_format)</li>
-<li><code>__toInt(): int</code> — Convert to int</li>
-<li><code>__toString(): string</code> — Convert to string</li>
-<li><code>empty(): bool</code> — Check if empty (zero)</li>
-</ul>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -586,7 +363,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use pseudo-object syntax for readability — $name-&gt;trim()-&gt;tolower() reads more naturally than \strtolower(\trim($name)).</p>
+        <div class="callout-content"><p>Write small extension methods that wrap <code>\str_*</code> / <code>\array_*</code> (or your own helpers) when the method-call style helps readability. Import them with <code>use extension</code> in each file that needs them.</p>
 </div>
     </div>
 </div>
@@ -598,7 +375,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Chain methods for fluent-style operations. Each call in the chain compiles to a nested PHP function call with no overhead.</p>
+        <div class="callout-content"><p>Chain only extensions you defined (or imported). There is no built-in <code>$name-&gt;trim()-&gt;tolower()</code> catalog in this alpha — use <code>\strtolower(\trim($name))</code> or your own wrappers.</p>
 </div>
     </div>
 </div>
@@ -610,19 +387,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use pseudo-object methods on literal values by wrapping them in parentheses: (65)-&gt;chr() returns 'A', (3.14)-&gt;round(1) returns 3.1.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Remember that array methods like map() and filter() reorder parameters — the array becomes the calling object and the callback becomes the first argument.</p>
+        <div class="callout-content"><p>Keep the receiver as <code>extends string $this</code> (or <code>extends array $this</code>, …) so call sites read as instance methods while emit stays a static call.</p>
 </div>
     </div>
 </div>
@@ -635,7 +400,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't expect actual object instances — these are compile-time rewrites. Calling a non-existent pseudo-object method produces a compile error.</p>
+        <div class="callout-content"><p>Don't assume PHP string/array functions are already methods on scalars. <code>$name-&gt;toUpper()</code> and <code>$numbers-&gt;map(...)</code> are not available unless you define those extensions. Use <code>\strtoupper($name)</code> / <code>\array_map(...)</code> instead.</p>
 </div>
     </div>
 </div>
@@ -647,7 +412,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't try to assign scalar methods to variables — $fn = $name-&gt;trim is not valid. These are method calls, not callable properties.</p>
+        <div class="callout-content"><p>Don't expect actual object instances — these are compile-time rewrites. Calling a method that is not an imported extension produces a compile error.</p>
 </div>
     </div>
 </div>
@@ -659,7 +424,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't confuse Tyhp's scalar pseudo-object methods with PHP's arrow functions. fn($x) =&gt; $x + 1 is a PHP anonymous arrow function, while $x-&gt;abs() is a scalar pseudo-object method call.</p>
+        <div class="callout-content"><p>Don't import an extension class with a plain <code>use</code> and expect methods to attach. Use <code>use extension</code> to activate extension methods on the target type (same-file extensions are already in scope).</p>
 </div>
     </div>
 </div>
@@ -671,7 +436,7 @@ $parts = &quot;a,b,c&quot;-&gt;explode(&quot;,&quot;); // \explode(&quot;,&quot;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't assume in-place mutation — methods like sort() and shuffle() on arrays may or may not mutate in place depending on the underlying PHP function. Check the PHP documentation for each function's behavior.</p>
+        <div class="callout-content"><p>Don't try to assign scalar methods to variables — <code>$fn = $name-&gt;trimmed</code> is not valid. These are method calls, not callable properties.</p>
 </div>
     </div>
 </div>

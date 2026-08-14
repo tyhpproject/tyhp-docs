@@ -309,7 +309,7 @@ class UserModel extends BaseModel
 
     public function __construct(string $name): parent(false, 19, $name)
     {
-        $this-&gt;displayName = $name-&gt;toupper();
+        $this-&gt;displayName = \strtoupper($name);
     }
 }
 </code></pre></div>
@@ -347,7 +347,7 @@ class Child extends BaseModel
 
     public function __construct(string $input): parent(true, 5, $input)
     {
-        $input = $input-&gt;tolower();
+        $input = \strtolower($input);
         $this-&gt;processed = $input;
     }
 }
@@ -379,7 +379,7 @@ class Child extends BaseModel
     </div>
 </div>
 <h2>Passing Static Values and Parameters</h2>
-<p>The arguments in parent(...) can be static values (literals, constants) or parameters from the current constructor. They cannot be expressions that depend on $this or computed values, since the parent call happens before the constructor body.</p>
+<p>Because parent(...) is inserted at the start of the constructor body, prefer literals, constants, and incoming parameters. Avoid <code>$this</code> and method calls in those arguments — the instance is not fully constructed yet. The compiler does not currently reject those expressions; treat this as guidance, not a hard check.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Vehicle extends BaseModel
@@ -431,6 +431,24 @@ class Point
 $p = new Point(1.0, 2.0);
 $q = clone $p with [z =&gt; 5.0];
 </code></pre></div>
+<h2>Property Accessors (PHP 8.4 Hooks)</h2>
+<p>Tyhp supports PHP 8.4 property hooks (<code>get</code> / <code>set</code>) on class properties. Hook bodies match PHP: a parameter-less <code>get { ... }</code>, optional <code>set { ... }</code> (the incoming value is <code>$value</code>), or a typed <code>set(string $value) { ... }</code>. <code>&amp;get</code> and <code>final get</code> / <code>final set</code> are also valid.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+final class Widget {
+    private string $_name = &#039;&#039;;
+
+    public string $name {
+        get {
+            return $this-&gt;_name;
+        }
+        set(string $value) {
+            $this-&gt;_name = $value;
+        }
+    }
+}
+</code></pre></div>
+<p>On PHP 8.4+, the compiler emits native hook syntax. On PHP 8.2–8.3, it lowers the same source through a polyfill (<code>\Tyhp\Concerns\UsesPropertyAccessors</code> and <code>$this-&gt;__tyhpPropertyHook</code>) so hooked properties work without native PHP 8.4 hooks.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -477,47 +495,47 @@ $q = clone $p with [z =&gt; 5.0];
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not use : parent(...) on a class that has no parent class — the compiler reports an error.</p>
+        <div class="callout-content"><p>Do not use : parent(...) on a class that has no parent class — the emitter still inserts <code>parent::__construct(...)</code>, which PHP will reject at runtime. Diagnostic TYHP4065 (<code>CheckerParentWithoutParent</code>) is for the type name <code>parent</code>, not this constructor-chaining form.</p>
 </div>
     </div>
 </div>
-<div class="callout-block callout-block-danger me-1">
+<div class="callout-block callout-block-warning">
     <div class="content">
         <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
             </span>
-            Danger
+            Warning
         </h4>
-        <div class="callout-content"><p>Do not use computed expressions or $this in parent(...) arguments — only static values and incoming parameters are allowed since the parent call happens before the constructor body.</p>
+        <div class="callout-content"><p>Prefer not to use <code>$this</code> or method calls in parent(...) arguments — the parent call runs before the constructor body. The compiler does not currently reject those expressions.</p>
 </div>
     </div>
 </div>
-<div class="callout-block callout-block-danger me-1">
+<div class="callout-block callout-block-warning">
     <div class="content">
         <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
             </span>
-            Danger
+            Warning
         </h4>
-        <div class="callout-content"><p>Do not manually call parent::__construct() when using : parent(...) — the compiler inserts the call automatically and a manual call would result in a double invocation error.</p>
+        <div class="callout-content"><p>Do not also write a manual <code>parent::__construct()</code> when using : parent(...) — the compiler already inserts the call, so a second call would run the parent constructor twice. The compiler does not currently diagnose the duplicate.</p>
 </div>
     </div>
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR: no parent class to chain to
+// Avoid: no parent class to chain to (emits parent::__construct anyway)
 // class NoParent {
 //     public function __construct(): parent() {}
 // }
 
-// ERROR: $this not available in parent args
+// Avoid: $this / method calls in parent args (not a compiler error today)
 // class Bad extends BaseModel {
 //     public function __construct(string $name): parent(true, 0, $this-&gt;process($name)) {}
 // }
 
-// ERROR: double parent call
+// Avoid: double parent call (not a compiler error today)
 // class Double extends BaseModel {
 //     public function __construct(string $name): parent(true, 0, $name) {
 //         parent::__construct(true, 0, $name);
@@ -526,10 +544,7 @@ $q = clone $p with [z =&gt; 5.0];
 </code></pre></div>
 <h2>Compiler Errors</h2>
 <ul>
-<li>Using : parent(...) on a class that does not extend another class.</li>
 <li>Passing arguments to parent(...) that don't match the parent constructor's parameter types.</li>
-<li>Using $this or method calls in parent(...) arguments.</li>
-<li>Manually calling parent::__construct() in the body when : parent(...) is already specified.</li>
 </ul>
 
 </section>

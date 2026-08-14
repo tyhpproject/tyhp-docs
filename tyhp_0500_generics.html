@@ -390,7 +390,7 @@ enum Result&lt;T&gt; {
     case Ok;
     case Error;
 
-    public function map&lt;U&gt;(callable(T): U $fn): Result&lt;U&gt; {
+    public function map&lt;U&gt;(callable&lt;T, U&gt; $fn): Result&lt;U&gt; {
         // ...
     }
 }
@@ -412,7 +412,7 @@ function firstOrNull&lt;T&gt;(array&lt;T&gt; $items): ?T {
 
 // Generic method on a class
 class Transformer {
-    public function transform&lt;TIn, TOut&gt;(TIn $input, callable(TIn): TOut $fn): TOut {
+    public function transform&lt;TIn, TOut&gt;(TIn $input, callable&lt;TIn, TOut&gt; $fn): TOut {
         return $fn($input);
     }
 }
@@ -475,13 +475,12 @@ function toNumber(int|float|string $value): float {
 <p>Generic type parameters can have default types, specified with = after the optional constraint. When a consumer does not provide a type argument for a defaulted parameter, the default is used. This enables cleaner APIs where the common case requires no explicit parameterization. Defaults are supported on classes, interfaces, traits, enums, type aliases, functions, and methods.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Promise defaults TReturn to void — the common case for async procedures
-class Promise&lt;TReturn extends void|mixed = void&gt; {
+// Promise defaults TReturn to mixed (runtime: tyhp/async)
+class Promise&lt;TReturn extends void|mixed = mixed&gt; {
     // ...
 }
 
-// All equivalent — TReturn defaults to void
-Promise $p1 = new Promise();
+Promise $p1 = new Promise();            // TReturn = mixed
 Promise&lt;void&gt; $p2 = new Promise&lt;void&gt;();
 
 // Override the default
@@ -518,7 +517,7 @@ class Counter&lt;T extends Countable = array&gt; {
     // ...
 }
 
-// ERROR: TYHP4061 — string does not implement Countable
+// ERROR: TYHP4310 — string does not implement Countable
 // class BadCounter&lt;T extends Countable = string&gt; {
 //     ...
 // }
@@ -531,7 +530,7 @@ class Counter&lt;T extends Countable = array&gt; {
             </span>
             Warning
         </h4>
-        <div class="callout-content"><p>Error TYHP4061 (CheckerGenericDefaultDoesNotSatisfyConstraint): &quot;Default type 'string' does not satisfy constraint 'Countable' on generic parameter 'T'&quot;</p>
+        <div class="callout-content"><p>Error TYHP4310 (CheckerGenericDefaultDoesNotSatisfyConstraint): &quot;Default type 'string' does not satisfy constraint 'Countable' on generic parameter 'T'&quot;</p>
 </div>
     </div>
 </div>
@@ -544,7 +543,7 @@ class Valid&lt;T, U = int&gt; {}
 class AlsoValid&lt;T, U = int, V = string&gt; {}
 class AllDefaults&lt;T = mixed&gt; {}
 
-// ERROR: TYHP4062 — U has no default but follows T which has one
+// ERROR: TYHP4311 — U has no default but follows T which has one
 // class Invalid&lt;T = int, U&gt; {}
 </code></pre></div>
 <div class="callout-block callout-block-danger me-1">
@@ -555,7 +554,7 @@ class AllDefaults&lt;T = mixed&gt; {}
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Error TYHP4062 (CheckerGenericNonDefaultAfterDefault): &quot;Generic parameter 'U' without a default cannot follow parameter 'T' which has a default&quot;</p>
+        <div class="callout-content"><p>Error TYHP4311 (CheckerGenericNonDefaultAfterDefault): &quot;Generic parameter 'U' without a default cannot follow parameter 'T' which has a default&quot;</p>
 </div>
     </div>
 </div>
@@ -691,7 +690,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use defaults on type parameters when there is a sensible common case (e.g., Promise&lt;T = void&gt;). This reduces boilerplate for callers.</p>
+        <div class="callout-content"><p>Use defaults on type parameters when there is a sensible common case (e.g., <code>Promise&lt;TReturn extends void|mixed = mixed&gt;</code>). This reduces boilerplate for callers.</p>
 </div>
     </div>
 </div>
@@ -740,7 +739,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't place a non-defaulted type parameter after a defaulted one — this produces error TYHP4062.</p>
+        <div class="callout-content"><p>Don't place a non-defaulted type parameter after a defaulted one — this produces error TYHP4311.</p>
 </div>
     </div>
 </div>
@@ -752,7 +751,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't specify a default type that does not satisfy the constraint — this produces error TYHP4061.</p>
+        <div class="callout-content"><p>Don't specify a default type that does not satisfy the constraint — this produces error TYHP4310.</p>
 </div>
     </div>
 </div>
@@ -776,7 +775,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't create self-referencing defaults (e.g., &lt;T = T&gt;) — this is a circular reference error.</p>
+        <div class="callout-content"><p>Don't create self-referencing defaults (e.g., &lt;T = T&gt;) — this is circular-reference error TYHP4312.</p>
 </div>
     </div>
 </div>

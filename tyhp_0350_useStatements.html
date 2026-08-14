@@ -384,10 +384,8 @@ string $camel = $name-&gt;toCamelCase();
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
 
-use App\Extensions\StringHelpers;
-
 $name = &#039;hello_world&#039;;
-$camel = StringHelpers::toCamelCase($name);
+$camel = \StringHelpers::toCamelCase($name);
 </code></pre></div>
 <h2>Tyhpdef Use Statements</h2>
 <p>In tyhpdef files, use statements serve the same purpose -- importing type symbols into the current scope. Tyhpdef files describe external PHP library signatures for the Tyhp compiler. The same use statement forms (including group use, typed use, and use extension) are supported in tyhpdef files.</p>

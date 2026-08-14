@@ -263,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhpdef provides two keywords for marking imported declarations as outdated: deprecated and obsolete. These keywords control how the Tyhp compiler responds when code references marked items. The deprecated keyword generates compiler warnings, encouraging migration away from the item while still allowing its use. The obsolete keyword generates compiler errors, hard-blocking usage entirely. Both keywords can be applied to nearly any declaration type and at any level — from entire classes down to individual methods, properties, constants, and enum cases.</p>
+    <p>Tyhpdef provides two keywords for marking imported declarations as outdated: deprecated and obsolete. These keywords control how the Tyhp compiler responds when code references marked items. The deprecated keyword generates compiler warnings, encouraging migration away from the item while still allowing its use. The obsolete keyword generates compiler errors, hard-blocking usage entirely. Both keywords can be applied to nearly any <strong>top-level</strong> declaration — functions, classes, interfaces, traits, enums, constants, and variables. Member-level <code>deprecated</code> / <code>obsolete</code> (methods, properties, enum cases) parse in this alpha but are <strong>not</strong> copied onto symbols, so they do not warn or error.</p>
 <h2>The deprecated Keyword</h2>
 <p>When an item is marked as deprecated, any reference to it in Tyhp code produces a compiler warning. The code still compiles and runs, but the warning signals that the item should be replaced with a newer alternative.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -272,12 +272,12 @@ deprecated function \mysql_connect(
     string $server,
     string $username,
     string $password
-): resource|false;
+): \mysqli|false;
 
 deprecated function \mysql_query(
     string $query,
-    resource $link
-): resource|false;
+    \mysqli $link
+): \mysqli|false;
 
 deprecated const int SORT_REGULAR;
 
@@ -302,39 +302,33 @@ obsolete class UnsafeSerializer {
 }
 </code></pre></div>
 <h2>Keyword Placement</h2>
-<p>The deprecated or obsolete keyword must appear before all other modifiers on a declaration. For class members, it appears before visibility and other modifiers.</p>
+<p>The deprecated or obsolete keyword must appear before all other modifiers on a declaration. For class members, the grammar allows it before visibility, but this alpha only <strong>enforces</strong> the keywords on top-level symbols.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
+deprecated class LegacyLogger {
+    public function log(string $message): void;
+}
+
 class UserService {
-    deprecated public function getUser(int $id): ?User;
+    // Parsed, not enforced in this alpha:
+    // deprecated public function getUser(int $id): ?User;
     public function findById(int $id): ?User;
-
-    deprecated public static function getInstance(): static;
-
-    deprecated public const int MAX_RESULTS;
-    public const int DEFAULT_LIMIT;
 }
 </code></pre></div>
 <h2>Applying to Different Declaration Types</h2>
 <p>Both keywords can be applied to any of the following declaration types:</p>
 <ul>
 <li>Functions (global and namespaced)</li>
-<li>Classes (including abstract and final classes)</li>
-<li>Interfaces</li>
-<li>Traits</li>
-<li>Enums</li>
-<li>Methods within classes, interfaces, traits, and enums</li>
-<li>Properties within classes and traits</li>
-<li>Constants (global and class-level)</li>
-<li>Enum cases</li>
-<li>Individual function/method overloads</li>
+<li>Classes, interfaces, traits, and enums (the type itself)</li>
+<li>Top-level constants and variables</li>
+<li>Top-level function overloads (each overload is its own top-level declaration)</li>
 </ul>
+<p>Not enforced yet: methods, properties, class constants, and enum cases.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-// Deprecated enum with a deprecated case
-enum Status {
+deprecated enum LegacyStatus {
     case Active;
-    deprecated case Inactive;
+    case Inactive;
     case Deleted;
     case Archived;
 }
@@ -351,29 +345,20 @@ deprecated interface Cacheable {
 }
 </code></pre></div>
 <h2>Deprecating Specific Overloads</h2>
-<p>When a function or method has multiple overloads, you can deprecate individual overloads without affecting the others. This lets you guide users away from a specific calling pattern while keeping the rest.</p>
+<p>When a function has multiple <strong>top-level</strong> overloads, you can deprecate individual overloads without affecting the others. Member-level overload markers are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // Only the string-based connection is deprecated
 deprecated function \connectDb(string $connectionString): DbConnection;
 function \connectDb(DbConfig $config): DbConnection;
-
-class FileSystem {
-    // Deprecated: use the options-object overload instead
-    deprecated public function read(string $path, bool $binary): string;
-    public function read(string $path, ReadOptions $options): string;
-}
 </code></pre></div>
 <h2>Class-Level vs. Member-Level Deprecation</h2>
-<p>When a class itself is marked as deprecated, using the class in any way (instantiation, type hints, extends, implements) triggers a warning. Individual non-deprecated members within a deprecated class will still trigger the class-level warning when the class is referenced.</p>
+<p>When a class itself is marked as deprecated, using the class in any way (instantiation, type hints, extends, implements) triggers a warning. Member-level <code>deprecated</code> on methods inside the class is parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated class LegacyCache {
-    // This method is still valid, but using the class triggers a warning
     public function get(string $key): mixed;
-
-    // This method has its own deprecation on top of the class-level one
-    deprecated public function getMultiple(array&lt;string&gt; $keys): array&lt;mixed&gt;;
+    public function getMultiple(array&lt;string&gt; $keys): array&lt;mixed&gt;;
 }
 </code></pre></div>
 <h2>Effect in Tyhp Code</h2>
@@ -382,12 +367,9 @@ deprecated class LegacyCache {
 // Warning: LegacyLogger is deprecated
 LegacyLogger $logger = new LegacyLogger();
 
-// Warning: getUser is deprecated
+// OK: class is not deprecated (member-level deprecated is not enforced yet)
 UserService $svc = new UserService();
 ?User $user = $svc-&gt;getUser(123);
-
-// OK: findById is not deprecated
-?User $user2 = $svc-&gt;findById(123);
 
 // Error: OldDataStore is obsolete -- will not compile
 // class Storage implements OldDataStore { }
@@ -445,10 +427,10 @@ UserService $svc = new UserService();
 <li><code>deprecated</code> generates a compiler warning each time the item is referenced</li>
 <li><code>obsolete</code> generates a compiler error, preventing compilation entirely</li>
 <li>Both keywords must appear before all other modifiers on a declaration</li>
-<li>Can be applied to functions, classes, interfaces, traits, enums, methods, properties, constants, and enum cases</li>
-<li>Individual overloads can be deprecated or made obsolete independently</li>
+<li>Can be applied to top-level functions, classes, interfaces, traits, enums, constants, and variables</li>
+<li>Top-level function overloads can be deprecated or made obsolete independently</li>
 <li>A deprecated class triggers warnings on any usage (instantiation, type hints, inheritance)</li>
-<li>Member-level deprecation can coexist with class-level deprecation</li>
+<li>Member-level <code>deprecated</code> / <code>obsolete</code> parse but are not enforced in this alpha</li>
 </ul>
 
 </section>

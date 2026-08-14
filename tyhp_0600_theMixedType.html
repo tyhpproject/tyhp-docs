@@ -282,12 +282,12 @@ $value = null;
 $value = new SomeObject();
 </code></pre></div>
 <h2>Requiring Type Guards Before Use</h2>
-<p>Tyhp enforces that you narrow a mixed value to a specific type before performing type-specific operations. This is done through type guards: instanceof/is checks, type-checking functions (is_string, is_int, etc.), null checks, and user-defined type guard functions.</p>
+<p>Tyhp enforces that you narrow a mixed value to a specific type before performing type-specific operations. This is done through type guards: instanceof/is checks (scalars emit <code>\Tyhp\Type::is(...)</code>), type-checking functions (is_string, is_int, etc.), null checks (<code>$item === null</code> / <code>$item !== null</code>, not <code>$item is null</code>), and user-defined type guard functions.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 function processValue(mixed $value): string {
     // ERROR — cannot call string methods on mixed
-    // return $value-&gt;toUpperCase();
+    // return \strtoupper($value);
 
     // ERROR — cannot perform arithmetic on mixed
     // return $value + 1;
@@ -309,7 +309,7 @@ function processValue(mixed $value): string {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 function describe(mixed $item): string {
-    if ($item is null) {
+    if ($item === null) {
         return &#039;null&#039;;
     }
     // After the null check, $item is non-null mixed
@@ -326,7 +326,7 @@ function describe(mixed $item): string {
 
     if (\is_string($item)) {
         // $item is automatically string here
-        return &#039;String: &#039; . $item-&gt;toupper();
+        return &#039;String: &#039; . \strtoupper($item);
     }
 
     return &#039;Unknown type&#039;;

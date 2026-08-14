@@ -297,17 +297,22 @@ struct UserProfile {
 // No PHP code is generated for the struct definition.
 </code></pre></div>
 <h2>Property Types and Defaults</h2>
-<p>Every struct property must have an explicit type annotation. Type inference is not allowed in struct property declarations. Non-nullable scalar properties default to their type's zero value (0 for int, 0.0 for float, '' for string, false for bool, [] for array). Nullable properties without an explicit default automatically default to null, making them optional.</p>
+<p>Every struct property must have an explicit type annotation. Type inference is not allowed in struct property declarations. Properties without an initializer (<code>=</code>) are <strong>required</strong> at <code>new</code> — there are no implicit zeros for non-nullable fields. Omitting a required key is <strong>TYHP CheckerStructRequiredPropertyNotSet</strong>. Nullable properties without an explicit default default to <code>null</code> and are optional.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 struct Config {
-    string $host;                  // Required — defaults to &#039;&#039; (string default)
-    int $port;                     // Required — defaults to 0 (int default)
+    string $host;                  // Required — must be set at `new` (no implicit &#039;&#039;)
+    int $port = 0;                 // Optional — default 0
     ?string $username;             // Optional — nullable defaults to null
     ?string $password;             // Optional — nullable defaults to null
-    bool $useSsl;                  // Required — defaults to false (bool default)
-    float $timeout;                // Required — defaults to 0.0 (float default)
+    bool $useSsl = false;          // Optional — default false
+    float $timeout = 0.0;          // Optional — default 0.0
 }
+
+// ERROR — required $host is missing
+// Config $bad = new Config();
+
+Config $ok = new Config() with [host =&gt; &#039;localhost&#039;];
 </code></pre></div>
 <h2>Array Key Aliases</h2>
 <p>Struct properties can be aliased to arbitrary PHP array keys using the as keyword. The alias may be a quoted string or a decimal integer. This lets you map a clean Tyhp property name to an existing array key that is not a valid PHP variable name — special characters, spaces, nested-looking paths, or numeric indexes. This is particularly useful when working with external data sources like APIs, databases, or positional argument lists.</p>
@@ -324,7 +329,11 @@ struct CallbackArgs {
     ?mixed 1 as $arg2;
 }
 
-ApiResponse $response = new ApiResponse();
+ApiResponse $response = new ApiResponse() with [
+    statusCode =&gt; 0,
+    errorMessage =&gt; &#039;&#039;,
+    items =&gt; [],
+];
 $response-&gt;statusCode = 200;     // Accesses $response[&#039;status_code&#039;]
 $response-&gt;errorMessage = &#039;&#039;;     // Accesses $response[&#039;error-message&#039;]
 
@@ -343,7 +352,7 @@ $args = [0 =&gt; &quot;hello&quot;];
 $first = $args[0];
 </code></pre></div>
 <h2>Instantiation</h2>
-<p>Structs are instantiated with the new keyword. The constructor produces an associative array with all properties set to their default values. You can override properties at construction using the with keyword.</p>
+<p>Structs are instantiated with the new keyword. Properties without <code>=</code> must be set in the <code>with</code> clause; <code>new Point()</code> is an error if <code>$x</code> and <code>$y</code> are required. When every value is known at compile time, <code>new Point() with [...]</code> folds to a single array literal. Otherwise <code>with</code> emits <code>\array_replace</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 struct Point {
@@ -351,21 +360,29 @@ struct Point {
     float $y;
 }
 
-// Instantiate with defaults (x=0.0, y=0.0)
-Point $origin = new Point();
+// ERROR — required x and y are not set
+// Point $origin = new Point();
 
 // Instantiate with overrides using the with keyword
 Point $p = new Point() with {
     x =&gt; 10.5,
     y =&gt; 20.3
 };
+
+struct Origin {
+    float $x = 0.0;
+    float $y = 0.0;
+}
+
+Origin $origin = new Origin();  // OK — defaults fill x and y
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — struct instantiation becomes array creation
+// Known defaults + with fold to one array (no array_replace)
+
+$p = [&#039;x&#039; =&gt; 10.5, &#039;y&#039; =&gt; 20.3];
 
 $origin = [&#039;x&#039; =&gt; 0.0, &#039;y&#039; =&gt; 0.0];
-
-$p = \array_merge([&#039;x&#039; =&gt; 0.0, &#039;y&#039; =&gt; 0.0], [&#039;x&#039; =&gt; 10.5, &#039;y&#039; =&gt; 20.3]);
 </code></pre></div>
 <h2>Property Access</h2>
 <p>In Tyhp, you access struct properties using the arrow operator (-&gt;), just like object properties. The compiler rewrites these to array key access in the PHP output.</p>
@@ -387,8 +404,9 @@ $user-&gt;age = 31;
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — arrow access compiles to array key access
+// Folded new ... with [...] when defaults are known
 
-$user = \array_merge([&#039;name&#039; =&gt; &#039;&#039;, &#039;age&#039; =&gt; 0], [&#039;name&#039; =&gt; &#039;Alice&#039;, &#039;age&#039; =&gt; 30]);
+$user = [&#039;name&#039; =&gt; &#039;Alice&#039;, &#039;age&#039; =&gt; 30];
 
 $n = $user[&#039;name&#039;];
 $a = $user[&#039;age&#039;];
@@ -441,13 +459,10 @@ UserEntity $user = new UserEntity() with {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — inherited properties are included in the array
 
-$user = \array_merge(
-    [&#039;id&#039; =&gt; 0, &#039;createdAt&#039; =&gt; &#039;&#039;, &#039;name&#039; =&gt; &#039;&#039;, &#039;email&#039; =&gt; &#039;&#039;],
-    [&#039;id&#039; =&gt; 1, &#039;createdAt&#039; =&gt; &#039;2025-01-01&#039;, &#039;name&#039; =&gt; &#039;Alice&#039;, &#039;email&#039; =&gt; &#039;alice@example.com&#039;]
-);
+$user = [&#039;id&#039; =&gt; 1, &#039;createdAt&#039; =&gt; &#039;2025-01-01&#039;, &#039;name&#039; =&gt; &#039;Alice&#039;, &#039;email&#039; =&gt; &#039;alice@example.com&#039;];
 </code></pre></div>
 <h2>Generic Structs</h2>
-<p>Structs can declare generic type parameters, the same way classes do. Parameters may carry constraints and defaults. Instantiation and type annotations supply type arguments; those arguments are substituted into property types (including inherited properties when <code>extends</code> passes type arguments to the parent). Like all struct machinery, generics are compile-time only — the PHP output is still a plain array with no runtime generic tracking.</p>
+<p>Structs can declare generic type parameters, the same way classes do. Parameters may carry constraints and defaults (generic defaults are the same Story 28 feature as on classes). Instantiation and type annotations supply type arguments; those arguments are substituted into property types (including inherited properties when <code>extends</code> passes type arguments to the parent). Like all struct machinery, generics are compile-time only — the PHP output is still a plain array with no runtime generic tracking.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 struct Box&lt;T&gt; {
@@ -474,10 +489,10 @@ string $first = $args-&gt;_1;  // inherited; type is string
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — generics and the struct name are erased
 
-$box = \array_merge([&#039;value&#039; =&gt; null], [&#039;value&#039; =&gt; 42]);
+$box = [&#039;value&#039; =&gt; 42];
 $n = $box[&#039;value&#039;];
 
-$args = \array_merge([0 =&gt; null, 1 =&gt; null], [0 =&gt; &quot;hello&quot;, 1 =&gt; 42]);
+$args = [0 =&gt; &quot;hello&quot;, 1 =&gt; 42];
 $first = $args[0];
 </code></pre></div>
 <h2>Anonymous Structs</h2>
@@ -488,29 +503,23 @@ $first = $args[0];
 struct { string $name; int $age; } $person = new struct {
     string $name;
     int $age;
-}() with { name =&gt; &#039;Alice&#039;, age =&gt; 30 };
+} with { name =&gt; &#039;Alice&#039;, age =&gt; 30 };
 
 // Anonymous struct as a function return type
 function getCoords(): struct { float $lat; float $lng; } {
     return new struct {
         float $lat;
         float $lng;
-    }() with { lat =&gt; 40.7128, lng =&gt; -74.0060 };
+    } with { lat =&gt; 40.7128, lng =&gt; -74.0060 };
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — anonymous structs become inline arrays
 
-$person = \array_merge(
-    [&#039;name&#039; =&gt; &#039;&#039;, &#039;age&#039; =&gt; 0],
-    [&#039;name&#039; =&gt; &#039;Alice&#039;, &#039;age&#039; =&gt; 30]
-);
+$person = [&#039;name&#039; =&gt; &#039;Alice&#039;, &#039;age&#039; =&gt; 30];
 
 function getCoords(): array {
-    return \array_merge(
-        [&#039;lat&#039; =&gt; 0.0, &#039;lng&#039; =&gt; 0.0],
-        [&#039;lat&#039; =&gt; 40.7128, &#039;lng&#039; =&gt; -74.0060]
-    );
+    return [&#039;lat&#039; =&gt; 40.7128, &#039;lng&#039; =&gt; -74.0060];
 }
 </code></pre></div>
 <h2>Immutable Updates with 'with'</h2>
@@ -528,16 +537,20 @@ Point $p1 = new Point() with { x =&gt; 1.0, y =&gt; 2.0 };
 Point $p2 = clone $p1 with { x =&gt; 5.0 };
 // $p2 = {x: 5.0, y: 2.0}
 // $p1 = {x: 1.0, y: 2.0} — unchanged
+
+// clone $p on a struct with no `with` is a no-op (arrays copy on assignment)
+Point $copy = clone $p1;  // emits: return $p1;  (or `$copy = $p1`)
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — &#039;clone with&#039; on structs becomes array_merge
+// PHP output — &#039;clone with&#039; on structs becomes array_replace
+// Bare clone is a no-op
 
-$p1 = \array_merge([&#039;x&#039; =&gt; 0.0, &#039;y&#039; =&gt; 0.0], [&#039;x&#039; =&gt; 1.0, &#039;y&#039; =&gt; 2.0]);
+$p1 = [&#039;x&#039; =&gt; 1.0, &#039;y&#039; =&gt; 2.0];
 
-$p2 = \array_merge($p1, [&#039;x&#039; =&gt; 5.0]);
+$p2 = \array_replace($p1, [&#039;x&#039; =&gt; 5.0]);
 </code></pre></div>
 <h2>In-Place Updates with 'with'</h2>
-<p>The with keyword can also be applied directly to an existing struct value — without new or clone — to update properties in place. For structs this is a convenient shorthand for reassigning a merged array back to the same variable. Because structs are value types backed by arrays, only the variable being updated is affected; any prior copies remain unchanged.</p>
+<p>The with keyword can also be applied directly to an existing struct value — without new or clone — to update properties in place. For structs this is a convenient shorthand for reassigning <code>\array_replace</code> of the existing array back to the same variable. Because structs are value types backed by arrays, only the variable being updated is affected; any prior copies remain unchanged.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 struct Point {
@@ -554,9 +567,9 @@ $p with [x =&gt; 9.0];
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — in-place &#039;with&#039; on a struct is an array replace
 
-$p = \array_merge([&#039;x&#039; =&gt; 0.0, &#039;y&#039; =&gt; 0.0], [&#039;x&#039; =&gt; 1.0, &#039;y&#039; =&gt; 2.0]);
+$p = [&#039;x&#039; =&gt; 1.0, &#039;y&#039; =&gt; 2.0];
 
-$p = \array_merge($p, [&#039;x&#039; =&gt; 9.0]);
+$p = \array_replace($p, [&#039;x&#039; =&gt; 9.0]);
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -566,7 +579,7 @@ $p = \array_merge($p, [&#039;x&#039; =&gt; 9.0]);
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>All three forms of with on a struct — after new, after clone, and in place on an existing value — emit as the same array replace operation. The only difference is which array the result is merged into and which variable receives it.</p>
+        <div class="callout-content"><p>All three forms of with on a struct — after new, after clone, and in place on an existing value — emit as <code>\array_replace</code> when the result cannot be folded. <code>new Point() with [...]</code> folds to a single array literal when every value is known at compile time. Bare <code>clone $p</code> on a struct is a no-op (<code>$p</code> is returned as-is).</p>
 </div>
     </div>
 </div>
@@ -593,7 +606,7 @@ function calculateArea(array $dims): float {
     return $dims[&#039;width&#039;] * $dims[&#039;height&#039;];
 }
 
-$box = \array_merge([&#039;width&#039; =&gt; 0.0, &#039;height&#039; =&gt; 0.0], [&#039;width&#039; =&gt; 10.0, &#039;height&#039; =&gt; 5.0]);
+$box = [&#039;width&#039; =&gt; 10.0, &#039;height&#039; =&gt; 5.0];
 $area = calculateArea($box);
 </code></pre></div>
 <h2>Best Practices</h2>
@@ -658,6 +671,18 @@ $area = calculateArea($box);
     </div>
 </div>
 <h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't omit required struct properties at <code>new</code>. A non-nullable property without <code>=</code> has no implicit zero; <code>new Point()</code> is an error unless every required key is set via <code>with</code> or has a default.</p>
+</div>
+    </div>
+</div>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

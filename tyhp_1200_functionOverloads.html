@@ -305,7 +305,7 @@ function parseValue(string $input, string $format): array|string
 {
     return match($format) {
         &#039;json&#039; =&gt; \json_decode($input, true),
-        &#039;csv&#039; =&gt; $input-&gt;getcsv(),
+        &#039;csv&#039; =&gt; \str_getcsv($input),
         default =&gt; $input,
     };
 }

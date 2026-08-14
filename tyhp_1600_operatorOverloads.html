@@ -263,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 11</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp allows you to define custom behavior for operators on classes and enums. Operator overloads enable intuitive syntax like $a + $b where $a and $b are object instances. The compiler rewrites operator usage into method calls in the PHP output. Operator overloads can only be defined on classes and enums — not on traits, interfaces, or structs.</p>
+    <p>Tyhp allows you to define custom behavior for operators on classes, enums, traits, and interfaces. Operator overloads enable intuitive syntax like $a + $b where $a and $b are object instances. The compiler rewrites operator usage into method calls in the PHP output. Operator overloads can be declared on classes, enums, traits, and interfaces (the same class statement list). Structs cannot declare operators — struct bodies are properties only. Trait methods that use an operator on <code>$this</code> emit <code>static::__add</code> (and the matching <code>__*</code> name) so the composing class's overload late-binds.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -672,7 +672,7 @@ $wallet = \Money::__add($wallet, $cost);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not define operators on traits, interfaces, or structs — operators are only allowed on classes and enums.</p>
+        <div class="callout-content"><p>Do not define operators on structs — struct bodies are properties only. Traits and interfaces may declare <code>operator</code> like classes.</p>
 </div>
     </div>
 </div>
@@ -726,7 +726,7 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
 <h2>Compiler Errors</h2>
 <ul>
-<li>Defining operator overloads on traits, interfaces, or structs.</li>
+<li>Defining operator overloads on structs.</li>
 <li>Binary operator where neither operand is self.</li>
 <li>Unary operator where the operand is not self.</li>
 <li>A hand-written method conflicting with a declared operator's reserved generated name.</li>

@@ -263,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp introduces new functions, changes the behavior of some existing PHP functions, and gives many built-in functions generic type signatures for better type safety. This page covers guard functions, generic built-in function signatures, compile-time functions, and scalar pseudo-object methods.</p>
+    <p>Tyhp introduces new functions, changes the behavior of some existing PHP functions, and gives many built-in functions generic type signatures for better type safety. This page covers guard functions, generic built-in function signatures, compile-time functions, and user-defined extension methods.</p>
 <h2>Guard / Type Narrowing Functions</h2>
 <p>Many existing PHP functions act as type guards in Tyhp. When used in conditional checks (<code>if</code>, <code>while</code>, ternary, <code>match</code>), they narrow the type of a variable within the guarded scope. See the Type Narrowing and Guards page for full details on how narrowing works.</p>
 <h2>Scalar Type Guards</h2>
@@ -305,10 +305,10 @@ function format(string|int|float $value): string {
 <li><code>\enum_exists($name)</code> -- narrows <code>$name</code> to <code>__EnumName</code></li>
 <li><code>\property_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__PropertyName&lt;typeof($obj)&gt;</code></li>
 <li><code>\method_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__MethodName&lt;typeof($obj)&gt;</code></li>
-<li><code>\is_a($obj, $className)</code> -- narrows <code>$className</code> to <code>__CompatibleTypeName&lt;typeof($obj)&gt;</code></li>
 <li><code>\is_subclass_of($obj, $className)</code> -- narrows <code>$className</code> to <code>__CompatibleTypeName&lt;typeof($obj)&gt;</code></li>
-<li><code>isset($$varName)</code> -- narrows <code>$varName</code> to <code>__VarName</code></li>
+<li><code>variable_exists($count)</code> / <code>variable_exists('count')</code> -- narrows the name to <code>__VarName</code></li>
 </ul>
+<p><code>is</code> is a keyword (an <code>instanceof</code> alias), not a <code>\is_a(...)</code> function call. <code>$$var</code> is prohibited (TYHP4133); do not write <code>isset($$varName)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 function callIfExists(string $funcName, string $arg): mixed {
@@ -323,23 +323,16 @@ function callIfExists(string $funcName, string $arg): mixed {
 <h2>Generic Built-in Function Signatures</h2>
 <p>Many PHP built-in functions are given generic type signatures in Tyhp. This means the compiler can infer precise return types based on the input types, providing much stronger type safety than PHP's native type declarations.</p>
 <h2>Array Functions</h2>
+<p>Signatures come from the shipped PHP tyhpdefs. Some functions are generic; many are not. Do not assume a generic form unless the tyhpdef declares it.</p>
 <ul>
-<li><code>\array_map&lt;T, U&gt;(callable&lt;T, U&gt; $callback, array&lt;T&gt; $array): array&lt;U&gt;</code></li>
-<li><code>\array_filter&lt;T&gt;(array&lt;T&gt; $array, ?callable&lt;T, bool&gt; $callback = null): array&lt;T&gt;</code></li>
-<li><code>\array_keys&lt;TKey, TValue&gt;(array&lt;TKey, TValue&gt; $array): array&lt;TKey&gt;</code></li>
-<li><code>\array_values&lt;T&gt;(array&lt;T&gt; $array): array&lt;T&gt;</code></li>
-<li><code>\array_merge&lt;T&gt;(array&lt;T&gt; ...$arrays): array&lt;T&gt;</code></li>
-<li><code>\array_unique&lt;T&gt;(array&lt;T&gt; $array): array&lt;T&gt;</code></li>
-<li><code>\array_reverse&lt;T&gt;(array&lt;T&gt; $array): array&lt;T&gt;</code></li>
-<li><code>\array_slice&lt;T&gt;(array&lt;T&gt; $array, int $offset, ?int $length = null): array&lt;T&gt;</code></li>
-<li><code>\array_pop&lt;T&gt;(array&lt;T&gt; &amp;$array): ?T</code></li>
-<li><code>\array_shift&lt;T&gt;(array&lt;T&gt; &amp;$array): ?T</code></li>
-<li><code>\array_push&lt;T&gt;(array&lt;T&gt; &amp;$array, T ...$values): int</code></li>
-<li><code>\array_column&lt;TKey, TValue&gt;(array&lt;array&lt;TKey, TValue&gt;&gt; $array, TKey $columnKey): array&lt;TValue&gt;</code></li>
-<li><code>\array_combine&lt;TKey, TValue&gt;(array&lt;TKey&gt; $keys, array&lt;TValue&gt; $values): array&lt;TKey, TValue&gt;</code></li>
-<li><code>\array_chunk&lt;T&gt;(array&lt;T&gt; $array, int $length): array&lt;array&lt;T&gt;&gt;</code></li>
-<li><code>\array_reduce&lt;T, U&gt;(array&lt;T&gt; $array, callable&lt;U, T, U&gt; $callback, U $initial): U</code></li>
-<li><code>\array_walk&lt;TKey, TValue&gt;(array&lt;TKey, TValue&gt; &amp;$array, callable&lt;TValue, TKey, void&gt; $callback): bool</code></li>
+<li><code>\array_map&lt;TValue = mixed, TResult extends void|never|mixed = mixed&gt;(?callable&lt;TValue, TResult&gt; $callback, array&lt;TValue&gt; $array, array ...$arrays): array&lt;TResult&gt;</code></li>
+<li><code>\array_values&lt;TKey extends int|string, TValue = mixed&gt;(array&lt;TKey, TValue&gt; $array): array&lt;int, TValue&gt;</code></li>
+<li><code>\array_reverse&lt;TKey extends int|string = int|string, TValue = mixed&gt;(array&lt;TKey, TValue&gt; $array, bool $preserve_keys = false): array&lt;TKey, TValue&gt;</code></li>
+<li><code>\array_pop(array &amp;$array): mixed</code> — not generic</li>
+<li><code>\array_shift(array &amp;$array): mixed</code> — not generic</li>
+<li><code>\array_filter(array $array, ?callable $callback = null, int $mode = 0): array</code> — not generic</li>
+<li><code>\array_keys(array $array, mixed $filter_value = null, bool $strict = false): array</code> — not generic</li>
+<li><code>\array_merge(array ...$arrays): array</code> — not generic</li>
 </ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -430,6 +423,7 @@ $userType = \Tyhp\Type::fromClassName(&#039;User&#039;::class);
 <li><code>default(bool)</code> returns <code>false</code></li>
 <li><code>default(array)</code> returns <code>[]</code></li>
 <li><code>default(?T)</code> returns <code>null</code> for any nullable type</li>
+<li><code>default(ClassName)</code> for a non-scalar / object type returns <code>null</code>. Assigning that to a non-nullable target is a type error; use <code>?User $u = default(User)</code> (or another nullable type).</li>
 </ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -438,6 +432,8 @@ string $text = default(string);   // &quot;&quot;
 bool $flag = default(bool);       // false
 array $items = default(array);    // []
 ?string $opt = default(?string);  // null
+?User $user = default(User);      // null — non-scalars default to null
+// User $bad = default(User);     // ERROR: null is not assignable to non-nullable User
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -448,21 +444,34 @@ $text = &#039;&#039;;
 $flag = false;
 $items = [];
 $opt = null;
+$user = null;
 </code></pre></div>
 <h2><code>variable_exists(expr)</code></h2>
-<p>Checks whether a variable with the given name exists in the current scope. Unlike <code>isset()</code>, <code>variable_exists()</code> checks for the variable's existence without checking its value -- a variable that exists but holds <code>null</code> still returns <code>true</code>. It acts as a type guard, narrowing the variable name to <code>__VarName</code>.</p>
+<p>Checks whether a variable exists in the current scope. The argument is the variable itself or a string literal: <code>variable_exists($count)</code> or <code>variable_exists('count')</code>. Unlike <code>isset()</code>, <code>variable_exists()</code> is about existence, not the value — a declared variable that holds <code>null</code> still counts as existing. When the compiler cannot fold the check to a boolean literal, it emits <code>\array_key_exists('name', \get_defined_vars())</code>, not <code>isset()</code>. It can narrow a name to <code>__VarName</code>. <code>$$var</code> is prohibited (TYHP4133).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-string $varName = &quot;myVar&quot;;
+int $count = 0;
 
-if (variable_exists($varName)) {
-    // $varName is narrowed to __VarName
-    // The variable named by $varName is known to exist in scope
+if (variable_exists($count)) {
+    // $count is declared in this scope
+}
+
+if (variable_exists(&#039;count&#039;)) {
+    // same check using a string literal name
 }
 
 // Difference from isset():
 // isset() returns false for variables that are null
 // variable_exists() returns true as long as the variable is declared
+</code></pre></div>
+<p>Compiles to (when not folded):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+$count = 0;
+
+if (\array_key_exists(&#039;count&#039;, \get_defined_vars())) {
+}
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -488,25 +497,25 @@ if (variable_exists($varName)) {
 </div>
     </div>
 </div>
-<h2>Extension Methods (Scalar Pseudo-Object Methods)</h2>
-<p>Tyhp provides built-in extension methods on scalar types (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) that allow calling methods directly on scalar values using object syntax. These compile to standard PHP function calls in the output. See the dedicated Scalar Pseudo-Objects documentation page for the full list of available methods.</p>
+<h2>Extension Methods</h2>
+<p>Tyhp lets you declare <code>extension</code> types that add methods to existing types, including scalars. The receiver is a parameter marked <code>extends string $this</code> (or another type). There is no shipped catalog of built-in scalar methods such as <code>$name-&gt;toUpper()</code> — those stdlib wrappers are not in <code>package.tyhp.json</code>. Call PHP functions (<code>\strtoupper($name)</code>) unless you write and import your own extensions. See Scalar Pseudo-Objects for how to define extensions.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-string $name = &quot;alice&quot;;
-string $upper = $name-&gt;toUpper();  // Compiles to: \strtoupper($name)
+extension StringHelpers {
+    function toCamelCase(extends string $this): string {
+        return $this;
+    }
+}
 
-array&lt;int&gt; $numbers = [3, 1, 4, 1, 5];
-int $count = $numbers-&gt;count();    // Compiles to: \count($numbers)
+string $name = &quot;hello_world&quot;;
+string $camel = $name-&gt;toCamelCase();
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
 
-$name = &#039;alice&#039;;
-$upper = \strtoupper($name);
-
-$numbers = [3, 1, 4, 1, 5];
-$count = \count($numbers);
+$name = &#039;hello_world&#039;;
+$camel = \StringHelpers::toCamelCase($name);
 </code></pre></div>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
@@ -623,13 +632,12 @@ $count = \count($numbers);
 
 string|int $value = getValue();
 
-// ERROR: Method &#039;toUpper&#039; does not exist on type &#039;int&#039;
-// Must narrow first:
-// $value-&gt;toUpper();
+// ERROR: cannot pass string|int to a string-only function without narrowing
+// $length = \strlen($value);
 
 // Correct approach: narrow with a type guard
 if (\is_string($value)) {
-    string $upper = $value-&gt;toUpper();  // OK: $value is narrowed to string
+    string $upper = \strtoupper($value);  // OK: $value is narrowed to string
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp

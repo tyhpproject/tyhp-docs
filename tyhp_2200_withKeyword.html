@@ -299,20 +299,37 @@ $updated = clone $user with [
 ];
 </code></pre></div>
 <h2>Compiled PHP Output</h2>
-<p>The with keyword compiles to a temporary variable followed by property assignment statements. The compiler generates unique temporary variable names to avoid collisions.</p>
+<p>Emit depends on whether <code>with</code> is a <strong>statement</strong> or an <strong>expression</strong>, whether the properties are <code>readonly</code>, and the target PHP version.</p>
+<p><strong>Statement</strong> form (an assignment, or a bare <code>$obj with [...]</code>): non-readonly properties become direct assignments on the same variable — no temp, no helper.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// new ... with compiles to temp variable + property assignments
-$__with_1 = new User(&#039;Alice&#039;, 30);
-$__with_1-&gt;role = &#039;admin&#039;;
-$user = $__with_1;
+$user = new User(&#039;Alice&#039;, 30);
+$user-&gt;role = &#039;admin&#039;;
 
-// clone ... with compiles similarly
-$__with_2 = clone $user;
-$__with_2-&gt;name = &#039;Bob&#039;;
-$__with_2-&gt;age = 25;
-$updated = $__with_2;
+$updated = clone $user;
+$updated-&gt;name = &#039;Bob&#039;;
+$updated-&gt;age = 25;
 </code></pre></div>
+<p><strong>Expression</strong> form (for example <code>return clone $x with [...]</code>, or a <code>with</code> used as a value):</p>
+<ul>
+<li>PHP 8.5: native <code>clone($x, [...])</code> (including <code>clone(new Color(), [...])</code> for <code>new ... with</code>)</li>
+<li>PHP 8.2–8.4: <code>\Tyhp\ObjectHelper::with(...)</code></li>
+</ul>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// PHP 8.5 expression clone with
+return clone($cfg, [&#039;enabled&#039; =&gt; false]);
+
+// PHP 8.2–8.4 expression clone/new with (non-readonly)
+return \Tyhp\ObjectHelper::with(clone $cfg, [&#039;enabled&#039; =&gt; false]);
+return \Tyhp\ObjectHelper::with(new Widget(), [&#039;color&#039; =&gt; &quot;blue&quot;]);
+</code></pre></div>
+<p><strong>Readonly <code>clone ... with</code> on PHP 8.2–8.4</strong> (requires <code>build.experimentalReadonlyCloneWith: true</code>) emits a reflection IIFE: an anonymous subclass with <code>$__tyhp_overrides</code>, <code>ReflectionClass::newInstanceWithoutConstructor()</code>, a property copy via <code>ReflectionObject</code>, then <code>clone $__wrapper</code>. It is not a simple <code>__clone()</code> wrapper around the source object.</p>
+<p><strong>Readonly <code>new ... with</code>:</strong></p>
+<ul>
+<li>PHP 8.4: <code>clone (new class(...) extends \Color { public function __clone(): void { ... } })</code></li>
+<li>PHP 8.5: <code>clone(new Color(), ['alpha' =&gt; 128])</code></li>
+</ul>
 <h2>In-Place with on an Existing Instance</h2>
 <p>When with is applied directly to an existing object instance (not preceded by new or clone), it mutates that instance in place and evaluates to the SAME instance. No clone is made and no new object is constructed — any other reference to the object sees the updated values. This is the form to use when you want to batch-assign several properties on an object you already hold.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -372,7 +389,7 @@ $coords with [alt =&gt; 100.0];
 $coords = [&#039;lat&#039; =&gt; 40.7, &#039;lng&#039; =&gt; -74.0, &#039;alt&#039; =&gt; 0.0];
 
 // In-place struct with emits an array replace into the same variable
-$coords = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
+$coords = \array_replace($coords, [&#039;alt&#039; =&gt; 100.0]);
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -410,19 +427,13 @@ $app = new App() with [
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// Inner with is processed first
-$__with_1 = clone $defaultConfig;
-$__with_1-&gt;debug = true;
-$__with_1-&gt;env = &#039;production&#039;;
-
-$__with_2 = new App();
-$__with_2-&gt;name = &#039;MyApp&#039;;
-$__with_2-&gt;config = $__with_1;
-$app = $__with_2;
+$app = new App();
+$app-&gt;name = &#039;MyApp&#039;;
+$app-&gt;config = \Tyhp\ObjectHelper::with(clone $defaultConfig, [&#039;debug&#039; =&gt; true, &#039;env&#039; =&gt; &#039;production&#039;]);
 </code></pre></div>
 <h2>with and readonly Properties</h2>
 <p><code>readonly</code> properties cannot be assigned after construction. <code>new ... with</code> and <code>clone ... with</code> are allowed to set them on the new or cloned instance. Direct assignment and in-place <code>$obj with [...]</code> after construction are not.</p>
-<p>On PHP 8.5+, <code>clone ... with</code> uses native <code>clone($obj, [...])</code>. On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> (the compiler emits a wrapper that reinitializes readonly fields in <code>__clone()</code>). <code>new ... with</code> on <code>readonly</code> does not need that flag. There is no separate <code>init</code> modifier — <code>readonly</code> plus <code>with</code> is the immutable-update pattern.</p>
+<p>On PHP 8.5+, <code>clone ... with</code> uses native <code>clone($obj, [...])</code>. On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> (the compiler emits a reflection IIFE: <code>newInstanceWithoutConstructor</code>, <code>$__tyhp_overrides</code>, then <code>clone $__wrapper</code> — not a simple <code>__clone()</code> wrapper around the source). <code>new ... with</code> on <code>readonly</code> does not need that flag (PHP 8.4 emits an anonymous class with <code>__clone()</code>; PHP 8.5 uses <code>clone(new Color(), [...])</code>). There is no separate <code>init</code> modifier — <code>readonly</code> plus <code>with</code> is the immutable-update pattern.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>(no modifier)</code></h4><br/><p>Set in constructor: Yes. Set after construction: Yes. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: Yes.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly</code></h4><br/><p>Set in constructor: Yes. Set after construction: No. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: No.</p>
@@ -447,7 +458,7 @@ $q = clone $p with [z =&gt; 5.0];
 // $p with [z =&gt; 3.0];  // ERROR after construction: in-place with cannot set readonly
 </code></pre></div>
 <h2>with on Structs</h2>
-<p>Since structs compile to PHP associative arrays, the with keyword on structs compiles to array merge or direct key override.</p>
+<p>Since structs compile to PHP associative arrays, the with keyword on structs compiles to <code>\array_replace</code> (not <code>\array_merge</code>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 struct Coordinates {
@@ -462,7 +473,7 @@ $elevated = clone $coords with [alt =&gt; 100.0];
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 $coords = [&#039;lat&#039; =&gt; 40.7, &#039;lng&#039; =&gt; -74.0, &#039;alt&#039; =&gt; 0.0];
-$elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
+$elevated = \array_replace($coords, [&#039;alt&#039; =&gt; 100.0]);
 </code></pre></div>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
@@ -559,18 +570,6 @@ $elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
             Danger
         </h4>
         <div class="callout-content"><p>Do not set private or protected properties via with from outside the class.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Do not mix manual parent::__construct() calls with the : parent() constructor return type — the compiler handles parent chaining automatically.</p>
 </div>
     </div>
 </div>

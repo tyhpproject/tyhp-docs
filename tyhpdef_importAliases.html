@@ -313,7 +313,7 @@ function \array_map&lt;T, U&gt; as map(
 <h2>Variable and Constant Aliases</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-int $myGlobalPHPVar as $myGlobalTyhpVar ?? 0;
+int $myGlobalPHPVar as $myGlobalTyhpVar;
 
 const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 
@@ -372,7 +372,7 @@ use extension StringExtensions {
 }
 </code></pre></div>
 <h2>Alias Restrictions</h2>
-<p>The following items cannot be aliased:</p>
+<p>Do not alias these — PHP dispatches them by their real names. This alpha does <strong>not</strong> reject the aliases at compile time:</p>
 <ul>
 <li>A class's <code>__construct</code> or <code>__destruct</code> method</li>
 <li>Any magic methods (<code>__get</code>, <code>__set</code>, <code>__isset</code>, <code>__unset</code>, <code>__call</code>, <code>__callStatic</code>, <code>__sleep</code>, <code>__wakeup</code>, <code>__toString</code>, <code>__invoke</code>, <code>__clone</code>, etc.)</li>
@@ -409,7 +409,7 @@ use extension StringExtensions {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T: Alias magic methods or constructors. The compiler will reject these because PHP relies on their specific names for internal dispatch.</p>
+        <div class="callout-content"><p>DON'T: Alias magic methods or constructors. PHP still dispatches on the original names; this alpha does not reject those aliases for you.</p>
 </div>
     </div>
 </div>

@@ -376,7 +376,7 @@ class Container&lt;T&gt; {
 
     public fn getItem(): T =&gt; $this-&gt;item;
 
-    public fn map&lt;U&gt;(callable(T): U $fn): U =&gt; $fn($this-&gt;item);
+    public fn map&lt;U&gt;(callable&lt;T, U&gt; $fn): U =&gt; $fn($this-&gt;item);
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php

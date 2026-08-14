@@ -374,16 +374,7 @@ class Widget
 }
 </code></pre></div>
 <h2>Compiled PHP Output for Property Aliasing</h2>
-<p>The compiler resolves the property aliasing and emits the appropriate PHP code. The alias becomes a separate property declaration in the class.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-class Widget
-{
-    use HasName, HasLabel {
-        HasLabel::$name as $label;
-    }
-}
-</code></pre></div>
+<p>PHP cannot alias properties in a <code>use</code> adaptation block. This alpha still <strong>parses</strong> <code>HasLabel::$name as $label</code> and emits it as a PHP <code>use</code> alias (<code>HasLabel::$name as $label</code>), which PHP will reject. It does <strong>not</strong> rewrite the alias into a separate property declaration. Prefer distinct property names on the traits, or copy the value in the class constructor, until emit is fixed.</p>
 <h2>Multiple Requirements</h2>
 <p>A trait can require at most one base class via extends (single inheritance), but can require multiple interfaces via implements.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp

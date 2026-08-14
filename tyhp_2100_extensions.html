@@ -486,8 +486,7 @@ $first = $nums-&gt;firstItem();  // aliased from ArrayExtensions::first
 <p>Extension method calls can be chained. Each link in the chain is independently rewritten to a static method call, with the result of the previous call becoming the first argument to the next.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-string $result = $input
-    -&gt;trim()
+string $result = \trim($input)
     -&gt;toSnakeCase()
     -&gt;truncate(50);
 </code></pre></div>
@@ -596,7 +595,7 @@ $result = StringExtensions::truncate(
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not forget the extends keyword on the first parameter — without it, the method is a regular static method, not an extension method.</p>
+        <div class="callout-content"><p>Do not omit the extends keyword on the first parameter — that is a compile error (TYHP4147, CheckerExtensionMissingExtends), not a silent regular static method. The extension declaration itself does not need <code>extends</code> (<code>extension StringExtensions {</code> is valid).</p>
 </div>
     </div>
 </div>
@@ -614,7 +613,7 @@ $result = StringExtensions::truncate(
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR: missing extends keyword
+// ERROR TYHP4147: first parameter lacks `extends`
 // extension Bad {
 //     function doSomething(string $value): string { /* ... */ }
 // }
@@ -638,13 +637,12 @@ $result = StringExtensions::truncate(
 </code></pre></div>
 <h2>Compiler Errors</h2>
 <ul>
-<li>Extension method without extends keyword on the first parameter.</li>
+<li>Extension method without <code>extends</code> on the first parameter (TYHP4147). The extension declaration itself does not require <code>extends</code>.</li>
 <li>Extension operator overload without a &lt;Type&gt; target inside standalone extension bodies (e.g. operator +&lt;Target&gt;(...) is required inside extension Name { ... } blocks; tyhpdef inline extension operator members do not use &lt;Type&gt; because the target is the enclosing class).</li>
 <li>Using abstract or final on extension operators or on tyhpdef extension function / extension fn / extension operator.</li>
 <li>Conflicting extension methods for the same type and method name in scope.</li>
 <li>Accessing private or protected members of the extended type from an extension method.</li>
 <li>Using a regular use statement instead of use extension for importing extensions.</li>
-<li>Extension declaration without an extends clause on the extension itself (the extension must declare what type it extends).</li>
 </ul>
 
 </section>

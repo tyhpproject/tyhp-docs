@@ -445,7 +445,7 @@ class \Vendor\LongNamespace\SomeVeryLongClassName as ShortName {
 }
 </code></pre></div>
 <h2>Deprecated and Obsolete</h2>
-<p>Both the class itself and individual members can be marked as <code>deprecated</code> or <code>obsolete</code>.</p>
+<p>The class itself can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Member-level markers parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated class LegacyAuth {
@@ -453,7 +453,7 @@ deprecated class LegacyAuth {
 }
 
 class Auth {
-    deprecated public function loginWithPassword(string $pass): bool;
+    public function loginWithPassword(string $pass): bool;
     public function loginWithToken(string $token): bool;
 }
 </code></pre></div>

@@ -374,7 +374,7 @@ interface AsyncRepository&lt;T&gt; {
 }
 </code></pre></div>
 <h2>Deprecated and Obsolete Interfaces</h2>
-<p>Interfaces and their individual members can be marked as <code>deprecated</code> or <code>obsolete</code>. The compiler emits a warning when deprecated items are used and an error for obsolete items.</p>
+<p>Interfaces themselves can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Member-level markers on interface methods are parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated interface OldLogger {
@@ -382,7 +382,7 @@ deprecated interface OldLogger {
 }
 
 interface ModernLogger {
-    deprecated public function logLegacy(string $msg): void;
+    public function logLegacy(string $msg): void;
     public function log(string $level, string $message): void;
 }
 </code></pre></div>
@@ -431,7 +431,7 @@ interface ModernLogger {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T declare private members. Only public and protected members are visible to Tyhp. Private members in a Tyhpdef interface declaration will cause a parse error.</p>
+        <div class="callout-content"><p>DON'T put method bodies in interface declarations. All methods must end with a semicolon. Private interface methods are skipped by the checker (PHP helper-method convention); they are not a parse error, but they are not part of the Tyhp-visible contract.</p>
 </div>
     </div>
 </div>

@@ -273,8 +273,8 @@
 <li>Interfaces (including generic interfaces with extends chains)</li>
 <li>Traits (including generic traits)</li>
 <li>Enums (both unit enums and backed enums with string or int values)</li>
-<li>Constants (typed global constants with optional defaults)</li>
-<li>Variables (typed global variables with optional defaults and aliases)</li>
+<li>Constants (typed global constants; <code>as</code> aliases; top-level <code>deprecated</code> / <code>obsolete</code>)</li>
+<li>Variables (typed global variables; <code>as</code> aliases; top-level <code>deprecated</code> / <code>obsolete</code>)</li>
 </ul>
 <p>You can also define these supplemental constructs inside a Tyhpdef file to support your declarations:</p>
 <ul>
@@ -286,10 +286,10 @@
 <p>The Tyhp compiler loads type information from multiple sources. Earlier sources take precedence when declarations conflict:</p>
 <ol>
 <li>Built-in registrations — Core language types (<code>decimal</code>, iterators, <code>callable&lt;…&gt;</code>, compile-time constructs, and similar) are registered in the compiler itself and are always available.</li>
-<li>Composer packages with <code>package.tyhp.json</code> — Runtime libraries (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) and the PHP 8.2-baseline <code>tyhp/php</code> builtins package. Install them with your project so <code>\strlen</code>, <code>DateTime</code>, <code>\Tyhp\Type</code>, and other APIs type-check.</li>
-<li>User project tyhpdefs — Your project's own <code>.tyhpdef</code> files, discovered via <code>include</code> / <code>tyhpdefInclude</code> (and exclude) globs in <code>tyhp.json</code>.</li>
+<li>Composer packages with <code>package.tyhp.json</code> — Runtime libraries (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) and the <code>tyhp/php</code> builtins package (stubs cover PHP 8.2+ APIs; this alpha’s compiler/init default target is PHP 8.4, ceiling 8.5). Install them with your project so <code>\strlen</code>, <code>DateTime</code>, <code>\Tyhp\Type</code>, and other APIs type-check.</li>
+<li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus any <code>include</code> entries that end in <code>.tyhpdef</code> or <code>package.tyhp.json</code>. If you omit <code>tyhpdefInclude</code>, <strong>project <code>.tyhpdef</code> files are not loaded</strong> (<code>tyhp init</code> creates a <code>tyhpdef/</code> folder but does not set the glob). Add e.g. <code>&quot;tyhpdefInclude&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]</code> (or <code>&quot;**/*.tyhpdef&quot;</code>) when you author stubs.</li>
 </ol>
-<p>This alpha does <strong>not</strong> auto-generate tyhpdefs into a <code>tyhpdef_gen/</code> directory. Write declarations by hand, or start from <code>tyhp/php</code>.</p>
+<p>This alpha does <strong>not</strong> auto-generate tyhpdefs and does not scan a <code>tyhpdef_gen/</code> directory. Write declarations by hand, or start from <code>tyhp/php</code>.</p>
 <h2>Auto-Generating Tyhpdef Files</h2>
 <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 2 · Story 20</span><span class="badge bg-secondary">Planned</span>

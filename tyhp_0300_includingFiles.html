@@ -263,72 +263,41 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 10</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp supports PHP's file inclusion statements -- <code>include</code>, <code>include_once</code>, <code>require</code>, and <code>require_once</code> -- but enforces compile-time restrictions to maintain type safety. The Tyhp compiler must be able to resolve all included files statically so it can type-check across file boundaries.</p>
-<h2>File Inclusion Statements</h2>
-<p>Tyhp supports all four PHP file inclusion statements. The behaviour is the same as PHP: <code>include</code> and <code>require</code> load a file, <code>include_once</code> and <code>require_once</code> load it only if it has not already been loaded, and <code>require</code> variants throw a fatal error if the file cannot be found.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-include &#039;helpers/formatting.tyhp&#039;;
-include_once &#039;helpers/math.tyhp&#039;;
-
-require &#039;config.tyhp&#039;;
-require_once &#039;bootstrap.tyhp&#039;;
+    <p>Tyhp does not use PHP's <code>include</code>, <code>require</code>, <code>include_once</code>, or <code>require_once</code> as language statements in Tyhp source. Those constructs always produce <strong>TYHP4801</strong> (<code>CheckerIncludeNotAllowed</code>). There is no <code>import</code> keyword. Discover source with <code>tyhp.json</code> <code>include</code> globs, reference types with <code>use</code>, and load emitted PHP at runtime with Composer autoload (the emitter can inject the autoloader into entry points).</p>
+<h2>How the Compiler Finds Source Files</h2>
+<p>The compiler's file set comes from <code>tyhp.json</code>, not from include statements in <code>.tyhp</code> files.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;include&quot;: [&quot;./src/**/*.tyhp&quot;],
+    &quot;exclude&quot;: [&quot;./vendor/**&quot;, &quot;./build/**&quot;],
+    &quot;tyhpdefInclude&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;],
+    &quot;output&quot;: {
+        &quot;path&quot;: &quot;./build&quot;,
+        &quot;phpVersion&quot;: &quot;8.4&quot;,
+        &quot;strictTypes&quot;: true
+    }
+}
 </code></pre></div>
-<p>When you include a <code>.tyhp</code> file, the compiler adds it to the compilation unit. It is parsed, bound, type-checked, and emitted alongside the rest of the project. Including a <code>.php</code> file is also allowed -- the compiler treats it as standard PHP and applies limited type checking based on available tyhpdef information.</p>
-<h2>Static String Requirement</h2>
-<p>Unlike PHP, Tyhp requires that all file inclusion paths be static strings or constant values. Dynamic includes using variables, expressions, or concatenation are not allowed. The compiler must resolve every included file at compile time to perform cross-file type checking, dependency tracking, and output file generation.</p>
+<ul>
+<li><code>include</code> / <code>exclude</code> — globs of <code>.tyhp</code> (and optionally <code>.php</code>) files to parse, bind, check, and emit</li>
+<li><code>tyhpdefInclude</code> / <code>tyhpdefExclude</code> — type-definition files consumed for checking only (no PHP output)</li>
+</ul>
+<p>Every matching file is in the compilation unit. Symbols are visible across files via namespaces and <code>use</code> statements; you do not need to &quot;include&quot; one Tyhp file from another.</p>
+<h2>Composer Autoload and Entry Points</h2>
+<p>Emitted PHP is ordinary PHP. Runtime loading uses Composer PSR-4 (and <code>autoload.files</code> for namespace <code>_functions.php</code> files). Enable <code>build.updateComposer</code> if you want the compiler to write/merge <code>composer.json</code> in the output directory.</p>
+<p>An <strong>entry point</strong> is a Tyhp source file with top-level executable code (code outside class, function, or namespace declarations). The emitter writes those as standalone PHP files. <code>build.entryPointAutoloader</code> (for example <code>{ &quot;composer&quot;: &quot;vendor/autoload.php&quot; }</code>) makes the emitter prepend a <code>require_once</code> for the autoloader. Per-file override: <code>declare(autoload='composer'|'none'|path)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Allowed -- static string literal
-require &#039;config/database.tyhp&#039;;
-require_once &#039;vendor/autoload.php&#039;;
-
-// Allowed -- constant value
-const CONFIG_PATH = &#039;config/app.tyhp&#039;;
-require CONFIG_PATH;
-</code></pre></div>
-<h2>Compiled PHP Output</h2>
-<p>Include and require statements pass through to the PHP output unchanged. The paths are preserved exactly as written:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-require_once &#039;vendor/autoload.php&#039;;
+declare(output_file=&#039;public/index.php&#039;);
+declare(autoload=&#039;composer&#039;);
 
 App\Application $app = new App\Application();
 $app-&gt;run();
 </code></pre></div>
-<p>Compiles to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-require_once &#039;vendor/autoload.php&#039;;
-
-$app = new App\Application();
-$app-&gt;run();
-</code></pre></div>
-<h2>Entry Points</h2>
-<p>An entry point is any Tyhp source file that contains top-level executable code -- code outside of class, function, or namespace declarations. During the build, the emitter identifies entry point files and emits them as standalone PHP files. If configured, the emitter automatically prepends a Composer autoloader require statement to entry point files.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// This file is an entry point because it has top-level executable code
-require_once &#039;vendor/autoload.php&#039;;
-
-App\Application $app = new App\Application();
-$app-&gt;run();
-</code></pre></div>
-<p>Entry point files are emitted to the output directory at a path derived from their source location. The build configuration option <code>build.entryPointAutoloader</code> controls whether an autoloader require is injected automatically.</p>
-<h2>How Compilation of Included Files Works</h2>
-<p>The Tyhp compiler processes included files as part of the compilation pipeline. When it encounters an include or require statement with a static path, it resolves the file, adds it to the project's file set, and processes it through all phases: parse, bind, check, and emit.</p>
-<ol>
-<li>The compiler discovers all project source files via the include/exclude patterns in <code>tyhp.json</code>.</li>
-<li>Each source file is parsed into an AST.</li>
-<li>File-level include/require statements are resolved to find additional files to compile.</li>
-<li>All files are bound together -- symbols from one file are visible to others via namespace merging.</li>
-<li>The checker validates types across all files in the project.</li>
-<li>The emitter splits each file's AST into output file units (one per class, grouped functions, entry points).</li>
-<li>PHP output files are written to the configured output directory.</li>
-</ol>
+<p>You cannot write <code>require_once 'vendor/autoload.php'</code> in Tyhp source — that is TYHP4801. The emitter injects the autoloader into the PHP output when autoload is configured.</p>
+<h2><code>declare(output_file=…)</code></h2>
+<p><code>declare(output_file='public/index.php')</code> routes the code that follows to a specific path under <code>output.path</code>, instead of the default PSR-4 layout. Use it for front controllers, CLI scripts, and other files that must live at a fixed location. The directive is stripped from the PHP output.</p>
 <h2>PSR-4 Output Splitting</h2>
-<p>When the emitter processes source files, it splits them into PSR-4-compliant output units. Each class, interface, trait, or enum declaration gets its own output file. Namespace-level functions are grouped into a single file per namespace. Top-level executable code (entry points) is emitted as standalone files.</p>
+<p>When the emitter processes source files, it splits them into PSR-4-compliant output units. Each class, interface, trait, or enum declaration gets its own output file. Namespace-level functions are grouped into a single <code>_functions.php</code> per namespace. Top-level executable code (entry points) is emitted as standalone files.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 // File: src/Models.tyhp
 
@@ -377,6 +346,18 @@ class Post {
     ) {}
 }
 </code></pre></div>
+<p>Output paths follow the type's fully-qualified name (and <code>output.path</code> / <code>output.namespacePrefix</code>). The <code>psr4</code> config key feeds generated Composer autoload mappings; it does not remap emit folders.</p>
+<h2>How Compilation Works</h2>
+<ol>
+<li>The compiler discovers project source files via the include/exclude patterns in <code>tyhp.json</code>.</li>
+<li>Each source file is parsed into an AST.</li>
+<li>All files are bound together — symbols from one file are visible to others via namespace merging and <code>use</code>.</li>
+<li>The checker validates types across all files in the project.</li>
+<li>The emitter splits each file's AST into output file units (one per class, grouped functions, entry points).</li>
+<li>PHP output files are written to the configured output directory. Entry points may receive an injected autoloader <code>require_once</code>.</li>
+</ol>
+<h2><code>eval()</code></h2>
+<p><code>eval()</code> is discouraged. Using it produces info diagnostic <strong>TYHP4800</strong>. Set <code>build.allowEval</code> to <code>true</code> in <code>tyhp.json</code> to silence that diagnostic. Code inside <code>eval()</code> is not type-checked. Prefer ordinary Tyhp/PHP modules and Composer autoload.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -386,7 +367,7 @@ class Post {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use static string literals for all include and require paths. The compiler needs to resolve them at compile time for cross-file type checking.</p>
+        <div class="callout-content"><p>Put every <code>.tyhp</code> file you want compiled on an <code>include</code> glob in <code>tyhp.json</code>. That is how the compiler finds sources.</p>
 </div>
     </div>
 </div>
@@ -398,7 +379,7 @@ class Post {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use <code>require_once</code> for files that must exist (configuration, bootstrapping). Use <code>include_once</code> for optional helper files.</p>
+        <div class="callout-content"><p>Use <code>use</code> statements for types and functions. The binder resolves symbols across all files in the project; you do not include one Tyhp file from another.</p>
 </div>
     </div>
 </div>
@@ -410,7 +391,7 @@ class Post {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Let the compiler handle cross-file type resolution. Declare classes in one file and reference them from another via <code>use</code> statements -- the binder resolves all symbols across all files regardless of include order.</p>
+        <div class="callout-content"><p>Configure <code>build.entryPointAutoloader</code> (and <code>declare(autoload=…)</code> when needed) so entry-point PHP receives <code>require_once</code> for Composer. Do not write <code>require</code> / <code>include</code> in Tyhp source.</p>
 </div>
     </div>
 </div>
@@ -422,7 +403,7 @@ class Post {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Configure include/exclude patterns in <code>tyhp.json</code> to control which files the compiler processes. This is more reliable than relying on include statements for file discovery.</p>
+        <div class="callout-content"><p>Use <code>declare(output_file='path')</code> when a file must be emitted at a specific location (public index, CLI binary).</p>
 </div>
     </div>
 </div>
@@ -434,7 +415,7 @@ class Post {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use PSR-4 namespace conventions for classes. The emitter produces one output file per class, following PSR-4 directory structure conventions.</p>
+        <div class="callout-content"><p>Use PSR-4 namespace conventions for classes. The emitter produces one output file per class, following the type's namespace path.</p>
 </div>
     </div>
 </div>
@@ -447,19 +428,7 @@ class Post {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use variables, expressions, or concatenation in include/require paths. The compiler cannot resolve them statically and reports a compile error.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't rely on include-order for symbol availability. The binder resolves all symbols across all files regardless of include order -- unlike PHP, Tyhp does not require files to be included before their symbols are used.</p>
+        <div class="callout-content"><p>Don't write <code>include</code>, <code>require</code>, <code>include_once</code>, or <code>require_once</code> in Tyhp source. They always error with TYHP4801. There is no <code>import</code> keyword either — use <code>use</code> plus Composer autoload plus <code>tyhp.json</code> include globs.</p>
 </div>
     </div>
 </div>
@@ -483,33 +452,28 @@ class Post {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use <code>eval()</code> in Tyhp code. It is banned by default for type safety. The <code>build.allowEval</code> configuration option can re-enable it, but this is strongly discouraged.</p>
+        <div class="callout-content"><p>Don't use <code>eval()</code> unless you have a hard requirement. It is info TYHP4800 unless <code>build.allowEval</code> is true, and the evaluated string is not type-checked.</p>
 </div>
     </div>
 </div>
 <h2>Compiler Error Examples</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR: Include path must be a static string or constant
-string $path = &#039;config/database.tyhp&#039;;
-// require $path;
-
-// ERROR: Include path must be a static string or constant
-string $module = &#039;auth&#039;;
-// require &#039;modules/&#039; . $module . &#039;.tyhp&#039;;
-
-// ERROR: Include path must be a static string or constant
-// require getConfigPath();
+// ERROR TYHP4801 — include/require is not allowed in Tyhp
+// require &#039;config/database.tyhp&#039;;
+// require_once &#039;vendor/autoload.php&#039;;
+// include_once &#039;helpers/math.tyhp&#039;;
 </code></pre></div>
-<p>All of the above produce compile errors because the paths cannot be resolved statically. Use static strings or constants instead:</p>
+<p>Discover those files with <code>include</code> globs, <code>use</code> the types you need, and let the emitter inject the autoloader on entry points:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// OK -- static string
-require &#039;config/database.tyhp&#039;;
+declare(output_file=&#039;public/index.php&#039;);
+declare(autoload=&#039;composer&#039;);
 
-// OK -- constant
-const MODULE_PATH = &#039;modules/auth.tyhp&#039;;
-require MODULE_PATH;
+use App\Application;
+
+Application $app = new Application();
+$app-&gt;run();
 </code></pre></div>
 
 </section>

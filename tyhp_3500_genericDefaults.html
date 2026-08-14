@@ -334,9 +334,9 @@ $names = new Collection();
 <p>A type parameter can have both a constraint and a default. The syntax is T extends Constraint = Default. The default type must satisfy the constraint — if it does not, the compiler reports an error.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Promise defaults TReturn to void
+// Promise defaults TReturn to mixed (runtime tyhp/async)
 // The constraint allows void or mixed (both are valid return types)
-class Promise&lt;TReturn extends void|mixed = void&gt; {
+class Promise&lt;TReturn extends void|mixed = mixed&gt; {
     private ?TReturn $result = null;
 
     public function resolve(TReturn $value): void {
@@ -344,9 +344,8 @@ class Promise&lt;TReturn extends void|mixed = void&gt; {
     }
 }
 
-// Common case — async procedure with no return value
-Promise $p1 = new Promise();           // TReturn = void (from default)
-Promise&lt;void&gt; $p2 = new Promise&lt;void&gt;(); // Explicit, same as default
+Promise $p1 = new Promise();           // TReturn = mixed (from default)
+Promise&lt;void&gt; $p2 = new Promise&lt;void&gt;(); // Explicit override
 
 // Override for async functions that return values
 Promise&lt;int&gt; $p3 = new Promise&lt;int&gt;();   // TReturn = int
@@ -394,7 +393,7 @@ class Valid2&lt;T, U = int, V = string&gt; {}
 class Valid3&lt;T = mixed&gt; {}
 class Valid4&lt;T = int, U = string, V = bool&gt; {}
 
-// ERROR TYHP4062: Generic parameter &#039;U&#039; without a default
+// ERROR TYHP4311: Generic parameter &#039;U&#039; without a default
 // cannot follow parameter &#039;T&#039; which has a default
 // class Invalid&lt;T = int, U&gt; {}
 </code></pre></div>
@@ -406,7 +405,7 @@ class Valid4&lt;T = int, U = string, V = bool&gt; {}
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Error TYHP4062 (CheckerGenericNonDefaultAfterDefault): &quot;Generic parameter 'U' without a default cannot follow parameter 'T' which has a default&quot;</p>
+        <div class="callout-content"><p>Error TYHP4311 (CheckerGenericNonDefaultAfterDefault): &quot;Generic parameter 'U' without a default cannot follow parameter 'T' which has a default&quot;</p>
 </div>
     </div>
 </div>
@@ -422,11 +421,11 @@ class GoodCounter&lt;T extends Countable = array&gt; {
 class GoodSerializer&lt;T extends Serializable = JsonSerializable&gt; {
 }
 
-// ERROR TYHP4061: Default type &#039;string&#039; does not satisfy
+// ERROR TYHP4310: Default type &#039;string&#039; does not satisfy
 // constraint &#039;Countable&#039; on generic parameter &#039;T&#039;
 // class BadCounter&lt;T extends Countable = string&gt; {}
 
-// ERROR TYHP4061: Default type &#039;int&#039; does not satisfy
+// ERROR TYHP4310: Default type &#039;int&#039; does not satisfy
 // constraint &#039;Stringable&#039; on generic parameter &#039;T&#039;
 // class BadStringable&lt;T extends Stringable = int&gt; {}
 </code></pre></div>
@@ -438,7 +437,7 @@ class GoodSerializer&lt;T extends Serializable = JsonSerializable&gt; {
             </span>
             Warning
         </h4>
-        <div class="callout-content"><p>Error TYHP4061 (CheckerGenericDefaultDoesNotSatisfyConstraint): &quot;Default type '{0}' does not satisfy constraint '{1}' on generic parameter '{2}'&quot;</p>
+        <div class="callout-content"><p>Error TYHP4310 (CheckerGenericDefaultDoesNotSatisfyConstraint): &quot;Default type '{0}' does not satisfy constraint '{1}' on generic parameter '{2}'&quot;</p>
 </div>
     </div>
 </div>
@@ -508,7 +507,7 @@ create&lt;MyClass&gt;();      // T = MyClass (explicit)
 
 function transform&lt;TIn = string, TOut = TIn&gt;(
     TIn $input,
-    callable(TIn): TOut $fn
+    callable&lt;TIn, TOut&gt; $fn
 ): TOut {
     return $fn($input);
 }
@@ -593,7 +592,7 @@ class Wrapper&lt;T = array&lt;int&gt;&gt; {
 }
 
 // Default is void (useful for return types in async)
-class AsyncTask&lt;TReturn extends void|mixed = void&gt; {
+class AsyncTask&lt;TReturn extends void|mixed = mixed&gt; {
     public function getResult(): TReturn {
         // ...
     }
@@ -603,28 +602,27 @@ class AsyncTask&lt;TReturn extends void|mixed = void&gt; {
 <p>The compiler catches two categories of errors with generic defaults: ordering violations (non-defaulted after defaulted) and constraint violations (default not satisfying constraint).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR TYHP4062: non-defaulted U follows defaulted T
+// ERROR TYHP4311: non-defaulted U follows defaulted T
 // class Bad1&lt;T = int, U&gt; {}
 
-// ERROR TYHP4062: non-defaulted V follows defaulted U
+// ERROR TYHP4311: non-defaulted V follows defaulted U
 // class Bad2&lt;T, U = int, V&gt; {}
 
-// ERROR TYHP4061: string does not implement Countable
+// ERROR TYHP4310: string does not implement Countable
 // class Bad3&lt;T extends Countable = string&gt; {}
 
-// ERROR TYHP4061: int does not implement Stringable
+// ERROR TYHP4310: int does not implement Stringable
 // class Bad4&lt;T extends Stringable = int&gt; {}
 
-// ERROR: circular reference — T cannot default to itself
+// ERROR TYHP4312: circular reference — T cannot default to itself
 // class Bad5&lt;T = T&gt; {}
 </code></pre></div>
-<h2>Tyhpdef Preservation</h2>
-<p>When generating tyhpdef files for a compiled Tyhp library, generic parameter defaults are preserved in the output. Consumers of the library get the same defaulting behavior as if they were using the original source.</p>
+<h2>Tyhpdef Syntax</h2>
+<p>Hand-written tyhpdefs can declare the same generic defaults. Auto-generation (<code>generate_tyhpdef</code>) is not in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-// Generated tyhpdef preserves defaults
-class Promise&lt;TReturn extends void|mixed = void&gt; {
-    public static function _async&lt;T extends void|mixed = void&gt;(callable&lt;T&gt; $fn): Promise&lt;T&gt;;
+class Promise&lt;TReturn extends void|mixed = mixed&gt; {
+    public static function _async&lt;T extends void|mixed = mixed&gt;(callable&lt;T&gt; $fn): Promise&lt;T&gt;;
     public static function _await&lt;T&gt;(Promise&lt;T&gt; $promise): T;
 }
 
@@ -646,7 +644,7 @@ type Collection&lt;T = mixed&gt; = array&lt;T&gt;;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use defaults for commonly-used type parameters where there is a clear &quot;common case.&quot; For example, Promise&lt;T = void&gt; covers the majority of async procedures that do not return a value.</p>
+        <div class="callout-content"><p>Use defaults for commonly-used type parameters where there is a clear &quot;common case.&quot; For example, <code>Promise&lt;TReturn extends void|mixed = mixed&gt;</code> matches the runtime package so omitted <code>TReturn</code> is <code>mixed</code>.</p>
 </div>
     </div>
 </div>
@@ -743,7 +741,7 @@ type Collection&lt;T = mixed&gt; = array&lt;T&gt;;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't create self-referencing defaults (e.g., &lt;T = T&gt;) — this is a circular reference and produces a compiler error.</p>
+        <div class="callout-content"><p>Don't create self-referencing defaults (e.g., &lt;T = T&gt;) — this is a circular reference and produces TYHP4312.</p>
 </div>
     </div>
 </div>

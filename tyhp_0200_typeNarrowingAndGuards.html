@@ -305,7 +305,7 @@ if (\is_string($myVar)) {
 <li><code>is_a</code> -- Tyhp alias (with underscore)</li>
 <li><code>is_an</code> -- Tyhp alias (with underscore)</li>
 </ul>
-<p>All of these check if a value is an instance of a specific class or interface (or a descendant of that type) and narrow the variable's type accordingly. They are defined in the lexer as the <code>T_TYHP_IS</code> token and are only available in Tyhp mode. For scalar types, the <code>is</code> keyword compiles to the appropriate type check function. For object types, it compiles to <code>instanceof</code>.</p>
+<p>All of these check if a value is an instance of a specific class or interface (or a descendant of that type) and narrow the variable's type accordingly. They are defined in the lexer as the <code>T_TYHP_IS</code> token and are only available in Tyhp mode. For scalar types, <code>$x is int</code> compiles to <code>\Tyhp\Type::is($x, \Tyhp\Type::int())</code>. For object types, it compiles to <code>instanceof</code>. Do not write <code>$x is null</code>; use <code>$x !== null</code> (or <code>\is_null($x)</code>). <code>\is_a(...)</code> as a function call is not how Tyhp <code>is</code> works — <code>is</code> is a keyword.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 BuilderInterface|ConnectionInterface|null $builder = \getRemoteBuilderInstance();
@@ -322,10 +322,16 @@ if ($builder instanceof BuilderInterface) {
     $builder-&gt;build();
 }
 
-// &#039;is&#039; keyword works the same as instanceof
+// &#039;is&#039; keyword works the same as instanceof for objects
 if ($builder is ConnectionInterface) {
     // $builder is narrowed to ConnectionInterface
     $builder-&gt;disconnect();
+}
+
+// Scalars use `is` too — emit is \Tyhp\Type::is(...)
+mixed $value = \getMixedValue();
+if ($value is int) {
+    // $value is narrowed to int
 }
 
 // Natural English-like syntax
@@ -421,15 +427,12 @@ function isPositiveInt(mixed $val): $val is int {
 <ul>
 <li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
 <li><code>\class_exists($name)</code> -- narrows <code>$name</code> to <code>__ClassName&lt;object&gt;</code> (omit <code>&lt;T&gt;</code>; use <code>\class_exists&lt;Foo&gt;($name)</code> for <code>__ClassName&lt;Foo&gt;</code>)</li>
-<li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
-<li><code>\interface_exists($name)</code> / <code>\trait_exists($name)</code> / <code>\enum_exists($name)</code> -- same pattern with <code>__InterfaceName</code> / <code>__TraitName</code> / <code>__EnumName</code></li>
 <li><code>\interface_exists($name)</code> -- narrows <code>$name</code> to <code>__InterfaceName</code></li>
 <li><code>\trait_exists($name)</code> -- narrows <code>$name</code> to <code>__TraitName</code></li>
 <li><code>\enum_exists($name)</code> -- narrows <code>$name</code> to <code>__EnumName</code></li>
 <li><code>\property_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__PropertyName&lt;typeof($obj)&gt;</code></li>
 <li><code>\method_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__MethodName&lt;typeof($obj)&gt;</code></li>
-<li><code>isset($$varName)</code> -- narrows <code>$varName</code> to <code>__VarName</code></li>
-<li><code>variable_exists($name)</code> -- narrows <code>$name</code> to <code>__VarName</code></li>
+<li><code>variable_exists($count)</code> / <code>variable_exists('count')</code> -- narrows the name to <code>__VarName</code></li>
 </ul>
 <h2>Early Return Narrowing</h2>
 <p>When a type guard is used with an early return (or <code>throw</code>, <code>continue</code>, <code>break</code>), the type is narrowed for all subsequent code after the guard. This is a common pattern for eliminating null or invalid types at the top of a function.</p>
@@ -508,12 +511,18 @@ function isPositiveInt(mixed $val): bool {
     return \is_int($val) &amp;&amp; $val &gt; 0;
 }
 </code></pre></div>
-<p>The <code>is</code> keyword compiles to <code>instanceof</code> for object types:</p>
+<p>The <code>is</code> keyword compiles to <code>instanceof</code> for object types and to <code>\Tyhp\Type::is(...)</code> for scalars:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 function checkBuilder(object $obj): void {
     if ($obj is BuilderInterface) {
         $obj-&gt;build();
+    }
+}
+
+function checkInt(mixed $n): void {
+    if ($n is int) {
+        echo $n;
     }
 }
 </code></pre></div>
@@ -524,6 +533,12 @@ declare(strict_types=1);
 function checkBuilder(object $obj): void {
     if ($obj instanceof BuilderInterface) {
         $obj-&gt;build();
+    }
+}
+
+function checkInt(mixed $n): void {
+    if (\Tyhp\Type::is($n, \Tyhp\Type::int())) {
+        echo $n;
     }
 }
 </code></pre></div>

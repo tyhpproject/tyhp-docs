@@ -270,13 +270,13 @@
 <p>The <code>array</code> and <code>iterable</code> types from PHP now have additional generic signatures that allow for precise element type control.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>array&lt;TKey extends string|int, TValue&gt;</code></h4><br/><p>A typed array with 2 generic parameters. The first is the key type (must be <code>string</code>, <code>int</code>, or <code>string|int</code>), and the second is the value type.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>array&lt;TValue&gt;</code></h4><br/><p>A typed array with 1 generic parameter (the value type). The key type defaults to <code>int</code> (a sequential numeric array).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>array&lt;TValue&gt;</code></h4><br/><p>A typed array with 1 generic parameter (the value type). This is list shorthand for <code>array&lt;int|string, TValue&gt;</code> — keys are <code>int|string</code>, not int-only.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>array</code></h4><br/><p>The non-generic version, equivalent to <code>array&lt;int|string, mixed&gt;</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>iterable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed iterable with 2 generic parameters. The key type is not restricted to <code>string|int</code> unlike <code>array</code>. This type is a type alias for <code>array&lt;TKey, TValue&gt;|\Traversable&lt;TKey, TValue&gt;</code> and is completely interchangeable with it.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>iterable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed iterable with 2 generic parameters. <code>iterable</code> is a built-in type equivalent to <code>array|Traversable</code> (with matching generic arguments when given). It is not a type alias.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>iterable&lt;TValue&gt;</code></h4><br/><p>Single-parameter version where the key type defaults to <code>int</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>iterable&lt;TValue&gt;</code></h4><br/><p>Single-parameter version. Like <code>array&lt;TValue&gt;</code>, this is shorthand for <code>iterable&lt;int|string, TValue&gt;</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>iterable</code></h4><br/><p>The non-generic version, equivalent to <code>iterable&lt;mixed, mixed&gt;</code>.</p>
 </div>
@@ -286,14 +286,14 @@ array&lt;string&gt; $names = [&quot;Alice&quot;, &quot;Bob&quot;];
 array&lt;string, int&gt; $ages = [&quot;Alice&quot; =&gt; 30, &quot;Bob&quot; =&gt; 25];
 
 function processItems(iterable&lt;string&gt; $items): void {
-    foreach ($items as string $item) {
+    foreach ($items as $item) {
         echo $item;
     }
 }
 </code></pre></div>
 <h2>The <code>\Traversable&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\Traversable</code> interface from PHP gains optional generic parameters for the key and value types.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>\Traversable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed traversable with 2 generic parameters. The <code>iterable&lt;TKey, TValue&gt;</code> type is a type alias that includes this type.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Traversable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed traversable with 2 generic parameters. The <code>iterable&lt;TKey, TValue&gt;</code> built-in is equivalent to <code>array&lt;TKey, TValue&gt;|\Traversable&lt;TKey, TValue&gt;</code>.</p>
 </div>
 <h2>The <code>\Iterator&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\Iterator</code> interface extends <code>\Traversable</code> and gains generic parameters. <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code> instead of <code>mixed</code>.</p>
@@ -396,7 +396,7 @@ function apply&lt;T, U&gt;(callable&lt;T, U&gt; $fn, T $value): U {
     </div>
 </div>
 <h3>Optional parameters and arity facets</h3>
-<p>Trailing parameters with default values expand into an <strong>intersection of arity siblings</strong> (not a subtype chain). The same model applies to <code>\Closure&lt;…&gt;</code> and will be reused by <code>new&lt;…&gt;</code> constructable facets (Story 27).</p>
+<p>Trailing parameters with default values expand into an <strong>intersection of arity siblings</strong> (not a subtype chain). The same model applies to <code>\Closure&lt;…&gt;</code> and will be reused by <code>new&lt;…&gt;</code> constructable facets (planned; Story 27).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Inferred type: callable&lt;string, int, void&gt; &amp; callable&lt;string, void&gt;
@@ -414,11 +414,11 @@ Greeter $either;
 <p>A trailing variadic never produces infinite facets. <code>function joinAll(string ...$parts): void</code> is typed <code>callable&lt;void&gt; &amp; callable&lt;string, void&gt;</code> — the prefix facets plus one that accepts a single variadic argument. Calls with more arguments than any facet are left unchecked rather than rejected.</p>
 <h2>New Tyhp-Specific Types</h2>
 <h2>The <code>decimal</code> Type</h2>
-<p>Tyhp introduces a <code>decimal</code> type for precise arithmetic calculations. In the compiled PHP, a <code>decimal</code> value is an instance of the <code>\Tyhp\Decimal</code> wrapper class that handles all arithmetic operations using bcmath, gmp, or a pure-PHP fallback (configurable in <code>tyhp.json</code>). Decimal literals use the <code>d</code> suffix.</p>
+<p>Tyhp introduces a <code>decimal</code> type for precise arithmetic calculations. In the compiled PHP, a <code>decimal</code> value is an instance of the <code>\Tyhp\Decimal</code> wrapper class that handles all arithmetic operations using bcmath, gmp, or a pure-PHP fallback (configurable in <code>tyhp.json</code>). There is no <code>19.99d</code> suffix. Construct decimals with <code>\Tyhp\decimal('19.99')</code> or <code>new \Tyhp\Decimal(...)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-decimal $price = 19.99d;
-decimal $tax = 2.00d;
+decimal $price = \Tyhp\decimal(&#039;19.99&#039;);
+decimal $tax = \Tyhp\decimal(&#039;2.00&#039;);
 decimal $total = $price + $tax;  // Precise arithmetic
 
 class Invoice {
@@ -426,11 +426,11 @@ class Invoice {
     public decimal $taxRate;
 
     public function calculateTotal(): decimal {
-        return $this-&gt;amount * (1d + $this-&gt;taxRate);
+        return $this-&gt;amount * (\Tyhp\decimal(&#039;1&#039;) + $this-&gt;taxRate);
     }
 }
 </code></pre></div>
-<p>The <code>decimal</code> type supports all standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code>), comparison operators (<code>==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>), unary negation (<code>-$val</code>), and casts to <code>int</code>, <code>float</code>, and <code>string</code>. These compile to method calls on the underlying <code>\Tyhp\Decimal</code> class.</p>
+<p>The <code>decimal</code> type supports all standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code>), comparison operators (<code>==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>), unary negation (<code>-$val</code>), and casts to <code>int</code>, <code>float</code>, and <code>string</code>. These compile to static method calls on <code>\Tyhp\Decimal</code> (for example <code>\Tyhp\Decimal::__add($a, $b)</code>).</p>
 <h2>The <code>(decimal)</code> Cast</h2>
 <p>Tyhp provides a <code>(decimal)</code> cast operator for converting values to the <code>decimal</code> type, similar to PHP's built-in casts like <code>(int)</code> and <code>(float)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -442,20 +442,20 @@ string $amount = &quot;99.95&quot;;
 decimal $parsed = (decimal) $amount;
 </code></pre></div>
 <h2>Compiled PHP Output for <code>decimal</code></h2>
-<p>The <code>decimal</code> type compiles to <code>\Tyhp\Decimal</code> instances. Arithmetic operations become method calls:</p>
+<p>The <code>decimal</code> type compiles to <code>\Tyhp\Decimal</code> instances. Arithmetic operations become static method calls:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-decimal $a = 10.5d;
-decimal $b = 3.2d;
+decimal $a = \Tyhp\decimal(&#039;10.5&#039;);
+decimal $b = \Tyhp\decimal(&#039;3.2&#039;);
 decimal $result = $a + $b;
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
 
-$a = new \Tyhp\Decimal(&#039;10.5&#039;);
-$b = new \Tyhp\Decimal(&#039;3.2&#039;);
-$result = $a-&gt;__add($b);
+$a = \Tyhp\decimal(&#039;10.5&#039;);
+$b = \Tyhp\decimal(&#039;3.2&#039;);
+$result = \Tyhp\Decimal::__add($a, $b);
 </code></pre></div>
 <h2>The <code>struct</code> Base Type</h2>
 <p>The <code>struct</code> base type is the parent of all struct declarations. At the PHP level it compiles to an associative <code>array</code>, but Tyhp gives it typed properties, schema-based typing, and value-type semantics. See the Structs documentation page for full details on struct declarations, anonymous structs, and the <code>with</code> keyword.</p>
@@ -464,7 +464,9 @@ $result = $a-&gt;__add($b);
 <h2>The <code>never</code> Type</h2>
 <p>The <code>never</code> type from PHP is retained in Tyhp with the same semantics: it indicates that a function never returns (it always throws, calls <code>exit()</code>, or enters an infinite loop). Like <code>void</code>, it is a restricted type that can only appear as a generic type argument when the constraint explicitly allows it.</p>
 <h2>The <code>mixed</code> Type</h2>
-<p>The <code>mixed</code> type from PHP is available in Tyhp but is discouraged. Tyhp's strong type system should eliminate most needs for <code>mixed</code>. There is a recommended compiler setting to flag or disallow explicit use of <code>mixed</code>, encouraging developers to use specific types or union types instead. See the dedicated Mixed Type documentation page for more details.</p>
+<p>The <code>mixed</code> type from PHP is available in Tyhp but is discouraged. Tyhp's strong type system should eliminate most needs for <code>mixed</code>. There is no compiler setting that disallows <code>mixed</code>; prefer specific types or union types instead. See the dedicated Mixed Type documentation page for more details.</p>
+<h2>Template String Types</h2>
+<p>Tyhp supports template (encaps) string types in type position: a double-quoted pattern with <code>${T}</code> holes and optional quantifiers right after <code>}</code> (<code>?</code> = 0–1, <code>+</code> = 1+, <code>*</code> = 0+). Examples: <code>&quot;${string}*&quot;</code>, <code>&quot;api/${string}/items&quot;</code>. They erase to <code>string</code>. See Type Aliases for a short usage note.</p>
 <h2>The <code>self</code> / <code>static</code> / <code>parent</code> Relative Class Types</h2>
 <p>Tyhp supports relative class types with and without generic type arguments. The rules differ for<br />
 bare vs parameterized forms, and for instance vs static methods.</p>
@@ -505,7 +507,7 @@ not invent or rebind type arguments. Prefer bare <code>static</code>, or explici
 <p>Use <code>: self&lt;T&gt;</code> or the declaring class name (<code>: Promise&lt;T&gt;</code>), <strong>not</strong> <code>: static&lt;T&gt;</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-final class Promise&lt;TReturn extends void|mixed = void&gt; {
+final class Promise&lt;TReturn extends void|mixed = mixed&gt; {
     public static function _async&lt;T extends void|mixed&gt;(callable&lt;T&gt; $fn): self&lt;T&gt; {
         return new self&lt;T&gt;($fn);
     }
@@ -546,7 +548,7 @@ when it is <strong>verifiably</strong> that late-bound type, for example:</p>
 <code>static</code> without such a proof. At call sites, a <code>: static</code> return expands to the receiver /<br />
 call-site class reference (including its type arguments).</p>
 <h2>The <code>Promise&lt;T&gt;</code> Type</h2>
-<p>Tyhp provides a <code>Promise&lt;T&gt;</code> type for async/await support. The <code>Promise</code> class is defined as <code>Promise&lt;TReturn extends void|mixed&gt;</code> where <code>TReturn</code> is the fulfillment value type. The constraint allows <code>Promise&lt;void&gt;</code> for async functions that do not return a value.</p>
+<p>Tyhp provides a <code>Promise&lt;T&gt;</code> type for async/await support. The <code>Promise</code> class is defined as <code>Promise&lt;TReturn extends void|mixed = mixed&gt;</code> where <code>TReturn</code> is the fulfillment value type (default <code>mixed</code>). The constraint allows <code>Promise&lt;void&gt;</code> for async functions that do not return a value. A bare <code>Promise</code> is <code>Promise&lt;mixed&gt;</code>, not <code>Promise&lt;void&gt;</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // An async function returns a Promise
@@ -567,7 +569,7 @@ User $user = await $userPromise;
 <p>The foundational internal wrapper type. A variable with a <code>__TyhpInternal&lt;T&gt;</code> type resolves to <code>T</code> but cannot be directly assigned by the developer. It can only be set via the return value of a function/method or via a type guard. Nearly all <code>__</code>-prefixed types are defined in terms of <code>__TyhpInternal&lt;&gt;</code>.</p>
 <h2>Symbol Name Types</h2>
 <p>These types represent string values that the compiler knows refer to specific symbols in scope. They enable Tyhp's type-safe dynamic language features. Each is obtained by using the corresponding type guard function (e.g., <code>\class_exists()</code> narrows a string to <code>__ClassName</code>).</p>
-<div class="alert alert-secondary" role="alert"><h4><code>__VarName</code></h4><br/><p>A <code>string</code> representing a variable name valid in the current scope. Obtained via <code>isset($$varName)</code>. Alias for <code>__TypedVarName&lt;mixed&gt;</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__VarName</code></h4><br/><p>A <code>string</code> representing a variable name valid in the current scope. Obtained via <code>variable_exists($count)</code> or <code>variable_exists('count')</code> — the argument is the variable itself or a string literal. Alias for <code>__TypedVarName&lt;mixed&gt;</code>. (<code>$$var</code> is prohibited: TYHP4133.)</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__TypedVarName&lt;T&gt;</code></h4><br/><p>Like <code>__VarName</code> but the compiler also knows the type of the referenced variable. If the string value can be resolved at compile time, the generic parameter <code>T</code> is the variable's declared type.</p>
 </div>
@@ -590,7 +592,7 @@ Bare form ≡ <code>__TraitName&lt;object&gt;</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__UsedTraitName&lt;T&gt;</code></h4><br/><p>A <code>__TraitName</code> that is specifically a trait used by the class or enum specified by <code>T</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__CompatibleTypeName&lt;T&gt;</code></h4><br/><p>A class, enum, or interface name that is compatible with (same as or descendant of) <code>T</code>. Used with <code>\is_a()</code> and <code>\is_subclass_of()</code>.<br />
+<div class="alert alert-secondary" role="alert"><h4><code>__CompatibleTypeName&lt;T&gt;</code></h4><br/><p>A class, enum, or interface name that is compatible with (same as or descendant of) <code>T</code>. Used with the <code>is</code> / <code>instanceof</code> keyword and with <code>\is_subclass_of()</code>.<br />
 Accepts string literals naming a subtype of <code>T</code>, and branded <code>__ClassName&lt;S&gt;</code> / <code>__EnumName&lt;S&gt;</code> / <code>__InterfaceName&lt;S&gt;</code> / <code>__CompatibleTypeName&lt;S&gt;</code> when <code>S</code> is the same as or a subtype of <code>T</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__PropertyName&lt;T&gt;</code></h4><br/><p>A <code>string</code> representing a property name on the type <code>T</code>. Obtained via <code>\property_exists()</code> as a type guard.</p>
@@ -710,7 +712,7 @@ $cache = new \WeakMap();
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use generic array types (<code>array&lt;string&gt;</code>, <code>array&lt;string, int&gt;</code>) instead of plain <code>array</code> for element-level type safety. The compiler can then catch type mismatches when adding or retrieving elements.</p>
+        <div class="callout-content"><p>Use generic array types (<code>array&lt;string&gt;</code>, <code>array&lt;string, int&gt;</code>) instead of plain <code>array</code> for element-level type safety. <code>array&lt;string&gt;</code> is shorthand for <code>array&lt;int|string, string&gt;</code>. The compiler can then catch type mismatches when adding or retrieving elements.</p>
 </div>
     </div>
 </div>

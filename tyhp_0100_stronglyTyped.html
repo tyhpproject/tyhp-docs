@@ -275,7 +275,7 @@
 <p>Additionally, Tyhp requires types for:</p>
 <ul>
 <li>Variables -- either an explicit type declaration or type inference on first assignment</li>
-<li>Closure / arrow function parameters and return types</li>
+<li>Closure / arrow function parameters and return types — required unless the type is inferable from an expected callable type</li>
 <li>Catch block exception types</li>
 </ul>
 <h2>Variable Type Declarations</h2>
@@ -312,12 +312,12 @@ string|null $alsoMaybeName = null;
 // Parenthesized type declaration
 (string) $myStr = &quot;hello&quot;;
 (int|float) $number = 3.14;
-(decimal) $price = 19.99d;
+(decimal) $price = \Tyhp\decimal(&#039;19.99&#039;);
 
 // Equivalent to:
 string $myStr2 = &quot;hello&quot;;
 int|float $number2 = 3.14;
-decimal $price2 = 19.99d;
+decimal $price2 = \Tyhp\decimal(&#039;19.99&#039;);
 </code></pre></div>
 <h2>2. Type Inference from First Assignment</h2>
 <p>When you assign a value to a variable without an explicit type declaration, Tyhp automatically infers the type from the right-hand side expression. The inferred type is locked in at the first assignment and cannot change. The inference uses the narrowest possible type based on the expression. No <code>var</code> or <code>auto</code> keyword is needed -- the absence of a type annotation combined with an assignment is sufficient.</p>
@@ -327,9 +327,9 @@ decimal $price2 = 19.99d;
 $myStr = &quot;asdf&quot;;           // Inferred as `string`
 $myBool = \canIMoveThis(); // Inferred from the function&#039;s return type
 $price = 19.99;            // Inferred as `float`
-$discount = 1.89d;         // Inferred as `decimal`
+$amount = \Tyhp\decimal(&#039;1.89&#039;); // Inferred as `decimal`
 $count = 42;              // Inferred as `int`
-$items = [1, 2, 3];       // Inferred as `array&lt;int&gt;`
+$items = [1, 2, 3];       // Inferred as `array&lt;int&gt;` (list shorthand for `array&lt;int|string, int&gt;`)
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -354,8 +354,18 @@ string $name = &quot;Alice&quot;;
 ?string $maybeName = null;  // OK
 string|null $alsoNullable = null;  // Also OK
 </code></pre></div>
+<h2>Closure and Arrow Parameter Inference</h2>
+<p>Named function and method parameters always need an explicit type. Closure and arrow-function parameters also need a type, unless the expected callable type supplies it. If there is no expected callable type (or the parameter cannot be inferred), the compiler requires an annotation.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// $u is inferred as User from the expected callable type
+callable&lt;User, bool&gt; $isAdult = fn ($u) =&gt; $u-&gt;age &gt; 18;
+
+// No expected type — annotate the parameter
+$double = fn (int $n): int =&gt; $n * 2;
+</code></pre></div>
 <h2>Type Immutability</h2>
-<p>Once a variable is typed -- whether explicitly declared or inferred -- its type is immutable. You cannot assign a value of an incompatible type, and you cannot re-declare a variable with a different type in the same scope.</p>
+<p>Once a variable is typed -- whether explicitly declared or inferred -- its type is immutable. You cannot assign a value of an incompatible type, and you cannot re-declare a variable with a different type in the same scope. <code>unset($x)</code> does not let you redeclare <code>$x</code> with a new type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 string $myStr = &quot;hello&quot;;
@@ -366,35 +376,11 @@ string $myStr = &quot;hello&quot;;
 // ERROR: Cannot re-declare type for an already typed variable
 // int $myStr = 42;
 </code></pre></div>
-<h2>The <code>unset</code> + Re-declare Pattern</h2>
-<p>If you need to change a variable's type, you must first <code>unset</code> it and then re-declare it. The <code>unset</code> call removes the variable from the current scope, allowing a fresh declaration.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-string $myStr = &quot;hello&quot;;
-
-// Remove the variable from scope
-unset($myStr);
-
-// Now re-declare with a different type
-int $myStr = 42;  // OK: previous declaration was unset
-</code></pre></div>
-<div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Warning
-        </h4>
-        <div class="callout-content"><p>The <code>unset</code> call must be in the same scope where the variable was declared. You cannot <code>unset</code> a variable from a parent scope.</p>
-</div>
-    </div>
-</div>
 <h2>Array and Generic Types</h2>
 <p>Tyhp extends PHP's <code>array</code> type with generic parameters for type-safe collections. See the New Types page for the full list of generic types.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Typed arrays using generics
+// Typed arrays using generics (`array&lt;string&gt;` is list shorthand for `array&lt;int|string, string&gt;`)
 array&lt;string&gt; $names = [&quot;Alice&quot;, &quot;Bob&quot;];
 array&lt;string, int&gt; $ages = [&quot;Alice&quot; =&gt; 30, &quot;Bob&quot; =&gt; 25];
 
@@ -511,7 +497,7 @@ function greet(string $name): string {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't try to re-declare a variable's type without unsetting it first. Duplicate type declarations in the same scope produce a <code>BinderDuplicateSymbolDeclaration</code> error.</p>
+        <div class="callout-content"><p>Don't try to re-declare a variable's type in the same scope. Duplicate type declarations produce a <code>BinderDuplicateSymbolDeclaration</code> error. <code>unset()</code> does not start a new typed declaration.</p>
 </div>
     </div>
 </div>

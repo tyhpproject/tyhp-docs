@@ -381,7 +381,7 @@ class AuditableUser {
 }
 </code></pre></div>
 <h2>Deprecated and Obsolete</h2>
-<p>Both the trait itself and individual members can be marked as <code>deprecated</code> or <code>obsolete</code>.</p>
+<p>The trait itself can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Member-level markers parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated trait LegacyCacheable {
@@ -389,7 +389,7 @@ deprecated trait LegacyCacheable {
 }
 
 trait Cacheable {
-    deprecated public function cacheForever(): void;
+    public function cacheForever(): void;
     public function cache(int $ttl): void;
     public function invalidateCache(): void;
 }

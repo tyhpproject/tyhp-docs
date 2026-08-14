@@ -356,9 +356,11 @@ class ApiClient {
     }
 }
 
-// Extension method — compile-time type safety
-extension ApiClientExtensions extends ApiClient {
-    public static function getUsers(extends ApiClient $client): array&lt;User&gt; {
+// Extension method — compile-time type safety.
+// Members are top-level `function` forms (optional `async` only).
+// Visibility/`static` cannot appear. `extension Name extends ApiClient` is optional.
+extension ApiClientExtensions {
+    function getUsers(extends ApiClient $client): array&lt;User&gt; {
         mixed $result = $client-&gt;sendRequest(&#039;getUsers&#039;, []);
         // narrowing and type-safe return
         return $result is array ? $result : [];
@@ -382,7 +384,7 @@ $users = ApiClientExtensions::getUsers($api);
 $result = $api-&gt;unknownMethod();
 </code></pre></div>
 <h2>Auto-Generated Magic Methods for Generics</h2>
-<p>When a class uses generics with runtime type tracking, the Tyhp compiler adds the GenericObject trait from the tyhp/core package. This trait provides runtime generic type parameter storage and retrieval. The compiler also auto-generates constructor logic to initialize the generic type information.</p>
+<p>When a class uses generics with runtime type tracking (for example <code>typeof(T)</code>), the Tyhp compiler adds the <code>HasGenerics</code> trait from the tyhp/core package (<code>\Tyhp\Concerns\HasGenerics</code>). <code>Concerns\GenericObject</code> is the legacy name. The compiler also auto-generates constructor logic to initialize the generic type information (<code>__initGenerics__tyhpGeneric</code> and <code>$this-&gt;__tyhpGeneric-&gt;init(...)</code>). Generic classes that never use <code>typeof(T)</code> or other tracking triggers emit <strong>no</strong> trait.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class TypedCollection&lt;T&gt; {
@@ -395,13 +397,16 @@ class TypedCollection&lt;T&gt; {
     public function get(int $index): T {
         return $this-&gt;items[$index];
     }
+
+    public function getItemType(): \Tyhp\Type {
+        return typeof(T);
+    }
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// The compiler adds the GenericObject trait and type tracking
 class TypedCollection {
-    use \Tyhp\Concerns\GenericObject;
+    use \Tyhp\Concerns\HasGenerics;
 
     private array $items = [];
 
@@ -412,11 +417,13 @@ class TypedCollection {
     public function get(int $index): mixed {
         return $this-&gt;items[$index];
     }
-}
 
-// When instantiated with concrete types:
-$collection = new TypedCollection();
-$collection-&gt;__setGenericTypes([\Tyhp\Type::int()]);
+    protected function __initGenerics__tyhpGeneric(?\Tyhp\Type ...$generics): void
+    {
+        $this-&gt;__tyhpGeneric-&gt;init(static::class, \TypedCollection::class, new \Tyhp\NamedType(&#039;T&#039;, $generics[0] ?? null));
+        $this-&gt;__tyhpGeneric-&gt;markBound();
+    }
+}
 </code></pre></div>
 <h2>__toString Must Return string</h2>
 <p>The compiler strictly enforces that __toString() returns string. Unlike PHP which coerces the return value, Tyhp treats a non-string return type as a compiler error.</p>
@@ -596,7 +603,7 @@ Point $p2 = clone $p1 with [x =&gt; 10]; // $p2-&gt;x is 10, $p2-&gt;y is 2
     </div>
 </div>
 <h2>Compiled PHP Output</h2>
-<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated magic methods for generic classes (GenericObject trait). Readonly <code>clone ... with</code> on PHP &lt; 8.5 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
+<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated generic-tracking members when needed (<code>HasGenerics</code> trait, <code>__initGenerics__tyhpGeneric</code>). Readonly <code>clone ... with</code> on PHP &lt; 8.5 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Entity {

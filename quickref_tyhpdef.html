@@ -271,14 +271,12 @@ const string APP_NAME;
 function myPhpFunction(string $input): int;
 </code></pre></div>
 <h2>Variables and Constants</h2>
-<p>Declare global PHP variables and constants with types. Use <code>??</code> for fallback defaults, <code>as</code> for aliasing, and <code>&amp;</code> for import-by-reference. Supports <code>deprecated</code>/<code>obsolete</code> markers.</p>
+<p>Declare global PHP variables and constants with types. Use <code>as</code> for aliasing. Top-level <code>deprecated</code>/<code>obsolete</code> work. Tyhpdef <code>??</code> is parsed but <strong>not</strong> applied; <code>&amp;</code> is not a tyhpdef form.</p>
 <p><a href="tyhpdef_variablesAndConstants.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">bool $debugMode ?? false;
-string $legacy_app_name as $appName ?? &quot;DefaultApp&quot;;
-int &amp;$sharedCounter;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">bool $debugMode;
+string $legacy_app_name as $appName;
 
 const string APP_ENV;
-const float TAX_RATE ?? 0.08;
 const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 </code></pre></div>
 <h2>Functions</h2>
@@ -395,13 +393,13 @@ public function find(string $uuid): ?User;
 public function find(array&lt;string, mixed&gt; $criteria): array&lt;User&gt;;
 </code></pre></div>
 <h2>The <code>deprecated</code> and <code>obsolete</code> Keywords</h2>
-<p><code>deprecated</code> produces a compiler warning but still compiles. <code>obsolete</code> produces a compiler error and blocks compilation. Both must appear before all other modifiers. Can be applied to functions, classes, interfaces, traits, enums, methods, properties, constants, and enum cases.</p>
+<p><code>deprecated</code> produces a compiler warning but still compiles. <code>obsolete</code> produces a compiler error and blocks compilation. Both must appear before all other modifiers. In this alpha they are enforced on <strong>top-level</strong> functions, classes, interfaces, traits, enums, constants, and variables — not on class/interface members or enum cases.</p>
 <p><a href="tyhpdef_deprecatedKeyword.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">deprecated function \mysql_connect(string $server, string $user, string $pass): resource|false;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">deprecated function \mysql_connect(string $server, string $user, string $pass): \mysqli|false;
 obsolete function \md5(string $string, bool $binary = false): string;
 </code></pre></div>
 <h2>Runtime Errors and Exceptions</h2>
-<p>When tyhpdef declarations don't match actual PHP code, runtime errors can occur. Declare exception hierarchies, document throws with <code>@throws</code> (documentation only in this alpha), and provide fallback defaults with <code>??</code> on imported globals.</p>
+<p>When tyhpdef declarations don't match actual PHP code, runtime errors can occur. Declare exception hierarchies and document throws with <code>@throws</code> (documentation only in this alpha).</p>
 <p><a href="tyhpdef_runTimeErrorsAndExceptions.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class \InvalidArgumentException extends \LogicException {
     public function __construct(

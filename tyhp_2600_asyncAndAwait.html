@@ -330,24 +330,24 @@ async function processOrder(int $orderId): OrderResult {
 }
 </code></pre></div>
 <h2>The Promise&lt;T&gt; Type</h2>
-<p>The Promise&lt;T&gt; class is provided by the tyhp/async Composer package. It represents an asynchronous computation that eventually resolves to a value of type T. The generic parameter T uses the constraint extends void|mixed, allowing Promise<void> for async functions that return nothing. Unparameterized Promise defaults to Promise<void>.</p>
+<p>The Promise&lt;T&gt; class is provided by the tyhp/async Composer package. It represents an asynchronous computation that eventually resolves to a value of type T. The generic parameter is <code>TReturn extends void|mixed = mixed</code>, so unparameterized <code>Promise</code> defaults to <code>Promise&lt;mixed&gt;</code> (not <code>Promise&lt;void&gt;</code>). <code>Promise&lt;void&gt;</code> is still valid for async functions that return nothing.</p>
 <h2>Promise Combinators</h2>
 <p>Promise provides static combinator methods for coordinating multiple async operations.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::all(array&lt;Promise&lt;T&gt;&gt; $promises): array&lt;T&gt;</code></h4><br/><p>Waits for ALL promises to resolve. Returns an array of resolved values in the same order. If any promise rejects, the entire all() rejects with that error.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::all(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;array&lt;T&gt;&gt;</code></h4><br/><p>Waits for ALL promises to resolve. After <code>await</code>, you get an array of resolved values in the same order. If any promise rejects, the entire all() rejects with that error.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::race(array&lt;Promise&lt;T&gt;&gt; $promises): T</code></h4><br/><p>Returns the value of the FIRST promise to settle (resolve or reject). Other promises continue running but their results are discarded.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::race(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;T&gt;</code></h4><br/><p>After <code>await</code>, returns the value of the FIRST promise to settle (resolve or reject). Other promises continue running but their results are discarded.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>Promise::resolved(T $value): Promise&lt;T&gt;</code></h4><br/><p>Creates a pre-resolved promise with the given value. Useful for returning synchronous values from async interfaces.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>Promise::rejected(Throwable $error): Promise&lt;T&gt;</code></h4><br/><p>Creates a pre-rejected promise with the given error.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::delay(int $ms): void</code></h4><br/><p>An async method that resolves after the specified number of milliseconds. Useful for implementing backoff, throttling, or timeouts.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::delay(int $ms): Promise&lt;void&gt;</code></h4><br/><p>An async method that resolves after the specified number of milliseconds. <code>await Promise::delay(...)</code> yields <code>void</code>. Useful for implementing backoff, throttling, or timeouts.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::timeout(Promise&lt;T&gt; $promise, int $ms): T</code></h4><br/><p>Races a promise against a timeout. If the promise does not resolve within the specified milliseconds, a TimeoutException is thrown.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::timeout(Promise&lt;T&gt; $promise, int $ms): Promise&lt;T&gt;</code></h4><br/><p>Races a promise against a timeout. After <code>await</code>, you get <code>T</code>. If the promise does not resolve within the specified milliseconds, a TimeoutException is thrown.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::batch(array&lt;TItem&gt; $items, callable $processor, int $concurrency = 5): array&lt;TResult&gt;</code></h4><br/><p>Processes an array of items through an async processor function with a configurable concurrency limit. Returns an array of results.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::batch(array&lt;TItem&gt; $items, callable $processor, int $concurrency = 5): Promise&lt;array&lt;TResult&gt;&gt;</code></h4><br/><p>Processes an array of items through an async processor function with a configurable concurrency limit. After <code>await</code>, you get an array of results.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::run(callable $fn): T</code></h4><br/><p>Runs a callable inside the event loop. Used at the lowest async boundary to start the event loop. This is the entry point for async code from synchronous contexts.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::run(callable $fn): ?T</code></h4><br/><p>Runs a callable inside the event loop. Used at the lowest async boundary to start the event loop. This is the entry point for async code from synchronous contexts — it returns the unwrapped value, not a Promise.</p>
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -451,8 +451,9 @@ class DataService {
         return $this-&gt;doProcess($d);
     }
 
-    // Async overload
-    public async function process(Data $d): Promise&lt;Result&gt; {
+    // Async overload — declared return is the unwrapped type (Result).
+    // Writing `Promise&lt;Result&gt;` here would wrap twice: Promise&lt;Promise&lt;Result&gt;&gt;.
+    public async function process(Data $d): Result {
         await $this-&gt;validate($d);
         return $this-&gt;doProcess($d);
     }
@@ -553,9 +554,9 @@ while (\Tyhp\Promise::_await($__asyncIter_2-&gt;next())) {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 async function fetchWithTimeout(string $url): Data {
-    // CancellationTokenSource auto-cancels after 5000ms
-    $cts := new CancellationTokenSource(timeout: 5000);
-    return await $http-&gt;get($url, $cts-&gt;token);
+    // CancellationTokenSource auto-cancels after 5000ms (positional ctor, not `timeout:`)
+    $cts := new CancellationTokenSource(5000);
+    return await $http-&gt;get($url, $cts-&gt;getToken());
     // CancellationTokenSource is disposed when scope exits
 }
 
@@ -563,7 +564,7 @@ async function fetchWithManualCancel(string $url): ?Data {
     $cts := new CancellationTokenSource();
 
     try {
-        return await $http-&gt;get($url, $cts-&gt;token);
+        return await $http-&gt;get($url, $cts-&gt;getToken());
     } catch (\Throwable $e) {
         $cts-&gt;cancel(); // manually cancel on error
         return null;
@@ -723,11 +724,7 @@ function notAsync(): int {
     return 0;
 }
 
-// ERROR: async function must have Promise-compatible return type
-// async function bad(): int {  // Error: declared return is int,
-//     return 42;                 // but async wraps in Promise&lt;int&gt;
-// }
-// FIX: The return type IS the unwrapped type — Tyhp handles wrapping
+// The declared return type IS the unwrapped type — Tyhp wraps it in Promise&lt;T&gt;
 async function good(): int {
     return 42; // OK: returns Promise&lt;int&gt;, declared as int
 }

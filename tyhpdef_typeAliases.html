@@ -400,7 +400,7 @@ class UserService {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T: Create circular type aliases where alias A references alias B and alias B references alias A. The compiler will detect and reject circular definitions.</p>
+        <div class="callout-content"><p>DON'T: Create circular type aliases where alias A references alias B and alias B references alias A. This alpha does not emit a dedicated circular-alias diagnostic; keep aliases acyclic yourself.</p>
 </div>
     </div>
 </div>
@@ -413,7 +413,7 @@ class UserService {
 <li>Type aliases in tyhpdef can only appear at root level or inside namespace blocks</li>
 <li>Type aliases are a compile-time construct — they are erased during PHP emission</li>
 <li>Type aliases are interchangeable with their underlying type at compile time</li>
-<li>Type aliases can reference other type aliases (but not circularly)</li>
+<li>Type aliases can reference other type aliases (avoid cycles; they are not diagnosed in this alpha)</li>
 </ul>
 
 </section>

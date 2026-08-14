@@ -275,7 +275,7 @@ enum Status {
 }
 </code></pre></div>
 <h2>Backed Enums</h2>
-<p>A backed enum associates each case with a scalar value of a specific type — either <code>string</code> or <code>int</code>. When importing a backed enum in Tyhpdef, specifying case values is optional. Cases with explicit values enable exact-value type matching, while cases without values match the backing type generally.</p>
+<p>A backed enum associates each case with a scalar value of a specific type — either <code>string</code> or <code>int</code>. When importing a backed enum in Tyhpdef, specifying case values is optional. The checker validates values that <strong>are</strong> present; omitted values are not treated as “matches any int/string.” Prefer listing known values when you have them.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // String-backed enum
@@ -290,9 +290,9 @@ enum HttpMethod: string {
 // Int-backed enum — values optional
 enum LogLevel: int {
     case Debug = 0;
-    case Info;       // No value: matches any int
-    case Warning;    // No value: matches any int
-    case Error = 3;  // Exact match to 3
+    case Info;
+    case Warning;
+    case Error = 3;
     case Critical;
 }
 </code></pre></div>
@@ -304,7 +304,7 @@ enum LogLevel: int {
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>When a backed enum case omits its value, Tyhp treats it as matching any value of the backing type. When a value is specified, Tyhp can perform exact-value type narrowing. Specifying values is recommended when you know them.</p>
+        <div class="callout-content"><p>Omitted backed-case values are allowed in the grammar. This alpha only checks values you write; it does not infer “any int” / “any string” from a missing <code>=</code>.</p>
 </div>
     </div>
 </div>
@@ -369,14 +369,14 @@ enum BadgeType as BackedBadgeType: string {
 }
 </code></pre></div>
 <h2>Deprecated and Obsolete</h2>
-<p>Both the enum itself and individual cases or methods can be marked as <code>deprecated</code> or <code>obsolete</code>.</p>
+<p>The enum itself can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Markers on cases and methods parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-enum Priority: int {
+deprecated enum LegacyPriority: int {
     case Low = 0;
     case Medium = 1;
     case High = 2;
-    deprecated case Urgent = 3;
+    case Urgent = 3;
 }
 </code></pre></div>
 <h2>Best Practices</h2>
@@ -388,7 +388,7 @@ enum Priority: int {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>DO specify case values for backed enums when you know them. Explicit values enable exact-value type narrowing and catch value mismatches at compile time.</p>
+        <div class="callout-content"><p>DO specify case values for backed enums when you know them. Present values are checked; omitted values are not a wildcard.</p>
 </div>
     </div>
 </div>

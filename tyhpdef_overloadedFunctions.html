@@ -346,14 +346,12 @@ class HttpClient {
 }
 </code></pre></div>
 <h2>Overload Resolution</h2>
-<p>The compiler resolves overloads at compile time using the following priority order:</p>
+<p>The compiler resolves overloads at compile time in two stages:</p>
 <ol>
-<li>Exact type match — a parameter whose type exactly matches the argument type</li>
-<li>Static value type match — a literal value type (like true, false, 0) that matches the argument's compile-time value</li>
-<li>Compatible type match — a parameter whose type is a supertype of the argument type</li>
-<li>Generic type inference — a generic overload whose type parameters can be inferred from the arguments</li>
+<li><strong>Arity</strong> — keep signatures whose parameter count range includes the call’s argument count.</li>
+<li><strong>Score</strong> — among same-arity candidates, pick the highest compatibility score (exact types score higher than merely compatible types; generic inference participates in scoring).</li>
 </ol>
-<p>If no single overload matches or if multiple overloads match equally, the compiler reports an ambiguity error.</p>
+<p>If several candidates share the winning score, the first one wins. This alpha does <strong>not</strong> emit a dedicated overload-ambiguity diagnostic.</p>
 <h2>Implementing Overloaded Interfaces in Tyhp</h2>
 <p>When implementing a class in Tyhp that has overloaded interface methods from tyhpdef, you only need to implement the single encompassing method that handles all overload variants.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -376,7 +374,7 @@ Repository $repo = new UserRepository();
 array&lt;User&gt; $users = $repo-&gt;find([&#039;status&#039; =&gt; &#039;active&#039;]);
 </code></pre></div>
 <h2>Deprecating Specific Overloads</h2>
-<p>Individual overloads can be marked as deprecated or obsolete without affecting the other overloads of the same function.</p>
+<p>Top-level function overloads can be marked <code>deprecated</code> or <code>obsolete</code> independently. Member-level overload markers on class/interface methods parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated function \connectDb(string $connectionString): DbConnection;
@@ -435,12 +433,12 @@ function \connectDb(DbConfig $config): DbConnection;
 <li>Declare overloads by repeating the same function or method name with different parameter signatures</li>
 <li>Each overload must have a unique parameter signature</li>
 <li>The compiler internally constructs an encompassing signature from all overloads</li>
-<li>Overload resolution happens at compile time based on argument types</li>
+<li>Overload resolution is arity first, then a compatibility score (best score wins; no ambiguity error)</li>
 <li>Static value types (literal values) can be used as parameter types for precise overload matching</li>
 <li>Generic overloads are supported — each overload can have its own type parameters</li>
 <li>Async overloads must consistently use the <code>async</code> keyword across all overloads</li>
 <li>In Tyhp code, implementing an overloaded interface requires only the encompassing method</li>
-<li>Individual overloads can be independently marked as <code>deprecated</code> or <code>obsolete</code></li>
+<li>Top-level function overloads can be independently marked as <code>deprecated</code> or <code>obsolete</code> (member-level flags are not enforced yet)</li>
 </ul>
 
 </section>

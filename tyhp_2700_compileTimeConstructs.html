@@ -313,6 +313,8 @@ echo &#039;name&#039;;
 echo &#039;age&#039;;
 echo &#039;greet&#039;;
 echo &#039;MAX_AGE&#039;;
+echo &#039;name&#039;;
+echo &#039;city&#039;;
 </code></pre></div>
 <p>A common use case for nameof() is in error messages, logging, and validation — any place where you reference a symbol by name as a string. Using nameof() instead of a hardcoded string ensures the reference stays valid when the symbol is renamed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -398,6 +400,9 @@ $dateType = \Tyhp\Type::fromClassName(&#039;DateTimeInterface&#039;::class);
 if (\Tyhp\Type::is($value, \Tyhp\Type::string())) {
     echo &#039;Value is a string&#039;;
 }
+
+// typeof(T) on a class generic — HasGenerics / variant lookup, not Type::of(&#039;T&#039;)
+return ($this-&gt;__tyhpGeneric-&gt;resolvedType(\Repository::class, &#039;T&#039;));
 </code></pre></div>
 <h2>default() — Get Default Value for a Type</h2>
 <p>The default() construct returns the default value for a given type. The argument must be a valid type name. The result is a constant value emitted directly into the PHP output. This is particularly useful in generic contexts where you need a type-appropriate zero value, or when initializing variables with sensible defaults.</p>
@@ -466,7 +471,7 @@ function sum(array $values): int {
 <div class="alert alert-secondary" role="alert"><h4><code>default(ClassName)</code></h4><br/><p>Returns null for any object/class type</p>
 </div>
 <h2>variable_exists() — Compile-Time Variable Existence Check</h2>
-<p>The variable_exists() construct checks if a variable is declared in the current scope. When the compiler can determine the answer statically, it emits a boolean literal (true or false). When the answer depends on runtime conditions, it emits an isset() check.</p>
+<p>The variable_exists() construct checks if a variable is declared in the current scope. When the compiler can determine the answer statically, it emits a boolean literal (true or false). When the answer depends on runtime conditions, it emits <code>\array_key_exists('name', \get_defined_vars())</code> — not <code>isset()</code>, so a variable that exists and holds <code>null</code> still counts as present.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 string $name = &#039;Alice&#039;;
@@ -493,7 +498,7 @@ function processConfig(): void {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 // variable_exists() compiles to true/false literals
-// or isset() depending on compile-time knowledge
+// or array_key_exists + get_defined_vars when the answer is not folded
 $name = &#039;Alice&#039;;
 
 if (true) {
@@ -505,7 +510,7 @@ if (false) {
 }
 
 function processConfig(): void {
-    if (isset($customHandler)) {
+    if (\array_key_exists(&#039;customHandler&#039;, \get_defined_vars())) {
         $customHandler();
     } else {
         defaultHandler();
@@ -517,7 +522,7 @@ function processConfig(): void {
 <ul>
 <li>Type aliases (type MyType = int|string) — resolved during compilation, erased from PHP output. All references to the alias are replaced with the underlying type.</li>
 <li>Structs — compiled to PHP associative arrays. Struct declarations are erased; struct property access compiles to array key access.</li>
-<li>Generics — type parameters are erased via type erasure. Generic annotations produce no PHP code. Optional runtime type tracking is available via the GenericObject trait.</li>
+<li>Generics — type parameters are erased via type erasure. Generic annotations produce no PHP code. Optional runtime type tracking is available via the <code>HasGenerics</code> trait (<code>\Tyhp\Concerns\HasGenerics</code>).</li>
 <li>Static value types (__ClassName, __FunctionName, etc.) — compile-time string subtypes that are erased to plain string in PHP output.</li>
 <li>Type guard return types ($param is Type) — compiled to bool return type in PHP output. The type narrowing information is used only by the checker.</li>
 <li>Function overload signatures — only the implementation body is emitted to PHP. Overload signatures are compile-time declarations for the checker.</li>
@@ -569,7 +574,7 @@ function processConfig(): void {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use variable_exists() instead of isset() when you need to check whether a variable is declared in scope. variable_exists() is a compile-time construct that the compiler can optimize to a boolean literal.</p>
+        <div class="callout-content"><p>Use variable_exists() instead of isset() when you need to check whether a variable is declared in scope. variable_exists() is a compile-time construct that the compiler can fold to a boolean literal, or emit as <code>\array_key_exists(..., \get_defined_vars())</code>.</p>
 </div>
     </div>
 </div>

@@ -265,7 +265,7 @@
 </p>
     <p>Tyhp provides deterministic resource management through the IsDisposable and AsyncIsDisposable interfaces, the := (using assignment) operator, and the using block syntax. These features ensure that resources like database connections, file handles, and network sockets are properly cleaned up when they are no longer needed.</p>
 <h2>The IsDisposable Interface</h2>
-<p>Any class that manages resources should implement \Tyhp\Contracts\IsDisposable. This interface requires a single dispose() method that performs cleanup.</p>
+<p>Any class that manages resources should implement <code>\Tyhp\Contracts\IsDisposable</code> (provided by the <code>tyhp/core</code> package). This interface requires a single dispose() method that performs cleanup.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class DatabaseConnection implements \Tyhp\Contracts\IsDisposable {
@@ -285,7 +285,7 @@ class DatabaseConnection implements \Tyhp\Contracts\IsDisposable {
 }
 </code></pre></div>
 <h2>The AsyncIsDisposable Interface</h2>
-<p>For resources that require asynchronous cleanup (e.g., closing a connection over the network), implement \Tyhp\Contracts\AsyncIsDisposable. This interface requires a disposeAsync() method that returns a Promise.</p>
+<p>For resources that require asynchronous cleanup (e.g., closing a connection over the network), implement <code>\Tyhp\Contracts\AsyncIsDisposable</code> (provided by the <code>tyhp/async</code> package). This interface requires a disposeAsync() method that returns a Promise.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class AsyncConnection implements \Tyhp\Contracts\AsyncIsDisposable {
@@ -310,17 +310,17 @@ function processData(): void {
 }
 </code></pre></div>
 <h2>Compiled PHP Output — DisposableScope</h2>
-<p>The := operator compiles to a \Tyhp\DisposableScope pattern. A scope variable is created and resources are registered with it via $__scope-&gt;using(). When the scope variable goes out of scope, PHP's __destruct() fires and disposes all registered resources in reverse order.</p>
+<p>The := operator compiles to a <code>\Tyhp\DisposableScope</code> pattern from the <code>tyhp/async</code> package. A scope variable is created and resources are registered with it via <code>$__scope_0-&gt;using()</code>. When the scope variable goes out of scope, PHP's __destruct() fires and disposes all registered resources in reverse order.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 function processData(): void {
-    $__scope = \Tyhp\DisposableScope::create();
-    $db = $__scope-&gt;using(new DatabaseConnection(&#039;host=localhost dbname=mydb&#039;));
+    $__scope_0 = \Tyhp\DisposableScope::create();
+    $db = $__scope_0-&gt;using(new DatabaseConnection(&#039;host=localhost dbname=mydb&#039;));
 
     $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
     // ... process result ...
 
-    // When $__scope goes out of scope, __destruct() fires
+    // When $__scope_0 goes out of scope, __destruct() fires
     // and calls $db-&gt;dispose() automatically
 }
 </code></pre></div>
@@ -341,18 +341,18 @@ function transferData(): void {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 function transferData(): void {
-    $__scope = \Tyhp\DisposableScope::create();
-    $source = $__scope-&gt;using(new DatabaseConnection($sourceDsn));
-    $target = $__scope-&gt;using(new DatabaseConnection($targetDsn));
-    $logger = $__scope-&gt;using(new FileLogger(&#039;/var/log/transfer.log&#039;));
+    $__scope_0 = \Tyhp\DisposableScope::create();
+    $source = $__scope_0-&gt;using(new DatabaseConnection($sourceDsn));
+    $target = $__scope_0-&gt;using(new DatabaseConnection($targetDsn));
+    $logger = $__scope_0-&gt;using(new FileLogger(&#039;/var/log/transfer.log&#039;));
 
     // ... transfer data ...
 
-    // $__scope-&gt;__destruct() disposes: $logger, $target, $source
+    // $__scope_0-&gt;__destruct() disposes: $logger, $target, $source
 }
 </code></pre></div>
 <h2>Nested Disposable Scopes</h2>
-<p>Each nested scope that contains disposable resources gets its own DisposableScope with a unique suffix. Inner scopes dispose independently of outer scopes.</p>
+<p>Each nested scope that contains disposable resources gets its own DisposableScope with a unique suffix (<code>$__scope_0</code>, <code>$__scope_1</code>, …). Inner scopes dispose independently of outer scopes.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 function process(): void {
@@ -369,8 +369,8 @@ function process(): void {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 function process(): void {
-    $__scope = \Tyhp\DisposableScope::create();
-    $outer = $__scope-&gt;using(new ResourceA());
+    $__scope_0 = \Tyhp\DisposableScope::create();
+    $outer = $__scope_0-&gt;using(new ResourceA());
 
     if ($condition) {
         $__scope_1 = \Tyhp\DisposableScope::create();
@@ -378,7 +378,7 @@ function process(): void {
         // $__scope_1-&gt;__destruct() fires here
     }
 
-    // $__scope-&gt;__destruct() fires here
+    // $__scope_0-&gt;__destruct() fires here
 }
 </code></pre></div>
 <h2>The using Block Syntax</h2>
@@ -441,7 +441,7 @@ try {
 <div class="alert alert-secondary" role="alert"><h4><code>using block</code></h4><br/><p>Uses try/finally. Deterministic disposal guaranteed regardless of circular references or GC behavior. Scopes the resource to the block body.</p>
 </div>
 <h2>Async Disposal</h2>
-<p>When disposing async resources, DisposableScope automatically detects the context. Inside a Fiber (async context), it uses Promise::_await(). Outside a Fiber, it uses EventLoop::run() to block-wait. The using await syntax provides explicit async disposal in the finally block.</p>
+<p>When disposing async resources, DisposableScope automatically detects the context. Inside a Fiber (async context), it uses Promise::_await(). Outside a Fiber, it uses EventLoop::run() to block-wait. The using await syntax provides explicit async disposal in the finally block. There is no dedicated diagnostic for <code>using await</code> outside an async function — TYHP4028 (<code>CheckerAwaitOutsideAsync</code>) applies to <code>await</code> expressions. The emitter still emits <code>Promise::_await</code> in the <code>using await</code> finally block.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 async function fetchData(): void {
@@ -634,9 +634,7 @@ class NotDisposable {
 <h2>Compiler Errors</h2>
 <ul>
 <li>Using := with a type that does not implement IsDisposable or AsyncIsDisposable.</li>
-<li>Using := outside a valid scope (must be inside a function, method, or block).</li>
 <li>Using using block with a non-disposable type.</li>
-<li>Async dispose (using await) outside an async function.</li>
 </ul>
 
 </section>
