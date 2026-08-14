@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -295,6 +291,8 @@ class PaymentGateway {
 <li><code>.tyhpdef</code> -- Tyhp type definition files containing <code>&lt;?tyhpdef</code> declarations. These are consumed by the compiler for type checking but produce no output.</li>
 </ul>
 <p>The compiler uses the file extension to determine how to parse the file. A <code>.tyhp</code> file is parsed starting with the <code>tyhpSrcFile</code> grammar rule, which expects <code>&lt;?tyhp</code> blocks (with optional inline HTML output between blocks). A <code>.tyhpdef</code> file is parsed starting with the <code>tyhpdefSrcFile</code> grammar rule, which expects a single <code>&lt;?tyhpdef</code> block.</p>
+<h2>Tagless source (<code>source.tagless</code>)</h2>
+<p>Set <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code> in <code>tyhp.json</code> (or <code>source.tagless</code> on a <code>package.tyhp.json</code> manifest) to parse <code>.tyhp</code> / <code>.tyhpdef</code> files as Tyhp/tyhpdef from the first token, without an open tag. Closing <code>?&gt;</code> is not allowed in that mode. Use this for files that are entirely Tyhp (no interleaved HTML). The default remains tagged <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code> files.</p>
 <h2>Strict Types Are Always Enabled</h2>
 <p>In Tyhp, <code>declare(strict_types=1)</code> is always active and cannot be disabled. Every <code>.tyhp</code> file is compiled with strict types enforced, regardless of whether you explicitly write a <code>declare(strict_types=1)</code> statement. This means PHP's type coercion rules do not apply in Tyhp code -- passing an <code>int</code> where a <code>string</code> is expected always produces a type error, never a silent conversion.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp

@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -285,7 +281,7 @@
 <h2>Ecosystem Integration</h2>
 <p>Because Tyhp outputs standard PHP, it integrates seamlessly with the PHP ecosystem — Composer packages, PHP extensions, PHP frameworks (Laravel, Symfony, etc.), and existing PHP tools all work without modification. Hack's HHVM ecosystem is separate and significantly smaller, with many PHP packages requiring modification or re-implementation to work on HHVM.</p>
 <h2>Scope and Philosophy</h2>
-<p>Hack has a large engineering team at Meta and introduces many new operators, control structures, and language constructs beyond what PHP offers. Tyhp takes a more conservative approach: it builds on top of PHP's existing syntax and adds new features only when they provide clear value, without changing or removing any existing PHP syntax. Tyhp's philosophy is to enhance PHP, not replace it.</p>
+<p>Hack has a large engineering team at Meta and introduces many new operators, control structures, and language constructs beyond what PHP offers. Tyhp takes a more conservative approach: it builds on top of PHP's existing syntax and adds new features only when they provide clear value. Some PHP features are restricted in <code>&lt;?tyhp</code> (for example <code>eval()</code> is off by default, and dynamic properties are disallowed) so the compiler can type-check; see Lost and Changed Functionality. Tyhp's philosophy is to enhance PHP, not replace the runtime.</p>
 <h2>When to Choose Hack</h2>
 <p>Hack has many strengths. Its type system is mature and battle-tested at Facebook's scale. If you are willing to adopt HHVM as your runtime and your project does not depend heavily on the standard PHP ecosystem, Hack offers a powerful and well-supported language. Tyhp does not claim to be better than Hack — it is a different solution with different trade-offs, designed for teams that want to stay within the standard PHP ecosystem while gaining strong typing and modern language features.</p>
 

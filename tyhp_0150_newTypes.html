@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -267,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp introduces several new types and enhances existing PHP types with generic support. This page covers generic PHP types, new Tyhp-specific types, and internal compiler types. All types listed here are defined in the TyhpSpec type definition files (<code>tyhpTypes.tyhpdef</code> and related files) that ship with the compiler.</p>
+    <p>Tyhp introduces several new types and enhances existing PHP types with generic support. This page covers generic PHP types, new Tyhp-specific types, and internal compiler types. Built-in types are registered in the compiler; runtime types such as <code>\Tyhp\Type</code> and <code>Promise&lt;T&gt;</code> come from the <code>tyhp/core</code> and <code>tyhp/async</code> packages.</p>
 <h2>Generic PHP Types</h2>
 <p>Tyhp adds generic type parameters to many built-in PHP types. The non-generic versions remain available for backward compatibility, but the generic versions are preferred for maximum type safety.</p>
 <h2>The <code>array&lt;TKey, TValue&gt;</code> and <code>iterable&lt;TKey, TValue&gt;</code> Types</h2>

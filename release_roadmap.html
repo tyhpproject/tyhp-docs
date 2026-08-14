@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -265,7 +261,7 @@
 				<section class="docs-section" id="Roadmap">
     <h2 class="section-heading">Roadmap</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 3 · Story 30</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 3 · Story 30</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp is built in a deliberately ordered sequence of stories, grouped into four tiers. The guiding principle is a thin vertical slice that compiles and runs end-to-end as early as possible.</p>
 <p><strong>This alpha (805.0.0-alpha.1) is Tier 1 complete</strong> — stories <strong>01 through 16.5</strong>. Stories 17+ are not shipped.</p>
@@ -307,6 +303,7 @@
 <li><strong>Story 15 — The Tyhp ↔ PHP interop contract</strong> (written down).</li>
 <li><strong>Story 16 — Parsable lambdas (expression trees)</strong> — <i>flagship wedge showcase</i>.</li>
 <li><strong>Story 16.5 — Callable signature utilities</strong> (<code>__CallableParametersStruct</code> / <code>__CallableParametersTuple</code> / <code>__CallableReturnType</code>).</li>
+<li><strong>Story 28 — Generic type parameter defaults</strong> (originally sequenced in Tier 3; already in this alpha).</li>
 </ol>
 <h2>Tier 2 — Developer Experience &amp; Ecosystem — not in this alpha</h2>
 <ol>
@@ -326,10 +323,12 @@
 <li><strong>Story 25 — <code>internal</code> visibility modifier.</strong></li>
 <li><strong>Story 26 — Null-conditional chaining with assignment.</strong></li>
 <li><strong>Story 27 — <code>new&lt;TArgs...&gt;</code> constructable object type.</strong></li>
-<li><strong>Story 28 — Generic type parameter defaults.</strong></li>
 <li><strong>Story 29 — Tyhp reflection API</strong> (sourcemap-backed).</li>
 <li><strong>Story 30 — Documentation &amp; polish</strong> (final capstone).</li>
 </ol>
+<blockquote>
+<p>Story 28 (generic defaults) shipped with this alpha; see Tier 1 above.</p>
+</blockquote>
 <h2>Runtime Library Packages</h2>
 <p>Compiled Tyhp code depends on Composer packages under the <code>tyhp/</code> vendor (GitHub org <code>tyhpproject</code>):</p>
 <ul>

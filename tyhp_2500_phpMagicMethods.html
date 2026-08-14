@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -270,7 +266,7 @@
     <p>Tyhp supports all of PHP's magic methods with additional type safety requirements. Magic methods that return mixed in PHP must have their return values type-narrowed before use. The compiler enforces correct signatures, auto-generates certain magic methods for generic classes, and prioritizes extension methods over __call for compile-time-safe dispatch.</p>
 <h2>Supported Magic Methods</h2>
 <p>All standard PHP magic methods are supported in Tyhp. They must follow PHP's expected signatures but can use Tyhp's enhanced type system. The following table lists every supported magic method and its Tyhp-specific behavior.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>__construct()</code></h4><br/><p>Constructor. Supports Tyhp constructor property promotion with modifiers like init. The return type can optionally be : void or : parent(args) for explicit parent constructor invocation.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__construct()</code></h4><br/><p>Constructor. Supports Tyhp constructor property promotion with modifiers like <code>readonly</code>. The return type can optionally be : void or : parent(args) for explicit parent constructor invocation.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__destruct()</code></h4><br/><p>Destructor. Called when an object is garbage collected. Used internally by DisposableScope for automatic resource disposal via the := operator.</p>
 </div>
@@ -290,7 +286,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__invoke(...$args): mixed</code></h4><br/><p>Called when an object is used as a function ($obj()). Return type is mixed — must be narrowed before use.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__clone(): void</code></h4><br/><p>Called after an object is cloned with clone. The compiler auto-generates __clone() for classes with init properties to support the with keyword.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__clone(): void</code></h4><br/><p>Called after an object is cloned with clone. You may implement it yourself. For PHP &lt; 8.5, the compiler may emit a clone wrapper when <code>with</code> updates <code>readonly</code> properties.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__debugInfo(): array</code></h4><br/><p>Called by var_dump() to get the properties to display. Must return an array.</p>
 </div>
@@ -420,7 +416,7 @@ class TypedCollection {
 
 // When instantiated with concrete types:
 $collection = new TypedCollection();
-$collection-&gt;__setGenericTypes([\Tyhp\Type::of(&#039;int&#039;)]);
+$collection-&gt;__setGenericTypes([\Tyhp\Type::int()]);
 </code></pre></div>
 <h2>__toString Must Return string</h2>
 <p>The compiler strictly enforces that __toString() returns string. Unlike PHP which coerces the return value, Tyhp treats a non-string return type as a compiler error.</p>
@@ -476,13 +472,13 @@ class Child extends Base {
 }
 </code></pre></div>
 <h2>__clone and the with Keyword</h2>
-<p>The compiler auto-generates __clone() for classes with init properties to support immutable cloning via the with keyword. You do not need to write __clone() manually for init-property classes — the compiler handles it.</p>
+<p><code>clone ... with</code> on <code>readonly</code> properties does not require you to write <code>__clone()</code>. On PHP 8.5+ the compiler emits native <code>clone($obj, [...])</code>. On PHP 8.2–8.4 it uses a compiler-generated wrapper (opt-in via <code>build.experimentalReadonlyCloneWith</code>). You can still write your own <code>__clone()</code> for other clone-time work.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Point {
     public function __construct(
-        public init int $x,
-        public init int $y
+        public readonly int $x,
+        public readonly int $y
     ) {}
 }
 
@@ -534,7 +530,7 @@ Point $p2 = clone $p1 with [x =&gt; 10]; // $p2-&gt;x is 10, $p2-&gt;y is 2
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Let the compiler auto-generate __clone() for classes with init properties. The auto-generated __clone() correctly handles the with keyword for immutable value objects.</p>
+        <div class="callout-content"><p>Use <code>readonly</code> properties with <code>clone ... with</code> for immutable value objects. You do not need a handwritten <code>__clone()</code> for that pattern.</p>
 </div>
     </div>
 </div>
@@ -595,12 +591,12 @@ Point $p2 = clone $p1 with [x =&gt; 10]; // $p2-&gt;x is 10, $p2-&gt;y is 2
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Manually writing __clone() logic for init property handling. Let the compiler generate it automatically — manual __clone() implementations may conflict with the with keyword behavior.</p>
+        <div class="callout-content"><p>Assuming <code>clone ... with</code> on <code>readonly</code> works on PHP 8.2–8.4 without <code>build.experimentalReadonlyCloneWith: true</code>. Enable that flag, or target PHP 8.5+.</p>
 </div>
     </div>
 </div>
 <h2>Compiled PHP Output</h2>
-<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated magic methods for generic classes (GenericObject trait) and auto-generated __clone() for init-property classes.</p>
+<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated magic methods for generic classes (GenericObject trait). Readonly <code>clone ... with</code> on PHP &lt; 8.5 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Entity {

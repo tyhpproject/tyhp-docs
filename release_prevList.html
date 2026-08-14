@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -265,10 +261,13 @@
 				<section class="docs-section" id="Previous_Releases">
     <h2 class="section-heading">Previous Releases</h2>
     
-    <p>Tyhp is currently in pre-release development. No stable versions have been released yet.</p>
-<p>When stable versions are published, this page will list each release with its version number, release date, and a summary of changes. Each entry will link to detailed release notes.</p>
+    <h2>805.0.0-alpha.1 (current public alpha)</h2>
+<p>First public compiler alpha. GitHub Release tag <code>v805.0.0-alpha.1</code>. MAJOR <code>805</code> means the emit ceiling is PHP 8.5 (the compiler still targets 8.2–8.4 via <code>output.phpVersion</code>). Runtime packages version independently as <code>80N.X.Y</code> (source <code>0.0</code> → <code>802.0.0</code>–<code>805.0.0</code>).</p>
+<p>This is a <strong>prerelease</strong>. Semver compatibility guarantees apply from the first stable <code>805.0.0</code>, not from alpha. See <a href="release_roadmap.md">Roadmap</a> and <a href="release_planning.md">Release Planning</a>.</p>
 <h2>Release History</h2>
-<p>No releases have been published yet. Check the roadmap page for the current development status and planned features.</p>
+<p>| Version | Notes |<br />
+|---------|--------|<br />
+| 805.0.0-alpha.1 | Public alpha. Tier 1 (stories 01–16.5) plus generic type-parameter defaults. LSP, sourcemaps, Xdebug proxy, and <code>generate_tyhpdef</code> are not included. |</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -277,7 +276,7 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Tyhp follows semantic versioning (MAJOR.MINOR.PATCH) with the major version aligned to the target PHP version. See the Release Planning page for details on the versioning strategy and release process.</p>
+        <div class="callout-content"><p>Compiler MAJOR encodes the highest supported PHP version (<code>805</code> = PHP 8.5 and below). Tyhp syntax removal happens on MINOR. Runtime Composer packages do <strong>not</strong> use the compiler version string. See Release Planning.</p>
 </div>
     </div>
 </div>

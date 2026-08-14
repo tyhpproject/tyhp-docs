@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -267,12 +263,12 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 10</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Every Tyhp project is driven by a configuration file called <code>tyhp.json</code>. This file tells the compiler which source files to include, where to write compiled PHP output, what PHP version to target, and how strict the type checker should be. It is the equivalent of <code>tsconfig.json</code> in the TypeScript world.</p>
+    <p>Every Tyhp project is driven by a configuration file called <code>tyhp.json</code>. This file tells the compiler which source files to include, where to write compiled PHP output, and what PHP version to target. Language strictness is always on (null safety, required types). It is the equivalent of <code>tsconfig.json</code> in the TypeScript world.</p>
 <h2>Creating a Project</h2>
 <p>The fastest way to create a new Tyhp project is with the <code>init</code> command:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">tyhp init
 </code></pre></div>
-<p>This creates a <code>tyhp.json</code> file in the current directory with sensible defaults. You can then customize it to match your project structure.</p>
+<p>This creates a <code>tyhp.json</code> file, <code>src/index.tyhp</code>, a root <code>composer.json</code> pinning <code>tyhp/php</code> and <code>tyhp/core</code>, and <code>src/</code>, <code>build/</code>, and <code>tyhpdef/</code> directories. Init writes <code>source.tagless</code> (default false) and, when you set a namespace, a <code>psr4</code> mapping.</p>
 <h2>File Location</h2>
 <p>By default, the Tyhp CLI looks for <code>tyhp.json</code> in the current working directory. You can specify a different path using the <code>--tyhp-project</code> option:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">tyhp build --tyhp-project=/path/to/my/tyhp.json

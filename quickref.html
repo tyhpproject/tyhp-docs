@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -322,7 +318,7 @@ function firstOrNull&lt;T&gt;(array&lt;T&gt; $items): ?T {
     return $items[0] ?? null;
 }
 </code></pre></div>
-<h2>Generic Defaults (not in this alpha)</h2>
+<h2>Generic Defaults</h2>
 <p>Generic type parameters can have default types with <code>=</code>. Defaults must be trailing and can reference earlier parameters.</p>
 <p><a href="tyhp_3500_genericDefaults.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class Collection&lt;T = mixed&gt; { ... }
@@ -395,12 +391,12 @@ use extension App\Extensions\StringExtensions;
 $text-&gt;toCamelCase();  // StringExtensions::toCamelCase($text)
 </code></pre></div>
 <h2>Object Declaration Changes</h2>
-<p>Constructors support return types for explicit parent chaining (<code>: parent(args...)</code>). The <code>init</code> modifier makes properties settable only during construction and via <code>with</code>.</p>
+<p>Constructors support return types for explicit parent chaining (<code>: parent(args...)</code>). Constructor property promotion works as in PHP, including <code>readonly</code>.</p>
 <p><a href="tyhp_1300_newObjectDeclSyntax.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class Point {
     public function __construct(
-        public init float $x,
-        public init float $y
+        public readonly float $x,
+        public readonly float $y
     ) {}
 }
 
@@ -412,7 +408,7 @@ class NamedPoint extends Point {
 }
 </code></pre></div>
 <h2>The <code>with</code> Keyword</h2>
-<p>Sets properties on objects/structs immediately after <code>new</code> or <code>clone</code>. Combined with <code>init</code> properties, enables immutable update patterns.</p>
+<p>Sets properties on objects/structs immediately after <code>new</code> or <code>clone</code>. Combined with <code>readonly</code> properties, enables immutable update patterns (<code>clone $obj with [...]</code> leaves the original unchanged).</p>
 <p><a href="tyhp_2200_withKeyword.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$user = new User(&#039;Alice&#039;, 30) with [role =&gt; &#039;admin&#039;];
 $updated = clone $user with [name =&gt; &#039;Bob&#039;, age =&gt; 25];
@@ -439,16 +435,6 @@ $updated = clone $user with [name =&gt; &#039;Bob&#039;, age =&gt; 25];
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">internal class InternalHelper { ... }
 internal function computeHash(string $data): string { ... }
 internal const int MAX_RETRIES = 3;
-</code></pre></div>
-<h2>The <code>init</code> Property Modifier</h2>
-<p>Properties settable only during construction and via <code>with</code> (which clones). Unlike <code>readonly</code>, <code>init</code> permits <code>with</code> updates. Compiles to PHP <code>readonly</code> with auto-generated <code>__clone()</code> infrastructure.</p>
-<p><a href="tyhp_3200_initPropertyModifier.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class User {
-    public init string $name;
-    public init int $age;
-}
-
-$updated = clone $user with [name =&gt; &#039;Bob&#039;];
 </code></pre></div>
 <h2>Null-Conditional Assignment (not in this alpha)</h2>
 <p>Assignment through <code>?-&gt;</code> on the left-hand side. If any <code>?-&gt;</code> in the chain encounters null, the assignment becomes a no-op. Works with all assignment operators.</p>
@@ -505,7 +491,7 @@ function makeLogger&lt;T extends new &amp; Logger&gt;(): T {
 <p>Four compile-time constructs that resolve at compilation with zero runtime cost.</p>
 <p><a href="tyhp_2700_compileTimeConstructs.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">nameof($user-&gt;name);        // &#039;name&#039; — refactoring-safe string name
-typeof(int);                // \Tyhp\Type::of(&#039;int&#039;)
+typeof(int);                // \Tyhp\Type::int()
 default(int);               // 0 — zero value for a type
 variable_exists($x);        // true/false literal
 </code></pre></div>
@@ -530,7 +516,7 @@ if (\class_exists($cls)) {
 }
 </code></pre></div>
 <h2>PHP Magic Methods</h2>
-<p>All PHP magic methods are supported with additional type safety. <code>mixed</code>-returning magic methods (<code>__get</code>, <code>__call</code>, etc.) require type narrowing before use. Extension methods take priority over <code>__call</code>. The compiler auto-generates <code>__clone()</code> for <code>init</code> properties.</p>
+<p>All PHP magic methods are supported with additional type safety. <code>mixed</code>-returning magic methods (<code>__get</code>, <code>__call</code>, etc.) require type narrowing before use. Extension methods take priority over <code>__call</code>. The compiler may generate <code>__clone()</code> helpers when <code>with</code> updates <code>readonly</code> properties.</p>
 <p><a href="tyhp_2500_phpMagicMethods.html">See full documentation →</a></p>
 <h2>Including Files</h2>
 <p><code>include</code>/<code>require</code>/<code>include_once</code>/<code>require_once</code> all require static string paths or constants — no dynamic includes. The compiler performs PSR-4 output splitting with one PHP file per class.</p>

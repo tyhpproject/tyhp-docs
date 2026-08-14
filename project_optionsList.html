@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -271,6 +267,8 @@
 <h2>General Options</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>quiet</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, suppresses the banner and non-error output. Useful for scripting and CI environments.</p>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>type</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;application&quot;</code>). Project kind: <code>&quot;application&quot;</code> or <code>&quot;library&quot;</code>. Library projects default <code>build.generateTyhpdef</code> to true (that generator is still <strong>not</strong> in this alpha).</p>
+</div>
 <div class="alert alert-secondary" role="alert"><h4><code>locale</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;en-US&quot;</code>). Sets the locale for compiler messages and diagnostic output.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>cache-dir</code></h4><br/><p>Type: <code>string</code> (default: system local application data directory). Sets the directory used for caching parsed ASTs and build state. Caching speeds up subsequent builds by reusing parsed results for unchanged files.</p>
@@ -280,11 +278,13 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>exclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for files to exclude from the project. Files matching these patterns are skipped even if they match an <code>include</code> pattern. Useful for excluding test files, vendor directories, or generated code.</p>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>source.tagless</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, <code>.tyhp</code> and <code>.tyhpdef</code> files are parsed without requiring <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code>. Closing <code>?&gt;</code> is an error in this mode. Nested as <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code>.</p>
+</div>
 <h2>Output Options</h2>
 <p>These options are nested under the <code>&quot;output&quot;</code> key in <code>tyhp.json</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>output.path</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;build/&quot;</code>). The directory where compiled PHP files are written, relative to the project root. The directory is created automatically if it does not exist.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>output.phpVersion</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;8.4&quot;</code>). The target PHP version for the compiled output. Supported values: <code>&quot;8.2&quot;</code>, <code>&quot;8.3&quot;</code>, <code>&quot;8.4&quot;</code>. This affects which PHP features the emitter uses in the generated code and which tyhpdef definitions are loaded.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>output.phpVersion</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;8.4&quot;</code>). The target PHP version for the compiled output. Supported values: <code>&quot;8.2&quot;</code>, <code>&quot;8.3&quot;</code>, <code>&quot;8.4&quot;</code>, <code>&quot;8.5&quot;</code>. This affects which PHP features the emitter uses in the generated code.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>output.strictTypes</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). When true, adds <code>declare(strict_types=1);</code> to all compiled PHP output files. Recommended for type safety.</p>
 </div>
@@ -306,9 +306,11 @@
 </div>
     </div>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.generateSourcemap</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, generates source map files (<code>.php.map</code>) alongside compiled PHP output. Source maps enable debugging with Tyhp source files through the XDebug proxy.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>build.generateSourcemap</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). <strong>Not in this alpha</strong> (Story 17). The key is parsed but no <code>.php.map</code> files are written.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.generateTyhpdef</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, auto-generates tyhpdef files for the compiled code. Useful when publishing a Tyhp library that other Tyhp projects will consume.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>build.sourcemapIncludeContent</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). <strong>Not in this alpha.</strong> When sourcemaps land, true would embed original <code>.tyhp</code> source in the map.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.generateTyhpdef</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>; libraries default this to true in config). <strong>Not in this alpha</strong> (Story 20). Does not generate tyhpdef output yet.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.updateComposer</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, generates or updates a <code>composer.json</code> in the output directory with PSR-4 autoload mappings and Tyhp runtime package dependencies.</p>
 </div>
@@ -323,6 +325,10 @@
 <div class="alert alert-secondary" role="alert"><h4><code>build.decimalRounding</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;halfUp&quot;</code>). The default rounding mode for decimal arithmetic.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.allowEval</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, re-enables <code>eval()</code> usage in Tyhp code. By default, <code>eval()</code> is disabled for security and type-safety reasons.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.experimentalReadonlyCloneWith</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, allows <code>clone ... with</code> on <code>readonly</code> properties for PHP 8.2–8.4 by emitting a compiler wrapper. PHP 8.5+ supports this natively and does not need the flag. <code>new ... with</code> on <code>readonly</code> never requires it. In-place <code>$obj with [...]</code> still cannot set <code>readonly</code> after construction.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>build.runtimeGenericChecks</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, the emitter inserts runtime type checks at generic parameter and return boundaries (in addition to compile-time checking). Off by default.</p>
 </div>
 <h2>Optimization Options</h2>
 <p class="tyhp-status-badge mb-3">
@@ -387,8 +393,12 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>--tyhp-project</code></h4><br/><p>Specify the path to the <code>tyhp.json</code> project file. Overrides the default behavior of looking in the current working directory.</p>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>--watch</code></h4><br/><p><strong>Not in this alpha.</strong> <code>tyhp build --watch</code> prints that watch mode is unimplemented, then runs a normal one-shot build.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>--fix</code></h4><br/><p>Apply auto-fixable diagnostic replacements (<code>tyhp lint --fix</code>). Experimental.</p>
+</div>
 <h2>Lint-Specific Options</h2>
-<div class="alert alert-secondary" role="alert"><h4><code>--format</code></h4><br/><p>Output format for lint diagnostics. Supported values: <code>text</code> (default, human-readable), <code>json</code> (machine-readable).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>--format</code></h4><br/><p>Output format for lint diagnostics. Supported values: <code>text</code> (default, human-readable), <code>json</code> (machine-readable), <code>sarif</code> (SARIF v2.1.0 for GitHub Code Scanning and similar).</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>--file</code></h4><br/><p>Lint a single file instead of the whole project. Still loads tyhpdefs and built-in types for full type checking.</p>
 </div>
@@ -400,11 +410,15 @@
 <h2>Complete Example</h2>
 <p>Below is a comprehensive <code>tyhp.json</code> showing all available options with their default values. In practice, you only need to specify the options you want to change from their defaults.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;type&quot;: &quot;application&quot;,
     &quot;quiet&quot;: false,
     &quot;locale&quot;: &quot;en-US&quot;,
 
     &quot;include&quot;: [&quot;./src/**/*.tyhp&quot;, &quot;./src/**/*.php&quot;],
     &quot;exclude&quot;: [&quot;./src/legacy/**&quot;],
+    &quot;source&quot;: {
+        &quot;tagless&quot;: false
+    },
 
     &quot;output&quot;: {
         &quot;path&quot;: &quot;./build&quot;,
@@ -416,13 +430,16 @@
 
     &quot;build&quot;: {
         &quot;generateSourcemap&quot;: false,
+        &quot;sourcemapIncludeContent&quot;: false,
         &quot;generateTyhpdef&quot;: false,
         &quot;updateComposer&quot;: false,
         &quot;structBacking&quot;: &quot;array&quot;,
         &quot;decimalBacking&quot;: &quot;bcmath&quot;,
         &quot;decimalScale&quot;: 28,
         &quot;decimalRounding&quot;: &quot;halfUp&quot;,
-        &quot;allowEval&quot;: false
+        &quot;allowEval&quot;: false,
+        &quot;experimentalReadonlyCloneWith&quot;: false,
+        &quot;runtimeGenericChecks&quot;: false
     },
 
     &quot;psr4&quot;: {

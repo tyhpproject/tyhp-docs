@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -271,17 +267,16 @@
 <h2>How They Differ</h2>
 <p>Tyhp and ReactPHP solve async programming at different layers:</p>
 <ul>
-<li>Tyhp is a language and compiler. Its async/await syntax is a language-level feature that compiles to PHP code using Fibers. It provides syntactic sugar and compile-time type safety for asynchronous operations.</li>
-<li>ReactPHP is a runtime library. It provides the actual event loop, I/O drivers, and networking infrastructure that makes non-blocking operations possible.</li>
-<li>Tyhp's async/await provides a clean, linear coding style for async operations with compile-time type checking via Promise&lt;T&gt;. ReactPHP provides the underlying runtime machinery that drives those operations.</li>
-<li>ReactPHP works with plain PHP code. Tyhp's async features compile down to plain PHP code.</li>
+<li>Tyhp is a language and compiler. Its async/await syntax compiles to PHP that uses the <strong><code>tyhp/async</code></strong> runtime (Fibers and a <code>stream_select</code> event loop inspired by libraries like ReactPHP).</li>
+<li>ReactPHP is a runtime library. It provides an event loop, I/O drivers, and networking for plain PHP.</li>
+<li>You can still call ReactPHP from Tyhp if you describe it in tyhpdef files. Tyhp’s compiled <code>async</code>/<code>await</code> does <strong>not</strong> require ReactPHP and does not emit ReactPHP loop calls by default.</li>
 </ul>
 <h2>Using Them Together</h2>
-<p>Tyhp and ReactPHP are complementary rather than competing technologies. Tyhp's compiled async code can use ReactPHP as its event loop and I/O layer:</p>
+<p>Tyhp and ReactPHP are complementary rather than competing technologies:</p>
 <ul>
-<li>Describe ReactPHP's classes and interfaces in Tyhpdef files to get full type safety when using ReactPHP from Tyhp code.</li>
-<li>Use Tyhp's async/await syntax to write clean, readable asynchronous code that compiles to PHP utilizing ReactPHP's event loop under the hood.</li>
-<li>Tyhp adds type-safe Promise&lt;T&gt; with generic type parameters, providing compile-time guarantees that ReactPHP's untyped Promises in plain PHP cannot offer.</li>
+<li>Describe ReactPHP's classes and interfaces in tyhpdef files to get type checking when you call ReactPHP from Tyhp.</li>
+<li>Use Tyhp's async/await with <code>tyhp/async</code> for typed <code>Promise&lt;T&gt;</code> without taking a ReactPHP dependency.</li>
+<li>You can mix both in one process if you want ReactPHP I/O alongside Tyhp-compiled modules — that is an integration choice, not the default emit.</li>
 </ul>
 <div class="callout-block callout-block-info">
     <div class="content">

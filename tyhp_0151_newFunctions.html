@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -406,16 +402,14 @@ function validate(string $field, mixed $value): void {
 validate(&#039;email&#039;, $emailInput);
 </code></pre></div>
 <h2><code>typeof(expr)</code></h2>
-<p>Returns a <code>\Tyhp\Type</code> instance representing the type of the given expression at compile time. For class/interface names, it resolves to the fully-qualified class name string. This is useful for runtime type reflection with compile-time safety.</p>
+<p>Returns a <code>\Tyhp\Type</code> instance representing the compile-time type of its argument. Scalars emit <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc. Declared classes emit <code>\Tyhp\Type::fromClassName(...)</code>. <code>\Tyhp\Type::of($value)</code> is a <strong>runtime</strong> helper that inspects a value — it is not what <code>typeof()</code> compiles to.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 use App\Models\User;
 
 string $name = &quot;Alice&quot;;
-\Tyhp\Type $type = typeof($name);    // \Tyhp\Type::_string()
-
-// typeof on a class name resolves to the FQCN string
-string $fqcn = typeof(User);           // &#039;App\\Models\\User&#039;
+\Tyhp\Type $type = typeof(string);
+\Tyhp\Type $userType = typeof(User);
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -424,9 +418,8 @@ declare(strict_types=1);
 use App\Models\User;
 
 $name = &quot;Alice&quot;;
-$type = \Tyhp\Type::_string();
-
-$fqcn = &#039;App\\Models\\User&#039;;
+$type = \Tyhp\Type::string();
+$userType = \Tyhp\Type::fromClassName(&#039;User&#039;::class);
 </code></pre></div>
 <h2><code>default(Type)</code></h2>
 <p>Returns the default value for a given type at compile time. The argument must be a type expression, not a value. Each type has a well-defined default value:</p>
@@ -548,7 +541,7 @@ $count = \count($numbers);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use <code>typeof()</code> instead of hardcoded class name strings when you need the FQCN of a type. This keeps your code safe from namespace or rename changes.</p>
+        <div class="callout-content"><p>Use <code>typeof()</code> when you need a <code>\Tyhp\Type</code> value for Tyhp's runtime type helpers. For a class-name string, use <code>nameof(User)</code> or <code>User::class</code>.</p>
 </div>
     </div>
 </div>

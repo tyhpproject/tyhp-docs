@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -276,10 +272,12 @@
 <li><code>build</code> — Compile <code>.tyhp</code> source files into <code>.php</code> output. Runs parse, bind, check, emit.</li>
 <li><code>lint</code> — Check the project for errors and warnings without producing output files. Supports text, JSON, and SARIF formats.</li>
 <li><code>init</code> — Initialize a new Tyhp project with a default <code>tyhp.json</code>.</li>
-<li><code>version</code> — Display the compiler version.</li>
+<li><code>version</code> — Display the compiler version (<code>tyhp version</code>, not a <code>--version</code> flag).</li>
 <li><code>help</code> — Display help. <code>tyhp help --subject=&lt;action&gt;</code> for action-specific help.</li>
+<li><code>explain</code> — Print the long-form explanation for a diagnostic code (<code>tyhp explain TYHP4001</code>).</li>
 <li><code>composer</code> — Run Composer with Tyhp-aware processing when configured.</li>
 </ul>
+<p>Developer/debug actions also exist (<code>tokenize</code>, <code>dump_ast</code>, <code>clear_cache</code>, <code>integrity_check</code>) and are documented by <code>tyhp help</code>.</p>
 <h2>Not in this alpha</h2>
 <p>These actions are planned (Tier 2) and are <strong>not</strong> available in 805.0.0-alpha.1:</p>
 <ul>
@@ -290,7 +288,6 @@
 <h2>Global Options</h2>
 <ul>
 <li><code>--help</code> — Display help. Use <code>tyhp help --subject=&lt;action&gt;</code> for action-specific help.</li>
-<li><code>--version</code> — Display the Tyhp compiler version number.</li>
 <li><code>--tyhp-project=&lt;path&gt;</code> — Path to the <code>tyhp.json</code> project file (defaults to <code>./tyhp.json</code>).</li>
 <li><code>--quiet</code> — Suppress the banner and non-diagnostic output.</li>
 <li><code>--verbose</code> — Enable detailed output for each compilation phase.</li>

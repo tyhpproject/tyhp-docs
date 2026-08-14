@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -385,7 +381,7 @@
 | <strong>Type guards / narrowing</strong> | Compile-time only; <code>is</code> / guard checks lower to ordinary PHP boolean tests (<code>instanceof</code>, <code>is_*</code>, etc.) | <a href="tyhp_0200_typeNarrowingAndGuards.md">Type Narrowing and Guards</a> |<br />
 | <strong>Structs</strong> | Declarations erased; values are associative arrays | <a href="tyhp_0400_structs.md">Structs</a> |<br />
 | <strong>Callable signature utilities</strong> | Compile-time only; <code>__CallableReturnType&lt;T&gt;</code> erases to the callable's return type (or <code>mixed</code> while <code>T</code> is still unbound); <code>__CallableParametersStruct&lt;T&gt;</code> / <code>__CallableParametersTuple&lt;T&gt;</code> erase to <code>array</code> (struct-as-array). Tuple bags use int keys <code>0..n-1</code> (<code>$_1</code>, <code>$_2</code>, … aliases, same shape family as <code>CallableArgs*</code>). <code>__CallableParametersRest&lt;T&gt;</code> is the rest-unpack marker for <code>Rest&lt;T&gt; ...$args</code> (TypeScript <code>...args: Parameters&lt;T&gt;</code>); it erases to <code>mixed</code> so PHP does not demand each unpacked argument be an array. Defaulted parameters are optional struct fields at check time; optionality does not survive erasure. ExtStandard <code>\call_user_func</code> / <code>\call_user_func_array</code> tyhpdefs use these utilities; emit is still the PHP builtins (no new <code>\Tyhp\*</code> types, no contract bump) | <a href="tyhp_0150_newTypes.md">New Types</a> |<br />
-| <strong><code>internal</code></strong> | Compile-time visibility only; emits as ordinary PHP visibility (typically public) | <a href="tyhp_3100_internalModifier.md">internal modifier</a> |</p>
+| <strong><code>internal</code></strong> | <strong>Not in this alpha</strong> (Story 25). Planned: compile-time visibility only; would emit as ordinary PHP visibility | <a href="tyhp_3100_internalModifier.md">internal modifier</a> |</p>
 <p>What <strong>survives</strong> is whatever the emitter explicitly lowers into calls on the runtime surface below (operators, disposables, async, property-hook polyfills, generic bags, <code>with</code>, <code>PropertyPath</code> / expression trees, and so on).</p>
 <h2>Runtime entry points</h2>
 <p>FQNs the contract covers. Packages are Composer names under <code>runtime/packages/</code>.</p>

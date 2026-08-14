@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -368,7 +364,7 @@ $query-&gt;orderBy(&#039;name&#039;);
     </div>
 </div>
 <h2>typeof() — Get Type at Compile Time</h2>
-<p>The typeof() construct returns a \Tyhp\Type instance representing the compile-time type of its argument. It accepts type names (like int, string, User) and compiles to \Tyhp\Type::of() calls. This is different from PHP's gettype() which is a runtime function returning a string — typeof() is a compile-time construct that produces a \Tyhp\Type object for use with Tyhp's runtime type system.</p>
+<p>The typeof() construct returns a \Tyhp\Type instance representing the compile-time type of its argument. It accepts type names (like int, string, User). Scalars compile to <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc.; declared classes compile to <code>\Tyhp\Type::fromClassName(...)</code>. This is different from PHP's gettype() (a runtime string) and from <code>\Tyhp\Type::of($value)</code> (runtime inspection of a value).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // typeof with scalar type names
@@ -393,16 +389,13 @@ class Repository&lt;T&gt; {
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// typeof() compiles to \Tyhp\Type::of() calls
-// Scalar types use string identifiers
-$intType = \Tyhp\Type::of(&#039;int&#039;);
-$stringType = \Tyhp\Type::of(&#039;string&#039;);
+$intType = \Tyhp\Type::int();
+$stringType = \Tyhp\Type::string();
 
-// Class types use ::class syntax
-$userType = \Tyhp\Type::of(User::class);
-$dateType = \Tyhp\Type::of(\DateTimeInterface::class);
+$userType = \Tyhp\Type::fromClassName(&#039;User&#039;::class);
+$dateType = \Tyhp\Type::fromClassName(&#039;DateTimeInterface&#039;::class);
 
-if (\Tyhp\Type::is($value, \Tyhp\Type::of(&#039;string&#039;))) {
+if (\Tyhp\Type::is($value, \Tyhp\Type::string())) {
     echo &#039;Value is a string&#039;;
 }
 </code></pre></div>

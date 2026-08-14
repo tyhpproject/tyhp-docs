@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -267,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>The with keyword in Tyhp provides a concise way to set properties on objects and structs. It is a binary operator that produces a fully initialized value in a single expression. Combined with the init property modifier, with enables clean immutable update patterns.</p>
+    <p>The with keyword in Tyhp provides a concise way to set properties on objects and structs. It is a binary operator that produces a fully initialized value in a single expression. Combined with <code>readonly</code> properties, <code>clone ... with</code> enables immutable update patterns.</p>
 <h2>The Three Forms of with</h2>
 <p>Tyhp supports three forms of the with keyword, distinguished by what appears on its left-hand side:</p>
 <div class="alert alert-secondary" role="alert"><h4><code>new X(...) with [...]</code></h4><br/><p>Follows a new expression. Constructs a fresh instance and sets the listed properties on it. The result is the newly constructed object.</p>
@@ -386,7 +382,7 @@ $coords = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Choose the form by intent: use new ... with or clone ... with when you want a brand-new value (the clone form preserves immutability of the source), and use $obj with [...] when you want to update the object you already hold and keep the same identity. Because the in-place form mutates the existing instance, it does not route init properties through the clone mechanism — init properties cannot be changed by an in-place with after construction.</p>
+        <div class="callout-content"><p>Choose the form by intent: use new ... with or clone ... with when you want a brand-new value (the clone form preserves immutability of the source), and use $obj with [...] when you want to update the object you already hold and keep the same identity. Because the in-place form mutates the existing instance, it cannot assign <code>readonly</code> properties after construction — use <code>clone $obj with [...]</code> (or <code>new ... with</code>) for those.</p>
 </div>
     </div>
 </div>
@@ -424,108 +420,31 @@ $__with_2-&gt;name = &#039;MyApp&#039;;
 $__with_2-&gt;config = $__with_1;
 $app = $__with_2;
 </code></pre></div>
-<h2>with and init Properties</h2>
-<p>The init modifier declares a property as settable only during construction and via the with keyword. This is distinct from readonly, which prevents ALL mutation after construction — including via with. The init modifier enables immutable update patterns: because with always creates a new instance (via clone), the original object is never mutated.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>(no modifier)</code></h4><br/><p>Set in constructor: Yes. Set after construction: Yes. Set via with: Yes.</p>
+<h2>with and readonly Properties</h2>
+<p><code>readonly</code> properties cannot be assigned after construction. <code>new ... with</code> and <code>clone ... with</code> are allowed to set them on the new or cloned instance. Direct assignment and in-place <code>$obj with [...]</code> after construction are not.</p>
+<p>On PHP 8.5+, <code>clone ... with</code> uses native <code>clone($obj, [...])</code>. On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> (the compiler emits a wrapper that reinitializes readonly fields in <code>__clone()</code>). <code>new ... with</code> on <code>readonly</code> does not need that flag. There is no separate <code>init</code> modifier — <code>readonly</code> plus <code>with</code> is the immutable-update pattern.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>(no modifier)</code></h4><br/><p>Set in constructor: Yes. Set after construction: Yes. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: Yes.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>readonly</code></h4><br/><p>Set in constructor: Yes. Set after construction: No. Set via with: No.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>init</code></h4><br/><p>Set in constructor: Yes. Set after construction: No. Set via with: Yes.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly</code></h4><br/><p>Set in constructor: Yes. Set after construction: No. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: No.</p>
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Point {
     public function __construct(
-        public init float $x,
-        public init float $y,
-        public init float $z = 0.0
+        public readonly float $x,
+        public readonly float $y,
+        public readonly float $z = 0.0
     ) {}
 }
 
 $p = new Point(1.0, 2.0);
 
-// init properties CAN be set via with (creates a new instance)
 $q = clone $p with [z =&gt; 5.0];
 // $p is still Point(1.0, 2.0, 0.0)
 // $q is Point(1.0, 2.0, 5.0)
 
-// init properties CANNOT be assigned directly after construction
-// $p-&gt;z = 3.0;  // ERROR: init property cannot be set outside constructor or with
-</code></pre></div>
-<h2>Compiled PHP Output for init Properties with with</h2>
-<p>When with is used on a class with init properties, the compiler generates a save/restore pattern. The init properties are emitted as PHP readonly, so they cannot be set directly after construction. Instead, the compiler temporarily sets a $__tyhpWithInit array on the source object before cloning, then restores it. The generated __clone() method reads and applies the values.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-class Point {
-    /** @internal */
-    public array $__tyhpWithInit = [];
-
-    public function __construct(
-        public readonly float $x,
-        public readonly float $y,
-        public readonly float $z = 0.0,
-        array $__withInit = []
-    ) {
-        if (isset($__withInit[&#039;x&#039;])) { $this-&gt;x = $__withInit[&#039;x&#039;]; }
-        if (isset($__withInit[&#039;y&#039;])) { $this-&gt;y = $__withInit[&#039;y&#039;]; }
-        if (isset($__withInit[&#039;z&#039;])) { $this-&gt;z = $__withInit[&#039;z&#039;]; }
-    }
-
-    public function __clone(): void {
-        foreach ($this-&gt;__tyhpWithInit as $__prop =&gt; $__val) {
-            match ($__prop) {
-                &#039;x&#039; =&gt; $this-&gt;x = $__val,
-                &#039;y&#039; =&gt; $this-&gt;y = $__val,
-                &#039;z&#039; =&gt; $this-&gt;z = $__val,
-                default =&gt; null,
-            };
-        }
-        $this-&gt;__tyhpWithInit = [];
-    }
-}
-
-// clone $p with [z =&gt; 5.0] compiles to:
-$__origInit_1 = $p-&gt;__tyhpWithInit;
-$p-&gt;__tyhpWithInit = [&#039;z&#039; =&gt; 5.0];
-$q = clone $p;
-$p-&gt;__tyhpWithInit = $__origInit_1;
-</code></pre></div>
-<h2>with on new with init Properties</h2>
-<p>When with is used with new (not clone) and the properties are init, the values are passed through the $__withInit constructor parameter using a named argument.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-$point = new Point(1.0, 2.0) with [z =&gt; 3.0];
-</code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-$point = new Point(1.0, 2.0, __withInit: [&#039;z&#039; =&gt; 3.0]);
-</code></pre></div>
-<h2>Mixed init and Regular Properties</h2>
-<p>When a with expression sets both init properties and regular (mutable) properties, the compiler routes init properties through the __tyhpWithInit mechanism and sets regular properties directly.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class User {
-    public init string $name;
-    public init int $age;
-    public string $label = &#039;&#039;;
-
-    public function __construct(string $name, int $age) {
-        $this-&gt;name = $name;
-        $this-&gt;age = $age;
-    }
-}
-
-// &#039;name&#039; is init, &#039;label&#039; is regular
-$labeled = clone $user with [name =&gt; &#039;Charlie&#039;, label =&gt; &#039;VIP&#039;];
-</code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-// init properties go through __tyhpWithInit, regular ones are set directly
-$__origInit_1 = $user-&gt;__tyhpWithInit;
-$user-&gt;__tyhpWithInit = [&#039;name&#039; =&gt; &#039;Charlie&#039;];
-$labeled = clone $user;
-$user-&gt;__tyhpWithInit = $__origInit_1;
-$labeled-&gt;label = &#039;VIP&#039;;
+// $p-&gt;z = 3.0;  // ERROR: readonly
+// $p with [z =&gt; 3.0];  // ERROR after construction: in-place with cannot set readonly
 </code></pre></div>
 <h2>with on Structs</h2>
 <p>Since structs compile to PHP associative arrays, the with keyword on structs compiles to array merge or direct key override.</p>
@@ -566,7 +485,7 @@ $elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use init properties with with for immutable update patterns — the original object is never mutated.</p>
+        <div class="callout-content"><p>Use <code>readonly</code> properties with <code>clone ... with</code> for immutable update patterns — the original object is never mutated.</p>
 </div>
     </div>
 </div>
@@ -602,7 +521,7 @@ $elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Prefer init over leaving properties mutable when you want immutability but need to support functional updates via with.</p>
+        <div class="callout-content"><p>Prefer <code>readonly</code> over leaving properties mutable when you want immutability but still need functional updates via <code>new</code>/<code>clone</code> with.</p>
 </div>
     </div>
 </div>
@@ -615,19 +534,7 @@ $elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not use with on readonly properties — they cannot be set via with. Use init instead if you need immutable properties that support with.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Do not confuse init with readonly — readonly prevents with, while init allows it.</p>
+        <div class="callout-content"><p>Do not use in-place <code>$obj with [...]</code> on readonly properties — they cannot be mutated after construction. Use <code>new ... with</code> or <code>clone ... with</code> instead.</p>
 </div>
     </div>
 </div>
@@ -663,7 +570,7 @@ $elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not mix manual parent::__construct() calls with the : parent() constructor return type when using init properties — the compiler handles parent chaining automatically.</p>
+        <div class="callout-content"><p>Do not mix manual parent::__construct() calls with the : parent() constructor return type — the compiler handles parent chaining automatically.</p>
 </div>
     </div>
 </div>
@@ -671,7 +578,7 @@ $elevated = \array_merge($coords, [&#039;alt&#039; =&gt; 100.0]);
 
 class Example {
     public readonly string $id;
-    public init string $name;
+    public readonly string $name;
 
     public function __construct(string $id, string $name) {
         $this-&gt;id = $id;
@@ -681,11 +588,11 @@ class Example {
 
 $a = new Example(&#039;1&#039;, &#039;Alice&#039;);
 
-// ERROR: readonly properties cannot be set via with
-// $b = clone $a with [id =&gt; &#039;2&#039;];
-
-// OK: init properties can be set via with
+// OK: clone ... with may set readonly properties on the copy
 $c = clone $a with [name =&gt; &#039;Bob&#039;];
+
+// ERROR: in-place with cannot set readonly after construction
+// $a with [name =&gt; &#039;Bob&#039;];
 
 // ERROR: &#039;nonExistent&#039; is not a property of Example
 // $d = clone $a with [nonExistent =&gt; &#039;value&#039;];
@@ -698,17 +605,17 @@ $c = clone $a with [name =&gt; &#039;Bob&#039;];
             </span>
             Warning
         </h4>
-        <div class="callout-content"><p>The with keyword requires PHP 8.2+ when used with init properties, because readonly property reinitialization in __clone() is a PHP 8.2 feature.</p>
+        <div class="callout-content"><p>On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code>. PHP 8.5+ supports it natively. <code>new ... with</code> on readonly does not need the flag.</p>
 </div>
     </div>
 </div>
 <h2>Compiler Errors</h2>
 <ul>
-<li>Setting a readonly property via with (use init instead).</li>
+<li>Setting a readonly property via in-place <code>$obj with [...]</code> after construction.</li>
+<li><code>clone ... with</code> on a readonly property on PHP &lt; 8.5 without <code>build.experimentalReadonlyCloneWith</code>.</li>
 <li>Setting a non-existent property via with.</li>
 <li>Setting a private or protected property via with from outside the class.</li>
 <li>Applying with to an expression that is not a new expression, a clone expression, or an addressable object/struct instance.</li>
-<li>Setting an init property via the in-place ($obj with [...]) form after construction — init properties can only be set during construction, via new ... with, or via clone ... with.</li>
 </ul>
 
 </section>

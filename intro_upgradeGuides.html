@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link active" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -267,12 +263,7 @@
     
     <p>This page provides guidance on upgrading between Tyhp versions. As Tyhp evolves, new features may be added and syntax may change. This guide helps you navigate those transitions smoothly.</p>
 <h2>Version Numbering</h2>
-<p>Tyhp uses semantic versioning (MAJOR.MINOR.PATCH) aligned with PHP compatibility:</p>
-<ul>
-<li>MAJOR version indicates the PHP major version that Tyhp targets (e.g., Tyhp 8.x targets PHP 8.x)</li>
-<li>MINOR version indicates new Tyhp features or breaking Tyhp syntax changes</li>
-<li>PATCH version indicates bug fixes and non-breaking improvements</li>
-</ul>
+<p>Tyhp uses semantic versioning (<code>MAJOR.MINOR.PATCH</code>). The compiler MAJOR encodes the <strong>highest PHP version</strong> this release supports, as <code>&lt;php-major&gt;&lt;php-minor-two-digits&gt;</code> — <code>805</code> means PHP <strong>8.5 and below</strong>, not “Tyhp 8.x targets PHP 8.x”. MINOR carries Tyhp language and compiler change (including deprecation and, after notice, <strong>removal</strong> of Tyhp syntax). PATCH is non-breaking fixes. See <a href="release_planning.md">Release Planning</a> and <code>VERSIONING.md</code>.</p>
 <h2>Upgrading to Tyhp 805</h2>
 <p>Tyhp 805 understands PHP 8.5 syntax (pipe <code>|&gt;</code>, <code>(void)</code> cast, <code>clone(…)</code> / clone-with, attributes on top-level <code>const</code>, and related 8.4 parse completions). When <code>output.phpVersion</code> is set below the introducing PHP minor, the emitter rewrites those constructs for the lower target — you do not need to rewrite source solely to keep an older emit target.</p>
 <h2>General Upgrade Steps</h2>
@@ -281,7 +272,7 @@
 <li>Read the release notes for the new version to understand what has changed</li>
 <li>Update the Tyhp compiler to the new version</li>
 <li>Run tyhp lint on your project to identify any new errors or warnings introduced by the upgrade</li>
-<li>Address any deprecation warnings — these indicate syntax or features that will be removed in a future major version</li>
+<li>Address any deprecation warnings — these indicate syntax or features that will be removed in a later <strong>MINOR</strong>, not held for the next MAJOR</li>
 <li>Run tyhp build and verify the compiled output works correctly</li>
 <li>Update your tyhp.json configuration if new options are available or if defaults have changed</li>
 </ol>
@@ -301,11 +292,11 @@ tyhp lint --file=src/MyClass.tyhp
 <ol>
 <li>A deprecation warning is emitted during compilation, explaining what is changing and what to use instead</li>
 <li>The deprecated feature continues to work for at least one minor version</li>
-<li>In the next major version, the deprecated feature is removed</li>
+<li>In a later <strong>MINOR</strong> (for example <code>805.N.0</code>), the deprecated feature is removed. Removal does not wait for the next PHP ceiling / MAJOR (<code>806.0.0</code>).</li>
 </ol>
-<p>Address deprecation warnings promptly to ensure a smooth transition when the next major version is released.</p>
+<p>Address deprecation warnings promptly so you are ready when that MINOR lands.</p>
 <h2>Handling PHP Syntax Conflicts</h2>
-<p>When a new PHP version introduces syntax that conflicts with Tyhp syntax, Tyhp follows a defined migration path. See the New Syntax Creation page for the detailed process. In summary: Tyhp will deprecate its conflicting syntax, provide compile-time options to control which syntax is active during the transition period, and remove the old syntax in the next major version.</p>
+<p>When a new PHP version introduces syntax that conflicts with Tyhp syntax, Tyhp follows a defined migration path. See the New Syntax Creation page for the detailed process. In summary: first <strong>integrate-and-detect</strong> (keep both syntaxes if possible); then deprecate Tyhp’s conflicting form with compile-time options; then remove the old syntax in a later <strong>MINOR</strong>. Do not wait for the next MAJOR.</p>
 <h2>Updating tyhp.json Configuration</h2>
 <p>New Tyhp versions may introduce new configuration options in tyhp.json. The compiler uses sensible defaults for all options, so your existing configuration will continue to work. However, you may want to review new options to take advantage of new features.</p>
 <div class="callout-block callout-block-success">

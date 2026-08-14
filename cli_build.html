@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -279,7 +275,7 @@
 <li>--dry-run — Run the full compilation pipeline (parse, bind, check, emit) but do not write any output files. Reports what would be written.</li>
 <li>--strict — Treat warnings as errors. The build fails if any warnings are produced.</li>
 <li>--quiet — Suppress the banner and non-diagnostic output.</li>
-<li>--watch — Watch source files for changes and rebuild automatically.</li>
+<li>--watch — Planned. Prints that watch mode is not implemented; use a rebuild loop or external file watcher instead.</li>
 </ul>
 <h2>Build Process</h2>
 <p>The build action performs the following steps in order:</p>
@@ -292,8 +288,7 @@
 <li>Run the type checker to validate type compatibility, null safety, generic constraints, and other rules.</li>
 <li>If errors are found, display diagnostics and exit with code 4 (CompileError). If --strict is set and warnings are found, exit with code 5 (CompileWarning).</li>
 <li>Run the emitter to transform Tyhp-specific constructs into PHP equivalents.</li>
-<li>Write compiled PHP files to the output directory.</li>
-<li>Write compiled PHP files to the output directory and update composer.json with Tyhp runtime package requires when needed.</li>
+<li>Write compiled PHP files to the output directory. When <code>build.updateComposer</code> is true, also update <code>composer.json</code> with Tyhp runtime package requires.</li>
 </ol>
 <p>Sourcemap generation and <code>generate_tyhpdef</code> are <strong>not</strong> in this alpha even if the config keys exist.</p>
 <h2>Configuration (tyhp.json)</h2>
@@ -314,7 +309,11 @@
 <li>build.structBacking — How structs are backed in PHP: &quot;array&quot; (default: &quot;array&quot;).</li>
 <li>build.decimalBacking — Decimal math backend: &quot;bcmath&quot; or &quot;gmp&quot; (default: &quot;bcmath&quot;).</li>
 <li>build.decimalScale — Default scale for decimal operations (default: 28).</li>
+<li>build.decimalRounding — Default rounding mode (default: <code>&quot;halfUp&quot;</code>).</li>
 <li>build.allowEval — Re-enable the eval() function, which is disabled by default in Tyhp (default: false).</li>
+<li>build.experimentalReadonlyCloneWith — Allow <code>clone ... with</code> on <code>readonly</code> properties for PHP 8.2–8.4 (default: false). PHP 8.5+ does not need this flag.</li>
+<li>build.runtimeGenericChecks — Emit runtime type checks at generic boundaries (default: false).</li>
+<li>build.entryPointAutoloader — Optional map of named autoloader paths injected into entry points.</li>
 <li>psr4 — PSR-4 namespace-to-directory mappings for the output.</li>
 <li>psr4Includes — Additional PSR-4 autoload paths.</li>
 </ul>

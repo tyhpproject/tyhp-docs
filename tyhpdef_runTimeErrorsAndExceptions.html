@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -325,7 +321,7 @@ namespace Guzzle\Exception {
 }
 </code></pre></div>
 <h2>Documenting Throwable Functions with @throws</h2>
-<p>Use the @throws doc comment annotation on function and method declarations to document which exceptions a function can throw. The compiler uses this information to validate that callers handle the declared exceptions.</p>
+<p>Use the @throws doc comment annotation on function and method declarations to document which exceptions a function can throw. Tyhp records these annotations for humans and for future tooling. This alpha does <strong>not</strong> require callers to catch or declare them — there is no checked-exception / throws-effect analysis yet.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 /**
@@ -477,11 +473,11 @@ function \file_get_contents(string $filename): string;
 <h2>Summary</h2>
 <ul>
 <li>Exception classes are declared in tyhpdef like any other class, with their full inheritance chain</li>
-<li>Use <code>@throws</code> doc comment annotations to document which exceptions functions and methods can throw</li>
+<li>Use <code>@throws</code> doc comment annotations to document which exceptions functions and methods can throw (documentation only in this alpha — the compiler does not enforce that callers handle them)</li>
 <li>Global variable and constant imports are checked at runtime — use <code>??</code> for safe defaults</li>
 <li>Tyhpdef declarations are trusted at compile time; mismatches between tyhpdef and PHP cause runtime errors</li>
 <li>Always declare accurate return types including failure types (<code>false</code>, <code>null</code>)</li>
-<li>Use the tyhpdef generator and validation tools to keep declarations synchronized with PHP code</li>
+<li>Keep declarations synchronized with PHP by hand in this alpha (<code>generate_tyhpdef</code> is Story 20 and is not shipped)</li>
 </ul>
 
 </section>

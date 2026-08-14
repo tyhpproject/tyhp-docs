@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -271,10 +267,10 @@
 <h2>What Are Tyhpdef Files?</h2>
 <p>Tyhpdef files (.tyhpdef) are declaration files that tell the Tyhp compiler about the types of PHP symbols that exist outside of your Tyhp codebase. They are similar to TypeScript's .d.ts files — they contain only type signatures, no implementation. The compiler uses these declarations to type-check your code against PHP's standard library, extensions, and third-party packages.</p>
 <ul>
-<li>Bundled extension tyhpdefs (tyhpdef/php8.2/) provide types for PHP built-in functions and classes</li>
-<li>TyhpSpec files (Tyhp/TyhpSpec/) provide types for Tyhp-specific built-in types like decimal, Promise, and Type</li>
+<li>Composer packages with <code>package.tyhp.json</code> (<code>tyhp/php</code>, <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) provide types for PHP builtins and Tyhp runtime APIs</li>
+<li>Built-in compiler registrations cover language types such as <code>decimal</code> aliases, compile-time constructs, and generic overlays the binder always knows</li>
 <li>User tyhpdef files declare types for your project's PHP dependencies and global variables</li>
-<li>Generated tyhpdef files can be created from PHP packages using the tyhpdef generator</li>
+<li>Auto-generated tyhpdefs (<code>generate_tyhpdef</code>) are <strong>not</strong> in this alpha — write declarations by hand</li>
 </ul>
 <h2>Importing Constants</h2>
 <p>PHP constants (defined with define() or const) are imported into tyhpdef files using the const keyword with an explicit type annotation. The null-coalescing operator (??) provides a default value when the constant may not be defined at runtime.</p>
@@ -475,11 +471,11 @@ deprecated const string LEGACY_API_URL;
 <h2>Tyhpdef File Organization</h2>
 <p>Tyhpdef files are loaded from multiple sources in a specific priority order. Higher-priority sources take precedence when the same symbol is declared in multiple places.</p>
 <ol>
-<li>TyhpSpec files (Tyhp/TyhpSpec/) — Tyhp built-in types like decimal, Promise&lt;T&gt;, IsDisposable. Always loaded, highest priority.</li>
-<li>PHP extension tyhpdefs (tyhpdef/php8.2/) — bundled type definitions for PHP built-in extensions (Core, Standard, SPL, Date, JSON, etc.). Loaded based on the target PHP version.</li>
-<li>User project tyhpdefs — custom .tyhpdef files in your project, configured via tyhpdefInclude/tyhpdefExclude in tyhp.json.</li>
-<li>Generated Composer package tyhpdefs — auto-generated tyhpdef files for third-party Composer packages.</li>
+<li>Built-in compiler registrations — language types always available (highest priority).</li>
+<li>Composer packages with <code>package.tyhp.json</code> — <code>tyhp/php</code> (PHP 8.2-baseline builtins in this alpha) plus <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>.</li>
+<li>User project tyhpdefs — custom <code>.tyhpdef</code> files in your project, configured via include / <code>tyhpdefInclude</code> in <code>tyhp.json</code>.</li>
 </ol>
+<p>Auto-generated Composer package tyhpdefs are not produced in this alpha.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -574,7 +570,7 @@ deprecated const string LEGACY_API_URL;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Duplicating declarations that already exist in bundled extension tyhpdefs. Check the bundled tyhpdef/php8.2/ files before creating your own declarations for PHP standard library functions and classes.</p>
+        <div class="callout-content"><p>Duplicating declarations that already exist in <code>tyhp/php</code>. Prefer that package for PHP standard library functions and classes instead of hand-writing overlapping tyhpdefs.</p>
 </div>
     </div>
 </div>

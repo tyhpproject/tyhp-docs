@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link active" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -273,48 +269,45 @@
 cd my-tyhp-project
 tyhp init
 </code></pre></div>
-<p>This creates a <code>tyhp.json</code> configuration file and a basic project structure.</p>
+<p>This creates a <code>tyhp.json</code> configuration file, a root <code>composer.json</code> (with <code>tyhp/php</code> and <code>tyhp/core</code> pins), <code>src/index.tyhp</code>, and empty <code>tyhpdef/</code> and <code>build/</code> directories.</p>
 <h2>Project Structure</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">my-tyhp-project/
   tyhp.json          # Project configuration
-  src/               # Tyhp source files (.tyhp)
+  composer.json      # Pins tyhp/php and tyhp/core
+  src/index.tyhp     # Sample entry file
   tyhpdef/           # Type definitions for external PHP code (.tyhpdef)
   build/             # Compiled PHP output (generated)
 </code></pre></div>
 <h2>The tyhp.json Configuration File</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
-    &quot;include&quot;: [
-        &quot;./src/**/*.tyhp&quot;,
-        &quot;./src/**/*.php&quot;
-    ],
-    &quot;exclude&quot;: [],
+    &quot;include&quot;: [&quot;src/**/*.tyhp&quot;],
+    &quot;exclude&quot;: [&quot;vendor/**&quot;, &quot;node_modules/**&quot;],
+    &quot;source&quot;: {
+        &quot;tagless&quot;: false
+    },
     &quot;output&quot;: {
-        &quot;path&quot;: &quot;./build&quot;,
+        &quot;path&quot;: &quot;build/&quot;,
         &quot;phpVersion&quot;: &quot;8.4&quot;,
-        &quot;strictTypes&quot;: true
+        &quot;strictTypes&quot;: true,
+        &quot;comments&quot;: true
     }
 }
 </code></pre></div>
 <p>Supported <code>output.phpVersion</code> values are <code>&quot;8.2&quot;</code>, <code>&quot;8.3&quot;</code>, <code>&quot;8.4&quot;</code>, and <code>&quot;8.5&quot;</code>.</p>
 <h2>Writing Your First .tyhp File</h2>
-<p>Create <code>src/hello.tyhp</code>. Tyhp files use the <code>&lt;?tyhp</code> opening tag instead of <code>&lt;?php</code>:</p>
+<p><code>tyhp init</code> writes <code>src/index.tyhp</code>. Tyhp files use the <code>&lt;?tyhp</code> opening tag instead of <code>&lt;?php</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+declare(strict_types=1);
+namespace App;
 
-function greet(string $name): string
-{
-    return &quot;Hello, {$name}!&quot;;
-}
-
-string $message = greet(&quot;World&quot;);
-echo $message;
+echo &#039;Hello, World!&#039;;
 </code></pre></div>
-<p>The variable <code>$message</code> has an explicit type annotation. The compiler enforces that <code>greet()</code> returns a string.</p>
 <h2>Building Your Project</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp build
 </code></pre></div>
-<p>The compiler reads <code>tyhp.json</code>, runs parse / bind / check / emit, and writes PHP to the output directory. It also updates <code>composer.json</code> so the project can require <code>tyhp/php</code>, <code>tyhp/core</code>, and any other runtime packages the code needs. Those pins use <code>output.phpVersion</code> plus each package’s own <code>X.Y</code> (<code>&quot;8.4&quot;</code> + <code>0.0</code> → <code>804.0.0</code>). See the Composer Runtime Packages page.</p>
+<p>The compiler reads <code>tyhp.json</code>, runs parse / bind / check / emit, and writes PHP to the output directory. <code>tyhp init</code> already pins <code>tyhp/php</code> and <code>tyhp/core</code> in the project <code>composer.json</code>. <code>tyhp build</code> updates Composer metadata only when <code>build.updateComposer</code> is <code>true</code> (default <strong>false</strong>); otherwise it reports which packages the emit needs. Pins use <code>output.phpVersion</code> plus each package’s own <code>X.Y</code> (<code>&quot;8.4&quot;</code> + <code>0.0</code> → <code>804.0.0</code>). See the Composer Runtime Packages page.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer install
-php build/hello.php
+php build/src/index.php
 </code></pre></div>
 <p>Until Packagist lists the <code>tyhp/*</code> packages, use a compiler checkout so path repositories can resolve <code>runtime/packages/</code>.</p>
 <h2>The Compiled Output</h2>
@@ -322,13 +315,9 @@ php build/hello.php
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
 
-function greet(string $name): string
-{
-    return &quot;Hello, {$name}!&quot;;
-}
+namespace App;
 
-$message = greet(&quot;World&quot;);
-echo $message;
+echo &#039;Hello, World!&#039;;
 </code></pre></div>
 <h2>Checking Without Building</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp lint

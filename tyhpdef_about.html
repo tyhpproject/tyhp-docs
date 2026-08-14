@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -267,7 +263,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp is a transpiler that compiles to PHP. When your Tyhp code needs to interact with existing PHP libraries, extensions, or Composer packages, the Tyhp compiler must understand their types and signatures. Tyhpdef is a declaration-only syntax that describes existing PHP code to Tyhp's type system, enabling full type checking, autocompletion, and compile-time validation for external PHP code.</p>
+    <p>Tyhp is a transpiler that compiles to PHP. When your Tyhp code needs to interact with existing PHP libraries, extensions, or Composer packages, the Tyhp compiler must understand their types and signatures. Tyhpdef is a declaration-only syntax that describes existing PHP code to Tyhp's type system, enabling compile-time type checking for external PHP code.</p>
 <p>Tyhpdef files use the <code>&lt;?tyhpdef</code> open tag, have the <code>.tyhpdef</code> file extension, and contain only type declarations with no implementation code. The Tyhp compiler reads these files during compilation but never emits them as PHP output.</p>
 <h2>What You Can Declare</h2>
 <p>Tyhpdef can describe the following PHP constructs to Tyhp:</p>
@@ -287,13 +283,13 @@
 <li>Namespaces (to organize declarations)</li>
 </ul>
 <h2>How the Compiler Finds Tyhpdef Files</h2>
-<p>The Tyhp compiler loads Tyhpdef files from multiple sources in a specific order. Earlier sources take precedence when declarations conflict:</p>
+<p>The Tyhp compiler loads type information from multiple sources. Earlier sources take precedence when declarations conflict:</p>
 <ol>
-<li>TyhpSpec files — The compiler's built-in type definitions (core types like decimal, struct, Promise, iterators, etc.) are embedded in the compiler binary and always loaded first.</li>
-<li>PHP extension tyhpdefs — the <code>tyhp/php</code> Composer package (PHP 8.2 baseline in this alpha). Install it with your project so <code>\strlen</code>, <code>DateTime</code>, and other builtins type-check.</li>
-<li>User project tyhpdefs — Your project's own .tyhpdef files, discovered via the tyhpdefInclude and tyhpdefExclude glob patterns in tyhp.json. By default, .tyhpdef files in the project root and tyhpdef/ subdirectory are included.</li>
-<li>Generated Composer package tyhpdefs — Automatically generated declarations for installed Composer packages, stored in the tyhpdef_gen/ directory.</li>
+<li>Built-in registrations — Core language types (<code>decimal</code>, iterators, <code>callable&lt;…&gt;</code>, compile-time constructs, and similar) are registered in the compiler itself and are always available.</li>
+<li>Composer packages with <code>package.tyhp.json</code> — Runtime libraries (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) and the PHP 8.2-baseline <code>tyhp/php</code> builtins package. Install them with your project so <code>\strlen</code>, <code>DateTime</code>, <code>\Tyhp\Type</code>, and other APIs type-check.</li>
+<li>User project tyhpdefs — Your project's own <code>.tyhpdef</code> files, discovered via <code>include</code> / <code>tyhpdefInclude</code> (and exclude) globs in <code>tyhp.json</code>.</li>
 </ol>
+<p>This alpha does <strong>not</strong> auto-generate tyhpdefs into a <code>tyhpdef_gen/</code> directory. Write declarations by hand, or start from <code>tyhp/php</code>.</p>
 <h2>Auto-Generating Tyhpdef Files</h2>
 <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 2 · Story 20</span><span class="badge bg-secondary">Planned</span>
@@ -332,7 +328,7 @@
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T create tyhpdef files for: PHP extensions already bundled with the compiler (Core, Standard, SPL, Date, JSON, etc.), Composer packages that already have auto-generated tyhpdef coverage, or Tyhp code — .tyhp files are already fully typed and don't need separate declarations.</p>
+        <div class="callout-content"><p>DON'T create tyhpdef files for: PHP builtins already covered by <code>tyhp/php</code> (Core, Standard, SPL, Date, JSON, and similar — install that package instead of redeclaring them), or Tyhp code — <code>.tyhp</code> files are already fully typed and don't need separate declarations. Automatic generation for Composer packages is not in this alpha, so third-party PHP packages you call still need hand-written tyhpdefs for the members you use.</p>
 </div>
     </div>
 </div>

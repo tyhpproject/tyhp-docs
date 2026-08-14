@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link active" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -291,7 +287,8 @@
 <p>Download a binary from <a href="https://github.com/tyhpproject/tyhp/releases">GitHub Releases</a>, or:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">curl -fsSL https://raw.githubusercontent.com/tyhpproject/tyhp/main/scripts/install.sh | bash -s --
 </code></pre></div>
-<p>The script selects OS and architecture. It prefers a self-contained build. Pass <code>--framework-dependent</code> if .NET 9 is already installed.</p>
+<p>The script selects OS and architecture. If .NET 9 is already installed, it prefers a <strong>framework-dependent</strong> build; otherwise it installs a <strong>self-contained</strong> binary. Pass <code>--self-contained</code> or <code>--framework-dependent</code> to force a variant.</p>
+<p>On Windows, use <a href="https://github.com/tyhpproject/tyhp/blob/main/scripts/install.ps1"><code>scripts/install.ps1</code></a> instead of the bash script.</p>
 <p>There is <strong>no</strong> <code>composer global require tyhp/compiler</code> package in this alpha, and no <code>dotnet tool install --global tyhp</code> feed yet.</p>
 <h2>Manual download</h2>
 <ol>
@@ -303,8 +300,10 @@
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp version
 </code></pre></div>
 <p>You should see output similar to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">Tyhp Compiler v805.0.0-alpha.1
-Target PHP: 8.5
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">Tyhp compiler: 805.0.0-alpha.1
+.NET runtime:   .NET 9.0.x
+ANTLR runtime:  4.x.x
+OS:             ...
 </code></pre></div>
 <h2>Runtime packages</h2>
 <p>Compiled projects need Composer packages such as <code>tyhp/php</code> (PHP builtin tyhpdefs) and <code>tyhp/core</code>. After those packages are on Packagist, <code>tyhp build</code> writes <code>composer.json</code> requires that match <code>output.phpVersion</code> plus <strong>each package's own</strong> <code>X.Y</code> (<code>8.4</code> + core <code>0.0</code> → <code>tyhp/core: 804.0.0</code>) and you run <code>composer install</code>. Until then, a source checkout of this repository can resolve them via Composer path repositories under <code>runtime/packages/</code> (those pins use the source <code>X.Y</code>, e.g. <code>0.0</code>).</p>

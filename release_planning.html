@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -300,7 +296,7 @@
 <li>The syntax is removed or changed in version N+1 or later.</li>
 </ol>
 <h2>PHP Syntax Conflict Resolution</h2>
-<p>Because Tyhp is a superset of PHP, new PHP versions may occasionally introduce syntax that conflicts with Tyhp-specific syntax. When this occurs, Tyhp follows a migration process: the Tyhp syntax is deprecated first, then modified or replaced in a subsequent minor version to avoid the conflict. This ensures that Tyhp always remains a valid superset of the PHP version it targets.</p>
+<p>Because Tyhp is a superset of PHP, new PHP versions may occasionally introduce syntax that conflicts with Tyhp-specific syntax. When this occurs, Tyhp works through the steps in <code>VERSIONING.md</code> <strong>in order</strong>: first <strong>integrate-and-detect</strong> (keep both syntaxes if they can be distinguished at compile time); then deprecate Tyhp’s form with compile-time options; then remove the old syntax in a later <strong>MINOR</strong>. Do not wait for the next PHP ceiling / MAJOR.</p>
 <h2>Tracking Changes</h2>
 <ul>
 <li>The <a href="release_roadmap.md">roadmap</a> page</li>

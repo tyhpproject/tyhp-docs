@@ -43,7 +43,7 @@
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
 		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
 		            </ul>
-		            <a href="downloads.html" class="btn btn-primary d-none d-lg-flex">Downloads</a>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
 	            </div>
             </div>
         </div>
@@ -60,8 +60,6 @@
 			    <ul class="section-items list-unstyled nav flex-column pb-3">
 					
 <li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
-
-<li class="nav-item"><a class="nav-link" href="_template.html">Title of the item</a></li>
 
 <li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
 
@@ -155,8 +153,6 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
-
-<li class="nav-item"><a class="nav-link" href="tyhp_3200_initPropertyModifier.html">The init Property Modifier</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
@@ -327,7 +323,7 @@ Build failed with 3 errors and 1 warning.
 </code></pre></div>
 <h2>Enhanced Error Messages</h2>
 <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Complete</span>
 </p>
 <p>Beyond the basic <code>file(line,column): severity CODE: message</code> format, the Tyhp compiler renders diagnostics with rich, developer-focused detail. The renderer reuses the same diagnostic data carried by every phase, so text, JSON, and SARIF output stay consistent.</p>
 <ul>
@@ -374,13 +370,14 @@ Build failed with 3 errors and 1 warning.
 </ol>
 <h2>JSON Output Format</h2>
 <p>For CI/CD integration, the <code>tyhp lint</code> command supports JSON output via the <code>--format json</code> flag. Each diagnostic is serialized as a JSON object:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">{
+<p>JSON <code>range</code> coordinates are <strong>0-based lines</strong> (text diagnostics are 1-based). Column is 0-based in both. Line 42 in text output is <code>&quot;line&quot;: 41</code> here:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
   &quot;severity&quot;: &quot;error&quot;,
   &quot;code&quot;: &quot;TYHP4008&quot;,
   &quot;file&quot;: &quot;src/Models/User.tyhp&quot;,
   &quot;range&quot;: {
-    &quot;start&quot;: { &quot;line&quot;: 42, &quot;column&quot;: 5 },
-    &quot;end&quot;: { &quot;line&quot;: 42, &quot;column&quot;: 15 }
+    &quot;start&quot;: { &quot;line&quot;: 41, &quot;column&quot;: 5 },
+    &quot;end&quot;: { &quot;line&quot;: 41, &quot;column&quot;: 15 }
   },
   &quot;message&quot;: &quot;Cannot assign type &#039;string&#039; to type &#039;int&#039;&quot;
 }
