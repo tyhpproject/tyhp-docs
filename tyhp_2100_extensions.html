@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,9 +279,9 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 03</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Extensions in Tyhp allow you to add new methods and operator overloads to existing types without modifying their source code. This is useful for adding functionality to classes you don't own, imported PHP types, or even scalar types like string, int, and array. Extensions are resolved at compile time and rewritten to static method calls in the PHP output, resulting in zero runtime overhead.</p>
+    <p>Extensions in Tyhp allow you to add new methods and operator overloads to existing types without modifying their source code. This is useful for adding functionality to classes you don't own, imported PHP types, or even scalar types like string, int, and array. The compiler always rewrites Tyhp call sites. A member's form decides whether PHP also keeps a method on the extension class.</p>
 <h2>Declaring an Extension</h2>
-<p>An extension is declared using the extension keyword with a name. Inside the extension body, functions use the extends keyword on the first parameter to indicate the type being extended. This first parameter becomes $this when calling the method.</p>
+<p>An extension is declared using the extension keyword with a name. Inside the extension body, functions use the extends keyword on the first parameter to indicate the type being extended. This first parameter becomes $this when calling the method. Member names follow PHP method naming, so names such as <code>match</code>, <code>and</code>, and <code>or</code> are allowed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 extension StringExtensions {
@@ -291,35 +307,139 @@ string $text = &#039;hello_world&#039;;
 echo $text-&gt;toCamelCase();   // outputs: helloWorld
 echo $text-&gt;toSnakeCase();   // outputs: hello_world
 </code></pre></div>
+<h2>Member forms</h2>
+<p>A Tyhp <code>extension { }</code> member has three forms. The form is the contract for what PHP keeps:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Form</th>
+<th>PHP backer method</th>
+<th>Tyhp call sites</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Short <code>fn … =&gt; expr;</code></td>
+<td><strong>Omitted</strong> — Tyhp-only</td>
+<td>Splice <code>expr</code></td>
+</tr>
+<tr>
+<td>Brace body with a single <code>return expr;</code></td>
+<td><strong>Emitted</strong> — PHP can call it on the backer</td>
+<td>Splice <code>expr</code></td>
+</tr>
+<tr>
+<td>Brace body with multiple statements</td>
+<td><strong>Emitted</strong></td>
+<td>Call the backer method</td>
+</tr>
+</tbody>
+</table></div>
+<p>Choose a form by what you need:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Goal</th>
+<th>Write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tyhp-only, no PHP method</td>
+<td><code>fn … =&gt; expr;</code></td>
+</tr>
+<tr>
+<td>Spliced in Tyhp <strong>and</strong> callable from PHP</td>
+<td><code>function … { return expr; }</code></td>
+</tr>
+<tr>
+<td>Multi-statement logic</td>
+<td><code>function … { … }</code> — a real PHP method that Tyhp calls</td>
+</tr>
+</tbody>
+</table></div>
+<p>The single-<code>return</code> brace body is also the way to keep a PHP method when a call site cannot be spliced faithfully. A short <code>=&gt;</code> member is erased, so that situation is error <code>TYHP4181</code>. The brace form emits a method the call site can fall back to.</p>
+<p>A parameter the member writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="#by-reference-parameters">By-reference parameters</a>.</p>
+<p>Members may carry attributes, the same way class methods and tyhpdef extension members do:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+extension ArrayHelpers {
+    #[\Tyhp\Optimize\Pure]
+    function sorted(extends array $this): array {
+        array $copy = \array_values($this);
+        \sort($copy);
+        return $copy;
+    }
+}
+</code></pre></div>
+<p><code>#[\Tyhp\Optimize\Inline]</code> is still an error (<code>TYHP4176</code>). Form decides splicing.</p>
 <h2>Compiled PHP Output</h2>
-<p>Extension method calls are rewritten to static method calls. The object the method is called on becomes the first argument. The extension class is emitted as a standard PHP class with static methods.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+<p>Multi-statement members compile to static methods on the extension class. The object the method is called on becomes the first argument. Short <code>=&gt;</code> members are spliced into the call site and do not appear on the class. A single-<code>return</code> brace member is spliced in Tyhp and still emitted as a PHP method.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-class StringExtensions
-{
-    public static function toCamelCase(string $this_): string
-    {
-        $parts = \explode(&#039;_&#039;, $this_);
-        return \lcfirst(\implode(&#039;&#039;, \array_map(&#039;\ucfirst&#039;, $parts)));
+extension StringHelpers {
+    function complexStringProcess(extends string $this): string {
+        string $finalString = \trim($this);
+        return $finalString;
     }
 
-    public static function toSnakeCase(string $this_): string
-    {
-        return \strtolower(\preg_replace(&#039;/[A-Z]/&#039;, &#039;_$0&#039;, $this_));
-    }
+    fn shortProcess(extends string $this): string =&gt; &#039; &#039; . $this;
 
-    public static function truncate(string $this_, int $maxLength, string $suffix = &#039;...&#039;): string
-    {
-        if (\strlen($this_) &lt;= $maxLength) {
-            return $this_;
-        }
-        return \substr($this_, 0, $maxLength - \strlen($suffix)) . $suffix;
+    function simpleProcess(extends string $this): string {
+        return $this . &#039; &#039;;
     }
 }
 
-$text = &#039;hello_world&#039;;
+string $a = $name-&gt;shortProcess();
+string $b = $name-&gt;simpleProcess();
+string $c = $name-&gt;complexStringProcess();
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+class StringHelpers
+{
+    public static function complexStringProcess(string $this_): string
+    {
+        $finalString = \trim($this_);
+        return $finalString;
+    }
+
+    public static function simpleProcess(string $this_): string
+    {
+        return $this_ . &#039; &#039;;
+    }
+}
+
+$a = (&#039; &#039; . $name);
+$b = ($name . &#039; &#039;);
+$c = StringHelpers::complexStringProcess($name);
+</code></pre></div>
+<p><code>shortProcess</code> has no PHP method — PHP cannot call it. <code>simpleProcess</code> does, even though Tyhp splices the expression instead of calling it.</p>
+<p>If every member is short <code>=&gt;</code>, the compiler emits no PHP backer class.</p>
+<p>The earlier <code>StringExtensions</code> example uses multi-statement members, so every call becomes a static method call:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$text = &#039;hello_world&#039;;
 echo StringExtensions::toCamelCase($text);
 echo StringExtensions::toSnakeCase($text);
+</code></pre></div>
+<h2>By-reference parameters</h2>
+<p>A spliced member substitutes the caller's argument where the parameter stood, which behaves like passing by reference. Three rules keep that identical to a real call.</p>
+<p><strong>A written parameter must be declared <code>&amp;</code>, and only those parameters are.</strong> If the expression assigns to a parameter, compound-assigns, increments or decrements it in either position (<code>++$v</code> or <code>$v++</code>), or passes it to a callee's <code>&amp;</code> parameter, that parameter must be declared <code>&amp;</code>. Declaring <code>&amp;</code> on a parameter the expression never writes is equally an error (<code>TYHP4174</code>). The receiver is the same contract: <code>extends T &amp;$this</code> is a by-reference parameter, so <code>$a-&gt;sort()</code> can splice to <code>\sort($a, …)</code>. Writing a by-value <code>$this</code> is <code>TYHP4174</code>.</p>
+<p><code>++</code> counts as a write in either position. A non-mutating increment is written <code>$v + 1</code>.</p>
+<p><strong>An argument for a <code>&amp;</code> parameter must be something PHP can reference</strong> (<code>TYHP4180</code>). The receiver of <code>extends T &amp;$this</code> is that argument. These shapes are not:</p>
+<ul>
+<li>literals</li>
+<li>constants</li>
+<li>call results</li>
+<li><code>readonly</code> properties</li>
+<li>properties whose read path is by value: a tyhpdef <code>{ get; }</code> hook, <code>__get</code>, or <code>offsetGet</code></li>
+</ul>
+<p>A tyhpdef <code>{ &amp;get; }</code> is referenceable, as are <code>&amp;__get</code> and <code>&amp;offsetGet</code>.</p>
+<p><strong>A parameter used more than once is evaluated once.</strong> The compiler introduces a local for the first evaluation and reuses it, so <code>$n-&gt;doubled()</code> with <code>fn doubled(): int =&gt; $this + $this</code> does not evaluate the receiver twice.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+extension Counters {
+    fn bump(extends int &amp;$this): int =&gt; ++$this;
+}
 </code></pre></div>
 <h2>Extensions on Class Types</h2>
 <p>Extensions can add methods to any class type, including third-party classes you don't own.</p>
@@ -354,7 +474,7 @@ if (DateTimeExtensions::isBusinessHours($now)) {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 extension IterableExtensions {
-    function firstOrNull&lt;T&gt;(extends iterable&lt;T&gt; $this, callable&lt;T, bool&gt; $predicate): ?T {
+    function firstOrNull&lt;T&gt;(extends iterable&lt;T&gt; $this, callable(T): bool $predicate): ?T {
         foreach ($this as $item) {
             if ($predicate($item)) {
                 return $item;
@@ -372,7 +492,7 @@ extension ArrayExtensions {
         return \max($this);
     }
 
-    function mapTo&lt;T, R&gt;(extends array&lt;T&gt; $this, callable&lt;T, R&gt; $fn): array&lt;R&gt; {
+    function mapTo&lt;T, R&gt;(extends array&lt;T&gt; $this, callable(T): R $fn): array&lt;R&gt; {
         return \array_map($fn, $this);
     }
 }
@@ -390,7 +510,7 @@ echo ArrayExtensions::max($numbers);
 $upper = ArrayExtensions::mapTo($numbers, fn(int $n): string =&gt; (string)$n);
 </code></pre></div>
 <h2>Extension Operator Overloads</h2>
-<p>Extension functions still use the extends keyword on the first parameter to name the type being extended. Extension operator overloads use an explicit target type in angle brackets right after the operator token, e.g. operator +&lt;MyType&gt;(...). The left operand type is typically self (the target type). abstract and final are not allowed on extension operators, nor on tyhpdef extension function, extension fn, or extension operator members.</p>
+<p>Extension functions still use the extends keyword on the first parameter to name the type being extended. Extension operator overloads use an explicit target type in angle brackets right after the operator token, e.g. operator +&lt;MyType&gt;(...). The left operand type is typically self (the target type). abstract and final are not allowed on extension operators, nor on tyhpdef <code>extension fn</code> or <code>extension operator</code> members.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 extension StringOperators {
@@ -416,14 +536,48 @@ extension MoneyOperators {
     }
 }
 </code></pre></div>
-<h2>Tyhpdef Inline Extensions</h2>
-<p>Inside a tyhpdef class body you can declare extension function, extension fn (expression body), and extension operator members. The compiler treats them as belonging to a synthetic extension for that class: $this in an extension function and self in an inline extension operator resolve to the enclosing tyhpdef class. These members cannot use abstract or final.</p>
+<h2>Generated library tyhpdef</h2>
+<p>When <code>tyhp build</code> emits a library’s public API, a standalone Tyhp <code>extension StringHelpers { … }</code> becomes tyhpdef pieces that follow the member's form:</p>
+<ol>
+<li>A PHP backer class aliased with the reserved suffix, listing <strong>only</strong> members that have a PHP method: <code>class StringHelpers as StringHelpers__tyhpExtensionBacker</code></li>
+<li>A tyhpdef <code>extension StringHelpers { … }</code> whose members are thin <code>fn</code> / <code>operator</code> mappings</li>
+</ol>
+<p>The mapping copies the expression for a short <code>=&gt;</code> member and for a single-<code>return</code> brace member. A multi-statement member maps onto the backer (<code>=&gt; StringHelpers__tyhpExtensionBacker::complexStringProcess($this)</code>). An all-<code>=&gt;</code> extension gets no backer stub class at all.</p>
+<p>The suffix <code>__tyhpExtensionBacker</code> is Tyhp-only; it never appears in emitted PHP. A user type with that Tyhp name is <code>TYHP4171</code>.</p>
+<p><code>tyhp/core</code> uses the same pattern for multi-statement scalar methods: Tyhp bodies live in <code>tyhp_src/</code> (compiled as package source, not listed in <code>include</code>), and the tyhpdef declares <code>class StringExtensions as StringExtensions__tyhpExtensionBacker</code> plus thin <code>=&gt;</code> mappings. All-<code>=&gt;</code> catalogs (<code>IntExtensions</code>, <code>FloatExtensions</code>, <code>BoolExtensions</code>) have no backer class.</p>
+<p>Generated <code>package.tyhpdef</code> copies in-package <code>global use</code> / <code>global use extension</code> that the library authored. File-level <code>use extension</code> is not copied. Loading a package activates <code>extension { }</code> blocks for consumers only when that tyhpdef contains <code>global use extension</code>.</p>
+<p>Same-file Tyhp <code>extension { }</code> stays in scope in that file. Class-body tyhpdef <code>use extension</code> on a <strong>type</strong> still auto-activates that type’s attached surface for consumers, minus hidden members.</p>
+<p>See <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a> for the tyhpdef <code>extension Name { }</code> syntax (no <code>extends</code> on the header; <code>=&gt;</code> only; empty <code>{}</code> is an error).</p>
+<h2>Tyhpdef class-body mappings</h2>
+<p>For the full tyhpdef reference (standalone <code>extension Name { }</code>, thin class-body mappings, native vs mapped operators, and <code>use extension</code> on a class), see <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a>.</p>
+<p>Inside a tyhpdef class body you can declare <code>extension fn</code> and <code>extension operator</code> members as thin <code>=&gt;</code> mappings. The compiler treats them as a synthetic extension for that class: <code>$this</code> in an <code>extension fn</code> and <code>self</code> in an inline <code>extension operator</code> resolve to the enclosing tyhpdef class. These members cannot use <code>abstract</code> or <code>final</code>. Without <code>#[\Tyhp\GenericRuntime]</code> they splice (or erase) — PHP cannot call them. A compiled-library mapping that stamps <code>GenericRuntime</code> is not a splice candidate; foreign <code>$s-&gt;jsonDecodeAs&lt;User&gt;()</code> goes through <code>\Tyhp\Generic::bind</code> rather than baking the binder name.</p>
 <h3>Operators: native vs mapped</h3>
-<p>| Form | Meaning | Emitter |<br />
-|------|---------|---------|<br />
-| <code>operator +(…): T;</code> (no <code>extension</code>) | Native PHP operator | <strong>No rewrite</strong> — leave <code>$a + $b</code> |<br />
-| <code>extension operator +(…): T { … }</code> / <code>=&gt; …</code> | Mapped overload (<strong>body required</strong>) | Rewrite to <code>__add</code> / body target |<br />
-| <code>extension operator +(…): T;</code> (bodyless) | <strong>Illegal</strong> | Diagnostic <code>TYHP8013</code> |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Form</th>
+<th>Meaning</th>
+<th>Emitter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operator +(…): T;</code> (no <code>extension</code>)</td>
+<td>Native PHP operator</td>
+<td><strong>No rewrite</strong> — leave <code>$a + $b</code></td>
+</tr>
+<tr>
+<td><code>extension operator +(…): T =&gt; …;</code></td>
+<td>Thin mapping</td>
+<td>Splice the <code>=&gt;</code> expression</td>
+</tr>
+<tr>
+<td><code>extension operator +(…): T;</code> (bodyless)</td>
+<td><strong>Illegal</strong></td>
+<td>Diagnostic <code>TYHP8013</code></td>
+</tr>
+</tbody>
+</table></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 namespace Decimal;
 final class Decimal {
@@ -435,19 +589,12 @@ class Money {
     public function plus(Money $other): Money;
     public function isEqualTo(Money $other): bool;
 
-    extension operator +(self $left, self $right): self {
-        return $left-&gt;plus($right);
-    }
+    extension operator +(self $left, self $right): self =&gt; $left-&gt;plus($right);
 
-    extension operator ==(self $left, self $right): bool {
-        return $left-&gt;isEqualTo($right);
-    }
+    extension operator ==(self $left, self $right): bool =&gt; $left-&gt;isEqualTo($right);
 
-    extension operator +(self $left, Money $right): self =&gt; $left-&gt;plus($right);
-
-    extension function formatCurrency(string $locale = &#039;en_US&#039;): string {
-        return $locale . &#039; &#039; . $this-&gt;__toString();
-    }
+    extension fn formatCurrency(string $locale = &#039;en_US&#039;): string
+        =&gt; $locale . &#039; &#039; . $this-&gt;__toString();
 
     extension fn shortLabel(): string =&gt; $this-&gt;formatCurrency();
 }
@@ -465,7 +612,8 @@ class Money {
 }
 </code></pre></div>
 <h2>Importing Extensions with use extension</h2>
-<p>Extensions from other namespaces or files are imported with the use extension syntax instead of a regular use statement. This makes it explicit that you are bringing extension methods into scope. The import supports trait-like adaptations using curly braces, allowing you to selectively rename methods.</p>
+<p><code>use extension</code> is <strong>opt-in by default</strong>, including for tyhpdef-declared extensions. Extensions from other namespaces or files are imported with <code>use extension</code> instead of a regular <code>use</code> statement. This makes it explicit that you are bringing extension methods into scope.</p>
+<p>The import supports trait-like adaptations using curly braces: method <code>as</code> aliases, postfix <code>hide</code>, and <code>insteadof</code> (including on operators). <code>as</code> on operators is an error (<code>TYHP4170</code>) — use <code>hide</code> or <code>insteadof</code>. <code>hide</code> is a <strong>contextual</strong> keyword only inside <code>{ }</code> adaptations (so <code>function hide()</code> elsewhere stays valid).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Import an extension and bring all its methods into scope
@@ -482,8 +630,39 @@ echo $text-&gt;toCamelCase();  // from StringExtensions
 array&lt;int&gt; $nums = [1, 2, 3];
 $first = $nums-&gt;firstItem();  // aliased from ArrayExtensions::first
 </code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use extension StringOperators {
+    StringOperators::toUpper as toCC;
+    StringOperators::toSnakeCase hide;
+    StringOperators::operator *&lt;string&gt; hide;
+    operator *&lt;array&gt; hide;   // qualifier optional when this `use` lists one extension
+};
+
+use extension StringOperators, RepeatOps {
+    RepeatOps::operator *&lt;string&gt; insteadof StringOperators;
+};
+</code></pre></div>
+<ul>
+<li><code>operator *&lt;string&gt; hide</code> hides that target only. <code>operator * hide</code> hides every <code>*</code> member on that extension.</li>
+<li><code>operator convert hide</code> hides every convert on that extension.</li>
+<li><code>operator +&lt;Money&gt; hide</code> hides all <code>+</code> members for that target from this extension (unary and binary together).</li>
+<li>Hide of a name that extension does not declare is <code>TYHP4173</code>.</li>
+<li><code>insteadof</code> RHS may be any extension <strong>in scope</strong>, including a same-file <code>extension { }</code> that was not listed on this <code>use</code>.</li>
+</ul>
+<p><code>global use extension</code> (C# <code>global using</code>, not PHP <code>global $var</code>) activates an extension for the <strong>entire compilation</strong> that loaded that file. <code>tyhp/core</code> authors <code>global use extension \Tyhp\StringExtensions;</code> (and the matching Array / Int / Float / Bool / Closure extensions) so consumers get <code>$s-&gt;length()</code> without a per-file import.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use extension \Tyhp\StringExtensions {
+    StringExtensions::toLower hide;
+};
+
+string $s = &quot;Hello&quot;;
+int $len = $s-&gt;length();
+</code></pre></div>
+<p>A local <code>use extension \Tyhp\StringExtensions;</code> with no adaptations warns (<code>TYHP4169</code>). Generated library tyhpdef does <strong>not</strong> emit <code>global use extension</code> for the library’s own extensions. See <a href="tyhp_0350_useStatements.md#global-use">Use statements</a> and <a href="tyhp_1000_scalarPseudoObjects.md">Scalar Pseudo-Objects</a>.</p>
 <h2>Chained Extension Method Calls</h2>
-<p>Extension method calls can be chained. Each link in the chain is independently rewritten to a static method call, with the result of the previous call becoming the first argument to the next.</p>
+<p>Extension method calls can be chained. Each link is rewritten independently: a spliced member substitutes its expression; a multi-statement member becomes a static call, with the previous result as the first argument.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 string $result = \trim($input)
@@ -534,7 +713,7 @@ $result = StringExtensions::truncate(
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Import only the extensions you need with use extension — this avoids polluting the method namespace with unused extension methods.</p>
+        <div class="callout-content"><p>Import only the extensions you need with <code>use extension</code> — this is opt-in. Loading a library does not auto-activate its <code>extension { }</code> blocks unless that tyhpdef contains <code>global use extension</code>. The <code>tyhp/core</code> catalog is already globally imported; do not re-import <code>\Tyhp\StringExtensions</code> unless you are hiding or renaming methods.</p>
 </div>
     </div>
 </div>
@@ -611,6 +790,42 @@ $result = StringExtensions::truncate(
 </div>
     </div>
 </div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not re-import <code>\Tyhp\StringExtensions</code> (or the other <code>tyhp/core</code> scalar extensions) with a local <code>use extension</code> unless you are hiding or renaming methods. A redundant non-mutating local <code>use</code> warns (<code>TYHP4169</code>).</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not write a parameter that a spliced member mutates without <code>&amp;</code>, and do not mark <code>&amp;</code> on a parameter the expression never writes (<code>TYHP4174</code>). Mutating the receiver requires <code>extends T &amp;$this</code>. A non-mutating increment is <code>$v + 1</code>, not <code>++$v</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not put <code>#[\Tyhp\Optimize\Inline]</code> on an extension member (<code>TYHP4176</code>). Form decides splicing.</p>
+</div>
+    </div>
+</div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR TYHP4147: first parameter lacks `extends`
@@ -635,14 +850,38 @@ $result = StringExtensions::truncate(
 //     }
 // }
 </code></pre></div>
+<h2>PHP version gating</h2>
+<p><code>#[\Tyhp\Php]</code> is <strong>illegal</strong> on a Tyhp <code>extension { }</code> (<strong>TYHP4304</strong>). Gate an extension with <code>declare(php=…)</code> instead — file-level <code>declare(php=&quot;&gt;=8.4&quot;);</code> or a brace block:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+declare(php=&quot;&gt;=8.4&quot;) {
+    extension GatedStringOps {
+        function gated_tag(extends string $this): string {
+            return \strtoupper($this);
+        }
+    }
+}
+</code></pre></div>
+<p>See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
 <h2>Compiler Errors</h2>
 <ul>
-<li>Extension method without <code>extends</code> on the first parameter (TYHP4147). The extension declaration itself does not require <code>extends</code>.</li>
-<li>Extension operator overload without a &lt;Type&gt; target inside standalone extension bodies (e.g. operator +&lt;Target&gt;(...) is required inside extension Name { ... } blocks; tyhpdef inline extension operator members do not use &lt;Type&gt; because the target is the enclosing class).</li>
-<li>Using abstract or final on extension operators or on tyhpdef extension function / extension fn / extension operator.</li>
+<li>Extension method without <code>extends</code> on the first parameter (TYHP4147). The extension <strong>declaration</strong> itself does not require <code>extends</code> (<code>extension StringExtensions {</code> is valid; there is no <code>extends</code> on the header).</li>
+<li>Extension operator overload without a <code>&lt;Type&gt;</code> target inside standalone extension bodies (e.g. <code>operator +&lt;Target&gt;(...)</code> is required inside <code>extension Name { ... }</code> blocks; tyhpdef <strong>class-body</strong> inline <code>extension operator</code> members do not use <code>&lt;Type&gt;</code> because the target is the enclosing class).</li>
+<li>Empty <code>extension Name {}</code> (<code>TYHP4172</code>).</li>
+<li><code>as</code> on an operator in a <code>use extension</code> adaptation (<code>TYHP4170</code>); use <code>hide</code> or <code>insteadof</code>.</li>
+<li><code>hide</code> of a member the extension does not declare (<code>TYHP4173</code>).</li>
+<li>Type name colliding with <code>__tyhpExtensionBacker</code> (<code>TYHP4171</code>).</li>
+<li>Using abstract or final on extension operators or on tyhpdef <code>extension fn</code> / <code>extension operator</code>.</li>
+<li>A spliced member writes a parameter not declared <code>&amp;</code>, declares <code>&amp;</code> on a parameter it does not write, or mutates <code>$this</code> without <code>&amp;</code> (<code>TYHP4174</code>).</li>
+<li>A spliced member reduces to itself, directly or through other spliced members (<code>TYHP4175</code>).</li>
+<li><code>#[\Tyhp\Optimize\Inline]</code> on an extension member (<code>TYHP4176</code>).</li>
+<li>A variable name collides with the generated inline temporary prefix (<code>TYHP4177</code>).</li>
+<li>An argument for a <code>&amp;</code> parameter is not something PHP can reference (<code>TYHP4180</code>).</li>
+<li>An erased member's call site cannot be spliced faithfully (<code>TYHP4181</code>).</li>
 <li>Conflicting extension methods for the same type and method name in scope.</li>
 <li>Accessing private or protected members of the extended type from an extension method.</li>
 <li>Using a regular use statement instead of use extension for importing extensions.</li>
+<li><code>#[\Tyhp\Php]</code> on an <code>extension</code> declaration (<strong>TYHP4304</strong>). Use <code>declare(php=…)</code> (file-level <code>;</code> form today).</li>
 </ul>
 
 </section>
@@ -655,6 +894,7 @@ $result = StringExtensions::truncate(
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

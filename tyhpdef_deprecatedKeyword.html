@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -285,6 +301,16 @@ deprecated class LegacyLogger {
     public function log(string $message): void;
 }
 </code></pre></div>
+<h2><code>#[\Deprecated]</code></h2>
+<p><code>#[\Deprecated]</code> on a <code>.tyhp</code> or <code>.tyhpdef</code> declaration is the PHP attribute form of the same warning. The binder sets deprecation on the symbol; use sites warn <strong>TYHP4500</strong>. A string-literal <code>$message</code> is appended after a colon. <code>$since</code> is not part of the short message. Marking both the keyword and the attribute on one symbol still produces one warning.</p>
+<p>Tyhp warns even when <code>output.phpVersion</code> is below 8.4. See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+#[\Deprecated(&#039;use findById()&#039;)]
+function getUser(int $id): ?User {
+    return null;
+}
+</code></pre></div>
 <h2>The obsolete Keyword</h2>
 <p>When an item is marked as obsolete, any reference to it in Tyhp code produces a compiler error. The code will not compile. Use obsolete for items that must never be used — such as functions with known security vulnerabilities or interfaces that have been completely replaced.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -302,7 +328,7 @@ obsolete class UnsafeSerializer {
 }
 </code></pre></div>
 <h2>Keyword Placement</h2>
-<p>The deprecated or obsolete keyword must appear before all other modifiers on a declaration. For class members, the grammar allows it before visibility, but this alpha only <strong>enforces</strong> the keywords on top-level symbols.</p>
+<p>Both keywords must appear before all other modifiers on a declaration. For class members, the grammar allows it before visibility, but this alpha only <strong>enforces</strong> the keywords on top-level symbols. <code>partial</code>, <code>omit</code>, <code>deprecated</code>, <code>obsolete</code>, and <code>extern</code> cannot be combined on the <strong>same</strong> declaration (<code>TYHP8018</code>). Overlay <code>omit</code> is a hide, not a deprecation — see <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated class LegacyLogger {
@@ -424,9 +450,10 @@ UserService $svc = new UserService();
 </div>
 <h2>Summary</h2>
 <ul>
-<li><code>deprecated</code> generates a compiler warning each time the item is referenced</li>
+<li><code>deprecated</code> generates a compiler warning each time the item is referenced (<strong>TYHP4500</strong>, the same code as <code>#[\Deprecated]</code>)</li>
 <li><code>obsolete</code> generates a compiler error, preventing compilation entirely</li>
 <li>Both keywords must appear before all other modifiers on a declaration</li>
+<li><code>partial</code> / <code>omit</code> / <code>deprecated</code> / <code>obsolete</code> / <code>extern</code> cannot combine on the same declaration (<code>TYHP8018</code>)</li>
 <li>Can be applied to top-level functions, classes, interfaces, traits, enums, constants, and variables</li>
 <li>Top-level function overloads can be deprecated or made obsolete independently</li>
 <li>A deprecated class triggers warnings on any usage (instantiation, type hints, inheritance)</li>
@@ -443,6 +470,7 @@ UserService $svc = new UserService();
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

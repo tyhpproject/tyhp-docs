@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,7 +279,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp provides first-class async and await keywords for asynchronous programming. Async functions return Promise&lt;T&gt; values, and await suspends execution until a promise resolves, returning the resolved value. Under the hood, the implementation uses PHP Fibers for cooperative scheduling, with a fiber-based event loop that supports real non-blocking I/O via stream_select(). The runtime is provided by the tyhp/async Composer package.</p>
+    <p>Tyhp provides first-class async and await keywords for asynchronous programming. Async functions return Promise&lt;T&gt; values, and await suspends execution until a promise resolves, returning the resolved value. The compiler lowers <code>async</code> functions to <code>\Tyhp\Promise::_async(...)</code> and <code>await</code> to <code>\Tyhp\Promise::_await(...)</code>. Under the hood, the implementation uses PHP Fibers for cooperative scheduling, with a fiber-based event loop that supports real non-blocking I/O via stream_select(). The runtime is provided by the tyhp/async Composer package. Blocking PHP I/O (<code>\file_get_contents()</code>, PDO, curl without async wrappers, and similar) blocks that loop — every other fiber waits until the call returns.</p>
 <h2>Async Function Declaration</h2>
 <p>An async function is declared by adding the async keyword before function. The declared return type is the resolved value type — the compiler automatically wraps it in Promise&lt;T&gt;. You write the return type as if the function were synchronous, and the compiler handles the Promise wrapping.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -313,7 +329,7 @@ class UserService {
 }
 </code></pre></div>
 <h2>Await Expression</h2>
-<p>The await keyword is a unary prefix operator that suspends the current async function until the given Promise&lt;T&gt; resolves, then returns the resolved value of type T. It can only be used inside an async function. If the promise rejects, the exception is thrown at the await point.</p>
+<p>The await keyword is a unary prefix operator that suspends the current async function, async closure, or async block until the given Promise&lt;T&gt; resolves, then returns the resolved value of type T. It can only be used inside those async contexts. If the promise rejects, the exception is thrown at the await point.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 async function processOrder(int $orderId): OrderResult {
@@ -335,11 +351,15 @@ async function processOrder(int $orderId): OrderResult {
 <p>Promise provides static combinator methods for coordinating multiple async operations.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>Promise::all(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;array&lt;T&gt;&gt;</code></h4><br/><p>Waits for ALL promises to resolve. After <code>await</code>, you get an array of resolved values in the same order. If any promise rejects, the entire all() rejects with that error.</p>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::allSettled(array&lt;TKey, Promise&lt;T&gt;&gt; $promises): Promise&lt;array&lt;TKey, PromiseSettledResult&lt;T&gt;&gt;&gt;</code></h4><br/><p>Waits for every promise to settle (fulfill or reject). After <code>await</code>, you get an array of outcome objects with <code>status</code> (<code>'fulfilled'</code> or <code>'rejected'</code>), plus <code>value</code> or <code>reason</code>. Never rejects — even if every input rejects. Input keys are preserved.</p>
+</div>
 <div class="alert alert-secondary" role="alert"><h4><code>Promise::race(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;T&gt;</code></h4><br/><p>After <code>await</code>, returns the value of the FIRST promise to settle (resolve or reject). Other promises continue running but their results are discarded.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolved(T $value): Promise&lt;T&gt;</code></h4><br/><p>Creates a pre-resolved promise with the given value. Useful for returning synchronous values from async interfaces.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolve(T $value): Promise&lt;T&gt;</code></h4><br/><p>JS <code>Promise.resolve</code>: if <code>$value</code> is already a Promise, returns that same instance (flatten — it may still be pending). Otherwise returns an <strong>already-fulfilled</strong> Promise holding <code>$value</code>, with no Fiber scheduled.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::rejected(Throwable $error): Promise&lt;T&gt;</code></h4><br/><p>Creates a pre-rejected promise with the given error.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolved(T $value): Promise&lt;T&gt;</code></h4><br/><p>Creates a new already-fulfilled Promise. Unlike <code>resolve()</code>, does not unwrap an existing Promise — a Promise passed as <code>$value</code> is stored as the fulfillment value.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::reject(Throwable $error): Promise&lt;T&gt;</code></h4><br/><p>Creates an already-rejected Promise with the given error (no Fiber). Alias of <code>rejected()</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>Promise::delay(int $ms): Promise&lt;void&gt;</code></h4><br/><p>An async method that resolves after the specified number of milliseconds. <code>await Promise::delay(...)</code> yields <code>void</code>. Useful for implementing backoff, throttling, or timeouts.</p>
 </div>
@@ -441,6 +461,31 @@ $fetch = function(int $id) use ($repo): \Tyhp\Promise {
     });
 };
 </code></pre></div>
+<h2>Async Blocks</h2>
+<p>An <code>async { ... }</code> block is an expression that evaluates to a <strong>running</strong> <code>Promise&lt;T&gt;</code>, not a callable. Inner <code>return</code> completes that promise; inner <code>await</code> is legal. This is the form to use when a method already returns <code>Promise&lt;T&gt;</code> / <code>self&lt;T&gt;</code> and you want to write sequential await logic without making the method itself <code>async</code> (which would wrap an extra Promise layer).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function then&lt;TThenReturn&gt;(
+    ?callable(T): TThenReturn $onFulfilled = null
+): Promise&lt;TThenReturn&gt; {
+    return async {
+        TThenReturn $value = await $this;
+        return $onFulfilled !== null ? $onFulfilled($value) : $value;
+    };
+}
+
+// Empty block — Promise&lt;void&gt;
+Promise&lt;void&gt; $idle = async {};
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Compiles to an already-started Promise, not a callable:
+return \Tyhp\Promise::_async(function () use ($onFulfilled) {
+    $value = \Tyhp\Promise::_await($this);
+    return $onFulfilled !== null ? $onFulfilled($value) : $value;
+});
+</code></pre></div>
+<p><code>async function () { ... }</code> remains a <strong>callable</strong> that <em>returns</em> a Promise when invoked. <code>(async function () { ... })()</code> is the IIFE equivalent of <code>async { ... }</code>. Do not write <code>return async function () { ... };</code> from a method typed <code>Promise&lt;T&gt;</code> — that returns a callable, not a Promise.</p>
 <h2>Async Overloads</h2>
 <p>Tyhp supports async function overloads, allowing a function to have both synchronous and asynchronous signatures. The compiler selects the appropriate overload based on the calling context.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -687,7 +732,7 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Using blocking I/O inside async functions. Blocking calls (like synchronous file_get_contents()) block the entire event loop, preventing other fibers from running. Use the event loop's non-blocking I/O facilities instead.</p>
+        <div class="callout-content"><p>Using blocking I/O inside async functions. Blocking PHP I/O (<code>\file_get_contents()</code>, PDO, curl without async wrappers, and similar) blocks the entire <code>tyhp/async</code> event loop, so other fibers cannot run until the call returns. Use the event loop's non-blocking I/O facilities instead.</p>
 </div>
     </div>
 </div>
@@ -763,6 +808,7 @@ async function goodIteration(AsyncIterable&lt;Message&gt; $msgs): void {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

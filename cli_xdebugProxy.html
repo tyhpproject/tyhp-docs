@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link active" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -261,21 +277,9 @@
 				<section class="docs-section" id="CLI_XDebug_Proxy">
     <h2 class="section-heading">CLI: XDebug Proxy</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 2 · Story 18</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 2 · Story 18</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Not in this alpha
-        </h4>
-        <div class="callout-content"><p>This feature is <strong>not included</strong> in Tyhp 805.0.0-alpha.1 (roadmap Tier 2/3). The rest of this page describes the planned design. Do not expect these commands or syntax to work yet.</p>
-</div>
-    </div>
-</div>
-<p>The xdebug_proxy action starts a proxy server that sits between your IDE's debugger and PHP's XDebug extension. It uses source maps to translate between compiled PHP file paths and line numbers and their corresponding Tyhp source locations, allowing you to debug your original .tyhp source files while PHP executes the compiled output.</p>
+    <p>The xdebug_proxy action starts a proxy server that sits between your IDE's debugger and PHP's XDebug extension. It uses source maps to translate between compiled PHP file paths and line numbers and their corresponding Tyhp source locations, allowing you to debug your original .tyhp source files while PHP executes the compiled output.</p>
 <h2>Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp xdebug_proxy [options]
 </code></pre></div>
@@ -295,19 +299,27 @@
 <li>Breakpoint responses — All breakpoint-related responses are translated so your IDE shows Tyhp file paths and line numbers.</li>
 </ul>
 <p>Files without source maps (such as third-party PHP libraries) pass through untranslated — their paths and line numbers appear as-is from XDebug.</p>
+<h2>Debugger display of values</h2>
+<p>The proxy also rewrites some variable and property trees before they reach the IDE:</p>
+<ul>
+<li><code>\Tyhp\Decimal</code> — the proxy surfaces the inner <code>$value</code> string so the watch window shows the decimal rather than the wrapper object.</li>
+<li><code>#[\SensitiveParameter]</code> arguments — these appear as <code>\SensitiveParameterValue</code> objects. The proxy leaves that wrapper in place and does not unwrap <code>$value</code> the way it does for <code>\Tyhp\Decimal</code>. Nested properties that are already <code>\SensitiveParameterValue</code> (including stack-frame arguments and eval / <code>debug_backtrace</code> results) stay wrapped the same way.</li>
+</ul>
 <h2>Prerequisites</h2>
 <ul>
 <li>XDebug PHP extension installed and configured on your PHP runtime</li>
-<li>A built Tyhp project with source maps enabled (set build.generateSourcemap to true in tyhp.json, then run tyhp build)</li>
+<li>A built Tyhp project with source maps enabled (set <code>build.generateSourcemap</code> to true in tyhp.json, then run <code>tyhp build</code>)</li>
 <li>An IDE with XDebug debugging support (VS Code with PHP Debug extension, PhpStorm, etc.)</li>
 </ul>
 <h2>Options</h2>
 <ul>
-<li>--ide-port=<port> — Port for IDE debug adapter connections (default: 9003).</li>
-<li>--xdebug-port=<port> — Port for XDebug connections (default: 9004).</li>
-<li>--sourcemap-dir=<path> — Directory containing .php.map source map files. Defaults to the project's output.path.</li>
-<li>--ide-key=<key> — Only accept XDebug sessions with this IDE key. If not set, all sessions are accepted.</li>
-<li>--log-level=<level> — Logging verbosity: debug, info, warn, or error (default: info).</li>
+<li><code>--ide-port=&lt;port&gt;</code> — Port for IDE debug adapter connections (default: 9003).</li>
+<li><code>--xdebug-port=&lt;port&gt;</code> — Port for XDebug connections (default: 9004).</li>
+<li><code>--sourcemap-dir=&lt;path&gt;</code> — Directory containing .php.map source map files. Defaults to the project's <code>output.path</code>.</li>
+<li><code>--ide-key=&lt;key&gt;</code> — Only accept XDebug sessions whose <code>&lt;init&gt;</code> idekey matches. If not set, all sessions are accepted.</li>
+<li><code>--log-level=&lt;debug|info|warn|error&gt;</code> — Logging verbosity (default: info).</li>
+<li><code>--pid-file=&lt;path&gt;</code> — Write the process id to this file while the proxy is running. Opt-in; nothing is written by default.</li>
+<li><code>--help</code> — Show help (same as <code>tyhp help --subject=xdebug_proxy</code>).</li>
 </ul>
 <h2>Setup</h2>
 <p>To use the XDebug proxy, configure XDebug to connect to the proxy's XDebug port instead of directly to your IDE, and configure your IDE to connect to the proxy's IDE port.</p>
@@ -329,7 +341,7 @@ xdebug.client_port = 9004
 xdebug.idekey = tyhp
 </code></pre></div>
 <h2>Step 3: Start the Proxy</h2>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp xdebug_proxy
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp xdebug_proxy --sourcemap-dir=./build/
 </code></pre></div>
 <p>The proxy displays the listening ports and the number of source map files loaded:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">XDebug Proxy started
@@ -339,6 +351,7 @@ xdebug.idekey = tyhp
   Source root:   ./src/
   IDE key:       (any)
 </code></pre></div>
+<p>If no sourcemaps are found, the proxy still starts and warns you to build with <code>build.generateSourcemap</code> enabled first.</p>
 <h2>Step 4: Configure Your IDE</h2>
 <p>Configure your IDE's debugger to connect to the proxy's IDE port (9003 by default). For VS Code, add a launch.json configuration:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
@@ -349,11 +362,14 @@ xdebug.idekey = tyhp
 }
 </code></pre></div>
 <h2>tyhp.json Configuration</h2>
-<p>Proxy settings can also be configured in the xdebugProxy section of tyhp.json:</p>
+<p>Proxy settings can also be configured in the <code>xdebugProxy</code> section of tyhp.json. CLI flags override these keys.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;xdebugProxy&quot;: {
         &quot;idePort&quot;: 9003,
         &quot;xdebugPort&quot;: 9004,
+        &quot;ideListenAddress&quot;: &quot;127.0.0.1&quot;,
+        &quot;xdebugListenAddress&quot;: &quot;127.0.0.1&quot;,
+        &quot;sourceMapDir&quot;: null,
         &quot;ideKey&quot;: null,
         &quot;maxSessions&quot;: 10,
         &quot;logLevel&quot;: &quot;info&quot;,
@@ -361,6 +377,7 @@ xdebug.idekey = tyhp
     }
 }
 </code></pre></div>
+<p>When <code>sourceMapDir</code> is omitted, the proxy uses the project's <code>output.path</code>. When <code>ideKey</code> is omitted, every XDebug idekey is accepted. <code>sourceMapDir</code>, <code>tyhpSourceRoot</code>, and <code>phpOutputRoot</code> support the same <code>{name}</code>-style interpolation as other path keys in <code>tyhp.json</code>. See <a href="project_optionsList.md#string-interpolation">String interpolation</a>.</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -396,6 +413,7 @@ xdebug.idekey = tyhp
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

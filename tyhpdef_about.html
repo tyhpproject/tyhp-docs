@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -264,12 +280,14 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp is a transpiler that compiles to PHP. When your Tyhp code needs to interact with existing PHP libraries, extensions, or Composer packages, the Tyhp compiler must understand their types and signatures. Tyhpdef is a declaration-only syntax that describes existing PHP code to Tyhp's type system, enabling compile-time type checking for external PHP code.</p>
-<p>Tyhpdef files use the <code>&lt;?tyhpdef</code> open tag, have the <code>.tyhpdef</code> file extension, and contain only type declarations with no implementation code. The Tyhp compiler reads these files during compilation but never emits them as PHP output.</p>
+<p>Tyhpdef files use the <code>&lt;?tyhpdef</code> open tag, have the <code>.tyhpdef</code> file extension, and contain only type declarations with no implementation code (with a few exceptions). The Tyhp compiler reads these files during compilation but never emits them as PHP output.</p>
 <h2>What You Can Declare</h2>
 <p>Tyhpdef can describe the following PHP constructs to Tyhp:</p>
 <ul>
 <li>Functions (including async, generic, overloaded, and extension functions)</li>
-<li>Classes (including abstract, final, and generic classes)</li>
+<li>Standalone <code>extension Name { }</code> blocks (short <code>fn</code> / <code>operator</code> + <code>=&gt;</code> mappings)</li>
+<li>Extension members on classes (<code>extension fn</code>, <code>extension operator</code>, and <code>use extension</code>)</li>
+<li>Classes (including abstract, final, generic, and <code>partial</code> classes)</li>
 <li>Interfaces (including generic interfaces with extends chains)</li>
 <li>Traits (including generic traits)</li>
 <li>Enums (both unit enums and backed enums with string or int values)</li>
@@ -281,20 +299,19 @@
 <li>Structs (to describe PHP associative array structures)</li>
 <li>Type aliases (to create reusable type definitions)</li>
 <li>Namespaces (to organize declarations)</li>
+<li>Extern types, functions, and constants (name-only <code>extern class</code> / <code>interface</code> / <code>enum</code> / <code>function</code> / <code>const</code>, or kind-unspecified <code>extern \Name;</code>, for names this package mentions but does not own; a specified type kind must match the originating declaration — see <a href="tyhpdef_extern.md">Extern Types</a>)</li>
 </ul>
 <h2>How the Compiler Finds Tyhpdef Files</h2>
 <p>The Tyhp compiler loads type information from multiple sources. Earlier sources take precedence when declarations conflict:</p>
 <ol>
-<li>Built-in registrations — Core language types (<code>decimal</code>, iterators, <code>callable&lt;…&gt;</code>, compile-time constructs, and similar) are registered in the compiler itself and are always available.</li>
-<li>Composer packages with <code>package.tyhp.json</code> — Runtime libraries (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) and the <code>tyhp/php</code> builtins package (stubs cover PHP 8.2+ APIs; this alpha’s compiler/init default target is PHP 8.4, ceiling 8.5). Install them with your project so <code>\strlen</code>, <code>DateTime</code>, <code>\Tyhp\Type</code>, and other APIs type-check.</li>
-<li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus any <code>include</code> entries that end in <code>.tyhpdef</code> or <code>package.tyhp.json</code>. If you omit <code>tyhpdefInclude</code>, <strong>project <code>.tyhpdef</code> files are not loaded</strong> (<code>tyhp init</code> creates a <code>tyhpdef/</code> folder but does not set the glob). Add e.g. <code>&quot;tyhpdefInclude&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]</code> (or <code>&quot;**/*.tyhpdef&quot;</code>) when you author stubs.</li>
+<li>Built-in registrations — Core language types (<code>decimal</code>, iterators, <code>callable(...)</code>, compile-time constructs, and similar) are registered in the compiler itself and are always available.</li>
+<li>Composer packages with <code>extra.tyhp.package</code> on <code>composer.json</code> — Runtime libraries (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>), the always-present <code>tyhpdef/php</code> builtins package (Core, date, filter, hash, json, libxml, pcre, random, Reflection, SPL, standard — stubs cover PHP 8.2–8.5; version-gated declarations are filtered to your <code>output.phpVersion</code>), and optional <code>tyhpdef/php-ext-*</code> packages (curl, PDO, mbstring, …). If that key is omitted, the compiler defaults to PHP <strong>8.2</strong> and emits warning <strong>TYHP4306</strong> once. Install them with your project so <code>\strlen</code>, <code>DateTime</code>, <code>\Tyhp\Type</code>, and other APIs type-check.</li>
+<li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus any <code>include</code> entries that end in <code>.tyhpdef</code> or <code>composer.json</code> (with <code>extra.tyhp.package</code> present as an object). If you omit <code>tyhpdefInclude</code>, <strong>project <code>.tyhpdef</code> files are not loaded</strong>. <code>tyhp init</code> sets <code>&quot;tyhpdefInclude&quot;: [&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;]</code> and <code>&quot;overlay&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]</code>.</li>
 </ol>
-<p>This alpha does <strong>not</strong> auto-generate tyhpdefs and does not scan a <code>tyhpdef_gen/</code> directory. Write declarations by hand, or start from <code>tyhp/php</code>.</p>
+<p>This alpha does <strong>not</strong> scan a <code>tyhpdef_gen/</code> directory. Use <code>tyhp generate_tyhpdef</code> for PHP extensions, Composer packages, PHP sources, and the installed <code>vendor/</code> tree (<code>--vendor</code>), <code>tyhp build</code> for compiled Tyhp libraries, or start from <code>tyhpdef/php</code>. Package overlays (<code>extra.tyhp.package</code> <code>&quot;overlay&quot;</code>) and project overlays (<code>tyhp.json</code> <code>&quot;overlay&quot;</code>) load after include. Overlay <code>partial class Foo&lt;T&gt;;</code> replaces written header clauses without restating members. Overlay <code>partial function</code> merges attributes or renames a live callable without restating the signature. See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
 <h2>Auto-Generating Tyhpdef Files</h2>
-<p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 2 · Story 20</span><span class="badge bg-secondary">Planned</span>
-</p>
-<p>Tyhp <strong>will</strong> include a CLI tool that auto-generates tyhpdef files from PHP Reflection (Story 20). That command is <strong>not</strong> in this alpha. Write tyhpdef files by hand, or start from <code>tyhp/php</code>.</p>
+<p><code>tyhp generate_tyhpdef</code> produces <code>.tyhpdef</code> files from PHP extensions (Tyhp-managed PHP Reflection), Composer packages (<code>--package-path</code>), PHP sources (<code>--source</code>, <code>.php</code> only), and the installed Composer tree (<code>--vendor</code> → <code>vendor-tyhpdef/</code>). Harvested PHPDoc <code>@template</code> bounds qualify nested class names to FQCNs and fill missing generic arguments (see <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>). PHP-source harvest omits a type whose immediate <code>extends</code> / <code>implements</code> is a catalog <code>extern</code>, or that is <code>@internal</code> when <code>--include-internal</code> is off; descendants and members that name those types are dropped as well (see <a href="cli_tyhpdefGeneration.md#omitted-types">Omitted types</a>). When a later harvested type has the same FQCN as one already emitted and the body is identical (kind, modifiers, <code>extends</code> / <code>implements</code>, members, flags — not doc comments), generate keeps the first, skips the later, and warns. Divergent bodies are both written; include-layer <code>TYHP8002</code> still fires (see <a href="cli_tyhpdefGeneration.md#repeated-fqcns">Repeated FQCNs</a>). Libraries always emit <code>package.tyhpdef</code> and additive-merge <code>extra.tyhp.package</code> onto publish-directory <code>composer.json</code> during <code>tyhp build</code>; applications emit <code>package.tyhpdef</code> when <code>build.generateTyhpdef</code> is true.</p>
+<p>See <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a> for <code>--php-targets</code> gated emit and <code>--vendor</code>. Compiler version gates (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) are documented in <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>. Overlays are documented in <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>. Optional Composer peers use name-only <code>extern</code> placeholders (<code>extern \Name;</code>, <code>extern class</code> / <code>interface</code> / <code>enum</code> / <code>function</code> / <code>const</code>); a specified type kind must match the originating declaration. <code>--package-path</code> / <code>--source</code> write them to <code>_tyhpdef/externs.tyhpdef</code>, and <code>tyhp build</code> writes author-only owners into <code>package.tyhpdef</code> — see <a href="tyhpdef_extern.md">Extern Types</a>.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -303,7 +320,7 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Auto-generated tyhpdef files may use broad types like mixed where more specific types could be used. Review and refine the generated output for the best type-checking experience.</p>
+        <div class="callout-content"><p>Auto-generated tyhpdef files may use broad types like mixed where more specific types could be used. Harvest writes Psalm/PHPStan <code>empty</code> in a type as <code>mixed</code>. PHP <code>static</code> in a value position (parameter, property, <code>@param</code>, <code>@var</code>, magic <code>@method</code> parameter, <code>@property</code>) is written as <code>self</code>; return positions keep <code>static</code> (<code>: static</code>, magic <code>@method</code> return types, including generic arguments such as <code>Builder&lt;static&gt;</code>). A class, interface, trait, or enum whose short name is a reserved word (<code>is</code>, <code>isset</code>, …) is written fully qualified (<code>class \Hamcrest\Core\Is</code>). PHPDoc <code>@template T of Foo&lt;…&gt;</code> (and similar generic, union, and intersection type strings) qualify nested class names to FQCNs from <code>use</code> imports, unique PHP / <code>\Psr\*</code> shorts, and same-package declared types; template parameters (<code>T</code>) and builtins stay unqualified. Native <code>extends</code> / <code>implements</code> / trait <code>use</code> prefer a same-package declared type over a unique PHP / <code>\Psr\*</code> short of the same name (<code>implements Exception</code> → <code>\Acme\Exception\Exception</code>); a true global the package does not declare (<code>extends \InvalidArgumentException</code>) stays global. A generic bound written without type arguments is completed from that type's own default, else its constraint, else <code>mixed</code>. Harvested parameter defaults that are not tyhpdef literals stay optional with <code>= null</code> (the same dummy used for harvested implicit-nullable PHP; the declared type is not widened). Const and property <code>??</code> values that are not tyhpdef literals are omitted. Unmatched attribute arguments are written as <code>#[Name]</code>. Review Layer 1 output and Layer 2 stub overlays; put omitted <code>??</code> values, more precise parameter defaults, and other hand refinements in hand-written overlay files (<code>_tyhpdef/overlays/*.tyhpdef</code>), not in the generated baseline.</p>
 </div>
     </div>
 </div>
@@ -328,7 +345,7 @@
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T create tyhpdef files for: PHP builtins already covered by <code>tyhp/php</code> (Core, Standard, SPL, Date, JSON, and similar — install that package instead of redeclaring them), or Tyhp code — <code>.tyhp</code> files are already fully typed and don't need separate declarations. Automatic generation for Composer packages is not in this alpha, so third-party PHP packages you call still need hand-written tyhpdefs for the members you use.</p>
+        <div class="callout-content"><p>DON'T create tyhpdef files for: PHP builtins already covered by <code>tyhpdef/php</code> (Core, standard, SPL, date, json, hash, libxml, and similar — install that package instead of redeclaring them), optional extensions already covered by a <code>tyhpdef/php-ext-*</code> package, or Tyhp <strong>application</strong> code you are not publishing — <code>.tyhp</code> files are already fully typed. Tyhp <strong>libraries</strong> always emit <code>package.tyhpdef</code> and additive-merge <code>extra.tyhp.package</code> on <code>tyhp build</code>. For third-party PHP, prefer <code>tyhp generate_tyhpdef --vendor</code> (after Composer has populated <code>vendor/</code>) or <code>--package-path=…</code> / <code>--source=…</code> over retyping every member by hand. Do not edit <code>vendor-tyhpdef/</code> — use overlays.</p>
 </div>
     </div>
 </div>
@@ -351,21 +368,25 @@
 <ul>
 <li>Tyhpdef files use &lt;?tyhpdef, not &lt;?tyhp</li>
 <li>Tyhpdef files have the .tyhpdef extension, not .tyhp</li>
-<li>Tyhpdef contains declarations only — no function bodies, no property assignments, no executable code</li>
-<li>All method and function declarations end with a semicolon instead of a curly-brace body</li>
+<li>Tyhpdef contains declarations only — no executable top-level code. The <code>=&gt;</code> expression on <code>extension fn</code> / <code>extension operator</code> and on standalone <code>extension Name { }</code> members is a rewrite template, not emitted PHP</li>
+<li>Ordinary method and function declarations end with a semicolon instead of a curly-brace body</li>
 <li>Tyhpdef code is never compiled into PHP output — it exists only for the compiler's type system</li>
 </ul>
+<h2>PHP version gating</h2>
+<p>Tyhpdef can describe APIs that differ by PHP minor. Use <code>#[\Tyhp\Php(&quot;…&quot;)]</code> (or <code>version:</code>) on classes, functions, and other legal attribute targets, or wrap declarations with <code>declare(php=&quot;…&quot;);</code> / <code>declare(php=&quot;…&quot;) { … }</code>.</p>
+<p><code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and on tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>). See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
     <div class="docs-prev"><a class="btn btn-outline-primary" href="diagnostics_reference.html">&larr; Diagnostic Code Reference</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag &rarr;</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_overlays.html">Tyhpdef Overlays &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

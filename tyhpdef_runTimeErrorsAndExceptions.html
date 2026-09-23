@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -361,7 +377,7 @@ class DatabaseConnection {
 }
 </code></pre></div>
 <h2>Variable and Constant Imports</h2>
-<p>Tyhpdef global imports are type information only. This alpha does <strong>not</strong> emit runtime <code>ErrorException</code> checks or apply tyhpdef <code>??</code> defaults. Handle missing PHP globals at the use site.</p>
+<p>Tyhpdef global imports are type information only. Tyhpdef <code>??</code> records PHP's expected start value; it does not emit runtime <code>ErrorException</code> checks or assign the value. Handle missing PHP globals at the use site.</p>
 <h2>Class and Interface Mismatch Errors</h2>
 <p>If a tyhpdef declaration says a class has certain methods, properties, or constants that the actual PHP class does not have, you may get runtime errors when the code attempts to access them. The compiler trusts tyhpdef declarations at compile time, so mismatches are only caught at runtime.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -390,7 +406,7 @@ function \file_get_contents(string $filename): string;
 <p>If the tyhpdef omits the false return type, the compiler will not require null/false checks at call sites, potentially leading to unhandled runtime failures.</p>
 <h2>Prevention Strategies</h2>
 <ol>
-<li>Keep tyhpdef declarations synchronized with the actual PHP code they describe (by hand in this alpha — <code>generate_tyhpdef</code> is not shipped)</li>
+<li>Keep tyhpdef declarations synchronized with the actual PHP code they describe (regenerate with <code>tyhp generate_tyhpdef</code> when the PHP API changes, then review overlays)</li>
 <li>Run <code>tyhp lint</code> so tyhpdef files parse and bind</li>
 <li>Use automated testing and CI/CD pipelines to catch runtime mismatches early</li>
 <li>Handle missing PHP globals at the Tyhp use site (<code>isset</code>, <code>??</code> in <strong>code</strong>, nullable types)</li>
@@ -449,10 +465,10 @@ function \file_get_contents(string $filename): string;
 <ul>
 <li>Exception classes are declared in tyhpdef like any other class, with their full inheritance chain</li>
 <li>Use <code>@throws</code> doc comment annotations to document which exceptions functions and methods can throw (documentation only in this alpha — the compiler does not enforce that callers handle them)</li>
-<li>Tyhpdef global imports are type information only — tyhpdef <code>??</code> is not applied in this alpha</li>
+<li>Tyhpdef global imports are type information only — tyhpdef <code>??</code> documents PHP's expected start value and is not assigned at runtime</li>
 <li>Tyhpdef declarations are trusted at compile time; mismatches between tyhpdef and PHP cause runtime errors</li>
 <li>Always declare accurate return types including failure types (<code>false</code>, <code>null</code>)</li>
-<li>Keep declarations synchronized with PHP by hand in this alpha (<code>generate_tyhpdef</code> is Story 20 and is not shipped)</li>
+<li>Keep declarations synchronized with PHP (<code>tyhp generate_tyhpdef</code> for extensions, packages, and PHP sources; <code>tyhp build</code> for Tyhp libraries)</li>
 </ul>
 
 </section>
@@ -465,6 +481,7 @@ function \file_get_contents(string $filename): string;
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

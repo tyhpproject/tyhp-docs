@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link active" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -277,7 +293,7 @@
     </div>
 </div>
 <h2>Why this contract exists</h2>
-<p>Without an explicit contract, the coupling is implicit: emitter transformers call <code>\Tyhp\…</code> by exact FQN and signature, and the runtime must match. When either side changes silently, builds break late. Story 15 writes the contract down, stamps a version on both sides, and keeps a machine-checkable surface so drift is caught early.</p>
+<p>Without an explicit contract, the coupling is implicit: emitter transformers call <code>\Tyhp\…</code> by exact FQN and signature, and the runtime must match. When either side changes silently, builds break late. This page writes the contract down, stamps a version on both sides, and keeps a machine-checkable surface so drift is caught early.</p>
 <h2>Contract version</h2>
 <p>Each runtime package stamps the contract it implements in Composer metadata:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
@@ -303,68 +319,243 @@
 </div>
 <h2>Synthetic dispatch naming</h2>
 <p>Canonical spellings live in compiler helpers — do not invent parallel schemes. Ownership:</p>
-<p>| Kind | Owner |<br />
-|------|--------|<br />
-| Operator overload methods | <code>OperatorMethodNameGenerator</code> (<code>Tyhp/TyhpLang/Emitter/OperatorMethodNameGenerator.cs</code>) |<br />
-| Generics / property-hook polyfill names | <code>GeneratedNames</code> (<code>Tyhp/TyhpLang/GeneratedNames.cs</code>) |<br />
-| Project conventions pointer | <code>CONVENTIONS.md</code> §8 |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Kind</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Operator overload methods</td>
+<td><code>OperatorMethodNameGenerator</code> (<code>Tyhp/TyhpLang/Emitter/OperatorMethodNameGenerator.cs</code>)</td>
+</tr>
+<tr>
+<td>Generics / property-hook polyfill names</td>
+<td><code>GeneratedNames</code> (<code>Tyhp/TyhpLang/GeneratedNames.cs</code>)</td>
+</tr>
+<tr>
+<td>Project conventions pointer</td>
+<td><code>CONVENTIONS.md</code> §8</td>
+</tr>
+</tbody>
+</table></div>
 <h3>Operators</h3>
 <p>Every overloadable operator maps to a <strong>single</strong> deterministic method name (no type suffixes, no <code>_N</code> collision numbers). Multiple forms of the same operator collapse into one method that dispatches on operand types.</p>
 <p><strong>Binary / comparison</strong></p>
-<p>| Operator | Method |<br />
-|----------|--------|<br />
-| <code>+</code> | <code>__add</code> |<br />
-| <code>-</code> (binary) | <code>__subtract</code> |<br />
-| <code>*</code> | <code>__multiply</code> |<br />
-| <code>/</code> | <code>__divide</code> |<br />
-| <code>%</code> | <code>__mod</code> |<br />
-| <code>**</code> | <code>__pow</code> |<br />
-| <code>&amp;</code> | <code>__bwAnd</code> |<br />
-| <code>\|</code> | <code>__bwOr</code> |<br />
-| <code>^</code> | <code>__bwXor</code> |<br />
-| <code>&lt;&lt;</code> | <code>__bwSL</code> |<br />
-| <code>&gt;&gt;</code> | <code>__bwSR</code> |<br />
-| <code>.</code> (concat) | <code>__concat</code> |<br />
-| <code>&lt;</code> | <code>__isLessThan</code> |<br />
-| <code>&lt;=</code> | <code>__isLessThanOrEqual</code> |<br />
-| <code>&gt;</code> | <code>__isGreaterThan</code> |<br />
-| <code>&gt;=</code> | <code>__isGreaterThanOrEqual</code> |<br />
-| <code>==</code> | <code>__isEqual</code> |<br />
-| <code>!=</code> | <code>__isNotEqual</code> |<br />
-| <code>===</code> | <code>__isExact</code> |<br />
-| <code>!==</code> | <code>__isNotExact</code> |<br />
-| <code>&lt;=&gt;</code> | <code>__compare</code> |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Operator</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td><code>__add</code></td>
+</tr>
+<tr>
+<td><code>-</code> (binary)</td>
+<td><code>__subtract</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td><code>__multiply</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td><code>__divide</code></td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td><code>__mod</code></td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td><code>__pow</code></td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td><code>__bwAnd</code></td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td><code>__bwOr</code></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td><code>__bwXor</code></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td><code>__bwSL</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td><code>__bwSR</code></td>
+</tr>
+<tr>
+<td><code>.</code> (concat)</td>
+<td><code>__concat</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td><code>__isLessThan</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td><code>__isLessThanOrEqual</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td><code>__isGreaterThan</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td><code>__isGreaterThanOrEqual</code></td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td><code>__isEqual</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td><code>__isNotEqual</code></td>
+</tr>
+<tr>
+<td><code>===</code></td>
+<td><code>__isExact</code></td>
+</tr>
+<tr>
+<td><code>!==</code></td>
+<td><code>__isNotExact</code></td>
+</tr>
+<tr>
+<td><code>&lt;=&gt;</code></td>
+<td><code>__compare</code></td>
+</tr>
+</tbody>
+</table></div>
 <p><strong>Unary / word</strong></p>
-<p>| Operator | Method |<br />
-|----------|--------|<br />
-| unary <code>+</code> | <code>__asNumeric</code> |<br />
-| unary <code>-</code> | <code>__negate</code> |<br />
-| <code>++</code> | <code>__increment</code> |<br />
-| <code>--</code> | <code>__decrement</code> |<br />
-| <code>~</code> | <code>__bwNot</code> |<br />
-| <code>!</code> | <code>__not</code> |<br />
-| <code>empty</code> | <code>__isEmpty</code> |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Operator</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>unary <code>+</code></td>
+<td><code>__asNumeric</code></td>
+</tr>
+<tr>
+<td>unary <code>-</code></td>
+<td><code>__negate</code></td>
+</tr>
+<tr>
+<td><code>++</code></td>
+<td><code>__increment</code></td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td><code>__decrement</code></td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td><code>__bwNot</code></td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td><code>__not</code></td>
+</tr>
+<tr>
+<td><code>empty</code></td>
+<td><code>__isEmpty</code></td>
+</tr>
+</tbody>
+</table></div>
 <p><strong>Convert</strong></p>
-<p>| Form | Method |<br />
-|------|--------|<br />
-| convert-from (static factory) | <code>__from</code> |<br />
-| convert-to <code>string</code> | <code>__toString</code> |<br />
-| convert-to <code>bool</code> | <code>__toBool</code> |<br />
-| convert-to <code>int</code> | <code>__toInt</code> |<br />
-| convert-to <code>float</code> | <code>__toFloat</code> |<br />
-| convert-to <code>decimal</code> | <code>__toDecimal</code> |<br />
-| convert-to other type <code>T</code> | <code>__to{FormattedSegment}</code> |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Form</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>convert-from (static factory)</td>
+<td><code>__from</code></td>
+</tr>
+<tr>
+<td>convert-to <code>string</code></td>
+<td><code>__toString</code></td>
+</tr>
+<tr>
+<td>convert-to <code>bool</code></td>
+<td><code>__toBool</code></td>
+</tr>
+<tr>
+<td>convert-to <code>int</code></td>
+<td><code>__toInt</code></td>
+</tr>
+<tr>
+<td>convert-to <code>float</code></td>
+<td><code>__toFloat</code></td>
+</tr>
+<tr>
+<td>convert-to <code>decimal</code></td>
+<td><code>__toDecimal</code></td>
+</tr>
+<tr>
+<td>convert-to other type <code>T</code></td>
+<td><code>__to{FormattedSegment}</code></td>
+</tr>
+</tbody>
+</table></div>
 <p>Binary/unary/<code>empty</code> overloads emit as <strong>static</strong> methods. Convert-to emits as an <strong>instance</strong> method so it can satisfy <code>\Stringable</code> and <code>\Tyhp\Contracts\*Convertible</code>. Call sites rewrite to <code>ClassName::__add($l, $r)</code> (and peers). Feature detail: <a href="tyhp_1600_operatorOverloads.md">Operator Overloads</a>.</p>
 <h3>GeneratedNames (generics &amp; property hooks)</h3>
-<p>| Pattern | Example / spelling |<br />
-|---------|-------------------|<br />
-| Generic variant / bag suffix | <code>__tyhpGeneric</code> |<br />
-| Generic init hook | <code>__initGenerics__tyhpGeneric</code> |<br />
-| Generic factory | <code>new_&lt;MangledFqn&gt;__tyhpGeneric</code> |<br />
-| Polyfill get hook | <code>__get_&lt;prop&gt;__tyhpPropertyHook</code> |<br />
-| Polyfill set hook | <code>__set_&lt;prop&gt;__tyhpPropertyHook</code> |<br />
-| Polyfill init hook | <code>__initPropertyHooks__tyhpPropertyHook</code> |<br />
-| Extension <code>$this</code> receiver rename | <code>$this_</code> (<code>GeneratedNames.ExtensionReceiverThisAlias</code>) |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Example / spelling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Generic variant / bag suffix</td>
+<td><code>__tyhpGeneric</code></td>
+</tr>
+<tr>
+<td>Generic init hook</td>
+<td><code>__initGenerics__tyhpGeneric</code></td>
+</tr>
+<tr>
+<td>Generic factory</td>
+<td><code>new_&lt;MangledFqn&gt;__tyhpGeneric</code></td>
+</tr>
+<tr>
+<td>Polyfill get hook</td>
+<td><code>__get_&lt;prop&gt;__tyhpPropertyHook</code></td>
+</tr>
+<tr>
+<td>Polyfill set hook</td>
+<td><code>__set_&lt;prop&gt;__tyhpPropertyHook</code></td>
+</tr>
+<tr>
+<td>Polyfill init hook</td>
+<td><code>__initPropertyHooks__tyhpPropertyHook</code></td>
+</tr>
+<tr>
+<td>Extension <code>$this</code> receiver rename</td>
+<td><code>$this_</code> (<code>GeneratedNames.ExtensionReceiverThisAlias</code>)</td>
+</tr>
+</tbody>
+</table></div>
 <p>These identifiers (except the extension-receiver rename, which is emit-only) are reserved by the checker so user code cannot collide with generated symbols.</p>
 <h3>Extensions</h3>
 <p>Extension methods keep their declared method name. Call sites rewrite instance-style calls into static dispatch with the receiver first:</p>
@@ -374,14 +565,62 @@
 <p>Null-safe extension calls short-circuit with a temporary receiver binding. See <a href="tyhp_2100_extensions.md">Extensions</a>.</p>
 <h2>Type erasure</h2>
 <p>Tyhp features that exist for type-checking often leave no (or a reduced) PHP footprint:</p>
-<p>| Feature | At runtime | See |<br />
-|---------|------------|-----|<br />
-| <strong>Generics</strong> | Type parameters erased from signatures; tracked objects keep a <code>GenericObject</code> bag (<code>$__tyhpGeneric</code>) when the emitter needs runtime checks | <a href="tyhp_0500_generics.md">Generics</a> |<br />
-| <strong>Type aliases</strong> | Fully erased; usages spell the underlying type | <a href="tyhp_0700_typeAliases.md">Type Aliases</a> |<br />
-| <strong>Type guards / narrowing</strong> | Compile-time only; <code>is</code> / guard checks lower to ordinary PHP boolean tests (<code>instanceof</code>, <code>is_*</code>, etc.) | <a href="tyhp_0200_typeNarrowingAndGuards.md">Type Narrowing and Guards</a> |<br />
-| <strong>Structs</strong> | Declarations erased; values are associative arrays | <a href="tyhp_0400_structs.md">Structs</a> |<br />
-| <strong>Callable signature utilities</strong> | Compile-time only; <code>__CallableReturnType&lt;T&gt;</code> erases to the callable's return type (or <code>mixed</code> while <code>T</code> is still unbound); <code>__CallableParametersStruct&lt;T&gt;</code> / <code>__CallableParametersTuple&lt;T&gt;</code> erase to <code>array</code> (struct-as-array). Tuple bags use int keys <code>0..n-1</code> (<code>$_1</code>, <code>$_2</code>, … aliases, same shape family as <code>CallableArgs*</code>). <code>__CallableParametersRest&lt;T&gt;</code> is the rest-unpack marker for <code>Rest&lt;T&gt; ...$args</code> (TypeScript <code>...args: Parameters&lt;T&gt;</code>); it erases to <code>mixed</code> so PHP does not demand each unpacked argument be an array. Defaulted parameters are optional struct fields at check time; optionality does not survive erasure. ExtStandard <code>\call_user_func</code> / <code>\call_user_func_array</code> tyhpdefs use these utilities; emit is still the PHP builtins (no new <code>\Tyhp\*</code> types, no contract bump) | <a href="tyhp_0150_newTypes.md">New Types</a> |<br />
-| <strong><code>internal</code></strong> | <strong>Not in this alpha</strong> (Story 25). Planned: compile-time visibility only; would emit as ordinary PHP visibility | <a href="tyhp_3100_internalModifier.md">internal modifier</a> |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Feature</th>
+<th>At runtime</th>
+<th>See</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Generics</strong></td>
+<td>Type parameters erased from signatures. Tracked objects keep a <code>GenericObject</code> bag when needed. Foreign compiled-library sites use <code>\Tyhp\Generic::bind</code>. <code>#[\Tyhp\GenericRuntime]</code> is runtime-visible on emitted generics. <code>#[\Tyhp\EraseGeneric]</code> is compile-only.</td>
+<td><a href="tyhp_0500_generics.md">Generics</a></td>
+</tr>
+<tr>
+<td><strong>Type aliases</strong></td>
+<td>Hints expand to the underlying PHP type. Source <code>.tyhp</code> aliases exist at runtime as namespace functions or class static methods returning <code>\Tyhp\Type</code> (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>, <code>UserService::NameType()</code>), not as PHP types. Tyhpdef aliases stay type-only (<code>typeof</code> inlines the body) unless they stamp <code>aliasFactory</code>.</td>
+<td><a href="tyhp_0700_typeAliases.md">Type Aliases</a></td>
+</tr>
+<tr>
+<td><strong>Type guards / narrowing</strong></td>
+<td>Compile-time only; <code>is</code> / guard checks lower to ordinary PHP boolean tests (<code>instanceof</code>, <code>\is_string($x)</code> when <code>#[\Tyhp\NativeTypeTest]</code> is on that guard, otherwise <code>\Tyhp\Type::is</code>). Object-shape aliases always use <code>\Tyhp\Type::is</code> with a <code>Type::objectShape(...)</code> descriptor (existence-only matching).</td>
+<td><a href="tyhp_0200_typeNarrowingAndGuards.md">Type Narrowing and Guards</a></td>
+</tr>
+<tr>
+<td><strong><code>#[\Tyhp\NativeTypeTest]</code></strong></td>
+<td>Compile-only (<code>#[\Tyhp\NoEmit]</code>). Never appears in emitted PHP. Picks which type-guard function or concrete static method is the native <code>$x is T</code> lowering.</td>
+<td><a href="tyhpdef_functions.md#native-type-tests-tyhpnativetypetest">Functions in Tyhpdef</a></td>
+</tr>
+<tr>
+<td><strong><code>#[\Tyhp\EraseGeneric]</code></strong></td>
+<td>Compile-only (<code>#[\Tyhp\NoEmit]</code>). Opts a property, promoted constructor parameter, or whole class out of Mechanism C property tracking.</td>
+<td><a href="tyhp_0500_generics.md">Generics</a></td>
+</tr>
+<tr>
+<td><strong><code>#[\Tyhp\GenericRuntime]</code></strong></td>
+<td>Runtime-visible stamp on every emitted generic class/method/function (<code>erased</code>, <code>layouts</code>, optional <code>factory</code>/<code>binder</code>/<code>aliasFactory</code>). Not <code>NoEmit</code>.</td>
+<td><a href="tyhp_0500_generics.md">Generics</a></td>
+</tr>
+<tr>
+<td><strong>Structs</strong></td>
+<td>Declarations erased; values are associative arrays</td>
+<td><a href="tyhp_0400_structs.md">Structs</a></td>
+</tr>
+<tr>
+<td><strong>Callable signature utilities</strong></td>
+<td>Compile-time only; <code>__CallableReturnType&lt;T&gt;</code> erases to the callable's return type (or <code>mixed</code> while <code>T</code> is still unbound); <code>__CallableParametersStruct&lt;T&gt;</code> / <code>__CallableParametersTuple&lt;T&gt;</code> erase to <code>array</code> (struct-as-array). Tuple bags use int keys <code>0..n-1</code> (<code>$_1</code>, <code>$_2</code>, … aliases, same shape family as <code>CallableArgs*</code>). <code>__CallableParametersRest&lt;T&gt;</code> is a pack: value-position <code>Rest&lt;T&gt; ...$args</code> unpacks at the call; inside a callable-shape parameter list it auto-splices. <code>__CallableParametersSlice&lt;T, TStart, TMin&gt;</code> selects a parameter or a tail of parameters. Rest/Slice erase to <code>mixed</code> so PHP does not demand each unpacked argument be an array. Defaulted parameters are optional struct fields at check time; optionality does not survive erasure. ExtStandard <code>\call_user_func</code> / <code>\call_user_func_array</code> / zip <code>\array_map</code> tyhpdefs use these utilities; emit is still the PHP builtins (no new <code>\Tyhp\*</code> types, no contract bump)</td>
+<td><a href="tyhp_0150_newTypes.md">New Types</a></td>
+</tr>
+<tr>
+<td><strong><code>internal</code></strong></td>
+<td>Stripped; members emit <code>public</code>, top-level unprefixed. Omitted from <code>package.tyhpdef</code>.</td>
+<td><a href="tyhp_3100_internalModifier.md">internal modifier</a></td>
+</tr>
+</tbody>
+</table></div>
 <p>What <strong>survives</strong> is whatever the emitter explicitly lowers into calls on the runtime surface below (operators, disposables, async, property-hook polyfills, generic bags, <code>with</code>, <code>PropertyPath</code> / expression trees, and so on).</p>
 <h2>Runtime entry points</h2>
 <p>FQNs the contract covers. Packages are Composer names under <code>runtime/packages/</code>.</p>
@@ -396,42 +635,151 @@
 <h3>Required contract surface (all packages)</h3>
 <p>Even when the emitter does not yet <code>RequirePackage</code> a package for every call site, the following FQNs are part of the <strong>written</strong> interop surface (direct calls, future emit, and self-host):</p>
 <h4><code>tyhp/core</code></h4>
-<p>| FQN | Role |<br />
-|-----|------|<br />
-| <code>\Tyhp\Type</code> | Runtime type values / checks (<code>Type::check</code>, <code>Type::is</code>, …) |<br />
-| <code>\Tyhp\NamedType</code> | Named type arguments in the generic bag |<br />
-| <code>\Tyhp\GenericObject</code> | Per-instance generic argument bag |<br />
-| <code>\Tyhp\PropertyAccessor</code> | Property-hook polyfill registrations |<br />
-| <code>\Tyhp\PropertyAccessorObject</code> | Host for registered accessors (<code>$__tyhpPropertyHook</code>) |<br />
-| <code>\Tyhp\ObjectHelper</code> | Object-form <code>with</code> / clone-with lowering |<br />
-| <code>\Tyhp\Contracts\IsDisposable</code> | Sync disposable protocol |<br />
-| <code>\Tyhp\Concerns\HasGenerics</code> | Trait wiring the generic bag |<br />
-| <code>\Tyhp\Concerns\UsesPropertyAccessors</code> / <code>HasPropertyAccessors</code> / <code>HandlesGet</code> / <code>HandlesSet</code> / <code>HandlesIsset</code> / <code>HandlesUnset</code> / <code>BootsTraits</code> | Property-accessor polyfill concerns |<br />
-| <code>\Tyhp\Contracts\{Convertible,StringConvertible,BoolConvertible,IntConvertible,FloatConvertible}</code> | Convert-to interfaces |<br />
-| <code>\Tyhp\Exceptions\InvalidParametersForOperatorOverloadException</code> | Operator dispatch miss |<br />
-| <code>\Tyhp\Exceptions\AggregateException</code> | Multi-error disposal |<br />
-| <code>\Tyhp\Exceptions\{InvalidTypeException,IncompatibleTypeException,PropertyNotFoundException}</code> | Key type/property failures |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>FQN</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Tyhp\Type</code></td>
+<td>Runtime type values / checks (<code>Type::check</code>, <code>Type::is</code>, <code>Type::objectShape</code>, …)</td>
+</tr>
+<tr>
+<td><code>\Tyhp\NamedType</code></td>
+<td>Named type arguments in the generic bag</td>
+</tr>
+<tr>
+<td><code>\Tyhp\GenericObject</code></td>
+<td>Per-instance generic argument bag</td>
+</tr>
+<tr>
+<td><code>\Tyhp\PropertyAccessor</code></td>
+<td>Property-hook polyfill registrations</td>
+</tr>
+<tr>
+<td><code>\Tyhp\PropertyAccessorObject</code></td>
+<td>Host for registered accessors (<code>$__tyhpPropertyHook</code>)</td>
+</tr>
+<tr>
+<td><code>\Tyhp\ObjectHelper</code></td>
+<td>Object-form <code>with</code> / clone-with lowering</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\IsDisposable</code></td>
+<td>Sync disposable protocol</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Concerns\HasGenerics</code></td>
+<td>Trait wiring the generic bag</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Generic</code></td>
+<td><code>Generic::bind</code> for PHP and foreign compiled-library sites</td>
+</tr>
+<tr>
+<td><code>\Tyhp\GenericRuntime</code></td>
+<td>Runtime-visible stamp on emitted generic declarations</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Concerns\UsesPropertyAccessors</code> / <code>HasPropertyAccessors</code> / <code>HandlesGet</code> / <code>HandlesSet</code> / <code>HandlesIsset</code> / <code>HandlesUnset</code> / <code>BootsTraits</code></td>
+<td>Property-accessor polyfill concerns</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\{Convertible,StringConvertible,BoolConvertible,IntConvertible,FloatConvertible}</code></td>
+<td>Convert-to interfaces</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Exceptions\InvalidParametersForOperatorOverloadException</code></td>
+<td>Operator dispatch miss</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Exceptions\AggregateException</code></td>
+<td>Multi-error disposal</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Exceptions\{InvalidTypeException,IncompatibleTypeException,PropertyNotFoundException}</code></td>
+<td>Key type/property failures</td>
+</tr>
+</tbody>
+</table></div>
 <h4><code>tyhp/decimal</code></h4>
-<p>| FQN | Role |<br />
-|-----|------|<br />
-| <code>\Tyhp\Decimal</code> | Decimal value type |<br />
-| <code>\Tyhp\Contracts\DecimalConvertible</code> | Convert-to decimal |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>FQN</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Tyhp\Decimal</code></td>
+<td>Decimal value type</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\DecimalConvertible</code></td>
+<td>Convert-to decimal</td>
+</tr>
+</tbody>
+</table></div>
 <p>Contract surface for decimal operators / convert targets and direct use. The emitter does not currently list <code>tyhp/decimal</code> via <code>RequirePackage</code> for every decimal path; projects that use decimal still depend on the package.</p>
 <h4><code>tyhp/async</code></h4>
-<p>| FQN | Role |<br />
-|-----|------|<br />
-| <code>\Tyhp\Promise</code> | Async wrappers, <code>_await</code>, <code>_async</code>, <code>run</code> |<br />
-| <code>\Tyhp\EventLoop</code> | Fiber / timer loop |<br />
-| <code>\Tyhp\CancellationToken</code> / <code>\Tyhp\CancellationTokenSource</code> | Cancellation |<br />
-| <code>\Tyhp\DisposableScope</code> | <code>:=</code> disposable scopes |<br />
-| <code>\Tyhp\Contracts\AsyncIsDisposable</code> | Async disposal |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>FQN</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Tyhp\Promise</code></td>
+<td>Async wrappers, <code>_await</code>, <code>_async</code>, <code>run</code></td>
+</tr>
+<tr>
+<td><code>\Tyhp\EventLoop</code></td>
+<td>Fiber / timer loop</td>
+</tr>
+<tr>
+<td><code>\Tyhp\CancellationToken</code> / <code>\Tyhp\CancellationTokenSource</code></td>
+<td>Cancellation</td>
+</tr>
+<tr>
+<td><code>\Tyhp\DisposableScope</code></td>
+<td><code>:=</code> disposable scopes</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\AsyncIsDisposable</code></td>
+<td>Async disposal</td>
+</tr>
+</tbody>
+</table></div>
 <h4><code>tyhp/lambda</code></h4>
-<p>| FQN | Role |<br />
-|-----|------|<br />
-| <code>\Tyhp\Expression</code> | Expression-tree root — <strong>Phase 2 emit target</strong>; runtime base for <code>PropertyPath</code> |<br />
-| <code>\Tyhp\Expression\ExpressionNode</code> (and <code>Expression\*</code> node types) | Tree nodes — <strong>Phase 2 emit</strong> builds these directly |<br />
-| <code>\Tyhp\PropertyPath</code> | Property-path expressions — <strong>Phase 1 emit target</strong> |</p>
-<p><strong>Phase 1 emit ABI (Story 16):</strong> when a call argument targets <code>PropertyPath&lt;T, R&gt;</code> and the argument is an inline property-chain <code>fn</code>, the emitter lowers to:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>FQN</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Tyhp\Expression</code></td>
+<td>Expression-tree root — <strong>Phase 2 emit target</strong>; runtime base for <code>PropertyPath</code></td>
+</tr>
+<tr>
+<td><code>\Tyhp\Expression\ExpressionNode</code> (and <code>Expression\*</code> node types)</td>
+<td>Tree nodes — <strong>Phase 2 emit</strong> builds these directly</td>
+</tr>
+<tr>
+<td><code>\Tyhp\PropertyPath</code></td>
+<td>Property-path expressions — <strong>Phase 1 emit target</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Phase 1 emit ABI:</strong> when a call argument targets <code>PropertyPath&lt;callable(T): R&gt;</code> and the argument is an inline property-chain <code>fn</code>, the emitter lowers to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">new \Tyhp\PropertyPath(
     \SourceType::class,   // or a builtin type string such as &#039;string&#039;
     &#039;resultTypeString&#039;,
@@ -449,7 +797,7 @@
     nullSafeFlags: [true, true],
 );
 </code></pre></div>
-<p><strong>Phase 2 emit ABI (Story 16):</strong> when a call argument targets <code>Expression&lt;T, R&gt;</code> and the argument is an inline arrow <code>fn</code>, the emitter lowers to a root <code>Expression</code> plus nested node constructors (additive — no contract version bump):</p>
+<p><strong>Phase 2 emit ABI:</strong> when a call argument targets <code>Expression&lt;callable(T): R&gt;</code> and the argument is an inline arrow <code>fn</code>, the emitter lowers to a root <code>Expression</code> plus nested node constructors (additive — no contract version bump):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">new \Tyhp\Expression(
     body: new \Tyhp\Expression\BinaryExpression(
         new \Tyhp\Expression\PropertyAccessExpression(
@@ -469,33 +817,74 @@
 );
 </code></pre></div>
 <p>Supported nested FQNs include <code>ParameterExpression</code>, <code>PropertyAccessExpression</code>, <code>NullSafeAccessExpression</code>, <code>MethodCallExpression</code>, <code>StaticMethodCallExpression</code>, <code>BinaryExpression</code>, <code>UnaryExpression</code>, <code>ConstantExpression</code>, <code>TernaryExpression</code>, <code>CoalesceExpression</code>, <code>ArrayAccessExpression</code>, <code>CastExpression</code>, <code>NewExpression</code>, and <code>InstanceofExpression</code> (Phase 3 — <code>$x is T</code> / <code>$x instanceof T</code>). Captured outer variables emit as <code>ConstantExpression($var, $type)</code>.</p>
-<p><code>Expression&lt;TArgs…, TReturn&gt;</code> follows the callable return-last convention: <code>Expression&lt;R&gt;</code> is zero-parameter, <code>Expression&lt;T, R&gt;</code> is one-parameter, <code>Expression&lt;T, T, int&gt;</code> is a two-parameter comparator. That arity is a checker/type-system convention; the runtime class remains <code>Expression&lt;TSource, TReturn&gt;</code> and emit still constructs <code>new \Tyhp\Expression(...)</code>. No contract version bump.</p>
+<p><code>Expression</code> takes one type argument: the callable shape (<code>Expression&lt;callable(User): string&gt;</code>; <code>Expression&lt;callable(): R&gt;</code> for zero parameters). That shape is a checker/type-system convention; emit still constructs <code>new \Tyhp\Expression(...)</code>. No contract version bump.</p>
 <p><code>nameof(fn ($x) =&gt; $x-&gt;a-&gt;b)</code> is a compile-time fold to the last property segment (a string literal). It does not emit <code>PropertyPath</code> / <code>Expression</code> construction.</p>
 <p><code>ExpressionSerializer::toJson</code> / <code>equals</code> and <code>Expression::equals</code> are <strong>runtime library APIs</strong> (not emitter call patterns). User code that calls them depends on <code>tyhp/lambda</code> the same way any other package type does.</p>
 <p>When a <code>PropertyPath</code> / <code>Expression</code> value is passed where <code>\Closure</code> is expected, emit extracts the stored closure as <code>$expr-&gt;callable</code> (public readonly property on <code>\Tyhp\Expression</code>). Where <code>callable</code> is expected, the object is passed through (<code>__invoke</code>).</p>
 <p>Feature detail: <a href="tyhp_3000_parsableLambdas.md">Parsable Lambdas</a>.</p>
 <h2>Lowering protocols (index)</h2>
 <p>Brief map from Tyhp construct → PHP runtime pattern. Goldens live under the conformance suite; prefer those over re-deriving internals from this page.</p>
-<p>| Construct | Lowering sketch | Goldens / docs |<br />
-|-----------|-----------------|----------------|<br />
-| Disposables <code>:=</code> | <code>\Tyhp\DisposableScope::create()</code> + <code>using</code> / try-finally fallback | <code>tests/conformance/story11/disposables/</code>; <a href="tyhp_2300_disposables.md">Disposables</a> |<br />
-| Async / await | <code>\Tyhp\Promise::_async</code> / <code>_await</code> / <code>run</code>; return type <code>\Tyhp\Promise</code> | <code>tests/conformance/story11/async/</code>; <a href="tyhp_2600_asyncAndAwait.md">Async and Await</a> |<br />
-| <code>with</code> / clone-with | <code>\Tyhp\ObjectHelper::with(…)</code> (or native PHP 8.5 <code>clone(…)</code> when targeted) | <code>tests/conformance/story11/with/</code>; Story 14.5 clone suites; <a href="tyhp_2200_withKeyword.md">with keyword</a> |<br />
-| Operators | Static/<code>__to*</code> calls via <code>__add</code>, … | <code>tests/conformance/story11/operator-overloads/</code>; <a href="tyhp_1600_operatorOverloads.md">Operator Overloads</a> |<br />
-| Generics | Erasure + optional <code>GenericObject</code> bag / <code>__initGenerics__tyhpGeneric</code> / factories | <code>tests/conformance/story11/generics/</code>; <a href="tyhp_0500_generics.md">Generics</a> |<br />
-| Property hooks (PHP &lt; 8.4) | Strip native hooks; <code>UsesPropertyAccessors</code> + <code>PropertyAccessor</code> registration; <code>__get_/__set_*__tyhpPropertyHook</code> | Story 14.5 hook suites (native ≥ 8.4/8.5); polyfill paths in emitter |<br />
-| Expression trees / PropertyPath | Phase 1: <code>new \Tyhp\PropertyPath(…)</code> (plus <code>nullSafeFlags:</code> for <code>?-&gt;</code> chains); Phase 2: <code>new \Tyhp\Expression(…)</code> + nested <code>\Tyhp\Expression\*</code> nodes; Phase 3: <code>InstanceofExpression</code> for <code>is</code>/<code>instanceof</code>, multi-parameter <code>Expression&lt;TArgs…, TReturn&gt;</code> arity (still <code>new \Tyhp\Expression</code>); <code>\Closure</code> sites → <code>$path-&gt;callable</code> | <code>tests/Tyhp.Tests/Emitter/PropertyPathEmitterTests.cs</code>, <code>ExpressionEmitterTests.cs</code>; <a href="tyhp_3000_parsableLambdas.md">Parsable Lambdas</a> |<br />
-| PHP 8.5 surface / lower targets | Pipe, <code>(void)</code>, <code>clone(…)</code>, exit/die, attributes | <code>tests/conformance/story14_5/</code> |</p>
-<p>Story 15 owns a thin index suite under <code>tests/conformance/story15/</code> (operators, extensions, generics erasure, structs, disposables, async, expression trees). Fuller emit coverage remains in story11 / story14_5 — see the conformance README.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Construct</th>
+<th>Lowering sketch</th>
+<th>Goldens / docs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disposables <code>:=</code></td>
+<td><code>\Tyhp\DisposableScope::create()</code> + <code>using</code> / try-finally fallback</td>
+<td><code>tests/conformance/story11/disposables/</code>; <a href="tyhp_2300_disposables.md">Disposables</a></td>
+</tr>
+<tr>
+<td>Async / await</td>
+<td><code>\Tyhp\Promise::_async</code> / <code>_await</code> / <code>run</code>; return type <code>\Tyhp\Promise</code></td>
+<td><code>tests/conformance/story11/async/</code>; <a href="tyhp_2600_asyncAndAwait.md">Async and Await</a></td>
+</tr>
+<tr>
+<td><code>with</code> / clone-with</td>
+<td><code>\Tyhp\ObjectHelper::with(…)</code> (or native PHP 8.5 <code>clone(…)</code> when targeted)</td>
+<td><code>tests/conformance/story11/with/</code>; <a href="tyhp_2200_withKeyword.md">with keyword</a></td>
+</tr>
+<tr>
+<td>Operators</td>
+<td>Static/<code>__to*</code> calls via <code>__add</code>, …</td>
+<td><code>tests/conformance/story11/operator-overloads/</code>; <a href="tyhp_1600_operatorOverloads.md">Operator Overloads</a></td>
+</tr>
+<tr>
+<td>Generics</td>
+<td>Erasure + optional <code>GenericObject</code> bag / <code>__initGenerics__tyhpGeneric</code> / factories</td>
+<td><code>tests/conformance/story11/generics/</code>; <a href="tyhp_0500_generics.md">Generics</a></td>
+</tr>
+<tr>
+<td>Property hooks (PHP &lt; 8.4)</td>
+<td>Strip native hooks; <code>UsesPropertyAccessors</code> + <code>PropertyAccessor</code> registration; <code>__get_/__set_*__tyhpPropertyHook</code></td>
+<td>hook suites (native ≥ 8.4/8.5); polyfill paths in emitter</td>
+</tr>
+<tr>
+<td>Expression trees / PropertyPath</td>
+<td>Phase 1: <code>new \Tyhp\PropertyPath(…)</code> (plus <code>nullSafeFlags:</code> for <code>?-&gt;</code> chains); Phase 2: <code>new \Tyhp\Expression(…)</code> + nested <code>\Tyhp\Expression\*</code> nodes; Phase 3: <code>InstanceofExpression</code> for <code>is</code>/<code>instanceof</code>, multi-parameter <code>Expression&lt;callable(TArgs ...): TReturn&gt;</code> arity (still <code>new \Tyhp\Expression</code>); <code>\Closure</code> sites → <code>$path-&gt;callable</code></td>
+<td><code>tests/Tyhp.Tests/Emitter/PropertyPathEmitterTests.cs</code>, <code>ExpressionEmitterTests.cs</code>; <a href="tyhp_3000_parsableLambdas.md">Parsable Lambdas</a></td>
+</tr>
+<tr>
+<td>PHP 8.5 surface / lower targets</td>
+<td>Pipe, <code>(void)</code>, <code>clone(…)</code>, exit/die, attributes</td>
+<td><code>tests/conformance/story14_5/</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>A thin index suite lives under <code>tests/conformance/story15/</code> (operators, extensions, generics erasure, structs, disposables, async, expression trees). Fuller emit coverage remains in <code>tests/conformance/story11/</code> and <code>tests/conformance/story14_5/</code> — see the conformance README.</p>
 <h2>Compatibility policy</h2>
 <ul>
 <li><strong>Additive</strong> changes (new optional runtime helpers the emitter does not yet call, new convertible targets that do not rename existing methods) may ship without bumping <code>interopContractVersion</code>. A minor bump is optional documentation hygiene.</li>
 <li><strong>Breaking</strong> changes — any rename or signature change of an emitted call, synthetic method, or required FQN — require bumping <code>interopContractVersion</code> on the compiler (<code>InteropContract.CurrentVersion</code>) <strong>and</strong> on every affected runtime package’s <code>extra.tyhp.interopContractVersion</code>.</li>
-<li><strong>PHP matrix</strong> — which PHP minor a release supports is coordinated with Story 21 and the PHP-encoded compiler <strong>MAJOR</strong> in <code>VERSIONING.md</code>. Contract bumps and MAJOR bumps are independent axes; both may move in the same release when an ABI and a PHP target change together.</li>
+<li><strong>PHP matrix</strong> — which PHP minor a release supports is coordinated with the <code>tyhpdef/php</code> / <code>tyhpdef/php-ext-*</code> packages and the PHP-encoded compiler <strong>MAJOR</strong> in <code>VERSIONING.md</code>. Contract bumps and MAJOR bumps are independent axes; both may move in the same release when an ABI and a PHP target change together.</li>
 </ul>
 <h2>Machine-checkable surface</h2>
 <p><code>InteropContractSurface</code> enumerates emitter-required runtime symbols (the contract surface). Conformance tests assert that each symbol is declared — with the documented namespace and keyword — in the owning package’s committed <code>package.tyhpdef</code>. The tyhpdef is the checked source of truth because emitted <code>src/</code> PHP is regenerated (and <code>dist/</code> is not committed).</p>
-<p>Runtime <strong>self-host</strong> (Story 07: recompile <code>runtime/packages/*/tyhp_src</code> and diff against committed PHP) consumes this list once the Story 07 allowlist is green. Until then, Story 15 treats self-host as gated — the surface list is ready for that milestone; it does not block documenting or version-stamping the contract.</p>
+<p>Runtime <strong>self-host</strong> (recompile <code>runtime/packages/*/tyhp_src</code> and diff against committed PHP) consumes this list once the self-host allowlist is green. Documenting or version-stamping the contract does not wait on that milestone.</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -511,7 +900,7 @@
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_build.html">&larr; CLI: Build</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_composer.html">&larr; CLI: Composer</a></div>
     <div class="docs-next"><a class="btn btn-outline-primary" href="cli_lint.html">CLI: Lint &rarr;</a></div>
 </nav>
 
@@ -519,6 +908,7 @@
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

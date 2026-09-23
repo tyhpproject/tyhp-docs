@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -261,115 +277,417 @@
 				<section class="docs-section" id="CLI_Tyhpdef_Generation">
     <h2 class="section-heading">CLI: Tyhpdef Generation</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 2 · Story 20</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 2 · Story 20</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Not in this alpha
-        </h4>
-        <div class="callout-content"><p>This feature is <strong>not included</strong> in Tyhp 805.0.0-alpha.1 (roadmap Tier 2/3). The rest of this page describes the planned design. Do not expect these commands or syntax to work yet. <code>tyhp generate_tyhpdef --ext-name=curl</code> currently requires <code>--ext-name</code>, then <strong>exits 0 and writes nothing</strong>.</p>
-</div>
-    </div>
-</div>
-<p>The generate_tyhpdef action produces .tyhpdef type definition files that describe the type signatures of external PHP code. Tyhpdef files allow the Tyhp compiler to type-check code that references PHP extensions, Composer packages, or other PHP libraries without access to their implementations — similar to TypeScript's .d.ts files.</p>
+    <p>The <code>generate_tyhpdef</code> action produces <code>.tyhpdef</code> type definition files that describe the type signatures of external PHP code — similar to TypeScript's <code>.d.ts</code> files.</p>
+<p>Library projects also emit <code>package.tyhpdef</code> during <code>tyhp build</code>. That is <strong>not</strong> this verb; see <a href="#auto-generation-during-build">Auto-generation during build</a> and <a href="cli_build.md">CLI: Build</a>.</p>
 <h2>Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef [options]
 </code></pre></div>
-<h2>Generation Modes</h2>
-<p>The generator supports three modes of operation, selected by the flags you provide:</p>
-<h2>PHP Extension Mode</h2>
-<p>Generate tyhpdef files for a PHP extension installed on your system. This mode uses PHP's Reflection API to introspect all classes, functions, and constants provided by the extension.</p>
+<p>Exactly one of <code>--ext-name</code>, <code>--package-path</code>, <code>--source</code>, or <code>--vendor</code> is required, <strong>except</strong> when you only pass <code>--validate</code> to parse-check existing files, or <code>--audit-stubs</code> to report Layer 2 vs stub corpora.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --ext-name=curl
-tyhp generate_tyhpdef --ext-name=json --output=./tyhpdef/ --php-version=8.4
+tyhp generate_tyhpdef --ext-name=curl --php-version=8.3
+tyhp generate_tyhpdef --ext-name=myext --php=/opt/php/bin/php
+tyhp generate_tyhpdef --package-path=./vendor/guzzlehttp/guzzle --output=./tyhpdef/
+tyhp generate_tyhpdef --vendor
+tyhp generate_tyhpdef --vendor=/path/to/vendor
+tyhp generate_tyhpdef --source=./lib/**/*.php --split=namespace
+tyhp generate_tyhpdef --validate ./tyhpdef/
+tyhp generate_tyhpdef --audit-stubs=runtime/packages/php/_tyhpdef --out=stub-audit.md
+tyhp generate_tyhpdef --ext-name=curl --php-targets=8.2,8.3,8.4,8.5
+tyhp generate_tyhpdef --help
 </code></pre></div>
-<p>This mode requires a PHP installation with the target extension loaded. The generator shells out to PHP to perform the introspection. If PHP is not available, it falls back to the C# native source parsing mode.</p>
-<h2>Composer Package Mode</h2>
-<p>Generate tyhpdef files for a Composer package by introspecting its autoloaded classes:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --package-path=./vendor/guzzlehttp/guzzle
+<h2>Generation modes</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Flag</th>
+<th>Mode</th>
+<th>How it works</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--ext-name=&lt;name&gt;</code></td>
+<td>PHP extension</td>
+<td>Reflection; PHP required (Tyhp-managed PHP or <code>--php</code>)</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td><code>--package-path=&lt;dir&gt;</code></td>
+<td>Composer package (<code>composer.json</code> autoload)</td>
+<td>Parses PHP files; no PHP runtime</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td><code>--source=&lt;glob&gt;</code></td>
+<td>PHP source files (<code>.php</code> only)</td>
+<td>Parses PHP files; no PHP runtime</td>
+<td>Shipped</td>
+</tr>
+<tr>
+<td><code>--vendor[=&lt;dir&gt;]</code></td>
+<td>Installed Composer tree + root <code>ext-*</code></td>
+<td>Companions preferred; otherwise generates stubs</td>
+<td>Shipped; writes <code>vendor-tyhpdef/</code></td>
+</tr>
+<tr>
+<td><code>tyhp build</code></td>
+<td>Compiled Tyhp public API</td>
+<td>Emits <code>package.tyhpdef</code> (and additive-merges <code>extra.tyhp.package</code> on <code>composer.json</code> for libraries)</td>
+<td>Shipped on <code>tyhp build</code>, not this verb</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>--package-path</code> is the Composer flag. There is no <code>--composer-package</code> alias. <code>--vendor</code> scans <code>vendor/composer/installed.json</code> (Composer 2) plus <code>ext-*</code> keys on the root <code>composer.json</code>.</p>
+<h3>Combining flags</h3>
+<ul>
+<li><code>--no-php</code> with <code>--ext-name</code> is an error (<code>TYHP7501</code>). <code>--no-php</code> is ignored for <code>--source</code> / <code>--package-path</code>.</li>
+<li><code>--php</code> cannot be combined with <code>--php-targets</code> (<code>TYHP7510</code>).</li>
+<li><code>--php-targets</code> is only valid with <code>--ext-name</code>. With <code>--source</code> or <code>--package-path</code> it is an error.</li>
+<li><code>--source</code> accepts <code>.php</code> files only. A <code>.tyhp</code>, <code>.tyhpdef</code>, or any other path is <code>TYHP7507</code> (<code>TyhpdefSourceNotPhp</code>). Generate Tyhp APIs with <code>tyhp build</code>, or compile then run <code>--source</code> / <code>--package-path</code> on the emitted PHP.</li>
+<li><code>--vendor</code> cannot be combined with <code>--ext-name</code>, <code>--package-path</code>, or <code>--source</code>. It always writes to <code>{projectRoot}/vendor-tyhpdef/</code> (<code>--output</code> / <code>--output-file</code> do not redirect it).</li>
+</ul>
+<h2>PHP runtime for <code>--ext-name</code></h2>
+<p>Default is <strong>Tyhp-managed PHP</strong>: download + cache + isolated <code>php -n -c tyhp.ini</code>. Tyhp does <strong>not</strong> search <code>PATH</code>, a local Homebrew install, or <code>PHP_BINARY</code>.</p>
+<p>Unix/macOS artifacts: <a href="https://static-php.dev">StaticPHP</a> prebuilt <code>php</code> first; Homebrew <strong>bottles</strong> (direct GHCR download, no <code>brew</code> command) as fallback. Windows uses official NTS zips from windows.php.net. Credits: <a href="https://github.com/tyhpproject/tyhp/blob/main/THIRD_PARTY.md"><code>THIRD_PARTY.md</code></a>.</p>
+<ul>
+<li><code>--php=&lt;path&gt;</code> — single-target escape hatch (the binary’s own ini; no <code>-n</code>). Use this for custom / private extensions or an unknown config. Output is <strong>ungated</strong>.</li>
+<li><code>--php-targets=&lt;list&gt;</code> — reflect each listed minor with <strong>managed</strong> runtimes only (comma-separated, e.g. <code>8.2,8.3,8.4,8.5</code>) and emit one gated tree. Illegal with <code>--php</code>.</li>
+<li><code>--php-runtime-dir=&lt;dir&gt;</code> — override the managed cache (<code>TYHP_PHP_RUNTIME_DIR</code>).</li>
+<li><code>--php-version=&lt;version&gt;</code> — target PHP version string for output metadata.</li>
+<li><code>--no-php-runtime-update</code> — skip managed PHP patch auto-update.</li>
+<li><code>--refresh-snapshots</code> — re-reflect even if PHP snapshots already exist under <code>tyhpdef_gen/snapshots/</code>.</li>
+</ul>
+<p>Missing managed runtime is <code>TYHP7501</code> / <code>TYHP7508</code>. Checksum mismatch is <code>TYHP7509</code>. A managed runtime that cannot load <code>--ext-name</code> is <code>TYHP7511</code>; a user binary missing the extension is <code>TYHP7500</code>. Patch auto-update failure is warning <code>TYHP7512</code> (last-known-good runtime is used).</p>
+<p>Cache layout: <code>{LocalApplicationData}/Tyhp/php-runtimes/{rid}/{major.minor}/{patch}/</code>. Each cache directory has <code>ATTRIBUTION.txt</code>. Manual comments cache under <code>{LocalApplicationData}/Tyhp/php-manuals/{locale}/</code> unless <code>--no-docs</code>.</p>
+<p>Layer 1 output is <code>{projectRoot|cwd}/tyhpdef/Ext{Name}.tyhpdef</code> (or <code>--output</code> / <code>--output-file</code>).</p>
+<h3>Multi-target gated output</h3>
+<p><code>tyhp generate_tyhpdef --ext-name=curl --php-targets=8.2,8.3,8.4,8.5</code> provisions each minor via <code>PhpRuntimeManager</code> (download / patch-update / isolated ini), writes Reflection JSON under <code>{projectRoot}/tyhpdef_gen/snapshots/{minor}/</code>, diffs the surfaces, and emits <strong>one</strong> Layer 1 tree:</p>
+<ul>
+<li>Identical across every listed minor → ungated declaration</li>
+<li>Added at version V → <code>declare(php=&quot;&gt;=V&quot;) { … }</code> for whole functions/files/structs/extensions, or <code>#[\Tyhp\Php(&quot;&gt;=V&quot;)]</code> on members of a shared class</li>
+<li>Signature changed at V → version-disjoint declarations (constraints do not overlap)</li>
+<li>Removed after V → upper-bound constraint (<code>&lt;</code> the next listed target)</li>
+</ul>
+<p>If any listed minor cannot be provisioned, the run fails and nothing is merged. Snapshots are reused on later runs unless you pass <code>--refresh-snapshots</code>. Regen overwrites Layer 1 and <code>overlays/stubs/</code>; it does not touch hand-written <code>overlays/*.tyhpdef</code>. Layer 2 harvest does not write a stub overlay that contains no declarations (empty <code>partial class</code> files are omitted). Untyped PHP parameters are emitted as <code>mixed</code>. Untyped return types are emitted as <code>mixed</code>, except constructors and destructors which are emitted as <code>: void</code>. Reflection does not invent missing parameters (for example <code>Closure::__invoke</code>); those go in an overlay.</p>
+<p><code>--php</code> is the ungated escape hatch for a <strong>private unpublished</strong> extension (or an unknown PHP config). Do not combine it with <code>--php-targets</code> (<code>TYHP7510</code>). For published <code>tyhpdef/php</code> / <code>tyhpdef/php-ext-*</code> packages, use <code>--php-targets</code> so one tree covers 8.2–8.5.</p>
+<p>Lint or build the same tree at each <code>output.phpVersion</code> in the 8.2–8.5 matrix to confirm the expected APIs are visible. You do not install four PHP versions for that check — gates are evaluated against <code>output.phpVersion</code>.</p>
+<h2>PHP source (<code>--source</code> / <code>--package-path</code>)</h2>
+<p>No PHP runtime. <code>--package-path</code> reads that package’s <code>composer.json</code> <code>autoload</code> and collects the listed PHP files. <code>--include-dev</code> also reads <code>autoload-dev</code>. Tyhp does <strong>not</strong> use PHP Reflection for vendor packages.</p>
+<p><code>--source</code> is glob(s) of <code>.php</code> files only (<code>TYHP7507</code> otherwise).</p>
+<p>Harvested signatures are tyhpdef text, not a splice of the PHP source. See <a href="#harvested-types-defaults-and-attributes">Harvested types, defaults, and attributes</a>.</p>
+<p>Unqualified names in PHPDoc and native hints that have no <code>use</code> import are rewritten to a catalog FQCN when that short name is unique among PHP builtins (<code>php</code> / <code>ext-*</code> wrappers) and unique <code>\Psr\*</code> types (<code>DateTime</code> → <code>\DateTime</code>, <code>CacheItemPoolInterface</code> → <code>\Psr\Cache\CacheItemPoolInterface</code>), or to a same-package FQCN when that type is declared in the same harvest. In native <code>extends</code> / <code>implements</code> / trait <code>use</code>, an unqualified or single-segment <code>\Short</code> name that matches a type declared in the same harvest qualifies to that FQCN even when the short is a unique PHP / <code>\Psr\*</code> global (<code>implements Exception</code> → <code>\Acme\Exception\Exception</code>). A true global the package does not declare (<code>extends \InvalidArgumentException</code>) stays global. A colliding short (<code>Builder</code>) stays as written. Composer-library class names are not unique globals. The same rewrite walks identifiers inside generics, unions, and intersections — including <code>@template T of SomeType&lt;…&gt;</code> bounds. Template parameters (<code>T</code>) and builtins stay unqualified. Intra-package unique-short qualification of remaining unqualified names runs <strong>after</strong> omitted types are dropped; see <a href="#omitted-types">Omitted types</a>. See <a href="#harvested-types-defaults-and-attributes">Harvested types, defaults, and attributes</a>.</p>
+<h3>Optional peers (<code>externs.tyhpdef</code>)</h3>
+<p>After emitting this package's own types, generation classifies remaining foreign signature names against a catalog of existing <code>tyhpdef/*</code> packages (in-repo <code>runtime/packages</code>, or other catalog roots). The catalog indexes <strong>real</strong> <code>class</code> / <code>interface</code> / <code>enum</code> declarations only — another package's <code>extern</code> does not count as providing the type. Catalog hits emit <code>extern</code> with that catalog kind (<code>extern class</code> / <code>interface</code> / <code>enum</code>) so the placeholder matches the originating declaration. A hand-written specified kind that disagrees is <code>TYHP8029</code>. When indexing those files, <code>{</code> and <code>}</code> inside <code>/** */</code>, <code>/* */</code>, <code>//</code>, and quoted strings are not namespace delimiters. Classification uses the <strong>PHP</strong> package's <code>composer.json</code> (<code>require</code> / <code>suggest</code> / <code>require-dev</code> / <code>ext-*</code>), not the wrapper's own manifest.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Condition</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Catalog hit, providing PHP package / <code>ext-*</code> is in the target <strong><code>require</code></strong></td>
+<td>No <code>extern</code>. Add or keep a <code>require</code> of that <code>tyhpdef/*</code> on the wrapper. Generate required wrappers first.</td>
+</tr>
+<tr>
+<td>Catalog hit, providing package is in target <strong><code>suggest</code></strong> or <strong><code>require-dev</code></strong> (not <code>require</code>)</td>
+<td>Emit <code>extern</code> with the catalog kind (<code>extern class</code> / <code>interface</code> / <code>enum</code>) and <code>// @provided-by: tyhpdef/…</code>. Do not <code>require</code> that wrapper.</td>
+</tr>
+<tr>
+<td>Catalog miss, or the providing package is in none of those three</td>
+<td>Leave the name unresolved (<code>TYHP3019</code> / <code>TYHP3020</code>). No namespace guess.</td>
+</tr>
+<tr>
+<td>Unqualified name</td>
+<td>Leave as written. Never auto-<code>extern</code>.</td>
+</tr>
+<tr>
+<td>Generated type <code>extends</code> / <code>implements</code> a name that would be <code>extern</code></td>
+<td><strong>Omit</strong> that generated type and warn. Descendants of an omitted type are omitted too; members that still name an omitted FQCN are stripped.</td>
+</tr>
+</tbody>
+</table></div>
+<p>A required PHP package / <code>ext-*</code> with no catalog wrapper is a CLI warning. Those types stay unresolved; generation does not <code>extern</code> a required dependency.</p>
+<p>Proven optional-peer declarations are written to <strong><code>externs.tyhpdef</code></strong> in the output directory (for first-party wrappers, <code>_tyhpdef/externs.tyhpdef</code>). The file has an <code>AUTO-GENERATED</code> header. Regen <strong>overwrites this file only</strong> (or deletes it when the run classified and produced none). <code>extra.tyhp.package</code> <code>&quot;include&quot;</code> glob <code>./_tyhpdef/*.tyhpdef</code> already loads it. Hand <code>extern</code> belongs in a sibling include file regen does not overwrite.</p>
+<p><code>--source</code> classifies only when the tree is package-shaped (<code>composer.json</code> with <code>autoload</code>). Default file set stays Composer <code>autoload</code> only; do not turn on <code>--include-dev</code> for published wrappers.</p>
+<p>See <a href="tyhpdef_extern.md">Extern Types</a>.</p>
+<h3>Omitted types</h3>
+<p>PHP-source harvest (<code>--package-path</code> / <code>--source</code>) omits a type when its immediate <code>extends</code> / <code>implements</code> is a catalog <code>extern</code> (the providing package is only <code>suggest</code> or <code>require-dev</code>, not <code>require</code>), or when the type is <code>@internal</code> and <code>--include-internal</code> is off. Harvest then:</p>
+<ol>
+<li><strong>Cascades the omit</strong> through descendants that <code>extends</code> / <code>implements</code> an omitted type.</li>
+<li><strong>Strips members</strong> (and trait <code>use</code> / functions / aliases) whose types <strong>actually refer</strong> to an omitted FQCN — including <code>use</code> imports and already-qualified harvest names.</li>
+<li>A <strong>bare PHPDoc name</strong> (no import, left as written) is <strong>not</strong> treated as a reference to an omitted type in a <strong>different</strong> namespace just because the last segment matches. Unqualified omit matching is current-namespace only.</li>
+<li>Intra-package unique-short qualification runs <strong>after</strong> omit, so it cannot rewrite a bare PHPDoc name onto a now-omitted type.</li>
+</ol>
+<p><code>--include-internal</code> keeps <code>@internal</code> types and members that refer to them.</p>
+<h3>Repeated FQCNs</h3>
+<p>PHP-source harvest (<code>--package-path</code> / <code>--source</code>, including <code>--vendor</code> stubs from those modes) emits the first <code>class</code> / <code>interface</code> / <code>trait</code> / <code>enum</code> for a fully-qualified name. When a later declaration of that FQCN has an <strong>identical</strong> body — kind, modifiers, <code>extends</code> / <code>implements</code>, members, and flags; <strong>not</strong> doc comments — generate keeps the first, skips the later, and warns.</p>
+<p>When the bodies <strong>differ</strong>, both declarations stay in the output. Include-layer <code>TYHP8002</code> still reports the duplicate.</p>
+<h3>Anonymous-class returns</h3>
+<p>A PHP <code>return new class { … }</code> (and the same expression in Tyhp) is harvested as an object-shape alias, not as <code>object</code>. The generator invents a collision-safe name in the same namespace (<code>createClock_Return</code>, or <code>OwningType_method_Return</code>, with a numeric suffix on collision) and uses that alias as the function or method return type (or as a union arm). Public instance members and a <code>__construct</code> signature (when present) are copied; private members are omitted. If the anonymous class <code>extends</code> / <code>implements</code> real types, the alias right-hand side is those nominal types intersected with <code>object { … }</code>. The anonymous class itself is still skipped as a named PHP class (<code>anonClass@</code> is not written).</p>
+<p><code>__FunctionReturnType&lt;'createClock'&gt;</code> / <code>__MethodReturnType&lt;Plugin, 'parseConstraint'&gt;</code> recover that harvested shape when the author did not pick a nicer alias. Hand overlays may <code>omit</code> the generated alias and last-wins replace the callable return.</p>
+<p>See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+<h2><code>--vendor</code> (installed Composer packages)</h2>
+<p>Scan the project's installed Composer packages and root <code>ext-*</code> requirements, prefer published Tyhp companions, and otherwise generate stubs into <strong><code>vendor-tyhpdef/</code></strong>. <code>tyhp init</code> wires this as the second <code>post-autoload-dump</code> command. <code>tyhp composer require</code> / <code>install</code> / <code>update</code> (success, without <code>--no-tyhpdef</code>) runs the same mode.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --vendor
+tyhp generate_tyhpdef --vendor=/path/to/vendor
 </code></pre></div>
-<p>This mode also requires PHP and uses the full generation script to introspect the package.</p>
-<h2>PHP Source File Mode</h2>
-<p>Generate tyhpdef files directly from PHP source files without requiring a PHP runtime. This mode uses the Tyhp compiler's built-in PHP parser to read source files and extracts type information from PHP type hints and PHPDoc annotations.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --source=./vendor/guzzlehttp/guzzle/src/**/*.php
-tyhp generate_tyhpdef --source=./lib/**/*.php --output=./tyhpdef/
+<p>Bare <code>--vendor</code> uses <code>{projectRoot}/vendor</code>. The directory must contain Composer 2 <code>vendor/composer/installed.json</code> (<code>TYHP7516</code> / <code>TYHP7517</code> if missing or invalid). Inventory comes from that file, not from walking <code>vendor/*/*</code>. Root <code>composer.json</code> <code>require</code> / <code>require-dev</code> keys named <code>ext-*</code> are included (platform extensions are not in <code>vendor/</code>).</p>
+<p>Skip the root package, <code>php</code>, <code>tyhp/compiler</code>, and packages with no autoloadable <code>.php</code>. Extensions already covered by <code>tyhpdef/php</code> (Core, date, filter, hash, json, libxml, pcre, random, Reflection, SPL, standard) are not regenerated.</p>
+<h3>Companions vs generated stubs</h3>
+<p>For each installed library <code>vendor/name</code>, the companion Composer name is <strong><code>tyhpdef/&lt;vendor&gt;-&lt;name&gt;</code></strong> (<code>/</code> → <code>-</code>, for example <code>monolog/monolog</code> → <code>tyhpdef/monolog-monolog</code>). For <code>ext-&lt;name&gt;</code>, the first-party package is <strong><code>tyhpdef/php-ext-&lt;name&gt;</code></strong>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Situation</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Install path already has <code>extra.tyhp.package</code> on <code>composer.json</code></td>
+<td>Skip generate (the binder loads that package from <code>vendor/</code>)</td>
+</tr>
+<tr>
+<td>Companion / <code>tyhpdef/php-ext-*</code> already installed</td>
+<td>Skip generate; <strong>delete</strong> any previously generated stub for that library or extension</td>
+</tr>
+<tr>
+<td>Published companion exists but is not required</td>
+<td>Add it to root <code>require-dev</code> and install, then skip generate</td>
+</tr>
+<tr>
+<td>Otherwise</td>
+<td>Generate <code>--package-path</code> or <code>--ext-name</code> stubs into <code>vendor-tyhpdef/</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>--vendor</code> also adds missing compiled runtime packages to root <strong><code>require</code></strong> as <strong><code>@dev</code></strong> when they are not already named: <code>tyhp/core</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>, <code>tyhp/decimal</code>. Missing <code>tyhpdef/php</code> and first-party <code>tyhpdef/php-ext-*</code> packages go in <strong><code>require-dev</code></strong> as <code>@dev</code>. It does not overwrite an existing pin.</p>
+<p>A single package or extension failure is warning <code>TYHP7518</code> (or <code>TYHP7519</code> if a Composer require batch fails); the rest of the run continues. The command is an error (<code>TYHP7520</code>) only when every candidate failed.</p>
+<h3>Output: <code>vendor-tyhpdef/</code></h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">vendor-tyhpdef/&lt;vendor&gt;.&lt;package&gt;.tyhpdef
+vendor-tyhpdef/ExtCurl.tyhpdef
 </code></pre></div>
-<p>The source mode combines PHP type hints with PHPDoc annotations for the most complete type information. PHPDoc tags like @param, @return, @var, @template, @method, and @property are parsed and included in the generated output.</p>
+<p><code>--vendor</code> does not write into <code>tyhpdef/</code> or into <code>vendor/</code>. Unchanged package+version identities are skipped unless you pass <code>--overwrite</code>. <code>tyhp init</code> gitignores <code>vendor-tyhpdef/</code> and sets <code>&quot;tyhpdefInclude&quot;: [&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;]</code>.</p>
+<p>Every generated file starts with a header that says not to edit it. Re-running <code>--vendor</code> overwrites those files. Lasting type fixes belong in <strong>overlay</strong> tyhpdefs (<code>tyhp.json</code> <code>&quot;overlay&quot;</code>, default <code>./tyhpdef/**/*.tyhpdef</code> after init; or <code>tyhp overlay create</code>). See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
+<h3>Composer hooks and opt-out</h3>
+<p>Root <code>post-autoload-dump</code> (written by <code>tyhp init</code>) runs <code>--install-binary</code> then <code>generate_tyhpdef --vendor</code>. Set <strong><code>TYHP_NO_VENDOR_TYHPDEF=1</code></strong> (also <code>true</code> or <code>yes</code>) to skip that generate step when Composer is running the dump script, and to skip the same generate after <code>tyhp composer</code> <code>require</code> / <code>install</code> / <code>update</code>. Direct <code>tyhp generate_tyhpdef --vendor</code> still runs. <code>--no-tyhpdef</code> on <code>tyhp composer</code> skips the proxy hook only; it does not apply to a direct <code>--vendor</code> invocation.</p>
+<h2>Layer 1 and Layer 2</h2>
+<ul>
+<li><strong>Layer 1</strong> — Reflection baseline (<code>--ext-name</code>) or parsed PHP signatures (<code>--source</code> / <code>--package-path</code>). Written as the primary <code>.tyhpdef</code>.</li>
+<li><strong>Layer 2</strong> — stub harvest into generated overlay files under <code>{output}/overlays/stubs/*.tyhpdef</code> when a stub cache or vendored snapshot is present. Never mixed into the Layer 1 file.</li>
+</ul>
+<p><code>--require-stubs</code> (default <strong>off</strong>) makes a missing Layer 2 stub cache an error (<code>TYHP7514</code>). Without it, a missing cache is warning <code>TYHP7513</code> and harvest is skipped. Psalm vs PHPStan type disagreement is warning <code>TYHP7515</code> (Layer 1 type is kept). Class-level <code>@template</code> lists are unified <strong>by position</strong> across corpora (PHPStan names win when present) so synonym placeholders such as <code>TArrayValue</code> / <code>TData</code> / <code>TValue</code> become one parameter. An explicit constraint becomes both the Tyhp <code>extends</code> bound and the default; <code>@template T of mixed</code> emits <code>T = mixed</code> with no bound; an unconstrained parameter has neither. When a defaulted parameter would be followed by a required one, trailing unconstrained parameters receive <code>= mixed</code> so the list is legal Tyhp. Harvest applies <code>@implements</code> / <code>@extends</code> type arguments onto the Layer 1 parent names when the parent is already listed and the argument count matches that parent's harvested generic arity in the same run (unknown parents from another extension keep the stub arity). Changing a type's generic list or inheritance header is overlay <code>partial class Foo&lt;…&gt; implements …;</code> (header-only); changed members are a separate <code>partial class Foo { … }</code> in the same stub overlay. If a conventional placeholder would still be undeclared, harvest does not write the overlay (<code>TYHP7521</code>). A Layer 2 declaration is omitted when the harvested signature matches Layer 1 (doc-comment hole-fill alone does not produce an overlay). <code>tyhp generate_tyhpdef --audit-stubs=&lt;tree&gt;</code> reports how committed Layer 2 compares to those corpora (consensus and harvest faithfulness) without regenerating files.</p>
+<p>Stub corpora are fetched into a gitignored cache (<code>tools/stub-cache/</code>). URLs and credit live in <code>runtime/README.md</code> and <a href="https://github.com/tyhpproject/tyhp/blob/main/THIRD_PARTY.md"><code>THIRD_PARTY.md</code></a>. Generated overlay trees may include a <code>SOURCES.md</code>.</p>
+<p>Hand-written overlays load last at bind time. <code>--verify</code> <strong>applies</strong> overlays when comparing final forms (see below). See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
+<h2>Default output</h2>
+<ul>
+<li>With a project (<code>tyhp.json</code>): <code>{projectRoot}/tyhpdef/</code></li>
+<li>Without a project: <code>{cwd}/tyhpdef/</code></li>
+<li><code>--output=&lt;path&gt;</code> overrides the directory</li>
+<li><code>--output-file=&lt;path&gt;</code> writes a single file (relative paths resolve against the output directory unless absolute)</li>
+<li><code>--vendor</code> always writes <code>{projectRoot}/vendor-tyhpdef/</code> (see above)</li>
+</ul>
+<p><code>tyhp build</code> never writes here. It emits <code>package.tyhpdef</code> (and additive-merges <code>extra.tyhp.package</code> on <code>composer.json</code> for libraries) in the publish directory.</p>
+<h3><code>--split</code> layout</h3>
+<p>Default is <code>file</code>: one <code>.tyhpdef</code> per generation target, flat under <code>tyhpdef/</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Mode</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code> (default)</td>
+<td>Extension: <code>tyhpdef/ExtJson.tyhpdef</code>. Composer package: <code>tyhpdef/guzzlehttp.guzzle.tyhpdef</code>. <code>--source</code>: <code>tyhpdef/source.tyhpdef</code> unless <code>--output-file</code>.</td>
+</tr>
+<tr>
+<td><code>namespace</code></td>
+<td>One file per namespace (<code>tyhpdef/GuzzleHttp.Client.tyhpdef</code> style; globals on the primary file or <code>_global.tyhpdef</code>).</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>One file per class/interface/trait/enum. Useful for huge Composer packages; do not use it for <code>--ext-name=standard</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Layer 2 always lands in <code>tyhpdef/overlays/stubs/*.tyhpdef</code>.</p>
+<h2>Documentation comments</h2>
+<p>Docs are <strong>on</strong> unless <code>--no-docs</code>.</p>
+<ul>
+<li><code>--ext-name</code> builds <code>/** */</code> from the <strong>php.net HTML manual</strong> (<code>--locale</code>, default <code>en</code>). <code>--no-docs</code> also skips the manual download.</li>
+<li><code>--source</code> / <code>--package-path</code> and <code>tyhp build</code> <strong>copy</strong> comments from source and apply tyhpdef adjustments. Copied PHP-source summary, description, and tag lines replace <code>*/</code> with <code>* /</code> so they cannot close the <code>/** */</code>.</li>
+<li>Stubs <strong>fill remaining holes</strong> (and remain the extra <strong>type</strong> source).</li>
+</ul>
+<h2>Harvested types, defaults, and attributes</h2>
+<p><code>generate_tyhpdef</code> writes expressions the tyhpdef parser can read. PHP-source harvest (<code>--source</code> / <code>--package-path</code>) and Layer 2 stub types use the same rewrite; parameter <code>=</code> values and attributes are sanitized again when the file is written (including <code>--ext-name</code>).</p>
+<p><strong>Types.</strong> PHPDoc <code>callable(...)</code> and <code>closure(...)</code> shapes become <code>callable</code>. Psalm/PHPStan <code>empty</code> in a type position becomes <code>mixed</code>. A type that still has unmatched <code>()</code> <code>{}</code> <code>[]</code> <code>&lt;&gt;</code> is emitted as <code>mixed</code>. The PHP <code>empty()</code> construct is unchanged: it types as <code>bool</code> and emits as <code>empty(...)</code>. PHP <code>static</code> in a value position — a parameter, property, <code>@param</code>, <code>@var</code>, magic <code>@method</code> parameter, or <code>@property</code> — is written as <code>self</code>. Return positions keep <code>static</code> (<code>: static</code>, magic <code>@method</code> return types, including generic arguments such as <code>Builder&lt;static&gt;</code>). Unqualified class names inside PHPDoc type strings — <code>@template T of Foo&lt;object&gt;</code>, unions, intersections, and other generics — resolve to FQCNs from <code>use</code> imports, those unique PHP / <code>\Psr\*</code> shorts, and types declared in the same package. Native <code>extends</code> / <code>implements</code> / trait <code>use</code> prefer a same-package declared type over a unique PHP / <code>\Psr\*</code> short of the same name (<code>implements Exception</code> → <code>\Acme\Exception\Exception</code>); a true global the package does not declare (<code>extends \InvalidArgumentException</code>) stays global. Template parameters (<code>T</code>) and builtins (<code>object</code>, <code>int</code>, <code>mixed</code>, …) stay unqualified. When a generic bound is written without type arguments (<code>@template T of Repository</code> and <code>Repository</code> is itself generic), harvest fills the missing arguments from that type's own default, else its constraint, else <code>mixed</code> (<code>Repository&lt;TEntity extends object&gt;</code> → <code>Repository&lt;object&gt;</code>; unconstrained <code>Box</code> → <code>Box&lt;mixed&gt;</code>). Already-written arguments are kept.</p>
+<p><strong>Declared names.</strong> A harvested <code>class</code> / <code>interface</code> / <code>trait</code> / <code>enum</code> whose short name is a PHP or tyhpdef reserved word (<code>is</code>, <code>isset</code>, …) is written with a fully-qualified declared name (<code>class \Hamcrest\Core\Is</code>) so the parser treats it as a name rather than a keyword. Alias headers (<code>class PhpName as TyhpName</code>) and <code>extern function</code> names inside a <code>namespace { }</code> use the same enclosing-namespace prefix. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
+<p><strong>Defaults and <code>??</code>.</strong> Parameter <code>=</code>, property <code>??</code>, and const <code>??</code> keep a value when it is already a single-line tyhpdef expression: a quoted string, a number (including <code>0x</code> / <code>0b</code> / <code>0o</code>), <code>true</code> / <code>false</code> / <code>null</code> / <code>[]</code>, or <code>Class::CONST</code>. Concatenation, nowdocs, heredocs, <code>/regex/</code> bodies, interpolations, multiline text, leftover <code>$this</code>, unquoted source, and unmatched delimiters are not copied.</p>
+<p>A harvested parameter that had a PHP default stays optional. When that default is not a tyhpdef-safe literal, generate writes <code>= null</code> — the same dummy used for harvested implicit-nullable PHP (<code>string $timezone = null</code>). The declared type is unchanged (<code>int</code> stays <code>int</code>; it is not rewritten as <code>int|null</code>). Const and property values omit an unrepresentable <code>??</code> initializer (<code>const string NAME;</code>, <code>public string $text;</code>). Restore a specific start value in a <a href="tyhpdef_overlays.md">hand overlay</a> if you need it.</p>
+<p><strong>Attributes.</strong> If the whole <code>#[Name(args)]</code> is unmatched, generate writes <code>#[Name]</code>.</p>
+<h2><code>--validate</code>, <code>--verify</code>, and <code>--audit-stubs</code></h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Flag</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--validate=&lt;path&gt;</code></td>
+<td>Parse-check existing <code>.tyhpdef</code> files (file or directory). Non-zero if any fail. Can run <strong>alone</strong> (no <code>--ext-name</code> / <code>--package-path</code> / <code>--source</code> / <code>--vendor</code>).</td>
+</tr>
+<tr>
+<td><code>--verify</code></td>
+<td>Regenerate Layer 1, apply overlays (<code>extra.tyhp.package</code> <code>&quot;overlay&quot;</code> array, or <code>overlays/stubs</code> then <code>overlays/*.tyhpdef</code>), and check that the <strong>final</strong> API covers PHP. Requires a generation mode.</td>
+</tr>
+<tr>
+<td><code>--audit-stubs=&lt;path&gt;</code></td>
+<td>Compare committed Layer 1 and Layer 2 (<code>overlays/stubs/</code>) with Psalm, PHPStan, PhpStorm, and Phan. Writes a markdown report (stdout, or <code>--out=&lt;file&gt;</code>). Does <strong>not</strong> regenerate files. Exit 0 unless the path or stub cache is missing. Cannot combine with a generation mode.</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>--verify</code> overlay rules:</p>
+<ul>
+<li>Fully <strong>missing</strong> golden PHP symbols → fail (<code>TYHP7506</code>).</li>
+<li>Symbols <strong><code>omit</code>ted by an overlay</strong> → <strong>not</strong> a fail (intentional hide).</li>
+<li>Extra overlay-only members are allowed.</li>
+<li>Compatible generics/overloads/structs that still cover the PHP signature pass.</li>
+</ul>
+<p><code>--verify</code> is a generator check, not a substitute for compile-time overlay load. Overlay load in the binder is documented in <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
+<p><code>--audit-stubs</code> is a <strong>report</strong>, not a gate. php.net is not the oracle for generics — Layer 1 already comes from Reflection / the manual. The audit compares Layer 2 to the stub corpora (the same sources harvest uses) and to what harvest would have written:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Bucket</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agree</code></td>
+<td>Layer 2 matches harvest, or neither side refined Layer 1</td>
+</tr>
+<tr>
+<td><code>psalm-phpstan-disagree</code></td>
+<td>Psalm and PHPStan both typed this and differ (harvest keeps Layer 1)</td>
+</tr>
+<tr>
+<td><code>template-arity-mismatch</code></td>
+<td>Psalm and PHPStan declare a different number of <code>@template</code> parameters</td>
+</tr>
+<tr>
+<td><code>template-order-mismatch</code></td>
+<td>Same template names in a different order (for example Fiber)</td>
+</tr>
+<tr>
+<td><code>faithfulness-mismatch</code></td>
+<td>Layer 2 wrote a type that is not the harvest consensus</td>
+</tr>
+<tr>
+<td><code>one-corpus</code></td>
+<td>Only one corpus supplied a non-weak type</td>
+</tr>
+<tr>
+<td><code>not-in-layer-2</code></td>
+<td>Harvest would refine a weak Layer 1 type, but Layer 2 does not</td>
+</tr>
+<tr>
+<td><code>layer-2-no-stub</code></td>
+<td>Layer 2 has a signature with no matching stub symbol</td>
+</tr>
+</tbody>
+</table></div>
+<p>The path is a tyhpdef tree (<code>…/_tyhpdef</code>), a package directory that contains <code>_tyhpdef/</code>, or <code>…/overlays/stubs</code>. Layer 3 hand overlays are not part of this comparison. Missing stub cache is <code>TYHP7514</code> (the audit always requires stubs; it will fetch <code>tools/stub-cache/</code> when needed).</p>
 <h2>Options</h2>
 <ul>
-<li>--ext-name=<name> — Name of a PHP extension to generate definitions for.</li>
-<li>--package-path=<path> — Path to a Composer package directory.</li>
-<li>--source=<glob> — Glob pattern(s) for PHP source files to process (C# native mode).</li>
-<li>--output=<path> — Output directory for generated .tyhpdef files (default: ./tyhpdef/).</li>
-<li>--output-file=<name> — Explicit output file name for single-file output.</li>
-<li>--php=<path> — Explicit path to the PHP binary.</li>
-<li>--php-version=<version> — Target PHP version string for output metadata.</li>
-<li>--locale=<locale> — Locale for documentation language (default: en).</li>
-<li>--no-docs — Skip doc comments in the generated output.</li>
-<li>--include-internal — Include items marked with @internal.</li>
-<li>--overwrite — Overwrite existing tyhpdef files (by default, existing files are skipped).</li>
-<li>--no-php — Force C# native source parsing mode (skip PHP delegation).</li>
-<li>--validate=<path> — Validate existing tyhpdef files by parsing them through the compiler.</li>
-<li>--verify — Re-generate tyhpdefs and compare against existing files to detect differences.</li>
+<li><code>--help</code> — Show this help (same as <code>help --subject=generate_tyhpdef</code>).</li>
+<li><code>--ext-name=&lt;name&gt;</code> — PHP extension to reflect.</li>
+<li><code>--package-path=&lt;path&gt;</code> — Composer package directory (<code>composer.json</code> autoload).</li>
+<li><code>--source=&lt;glob&gt;</code> — PHP source globs. <code>.tyhp</code> / <code>.tyhpdef</code> / non-<code>.php</code> paths are <code>TYHP7507</code>.</li>
+<li><code>--vendor[=&lt;dir&gt;]</code> — Scan Composer <code>vendor/</code> (default <code>{projectRoot}/vendor</code>) and write stubs to <code>vendor-tyhpdef/</code>. Exclusive with the other generation modes.</li>
+<li><code>--output=&lt;path&gt;</code> — Output directory (default <code>tyhpdef/</code>). Ignored for <code>--vendor</code>. <code>tyhp build</code> never writes here.</li>
+<li><code>--output-file=&lt;path&gt;</code> — Single output file (relative paths resolve against <code>--output</code>).</li>
+<li><code>--split=file\|namespace\|type</code> — CLI <code>tyhpdef/</code> layout (default <code>file</code>).</li>
+<li><code>--php=&lt;path&gt;</code> — User PHP binary for <code>--ext-name</code> (single-target escape hatch; illegal with <code>--php-targets</code>).</li>
+<li><code>--php-targets=&lt;list&gt;</code> — Managed PHP minors, comma-separated. Emits one gated tree (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>). Illegal with <code>--php</code> (<code>TYHP7510</code>). Only valid with <code>--ext-name</code>.</li>
+<li><code>--php-runtime-dir=&lt;dir&gt;</code> — Managed PHP cache override (<code>TYHP_PHP_RUNTIME_DIR</code>).</li>
+<li><code>--php-version=&lt;version&gt;</code> — Target PHP version string for output metadata.</li>
+<li><code>--include-dev</code> — Also collect Composer <code>autoload-dev</code> (with <code>--package-path</code> or <code>--vendor</code>).</li>
+<li><code>--locale=&lt;locale&gt;</code> — php.net manual language for <code>--ext-name</code> (default <code>en</code>).</li>
+<li><code>--no-docs</code> — Skip <code>/** */</code> (<code>--ext-name</code> also skips the manual download).</li>
+<li><code>--include-internal</code> — Include <code>@internal</code> items (off by default). Without it, PHP-source harvest omits those types, descendants that <code>extends</code> / <code>implements</code> them, and members that name them. With it, those types and their references stay. See <a href="#omitted-types">Omitted types</a>.</li>
+<li><code>--include-deprecated</code> / <code>--no-deprecated</code> — Deprecated items (on by default).</li>
+<li><code>--overwrite</code> — Overwrite existing tyhpdef files.</li>
+<li><code>--require-stubs</code> — Missing Layer 2 stub cache is an error (off by default).</li>
+<li><code>--no-php</code> — Error with <code>--ext-name</code>; ignored for <code>--source</code> / <code>--package-path</code>.</li>
+<li><code>--no-php-runtime-update</code> — Skip managed PHP patch auto-update.</li>
+<li><code>--refresh-snapshots</code> — Re-reflect even if PHP snapshots already exist.</li>
+<li><code>--validate=&lt;path&gt;</code> — Parse-check existing <code>.tyhpdef</code> files.</li>
+<li><code>--audit-stubs=&lt;path&gt;</code> — Layer 2 vs stub-corpus report (markdown to stdout or <code>--out</code>).</li>
+<li><code>--out=&lt;file&gt;</code> — Write the <code>--audit-stubs</code> report to a file instead of stdout.</li>
+<li><code>--verify</code> — Overlay-aware check of the final API against PHP (<code>omit</code> is not a fail).</li>
 </ul>
-<h2>Auto-Generation During Build</h2>
-<p>When the build.generateTyhpdef option is set to true in tyhp.json, the build action automatically generates .tyhpdef files for the compiled Tyhp project's public API after a successful build. This allows other Tyhp (or PHP) projects to import the compiled library's type information.</p>
+<h2>Auto-generation during build</h2>
+<p>Not a <code>generate_tyhpdef</code> flag. After check and before optimize/emit:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Project <code>&quot;type&quot;</code></th>
+<th><code>build.generateTyhpdef</code></th>
+<th>Output (in <code>output.publishPath</code>, default: the project root)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;library&quot;</code></td>
+<td><strong>Ignored</strong></td>
+<td>Always <code>package.tyhpdef</code> <strong>and</strong> <code>extra.tyhp.package</code> on <code>composer.json</code></td>
+</tr>
+<tr>
+<td><code>&quot;application&quot;</code></td>
+<td><code>true</code></td>
+<td><code>package.tyhpdef</code> only (no <code>extra.tyhp.package</code>)</td>
+</tr>
+<tr>
+<td><code>&quot;application&quot;</code></td>
+<td><code>false</code> / unset</td>
+<td>Nothing</td>
+</tr>
+</tbody>
+</table></div>
+<p>If <code>extra.tyhp.package</code> already exists on publish-directory <code>composer.json</code>, the build adds missing generated keys and array items only. Existing entries are not removed or changed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;type&quot;: &quot;application&quot;,
     &quot;build&quot;: {
         &quot;generateTyhpdef&quot;: true
     }
 }
 </code></pre></div>
-<h2>Type Information Sources</h2>
-<p>The generator extracts type information from multiple sources, with the following priority:</p>
-<ol>
-<li>PHP type hints — Native type declarations on parameters, return types, and properties are always used when present.</li>
-<li>PHPDoc annotations — @param, @return, @var, @template, @throws, and other tags provide additional type details. When a PHPDoc type is more specific than the PHP type hint (e.g., array&lt;string, int&gt; vs. array), the PHPDoc type is preferred.</li>
-<li>Value inference — For constants without type annotations, the type is inferred from the constant value.</li>
-<li>PHPStan/Psalm extensions — @phpstan-param, @phpstan-return, @psalm-param, and @psalm-return tags are supported and take precedence over standard @param/@return.</li>
-</ol>
-<h2>Generated Output</h2>
-<p>Generated tyhpdef files follow the standard .tyhpdef syntax recognized by the Tyhp parser. They include constants, functions, classes, interfaces, traits, and enums with full member declarations. Here is an example of generated output:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-/** AUTO-GENERATED by tyhp generate_tyhpdef */
-
-namespace Guzzle\Http {
-
-    class Client {
-        public function __construct(?array $config = null);
-        public function request(string $method, string $uri, array $options = []): ResponseInterface;
-        public function get(string $uri, array $options = []): ResponseInterface;
-        public function post(string $uri, array $options = []): ResponseInterface;
-    }
-
-}
-</code></pre></div>
-<h2>Validating Tyhpdef Files</h2>
-<p>Use the --validate flag to check that existing tyhpdef files parse correctly through the Tyhp compiler:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --validate ./tyhpdef/
-</code></pre></div>
-<p>This discovers all .tyhpdef files in the specified path, parses each one, and reports per-file pass/fail status with any error details. This is useful for CI integration and for verifying tyhpdef files after manual editing.</p>
-<h2>Bundled Tyhpdef Files</h2>
-<p>Tyhp ships with pre-generated tyhpdef files for common PHP extensions, including core, json, date, pcre, mbstring, and others. These are automatically loaded by the compiler during build and lint operations.</p>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>Generated tyhpdef files are a best-effort representation. PHP's dynamic nature means some type information may be missing or imprecise. Review and refine the generated files, particularly for generic types, overloaded functions, and complex return types that cannot be fully captured through reflection or PHPDoc parsing.</p>
-</div>
-    </div>
-</div>
+<p>The build walks bound Tyhp symbols (not a CLI parse of <code>.tyhp</code> into <code>tyhpdef/</code>). Libraries with executable entrypoint files report <code>TYHP7505</code> and skip writing artifacts. <code>tyhp build</code> emits name-only <code>extern</code> (including <code>extern function</code> / <code>extern const</code>) into <code>package.tyhpdef</code> for names owned by a <code>require-dev</code> package that is not also in <code>require</code> or <code>extra.tyhp.require</code>, with <code>// @provided-by: &lt;owning package&gt;</code>. Runtime <code>require</code> owners (for example <code>tyhp/core</code>) and <code>extra.tyhp.require</code> owners stay FQNs and are not copied. Unknown origin is left as written. Symbols marked <code>internal</code> are omitted from <code>package.tyhpdef</code> (the same as <code>private</code>). Optional-peer placeholders for PHP packages still come from <code>--source</code> / <code>--package-path</code> (<code>_tyhpdef/externs.tyhpdef</code>); see <a href="tyhpdef_extern.md">Extern Types</a> and <a href="tyhp_3100_internalModifier.md">The internal Visibility Modifier</a>. Library authors declare ambient tyhpdefs in <code>extra.tyhp.require</code>; see <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+<p>Authored <code>type Name = object { … }</code> aliases are copied into <code>package.tyhpdef</code>. Functions and methods that <code>return new class { … }</code> get a generated shape alias as the return type, the same way PHP-source harvest does; see <a href="#anonymous-class-returns">Anonymous-class returns</a>.</p>
+<p>Standalone Tyhp <code>extension { }</code> becomes a PHP backer class (<code>class PhpName as Name__tyhpExtensionBacker</code>) plus a tyhpdef <code>extension Name { }</code> with short <code>=&gt;</code> mappings. File-level <code>use</code> / <code>use extension</code> is not copied. In-package <code>global use</code> / <code>global use extension</code> that the library authored is written into <code>package.tyhpdef</code> (FQNs, including <code>hide</code> / <code>insteadof</code> / <code>as</code>). Libraries that did not author <code>global use</code> stay opt-in for consumers. See <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a> and <a href="tyhp_2100_extensions.md">Extensions</a>.</p>
+<p>Generated <code>package.tyhpdef</code> copies declaration attributes that are part of the Tyhp contract (<code>#[\Attribute(…)]</code>, <code>#[\Tyhp\NoEmit]</code>, <code>#[\Tyhp\PhpType]</code>, <code>#[\Tyhp\AllowUnset]</code>, <code>#[\Tyhp\Optimize\Pure]</code>, and user attributes). <code>#[\Tyhp\Php]</code> is omitted when the gate is already a <code>PhpGate</code>. Every emitted generic class, method, and function is stamped <code>#[\Tyhp\GenericRuntime(erased: …, layouts: [1], compiler: …)]</code> (<code>factory</code> / <code>binder</code> only when helpers exist; <code>aliasFactory</code> is unchanged). <code>GenericRuntime</code> is a real PHP attribute (not <code>NoEmit</code>). PHP builtin and overlay tyhpdefs that declare generics or aliases without that stamp keep erase / inline emit. Consumer Tyhp emits <code>\Tyhp\Generic::bind</code> for stamped foreign sites; empty intersection with this compiler's layouts is <code>TYHP5023</code>.</p>
+<h2>Hooked properties</h2>
+<p>Generated tyhpdefs emit hooked properties as bodyless lists (<code>{ get; set; }</code>, <code>{ &amp;get; }</code>, <code>private set</code>, and so on). Bodies are never copied.</p>
+<ul>
+<li><strong><code>tyhp build</code>:</strong> when a Tyhp property has hooks, the generated tyhpdef includes that hook list. The generator does <strong>not</strong> add <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]</code> — Tyhp’s 8.2–8.3 polyfill is the contract for those libraries.</li>
+<li><strong><code>generate_tyhpdef</code>:</strong> hooks exist in the PHP engine from 8.4. A single-target run emits what that PHP has (hooked or storage). With <code>--php-targets</code>, if hook shape differs across minors (storage on 8.2/8.3, hooked on 8.4+), the merge emits version-disjoint members — a gated storage form and a gated hooked form — the same way it splits a method that gained a parameter. If every target agrees, it emits one declaration.</li>
+</ul>
+<h2>Related diagnostics</h2>
+<p><code>TYHP7500</code>–<code>TYHP7520</code> cover generation, managed PHP, stubs, <code>--verify</code>, and <code>--vendor</code>. Include-layer <code>TYHP8002</code> still fires when harvest writes two divergent bodies for the same FQCN; see <a href="#repeated-fqcns">Repeated FQCNs</a>. Optional-peer <code>extern</code> diagnostics (<code>TYHP4307</code>, <code>TYHP3026</code>, <code>TYHP3027</code>, <code>TYHP8028</code>–<code>TYHP8030</code>) are documented in <a href="tyhpdef_extern.md">Extern Types</a> and the <a href="diagnostics_reference.md">Diagnostic Code Reference</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_sourcemapGeneration.html">&larr; CLI: Source Map Generation</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_symbolTree.html">&larr; CLI: Symbol Tree</a></div>
     <div class="docs-next"><a class="btn btn-outline-primary" href="project_intro.html">Project Configuration &rarr;</a></div>
 </nav>
 
@@ -377,6 +695,7 @@ namespace Guzzle\Http {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

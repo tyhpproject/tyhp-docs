@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -276,7 +292,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__PropertyName&lt;T&gt;</code></h4><br/><p>A string that is a valid property name on type T. Required for dynamic property access ($obj-&gt;$prop). The generic parameter T specifies which class's properties are valid.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A string that is a valid, existing class name (resolvable to a class declaration). Required for dynamic class instantiation (new $className()).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A string that is a valid, existing class name (resolvable to a class declaration). Required for dynamic class instantiation (new $className()). When parameterized with an object-shape alias, <code>__ClassName&lt;Shape&gt;</code> names some class whose instances match <code>Shape</code>; <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> additionally requires a public <code>new</code> that matches the shape constructor. See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__ConstName</code></h4><br/><p>A string that is a valid constant name. Required for dynamic constant access.</p>
 </div>
@@ -428,7 +444,7 @@ if (\method_exists($calc, $op)) {
 }
 </code></pre></div>
 <h2>Dynamic Class Instantiation (new $className())</h2>
-<p>Creating an object from a variable class name requires __ClassName. The compiler verifies that the string refers to an existing class.</p>
+<p>Creating an object from a variable class name requires __ClassName. The compiler verifies that the string refers to an existing class. <code>__ClassName&lt;Shape&gt;</code> (a shape without <code>__New</code>) does not allow <code>new $cls(...)</code>. <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> does, and the argument list is checked against the shape constructor.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // OK: string literal narrowed to __ClassName
@@ -440,6 +456,10 @@ mixed $className = getHandlerClass();
 if ($className is string &amp;&amp; \class_exists($className)) {
     // $className is narrowed to __ClassName
     $handler = new $className();
+}
+
+function spinUp(__ClassName&lt;__New&lt;Named&gt;&gt; $cls, string $name): Named {
+    return new $cls($name);
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -456,11 +476,11 @@ if (\is_string($className) &amp;&amp; \class_exists($className)) {
 <p>The special __ types are subtypes of string. You can narrow a plain string to a __ type in several ways: assigning a string literal (the compiler verifies it at compile time), using the is keyword for type assertion, or using PHP's built-in existence-checking functions which the Tyhp compiler recognizes as type guards.</p>
 <p>The following ExtCore / PHP existence checks are type guards (return <code>$param is …</code> in tyhpdefs) that narrow strings to the appropriate __ types:</p>
 <ul>
-<li><code>\class_exists($name)</code> — narrows <code>$name</code> to <code>__ClassName&lt;object&gt;</code> (use <code>\class_exists&lt;T&gt;($name)</code> for <code>__ClassName&lt;T&gt;</code>)</li>
+<li><code>\class_exists($name)</code> — narrows <code>$name</code> to <code>__ClassName&lt;object&gt;</code> (use <code>\class_exists&lt;T&gt;($name)</code> for <code>__ClassName&lt;T&gt;</code>, including an object-shape alias or <code>__New&lt;Shape&gt;</code>)</li>
 <li><code>\function_exists($name)</code> — narrows <code>$name</code> to <code>__FunctionName</code></li>
 <li><code>\interface_exists($name)</code> / <code>\trait_exists($name)</code> / <code>\enum_exists($name)</code> — <code>__InterfaceName</code> / <code>__TraitName</code> / <code>__EnumName</code> (same default-<code>&lt;object&gt;</code> pattern)</li>
-<li><code>\method_exists($obj, $name)</code> — narrows <code>$name</code> to <code>__MethodName</code> of the receiver type (hardcoded fallback until tyhpdef can capture the receiver)</li>
-<li><code>\property_exists($obj, $name)</code> — narrows <code>$name</code> to <code>__PropertyName&lt;T&gt;</code></li>
+<li><code>\method_exists($obj, $name)</code> / <code>\method_exists(Foo::class, $name)</code> — infers <code>T</code> from the receiver (object or <code>__ClassName&lt;T&gt;</code>) and narrows <code>$name</code> to <code>__MethodName&lt;T&gt;</code></li>
+<li><code>\property_exists($obj, $name)</code> / <code>\property_exists(Foo::class, $name)</code> — infers <code>T</code> from the receiver and narrows <code>$name</code> to <code>__PropertyName&lt;T&gt;</code> (explicit <code>\property_exists&lt;Widget&gt;(…)</code> also works)</li>
 <li><code>is</code> type assertion — narrows to any __ type explicitly</li>
 </ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -568,7 +588,7 @@ if ($methodName is string &amp;&amp; \method_exists($obj, $methodName)) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Attempting dynamic property creation ($obj-&gt;$newProp = value) where $newProp does not exist on the class. Tyhp disables dynamic property creation — all properties must be declared in the class definition or accessed via __get/__set magic methods.</p>
+        <div class="callout-content"><p>Attempting undeclared property creation (<code>$obj-&gt;newProp = value</code>) on a type other than exact <code>\stdClass</code>. Subclasses of <code>\stdClass</code> and types marked <code>#[\AllowDynamicProperties]</code> still get TYHP4134. Declare the property, or use <code>__get</code>/<code>__set</code> for a backing store. <code>(object)</code> on an existing object is identity and does not allow undeclared writes.</p>
 </div>
     </div>
 </div>
@@ -623,6 +643,7 @@ string $fn = getCallback();
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

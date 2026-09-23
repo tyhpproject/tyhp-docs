@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Tyhpdef Overlays - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Tyhpdef_Overlays">
+    <h2 class="section-heading">Tyhpdef Overlays</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Composer packages can ship a <strong>baseline</strong> of generated <code>.tyhpdef</code> files and then <strong>overlay</strong> replacements, member merges, and hides on top. Overlays load after <code>include</code>. Later overlay files win for the same Tyhp name. Regen overwrites the baseline and generated stub overlays; hand-written overlays are never regenerated.</p>
+<p>This is how <code>tyhpdef/php</code> adds generics to PHP types (<code>Iterator&lt;TKey, TValue&gt;</code>, <code>SplStack&lt;T&gt;</code>, …) without editing the Reflection-generated Layer 1 files.</p>
+<p>Name-only <code>extern</code> placeholders for optional Composer peers — syntax, <code>.tyhp</code> use, and generator <code>externs.tyhpdef</code> — are documented in <a href="tyhpdef_extern.md">Extern Types</a>. Overlay merge of <code>extern</code> is in the last-wins table below.</p>
+<h2><code>include</code> vs <code>overlay</code></h2>
+<p>A Composer package that ships tyhpdefs declares them on <code>extra.tyhp.package</code> in that package’s <code>composer.json</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;extra&quot;: {
+        &quot;tyhp&quot;: {
+            &quot;package&quot;: {
+                &quot;include&quot;: [
+                    &quot;./_tyhpdef/*.tyhpdef&quot;,
+                    &quot;./_tyhpdef/extensions/*.tyhpdef&quot;
+                ],
+                &quot;overlay&quot;: [
+                    &quot;./_tyhpdef/overlays/stubs/*.tyhpdef&quot;,
+                    &quot;./_tyhpdef/overlays/*.tyhpdef&quot;
+                ]
+            }
+        }
+    }
+}
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Array</th>
+<th>When it loads</th>
+<th>Duplicate Tyhp name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>include</code></td>
+<td>First. Baseline signatures plus package-local <code>extension { }</code> files when listed.</td>
+<td>Conflict (<code>TYHP8002</code>). Additive <code>partial</code> may add members (see below).</td>
+</tr>
+<tr>
+<td><code>overlay</code></td>
+<td>After <code>include</code>, <strong>in array order</strong>. Within one glob, paths expand lexicographically.</td>
+<td>Last wins: full replace, overlay <code>partial</code> member merge, overlay <code>partial</code> header <code>;</code>, or <code>omit</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Overlay globs must not also appear in <code>include</code>. <code>./_tyhpdef/*.tyhpdef</code> does not recurse into <code>overlays/</code> or <code>extensions/</code>. <code>./_tyhpdef/overlays/*.tyhpdef</code> does not recurse into <code>stubs/</code>. <code>tyhpdef/php</code> is tyhpdef-only builtins (<code>include</code> is <code>./_tyhpdef/*.tyhpdef</code> only). Scalar catalogs live in <code>tyhp/core</code> (<code>package.tyhpdef</code> plus <code>_tyhpdef/extensions/*.tyhpdef</code>).</p>
+<h2>Stub overlays, then hand-written</h2>
+<p>Convention: list <strong>generated stub overlays first</strong>, <strong>hand-written overlays last</strong>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Layer</th>
+<th>Path</th>
+<th>Header / owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer 1 (baseline)</td>
+<td><code>_tyhpdef/*.tyhpdef</code></td>
+<td><code>AUTO-GENERATED</code> Reflection / parsed PHP. <code>tyhp generate_tyhpdef</code>.</td>
+</tr>
+<tr>
+<td>Layer 2 (stubs)</td>
+<td><code>_tyhpdef/overlays/stubs/*.tyhpdef</code></td>
+<td><code>LAYER 2 (stub harvest)</code> in the file header. Community Psalm / PHPStan / Phan / PhpStorm. Safe to regenerate. Empty files (no members) are not written. Synonym <code>@template</code> names are unified by position; constraints become bounds and defaults; <code>@implements</code> / <code>@extends</code> type arguments are applied when they match the harvested parent. <code>tyhp generate_tyhpdef --audit-stubs</code> reports how this layer compares to those corpora.</td>
+</tr>
+<tr>
+<td>Layer 3 (hand)</td>
+<td><code>_tyhpdef/overlays/*.tyhpdef</code> (not under <code>stubs/</code>)</td>
+<td><code>LAYER 3 (hand overlay)</code> in the file header. Humans and <code>tyhp overlay create</code>. Never regenerated.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <strong>folder</strong> is the layer: <code>overlays/stubs/</code> vs <code>overlays/</code> (and Layer 1 lives beside those folders, not under them). Stub overlay basenames match Layer 1 when <code>--output-file</code> is set (for example <code>Ext.Xsl.tyhpdef</code> in both trees). Layer 2 types use the same harvest rewrite as <code>generate_tyhpdef</code>, including Psalm/PHPStan <code>empty</code> in a type written as <code>mixed</code>, and reserved-word type names written as FQCNs (<code>class \Hamcrest\Core\Is</code>). Hand overlays of those types use the same fully-qualified declared name. PHP-source harvest writes PHP <code>static</code> as <code>self</code> in value positions and keeps <code>static</code> on returns; <code>@template</code> bounds (FQCN qualification and filled generic arguments) are documented in <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>. Generate may omit types whose parent is a catalog <code>extern</code> or <code>@internal</code>, and strip members that name them — see <a href="cli_tyhpdefGeneration.md#omitted-types">Omitted types</a>. When a later harvested type has the same FQCN and an identical body (kind, modifiers, <code>extends</code> / <code>implements</code>, members, flags — not doc comments), generate keeps the first and warns; divergent bodies stay so include-layer <code>TYHP8002</code> still fires — see <a href="cli_tyhpdefGeneration.md#repeated-fqcns">Repeated FQCNs</a>. See also <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
+<p><code>tyhp overlay create</code> writes a hand-written file and appends that glob at the <strong>end</strong> of <code>&quot;overlay&quot;</code> if it is not already listed. It never inserts the hand-written glob before stubs.</p>
+<h2>Last wins, by Tyhp name</h2>
+<p>Identity is the <strong>Tyhp name</strong>, not the PHP name. Each overlay declaration applies against the symbol table as left by previous overlays:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Overlay declaration</th>
+<th>Baseline already has that Tyhp name</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ordinary (full) symbol</td>
+<td>yes</td>
+<td><strong>Replace</strong> the whole symbol (functions: the entire overload set)</td>
+</tr>
+<tr>
+<td>Ordinary (full) symbol</td>
+<td>no</td>
+<td><strong>Add</strong></td>
+</tr>
+<tr>
+<td>Ordinary (full) real type</td>
+<td>yes, and it is <code>extern</code></td>
+<td><strong>Replace</strong>; the placeholder becomes that real type</td>
+</tr>
+<tr>
+<td>Overlay <code>extern</code></td>
+<td>yes, and it is a real type</td>
+<td><strong>No-op</strong> (the real type stays)</td>
+</tr>
+<tr>
+<td>Overlay <code>extern</code></td>
+<td>no</td>
+<td><strong>Add</strong> the placeholder</td>
+</tr>
+<tr>
+<td>Overlay <code>partial</code> type <code>{ … }</code></td>
+<td>yes (same name and kind, not <code>extern</code>)</td>
+<td>Merge members only — listed members replace; new members are added. Written header clauses are ignored</td>
+</tr>
+<tr>
+<td>Overlay <code>partial</code> type <code>{ … }</code></td>
+<td>yes, and it is <code>extern</code></td>
+<td>Skip; <strong>error</strong> <code>TYHP8030</code></td>
+</tr>
+<tr>
+<td>Overlay <code>partial</code> type <code>{ … }</code></td>
+<td>no</td>
+<td>Skip; <strong>warning</strong> <code>TYHP8019</code></td>
+</tr>
+<tr>
+<td>Overlay <code>partial</code> type <code>;</code> (header)</td>
+<td>yes (same name and kind, not <code>extern</code>)</td>
+<td>Replace <strong>written</strong> header clauses (generics, <code>extends</code>, <code>implements</code>, <code>as</code>); omitted clauses and unlisted members stay. Attributes merge onto the type</td>
+</tr>
+<tr>
+<td>Overlay <code>partial</code> type <code>;</code> (header)</td>
+<td>yes, and it is <code>extern</code></td>
+<td>Skip; <strong>error</strong> <code>TYHP8030</code></td>
+</tr>
+<tr>
+<td>Overlay <code>partial</code> type <code>;</code> (header)</td>
+<td>no</td>
+<td>Skip; <strong>warning</strong> <code>TYHP8019</code></td>
+</tr>
+<tr>
+<td>Overlay <code>partial function</code></td>
+<td>yes</td>
+<td>Merge attributes onto the existing callable (the entire overload set). Parameters, return type, generics, and docs are unchanged. Optional <code>as</code> <strong>renames</strong> the current Tyhp name unless the same overlay file also keeps it</td>
+</tr>
+<tr>
+<td>Overlay <code>partial function</code></td>
+<td>no</td>
+<td>Skip; <strong>warning</strong> <code>TYHP8031</code></td>
+</tr>
+<tr>
+<td><code>omit</code></td>
+<td>yes (including <code>extern</code>)</td>
+<td>Remove that Tyhp name (it is not found)</td>
+</tr>
+<tr>
+<td><code>omit</code></td>
+<td>no</td>
+<td><strong>Warning</strong> <code>TYHP8020</code>; no-op</td>
+</tr>
+</tbody>
+</table></div>
+<p>Header-only <code>partial class Foo&lt;T&gt; implements …;</code> is overlay-only (<code>TYHP8034</code> in an include file). A bare <code>partial class Foo;</code> with no generics, inheritance, <code>as</code>, attributes, or matching keep-for-alias warns (<code>TYHP8035</code>). Overlay <code>partial function</code> is a separate form: it merges attributes and may rename (see below).</p>
+<p>A full overlay <code>function \php as tyhp(...)</code> <strong>adds</strong> the alias and leaves the original Tyhp name. Overlay <code>partial function X as Y</code> (and overlay <code>partial class X as Y;</code>) <strong>replaces</strong> <code>X</code> with <code>Y</code> unless the same overlay file also keeps <code>X</code>. To hide a name without adding another, use <code>omit</code>.</p>
+<h2>Overlay <code>partial</code> vs include <code>partial</code></h2>
+<p><code>partial</code> is legal on tyhpdef <code>class</code> / <code>enum</code> / <code>interface</code> / <code>trait</code> in both include files and overlay files. The merge rules differ:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th></th>
+<th>Include <code>partial</code></th>
+<th>Overlay <code>partial</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purpose</td>
+<td>Add members to a type already in the include set</td>
+<td>Last-wins member merge and/or header merge after include</td>
+</tr>
+<tr>
+<td>Brace <code>{ … }</code></td>
+<td>Additive members. Written generics / <code>extends</code> / <code>implements</code> are ignored</td>
+<td>Listed members <strong>replace</strong> (including overload sets). Written header clauses are ignored</td>
+</tr>
+<tr>
+<td>Header <code>;</code></td>
+<td>Illegal (<code>TYHP8034</code>)</td>
+<td>Replace <strong>written</strong> header clauses; omitted clauses and unlisted members stay</td>
+</tr>
+<tr>
+<td>Duplicate member</td>
+<td>Error <code>TYHP8002</code></td>
+<td>Listed member <strong>replaces</strong> (including its overload set)</td>
+</tr>
+<tr>
+<td>Missing target type</td>
+<td>Error <code>TYHP8014</code></td>
+<td>Warning <code>TYHP8019</code>; skip</td>
+</tr>
+<tr>
+<td><code>omit</code></td>
+<td>Illegal (<code>TYHP8017</code>)</td>
+<td>Allowed on a member inside the brace <code>partial</code> type</td>
+</tr>
+</tbody>
+</table></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// Overlay: replace current() / key() and keep other Iterator members
+// @overlay-against: interface Iterator
+partial interface Iterator {
+    // @overlay-against: function current(): mixed
+    public function current(): TValue;
+    // @overlay-against: function key(): mixed
+    public function key(): TKey;
+}
+</code></pre></div>
+<p>A full overlay of <code>Iterator&lt;TKey = mixed, TValue = mixed&gt;</code> replaces the whole type, including members. Prefer header-only <code>partial interface Iterator&lt;TKey = mixed, TValue = mixed&gt;;</code> when only the generic header changes, and a second <code>partial interface Iterator { … }</code> for member signature edits.</p>
+<h2>Overlay <code>partial</code> header form (<code>partial class Foo;</code>)</h2>
+<p>Overlay-only semicolon form on <code>class</code> / <code>interface</code> / <code>trait</code> / <code>enum</code>. Written clauses replace; omitted clauses stay. Unlisted members stay.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+partial class SplObjectStorage&lt;TObject extends object = object, TData = mixed&gt; implements \Countable, \Iterator&lt;int, TObject&gt;, \Serializable, \ArrayAccess&lt;TObject, TData&gt;;
+
+#[\Tyhp\Optimize\Pure]
+partial class DateTime;
+
+partial class SplObjectStorage;
+partial class SplObjectStorage as ObjectStorage;
+</code></pre></div>
+<ul>
+<li>Present generics / <code>extends</code> / <code>implements</code> / <code>as</code> replace that clause; omitted clauses keep the current type.</li>
+<li>Attributes merge onto the type (same last-wins rule as <code>partial function</code>).</li>
+<li><code>#[\Tyhp\Php]</code> on a header <code>;</code> targets the matching live gated declaration.</li>
+<li><code>partial class X as Y;</code> renames the current Tyhp name to <code>Y</code> (same PHP emit name) unless the same overlay file also has <code>partial class X;</code>.</li>
+<li>Bare <code>partial class X;</code> with no other clauses warns (<code>TYHP8035</code>) unless that keep is paired with an <code>as</code> in the same file.</li>
+<li>Include files: <strong>error</strong> <code>TYHP8034</code>. Brace <code>partial class X { members }</code> remains legal in include (additive members).</li>
+<li><code>final</code> / <code>readonly</code> / <code>abstract</code> on the semicolon form are ignored. Changing kind, targeting <code>extern</code> (<code>TYHP8030</code>), or combining with <code>omit</code> (<code>TYHP8018</code>) is not this form.</li>
+</ul>
+<p>Same overlay file may list a header <code>;</code> then a brace <code>partial class Foo { members }</code>. Header apply and member merge are independent; later overlay files last-win.</p>
+<p>See <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a> for include <code>partial</code>.</p>
+<h2>Overlay <code>partial function</code></h2>
+<p>Name-only <code>partial function</code> merges <strong>attributes</strong> onto an existing free function or method without restating the signature. It is overlay-only (<code>TYHP8032</code> in an include file). A parameter list, return type, generics, <code>async</code>, visibility, or <code>omit</code> on the same declaration is a parse error — not a full replace. An optional <code>as</code> alias is allowed.</p>
+<p>Match is by the <strong>current Tyhp name</strong>, not the Layer 1 PHP name. After a rename, a later overlay must target the alias that is live now.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+#[\Tyhp\Optimize\Pure]
+partial function \str_contains;
+
+partial function \strtolower as str2LC;
+
+partial function \strtoupper;
+partial function \strtoupper as str2UC;
+
+partial class \DateTime {
+    #[\Tyhp\Optimize\Pure]
+    partial function format;
+}
+</code></pre></div>
+<ul>
+<li><code>partial function X;</code> — keep <code>X</code>, merge attributes.</li>
+<li><code>partial function X as Y;</code> — register <code>Y</code> for the same callable (same PHP emit name) and <strong>replace</strong> <code>X</code>, unless the same overlay file also has <code>partial function X;</code>.</li>
+<li>Keep + alias in one file exposes both Tyhp names. Order in that file does not matter. A later overlay that only names <code>Y as Z</code> replaces <code>Y</code> and leaves <code>X</code> if <code>X</code> was kept earlier.</li>
+</ul>
+<p>The merge applies to the <strong>entire current overload set</strong>. Existing parameters, return type, generics, and docs stay; overlay attributes are unioned onto the live symbol (same attribute type last-wins). A missing target is skipped with warning <code>TYHP8031</code>.</p>
+<p>Methods are only valid inside an overlay <code>partial</code> type (<code>TYHP8033</code> on a full overlay class). <code>partial function</code> does not add a new callable; it only keeps, renames, or aliases one that already exists.</p>
+<p>An optional stamp may be name-only (<code>function array_map</code>). A full Layer 1 stamp is still allowed and still reports <code>TYHP8021</code> on mismatch. No stamp does not report <code>TYHP8022</code>.</p>
+<h3>Rename across overlay layers</h3>
+<p>Layer 1 (include):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+function strtolower(string $string): string;
+function strtoupper(string $string): string;
+</code></pre></div>
+<p>Layer 2 (overlay):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+partial function strtolower as str2LC;
+
+partial function strtoupper;
+partial function strtoupper as str2UC;
+</code></pre></div>
+<p>Layer 3 (later overlay; match the <strong>live</strong> Tyhp names):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+partial function str2LC as string_to_lower_case;
+partial function str2UC as string_to_upper_case;
+</code></pre></div>
+<p>After Layer 3, Tyhp can call <code>string_to_lower_case</code>, <code>string_to_upper_case</code>, and <code>strtoupper</code>. It cannot call <code>strtolower</code>, <code>str2LC</code>, or <code>str2UC</code>. PHP emit still uses the original PHP names (<code>strtolower</code> / <code>strtoupper</code>).</p>
+<p><code>tyhp symbol_tree --filter=strto</code> dumps the bound names and signatures so you can confirm which aliases are live. See <a href="cli_symbolTree.md">CLI: Symbol Tree</a>.</p>
+<h2><code>omit</code></h2>
+<p><code>omit</code> is <strong>overlay-only</strong>. Using it in an include / baseline tyhpdef is <code>TYHP8017</code>. The signature may be a skeleton — parameters and a class body are not required.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+omit function \array_map();
+omit class \Closure {};
+
+partial class \DomainException {
+    omit public function getPrevious();
+}
+</code></pre></div>
+<p><code>partial</code>, <code>omit</code>, <code>deprecated</code>, <code>obsolete</code>, and <code>extern</code> cannot be combined on the <strong>same</strong> declaration (<code>TYHP8018</code>). <code>omit</code> on a member inside an overlay <code>partial</code> type is a different declaration and is allowed. Overlay <code>omit</code> of an <code>extern</code> type is allowed and removes the name. Overlay <code>partial</code> cannot target an <code>extern</code> type (<code>TYHP8030</code>); a full overlay replace with a real <code>class</code> / <code>interface</code> / <code>enum</code> of the same name and kind upgrades the placeholder (<code>TYHP8029</code> if the kinds disagree).</p>
+<h2><code>// @overlay-against:</code></h2>
+<p>An optional comment records the compact <strong>Layer 1</strong> signature the overlay was written against. Functions: one line for the whole signature. Types: one line for the <strong>header only</strong>; each overlaid member may have its own line. Compact stamps omit visibility (<code>public</code> / <code>protected</code> / <code>private</code>) and <code>final</code> / <code>abstract</code> / <code>static</code>. When the declaration also has a docblock or attributes, the stamp is the last line before the keyword (docblock, then attributes, then stamp).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+// @overlay-against: interface Iterator extends Traversable
+interface Iterator&lt;TKey = mixed, TValue = mixed&gt; extends \Traversable&lt;TKey, TValue&gt; {
+    // @overlay-against: function current(): mixed
+    public function current(): TValue;
+}
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Stamp vs Layer 1</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Matches</td>
+<td>Apply silently</td>
+</tr>
+<tr>
+<td>Name-only stamp on <code>partial function</code> (<code>function foo</code> / <code>function foo;</code>)</td>
+<td>Apply silently when the target was found</td>
+</tr>
+<tr>
+<td>Mismatches</td>
+<td>Warning <code>TYHP8021</code>; overlay <strong>still applied</strong>. <code>--strict</code> / <code>build.strictMode</code> elevates to an error</td>
+</tr>
+<tr>
+<td>No stamp, replace of an existing symbol</td>
+<td>Warning <code>TYHP8022</code> if the overlay is not a compile-time-compatible rewrite of the baseline; still applied</td>
+</tr>
+<tr>
+<td>No stamp, <code>partial function</code></td>
+<td>No compatibility check</td>
+</tr>
+<tr>
+<td>No stamp, add of a new symbol</td>
+<td>No compatibility check</td>
+</tr>
+</tbody>
+</table></div>
+<p>An <code>as</code> alias (<code>function call_user_func as call_user_func_unsafe</code>) <strong>adds</strong> a Tyhp name and leaves Layer 1 in place. The stamp still names the <strong>PHP original</strong> (<code>function call_user_func(...)</code>), and the compiler compares it to that Layer 1 signature — not to the alias name. Variadic <code>...</code> in the stamp is ignored when comparing, so <code>mixed ...$args</code> matches a Layer 1 compact stamp of <code>mixed $args</code>.</p>
+<p><code>@overlay-against:</code> does not apply to <code>extern</code> declarations (there is no Layer 1 member list). Stamping an <code>extern</code> is a no-op.</p>
+<p><code>tyhp overlay stamp</code> rewrites these comments from the current baseline on <strong>both</strong> stub overlays (<code>overlays/stubs/</code>) and hand overlays (<code>overlays/*.tyhpdef</code>). See <a href="cli_overlay.md">CLI: Overlay</a>.</p>
+<h2>Creating overlays</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp overlay create \Iterator
+tyhp overlay stamp
+tyhp overlay stamp \Iterator
+</code></pre></div>
+<p><code>create</code> copies the current declaration into a hand-written overlay file. It refuses <code>extern</code> types (<code>TYHP7904</code>) so it does not copy a placeholder into a hollow <code>class { }</code> overlay. <code>stamp</code> writes or updates <code>@overlay-against</code> comments. See <a href="cli_overlay.md">CLI: Overlay</a> and <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a> (<code>--verify</code> applies overlays when checking the final API against PHP; <code>omit</code> is not a fail).</p>
+<h2>Project overlays for <code>vendor-tyhpdef/</code></h2>
+<p><code>tyhp generate_tyhpdef --vendor</code> writes into <strong><code>vendor-tyhpdef/</code></strong> (loaded via <code>tyhp.json</code> <code>&quot;tyhpdefInclude&quot;</code>). Those files are generated; re-running <code>--vendor</code> overwrites them. Do not edit them.</p>
+<p>Lasting type fixes go in overlay tyhpdefs listed in <code>tyhp.json</code> <code>&quot;overlay&quot;</code>. <code>tyhp init</code> sets that glob to <code>./tyhpdef/**/*.tyhpdef</code>. <code>tyhp overlay create</code> copies a declaration into a hand overlay and ensures a hand-written overlay glob is listed on the manifest.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+// Generated by `tyhp generate_tyhpdef --vendor`. Do not edit this file.
+// Re-running --vendor overwrites it. Put lasting changes in overlay tyhpdefs
+// (tyhp.json &quot;overlay&quot;, or `tyhp overlay create`), not in vendor-tyhpdef/.
+</code></pre></div>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO put generic parameters and other hand refinements in overlay tyhpdefs — including const/property <code>??</code> start values that generate omitted because they were nowdocs, regex bodies, or other non-tyhpdef literals, and more precise parameter defaults when generate wrote <code>= null</code> for an unrepresentable PHP default. Leave Layer 1 as the generated baseline so regen does not wipe your edits. Use overlay <code>partial class Foo&lt;T&gt; implements …;</code> when only the header changes, and a second <code>partial class Foo { … }</code> for member edits.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO list stub overlays before hand-written overlays in <code>&quot;overlay&quot;</code>. Last file wins for the same Tyhp name.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO run <code>tyhp overlay stamp</code> after regenerating Layer 1 so <code>@overlay-against</code> comments match the new baseline.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO use <code>tyhp symbol_tree --filter=&lt;name&gt;</code> when an overlay rename is not visible in <code>.tyhp</code>. The dump is the bound environment <code>lint</code> / <code>build</code> use.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO document what an overlay changes (generics, parameters, return types, purity). <code>@inheritDoc</code> alone is enough only when the signature is unchanged — and then say why the overlay exists.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T list overlay globs in <code>&quot;include&quot;</code>. Duplicate Tyhp names in include are errors, not last-wins replaces.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T use <code>omit</code> or overlay last-wins replace in a baseline / include tyhpdef. <code>omit</code> is overlay-only (<code>TYHP8017</code>).</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T use include <code>partial</code> to change generics or <code>extends</code>. Write overlay <code>partial class Foo&lt;T&gt; extends Bar;</code> (header-only). A full overlay <code>class Foo&lt;T&gt; { … }</code> replaces the whole type, including members.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T overlay a hollow <code>class \Foreign\Type {}</code> as a stand-in for a type this package does not own. That is a complete empty type, not a placeholder. <code>tyhp overlay create</code> refuses <code>extern</code> types for the same reason. See <a href="tyhpdef_extern.md">Extern Types</a>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T write <code>partial function foo as bar</code> or <code>partial class Foo as Bar</code> in a later overlay after an earlier overlay already renamed that name. Match the <strong>current</strong> Tyhp name (<code>bar as baz</code>), not the Layer 1 PHP name.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T edit generated files under <code>vendor-tyhpdef/</code>. <code>--vendor</code> overwrites them. Put lasting changes in overlay tyhpdefs (<code>tyhp.json</code> <code>&quot;overlay&quot;</code> / <code>tyhp overlay create</code>).</p>
+</div>
+    </div>
+</div>
+<h2>Related</h2>
+<ul>
+<li><a href="cli_symbolTree.md">CLI: Symbol Tree</a> — dump bound Tyhp names after overlays</li>
+<li><a href="cli_overlay.md">CLI: Overlay</a> — <code>create</code> / <code>stamp</code></li>
+<li><a href="tyhpdef_functions.md#overlay-partial-function">Functions in Tyhpdef</a> — overlay <code>partial function</code></li>
+<li><a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a> — include <code>partial</code> (additive members)</li>
+<li><a href="diagnostics_reference.md">Diagnostic Code Reference</a> — <code>TYHP8017</code>–<code>TYHP8022</code>, <code>TYHP8030</code>–<code>TYHP8035</code></li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhpdef_about.html">&larr; About Tyhpdef</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_extern.html">Extern Types in Tyhpdef &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

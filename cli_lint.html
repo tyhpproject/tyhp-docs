@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -264,6 +280,7 @@
     <span class="badge bg-primary me-1">Tier 1 · Story 12</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The lint action checks your Tyhp project for errors and warnings without generating any output files. It runs the compilation pipeline through parse, bind, and check — but skips the emitter and file writing. This makes it faster than a full build and ideal for development feedback and CI/CD integration.</p>
+<p>Before parse, lint applies the same local <code>extra.tyhp.require</code> check as <code>tyhp build</code> (explain missing extras; do <strong>not</strong> write <code>composer.json</code>). Use <code>tyhp composer sync</code> or <code>tyhp build --fix</code> to recover. <code>tyhp lint --fix</code> is the experimental source auto-fixer, not extras sync. See <a href="cli_composer.md">CLI: Composer</a>.</p>
 <h2>Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp lint [options] [files...]
 </code></pre></div>
@@ -276,6 +293,7 @@
 <li>--max-fix-iterations=<n> — Maximum auto-fix re-run iterations (default: 10; also checker.maxFixIterations).</li>
 <li>--quiet — Suppress the banner and non-diagnostic output.</li>
 <li>--strict — Treat warnings as errors.</li>
+<li>--suppress-warnings=&lt;TYHP####,…&gt; — Hide the listed warning codes for this run (replaces <code>suppressWarnings</code> in <code>tyhp.json</code>). Errors are never hidden.</li>
 <li>--cache-dir=<path> — Override the AST cache directory.</li>
 <li>--no-cache — Disable the on-disk parse cache for this run.</li>
 <li>--include=<glob> — Include additional source paths.</li>
@@ -412,6 +430,36 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
 <li>4 (CompileError) — One or more errors found.</li>
 <li>5 (CompileWarning) — Warnings found but no errors.</li>
 </ul>
+<h2>PHP version matrix (8.2–8.5)</h2>
+<p><code>output.phpVersion</code> selects which version-gated declarations from <code>tyhpdef/php</code> and <code>tyhpdef/php-ext-*</code> are visible. Lint or build the same project four times (or change the key between runs) to confirm a gated API:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th><code>output.phpVersion</code></th>
+<th>Example APIs that become visible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;8.2&quot;</code></td>
+<td>Always-present surface only (no <code>json_validate</code>, no <code>array_find</code>)</td>
+</tr>
+<tr>
+<td><code>&quot;8.3&quot;</code></td>
+<td><code>json_validate()</code></td>
+</tr>
+<tr>
+<td><code>&quot;8.4&quot;</code></td>
+<td><code>array_find()</code> / <code>array_find_key()</code> / <code>array_any()</code> / <code>array_all()</code></td>
+</tr>
+<tr>
+<td><code>&quot;8.5&quot;</code></td>
+<td><code>array_first()</code> / <code>array_last()</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>You do not install four PHP runtimes for this check. Gates are compile-time against the configured target. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>. Engine attribute <strong>classes</strong> follow that matrix; some <strong>checks</strong> (<code>#[\Deprecated]</code>, <code>#[\NoDiscard]</code>) still run on lower targets — see <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<p><code>--strict</code> treats overlay stamp-mismatch warnings (<code>TYHP8021</code>) as errors.</p>
 <h2>CI/CD Integration</h2>
 <p>The lint command is designed for CI/CD pipeline integration. Use the JSON or SARIF output formats for machine-readable results, and check the exit code to determine pass/fail status:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs"># GitHub Actions example
@@ -434,6 +482,7 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

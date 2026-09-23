@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -261,292 +277,72 @@
 				<section class="docs-section" id="The_internal_Visibility_Modifier">
     <h2 class="section-heading">The internal Visibility Modifier</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 3 · Story 25</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 2</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Not in this alpha
-        </h4>
-        <div class="callout-content"><p>This feature is <strong>not included</strong> in Tyhp 805.0.0-alpha.1 (roadmap Tier 2/3). The rest of this page describes the planned design. Do not expect these commands or syntax to work yet.</p>
-</div>
-    </div>
-</div>
-<p>The internal modifier is a compile-time visibility modifier that restricts access to a symbol within the defining project. A &quot;project&quot; is defined by the presence and scope of a tyhp.json configuration file. All .tyhp files compiled under the same tyhp.json share internal visibility. External projects consuming the library via tyhpdef files cannot see internal symbols — they are excluded from the generated type definitions.</p>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>Unlike public, protected, and private — which map directly to PHP visibility keywords — internal has no PHP equivalent. It is purely a Tyhp compile-time concept. Internal members compile to public PHP (or their otherwise-specified visibility) because PHP has no module/assembly boundary mechanism. Think of it like TypeScript's type annotations: enforced at compile time, erased in output.</p>
-</div>
-    </div>
-</div>
-<h2>Basic Syntax</h2>
-<p>The internal modifier can be applied to any declaration that has visibility: classes, interfaces, traits, enums, functions, constants, type aliases, methods, properties, and enum cases.</p>
+    <p><code>internal</code> is a Tyhp visibility keyword. Mark implementation details that belong in this project but must not appear in the published <code>package.tyhpdef</code>. Consumers of the compiled library type-check against that file, so they never see those symbols.</p>
+<p><code>internal</code> has no PHP equivalent. The compiler strips it on emit: class members become <code>public</code>; top-level classes, functions, and constants are unprefixed (PHP’s default). Same-project <code>.tyhp</code> can still use the symbols.</p>
+<h2>Syntax</h2>
+<p>Apply <code>internal</code> to a top-level class, interface, trait, enum, function, constant, type alias, or extension, and to members (methods, properties, constants, enum cases).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Internal class — visible within this project only
-internal class InternalHelper {
-    public function doWork(): void {
+internal class GmpBackend {
+    public function add(string $a, string $b): string {
+        return \gmp_strval(\gmp_add($a, $b));
+    }
+}
+
+internal function formatScale(int $scale): string {
+    return (string)$scale;
+}
+
+internal const BACKEND_ID = 1;
+
+public class Decimal {
+    public function add(Decimal $other): Decimal {
+        return $this-&gt;addWith(new GmpBackend(), $other);
+    }
+
+    internal function addWith(GmpBackend $backend, Decimal $other): Decimal {
         // ...
     }
 }
-
-// Internal function
-internal function computeHash(string $data): string {
-    return \hash(&#039;sha256&#039;, $data);
-}
-
-// Internal constant
-internal const int MAX_RETRIES = 3;
-
-// Internal type alias
-internal type UserId = int;
-
-// Internal interface
-internal interface Cacheable {
-    public function getCacheKey(): string;
-}
-
-// Internal enum
-internal enum LogLevel {
-    case Debug;
-    case Info;
-    case Warning;
-    case Error;
-}
-
-// Internal trait
-internal trait HasTimestamps {
-    public DateTime $createdAt;
-    public DateTime $updatedAt;
+</code></pre></div>
+<p>Do not combine <code>internal</code> with <code>public</code>, <code>protected</code>, or <code>private</code> on the same declaration (<code>TYHP4002</code>). <code>internal static</code>, <code>internal readonly</code>, <code>internal abstract</code>, and <code>internal final</code> are allowed.</p>
+<h2>Published tyhpdef</h2>
+<p><code>tyhp build</code> for a library always writes <code>package.tyhpdef</code>. Symbols marked <code>internal</code> are omitted, the same way <code>private</code> members are omitted. A public type’s internal members are left out of that file.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class Decimal {
+    public function add(Decimal $other): Decimal;
 }
 </code></pre></div>
-<h2>Internal Members on Public Classes</h2>
-<p>A public class can contain a mix of public and internal members. Internal members are accessible to all code within the same project but hidden from external consumers. This is useful for exposing a clean public API while keeping implementation details accessible within the project.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-public class UserService {
-    // Public method — visible to everyone
-    public function getUser(int $id): User {
-        User $cached = $this-&gt;checkCache($id);
-        if ($cached !== null) {
-            return $cached;
-        }
-        return $this-&gt;fetchFromDb($id);
-    }
-
-    // Internal method — visible within project, hidden from tyhpdef
-    internal function checkCache(int $id): ?User {
-        return self::$cache[$id] ?? null;
-    }
-
-    // Internal method — implementation detail
-    internal function fetchFromDb(int $id): User {
-        // database logic
-    }
-
-    // Internal property
-    internal static array $cache = [];
-
-    // Internal constant
-    internal const int CACHE_TTL = 3600;
-}
-</code></pre></div>
-<h2>Project Scope and tyhp.json</h2>
-<p>The boundary for internal visibility is defined by the tyhp.json configuration file. Every file compiled under the same tyhp.json belongs to the same project and can access all internal symbols. When your library is consumed by an external project, that project uses the generated tyhpdef files — and internal symbols are excluded from those definitions.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">// Project structure:
-// my-library/
-//   tyhp.json          ← defines the project boundary
-//   src/
-//     PublicApi.tyhp    ← public class, visible to consumers
-//     InternalUtil.tyhp ← internal class, hidden from consumers
-//
-// consumer-app/
-//   tyhp.json          ← different project
-//   src/
-//     App.tyhp         ← can use PublicApi but NOT InternalUtil
-</code></pre></div>
-<h2>How Enforcement Works</h2>
-<p>There are two complementary enforcement mechanisms for the internal modifier:</p>
-<ol>
-<li>Tyhpdef exclusion (primary): When a library is compiled and its public API is exported as .tyhpdef files, items marked internal are excluded from the generated tyhpdef. External projects simply cannot see internal items — they do not exist in the type definitions.</li>
-<li>Checker validation (secondary): When project A directly depends on project B's source (e.g., a multi-project workspace), the checker validates that project A does not reference any of project B's internal symbols. This catches violations even before tyhpdef generation.</li>
-</ol>
-<h2>Modifier Combinations</h2>
-<p>The internal modifier is orthogonal to PHP visibility and other modifiers. It can be combined with most modifiers but has specific restrictions.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>internal static</code></h4><br/><p>Allowed. The member is static and project-scoped.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal readonly</code></h4><br/><p>Allowed. The property is readonly and project-scoped.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal abstract</code></h4><br/><p>Allowed. The class or method is abstract and project-scoped.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal final</code></h4><br/><p>Allowed. The class or method is final and project-scoped.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal protected</code></h4><br/><p>Allowed. Means accessible within the project AND by subclasses in external projects. The protected PHP visibility is preserved in the output.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal private</code></h4><br/><p>Not allowed. private is already more restrictive than internal (class-scoped vs project-scoped). Produces compiler error TYHP4055.</p>
-</div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-internal abstract class BaseHelper {
-    // internal protected — accessible in project + subclasses externally
-    internal protected function reset(): void {
-        // ...
-    }
-
-    internal static function create(): static {
-        return new static();
-    }
-
-    internal readonly string $id;
-
-    // ERROR: &#039;internal&#039; cannot be combined with &#039;private&#039;
-    // internal private function secret(): void {}
-}
-</code></pre></div>
-<h2>Compiled PHP Output</h2>
-<p>The internal modifier is stripped from the PHP output. Since PHP has no equivalent concept, internal members are emitted with their effective PHP visibility. The following table shows how modifier combinations are transformed.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>internal (on class member)</code></h4><br/><p>Emits as: public</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal (on top-level class/function)</code></h4><br/><p>Emits as: (no modifier — PHP classes and functions are implicitly public)</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal static</code></h4><br/><p>Emits as: public static</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal protected</code></h4><br/><p>Emits as: protected</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal readonly</code></h4><br/><p>Emits as: public readonly</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal abstract</code></h4><br/><p>Emits as: abstract</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>internal final</code></h4><br/><p>Emits as: final</p>
-</div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-public class UserService {
-    public function getUser(int $id): User {
-        return $this-&gt;fetchFromDb($id);
-    }
-
-    internal function fetchFromDb(int $id): User {
-        // implementation
-    }
-
-    internal int $retryCount = 0;
-}
-
-internal class InternalHelper {
-    public function doWork(): void {
-        // ...
-    }
-}
-
-internal function helperFn(): void {
-    // ...
-}
-
-internal const string CACHE_PREFIX = &#039;user_&#039;;
-</code></pre></div>
+<p><code>GmpBackend</code>, <code>formatScale</code>, <code>BACKEND_ID</code>, and <code>Decimal::addWith</code> do not appear. Consumers cannot name them through the published tyhpdef.</p>
+<p>Use <code>internal</code> for backends, helpers, and other author-only code that must compile in this package but must not become part of the consumer API. Put author-only <strong>tyhpdef packages</strong> in <code>require-dev</code> and leave them out of <code>extra.tyhp.require</code> — see <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+<h2>Compiled PHP</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-class UserService {
-    public function getUser(int $id): User {
-        return $this-&gt;fetchFromDb($id);
+class GmpBackend {
+    public function add(string $a, string $b): string {
+        return \gmp_strval(\gmp_add($a, $b));
     }
-
-    public function fetchFromDb(int $id): User {
-        // implementation
-    }
-
-    public int $retryCount = 0;
 }
 
-class InternalHelper {
-    public function doWork(): void {
+function formatScale(int $scale): string {
+    return (string)$scale;
+}
+
+const BACKEND_ID = 1;
+
+class Decimal {
+    public function add(Decimal $other): Decimal {
+        return $this-&gt;addWith(new GmpBackend(), $other);
+    }
+
+    public function addWith(GmpBackend $backend, Decimal $other): Decimal {
         // ...
     }
 }
-
-function helperFn(): void {
-    // ...
-}
-
-const CACHE_PREFIX = &#039;user_&#039;;
 </code></pre></div>
-<h2>Generated Tyhpdef Output</h2>
-<p>When the compiler generates tyhpdef files for a library, internal symbols are excluded entirely. This is the primary mechanism that prevents external projects from accessing internal members.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">// Given this source code:
-// public class UserService {
-//     public function getUser(int $id): User { ... }
-//     internal function fetchFromDb(int $id): User { ... }
-//     internal int $retryCount = 0;
-// }
-// internal class InternalHelper { ... }
-// internal function helperFn(): void { ... }
-
-// The generated tyhpdef contains ONLY:
-// &lt;?tyhpdef
-// class UserService {
-//     public function getUser(int $id): User;
-// }
-
-// InternalHelper, helperFn, fetchFromDb, and $retryCount
-// are all excluded from the tyhpdef
-</code></pre></div>
-<h2>Internal Type Exposure Warning</h2>
-<p>If a public method's signature references an internal type (as a parameter type, return type, or property type), the compiler emits a warning. This alerts you that external consumers will not be able to use that member because they cannot see the internal type.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-internal class CacheResult {
-    public string $data;
-    public int $ttl;
-}
-
-public class UserService {
-    // WARNING TYHP4057: Internal type &#039;CacheResult&#039; is exposed
-    // via public API member &#039;getCacheStats&#039;.
-    // External consumers will not be able to use this member.
-    public function getCacheStats(): CacheResult {
-        return new CacheResult();
-    }
-}
-</code></pre></div>
-<p>In the generated tyhpdef, exposed internal types are replaced with mixed since the internal type is not available to external consumers.</p>
-<h2>Cross-Project Access Errors</h2>
-<p>When code in one project attempts to use an internal symbol from another project, the compiler reports an error. This applies to all forms of symbol reference: type hints, function calls, property access, constant access, extends, implements, and trait use.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-// In consumer-app/src/App.tyhp (different project from the library)
-
-use MyLib\UserService;
-use MyLib\InternalHelper;  // ERROR TYHP4054: Cannot access internal type
-
-$svc = new UserService();
-$svc-&gt;getUser(1);          // OK — public method
-$svc-&gt;fetchFromDb(1);      // ERROR TYHP4053: Cannot access internal member
-$svc-&gt;retryCount;          // ERROR TYHP4053: Cannot access internal member
-</code></pre></div>
-<h2>Same-Project Access</h2>
-<p>All code within the same project (under the same tyhp.json) can freely access internal members. There are no restrictions within a project.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-// In my-library/src/Tests.tyhp (same project as UserService)
-
-use MyLib\UserService;
-use MyLib\InternalHelper;  // OK — same project
-
-$svc = new UserService();
-$svc-&gt;fetchFromDb(1);      // OK — same project
-$svc-&gt;retryCount;          // OK — same project
-
-$helper = new InternalHelper();  // OK — same project
-$helper-&gt;doWork();
-</code></pre></div>
+<p>PHP does not enforce the project boundary. The published tyhpdef is what hides the names from Tyhp consumers.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -556,68 +352,7 @@ $helper-&gt;doWork();
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use internal for implementation details that need to be shared across multiple classes within your package but should not be part of the public API. This keeps your public API surface small and intentional.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use internal on helper classes, utility functions, and shared constants that support your public API but are not meant for direct consumer use.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use internal protected on methods that should be accessible within the project and also overridable by subclasses in external projects.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Mark test helpers and test fixtures as internal so they are available to tests within your project but not exported as part of your public API.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Review compiler warning TYHP4057 when it appears. If a public method returns or accepts an internal type, consider making the method internal or the type public.</p>
-</div>
-    </div>
-</div>
-<h2>Common Mistakes</h2>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't confuse internal with private. private restricts access to the declaring class only. internal restricts access to the defining project — all classes and files within the same tyhp.json can access internal members.</p>
+        <div class="callout-content"><p>DO mark helper classes, optional-extension backends, and shared constants <code>internal</code> when they exist only so this package can compile. They stay in the emitted PHP and stay usable inside the same <code>tyhp.json</code>.</p>
 </div>
     </div>
 </div>
@@ -629,71 +364,15 @@ $helper-&gt;doWork();
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't expect PHP to enforce internal at runtime. The internal modifier is compile-time only and is stripped from the PHP output. A consumer could theoretically call the method via raw PHP — but the Tyhp type system prevents this.</p>
+        <div class="callout-content"><p>DON'T combine <code>internal</code> with <code>public</code>, <code>protected</code>, or <code>private</code>. That is <code>TYHP4002</code>. Write <code>internal function helper(): void</code> (project-scoped) or <code>private function helper(): void</code> (class-scoped), not both.</p>
 </div>
     </div>
 </div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't combine internal with private — private is already more restrictive than internal. This combination produces compiler error TYHP4055.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't use internal on local variables or loop constructs — internal is a visibility modifier for declarations that appear in the project's API surface. Using it in invalid contexts produces compiler error TYHP4056.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't return or accept internal types from public methods without understanding the consequences. External consumers will see the type as mixed in the tyhpdef and cannot use the full type information.</p>
-</div>
-    </div>
-</div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// WRONG: internal + private is not allowed
-// class Service {
-//     internal private function helper(): void {}
-//     // ERROR TYHP4055: &#039;internal&#039; cannot be combined with &#039;private&#039;
-// }
-
-// CORRECT: use internal alone (project-scoped)
-class Service {
-    internal function helper(): void {}
-}
-
-// CORRECT: use private alone (class-scoped)
-class Service2 {
-    private function helper(): void {}
-}
-</code></pre></div>
-<h2>Compiler Errors</h2>
+<h2>Related</h2>
 <ul>
-<li>TYHP4053: Cannot access internal member '{name}' from outside the defining project '{project}' — triggered when code in one project references an internal method, property, or constant from another project.</li>
-<li>TYHP4054: Cannot access internal type '{name}' from outside the defining project '{project}' — triggered when code in one project references an internal class, interface, trait, enum, or type alias from another project.</li>
-<li>TYHP4055: The 'internal' modifier cannot be combined with 'private' — triggered when both internal and private appear on the same declaration.</li>
-<li>TYHP4056: The 'internal' modifier is not valid in this context — triggered when internal is used in an invalid position such as a local variable.</li>
-<li>TYHP4057 (warning): Internal type '{type}' is exposed via public API member '{member}' — triggered when a public method returns or accepts an internal type. External consumers will see mixed instead.</li>
+<li><a href="cli_tyhpdefGeneration.md#auto-generation-during-build">CLI: Tyhpdef Generation</a> — <code>package.tyhpdef</code> omit</li>
+<li><a href="project_composerPackages.md">Composer Runtime Packages</a> — ambient vs author-only tyhpdefs</li>
+<li><a href="diagnostics_reference.md">Diagnostic Code Reference</a> — <code>TYHP4002</code></li>
 </ul>
 
 </section>
@@ -706,6 +385,7 @@ class Service2 {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

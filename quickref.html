@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -268,22 +284,57 @@
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 declare(output_file=&#039;public/index.php&#039;);
 
-string $greeting = &#039;Hello, Tyhp!&#039;;
+$greeting = &#039;Hello, Tyhp!&#039;;
 </code></pre></div>
-<h2>Strongly Typed Variables</h2>
-<p>Every variable, parameter, property, and return type must have an explicit type or be inferred from its first assignment. All types are non-nullable by default. Prefix with <code>?</code> for nullable.</p>
-<p><a href="tyhp_0100_stronglyTyped.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">string $name = &#039;Alice&#039;;
-$count = 42;                      // inferred as int
-?string $nickname = null;          // nullable
+<h2>PHP Version Gating</h2>
+<p><code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> filter declarations against <code>output.phpVersion</code> (Composer constraints; <code>&quot;8.2&quot;</code> means <code>8.2.*</code>). File-level inactive declare skips the file silently. Gates are compile-time only and never emitted. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> / <code>extension</code> (<strong>TYHP4304</strong>). Omit <code>output.phpVersion</code> → default <code>&quot;8.2&quot;</code> and one <strong>TYHP4306</strong> warning.</p>
+<p><a href="tyhp_0320_phpVersionGating.html">See full documentation →</a></p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
+function array_find(array $array, callable $callback): mixed {
+    return null;
+}
+
+declare(php=&quot;&gt;=8.4&quot;) {
+    function only_84(): void {}
+}
+
+declare(php=&quot;&lt;8.4&quot;) {
+    function only_84(): void {}
+}
+</code></pre></div>
+<h2>PHP Engine Attributes</h2>
+<p><code>#[\Deprecated]</code> warns <strong>TYHP4500</strong> at the use site (literal <code>$message</code> is included; still warns below PHP 8.4). <code>#[\Override]</code> on a method that does not override is <strong>TYHP4129</strong>; on a property it is legal at PHP 8.5+ (below 8.5: <strong>TYHP4127</strong>); on <code>__construct</code> it is always <strong>TYHP4339</strong>. <code>#[\NoDiscard]</code> unused returns warn <strong>TYHP4165</strong> from the invoked declaration (<code>(void)</code> suppresses; interface/abstract callees do not warn). <code>#[\DelayedTargetValidation]</code> at PHP 8.5+ skips target mismatch (<strong>TYHP4127</strong>) for Core attributes on that declaration; functional checks still run.</p>
+<p><a href="tyhp_0330_phpEngineAttributes.html">See full documentation →</a></p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+#[\Deprecated(&#039;use bar()&#039;)]
+function foo(): void {}
+
+#[\NoDiscard]
+function save(): int {
+    return 1;
+}
+
+(void)save();
+</code></pre></div>
+<h2>Typed Variables</h2>
+<p>Locals lead with inference: <code>$var = …</code> is the primary form. Write <code>int $x = …</code> when inference is not enough (no initializer, or a wider type than the right-hand side). Parameters, properties, and return types still need a type. All types are non-nullable by default. Prefix with <code>?</code> for nullable.</p>
+<p><a href="tyhp_0100_typesAndLocals.html">See full documentation →</a></p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$sum = 0;                         // inferred as int
+$items = [1, 2, 3];               // inferred as array&lt;int&gt;
+foreach ($items as $item) {       // inferred from the iterable
+    $sum += $item;
+}
+int $total = $sum;                // explicit when you need a spelled type
+?string $nickname = null;         // nullable — inference would not allow null
 array&lt;string&gt; $names = [&#039;Alice&#039;, &#039;Bob&#039;];
 </code></pre></div>
 <h2>New and Changed Types</h2>
-<p>Built-in types gain generic parameters: <code>array&lt;T&gt;</code>, <code>Iterator&lt;K, V&gt;</code>, <code>Closure&lt;TArgs..., TReturn&gt;</code>, <code>callable&lt;TArgs..., TReturn&gt;</code>. New types include <code>decimal</code> for precise arithmetic and <code>Promise&lt;T&gt;</code> for async.</p>
+<p>Built-in types gain generic parameters: <code>array&lt;T&gt;</code>, <code>Iterator&lt;K, V&gt;</code>, <code>\Closure&lt;callable(TArgs …): TReturn&gt;</code>. Callable signatures are shapes: <code>callable(TArgs …): TReturn</code>. New types include <code>decimal</code> for precise arithmetic, <code>Promise&lt;T&gt;</code> for async, <code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct&gt;</code> for per-key maps, and <code>#[\Tyhp\PhpType]</code> for emitted PHP hints.</p>
 <p><a href="tyhp_0150_newTypes.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">decimal $price = 19.99d;
-decimal $total = $price + 2.00d;
-callable&lt;string, int&gt; $parser;     // accepts string, returns int
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">decimal $price = \Tyhp\decimal(&#039;19.99&#039;);
+callable(string): int $parser;                      // takes string, returns int
+\Closure&lt;callable(string): int&gt; $asClosure;         // Closure instance with that shape
 Promise&lt;User&gt; $future = fetchUser(42);
 </code></pre></div>
 <h2>Type Narrowing and Guards</h2>
@@ -326,15 +377,20 @@ class Pair&lt;T, U = T&gt; { ... }
 class Promise&lt;TReturn extends void|mixed = void&gt; { ... }
 </code></pre></div>
 <h2>Type Aliases</h2>
-<p>The <code>type</code> keyword creates named shortcuts for complex type expressions. Supports generics and class-level aliases with visibility. Fully erased at compile time.</p>
+<p>The <code>type</code> keyword creates named shortcuts for complex type expressions. Supports generics and class-level aliases with visibility. Hints expand to the underlying PHP type. Source aliases also emit a <code>\Tyhp\Type</code> factory (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>).</p>
 <p><a href="tyhp_0700_typeAliases.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">type UserId = int;
 type Callback = callable(string, int): bool;
 type Optional&lt;T = mixed&gt; = T|null;
 
+function f(UserId $id): void {}
+\Tyhp\Type $t = typeof(UserId);
+Optional(typeof(int));
+
 class UserService {
     public type UserIdType = int;
 }
+UserService::UserIdType();
 </code></pre></div>
 <h2>Static Value Types</h2>
 <p>Literal types that represent a single specific value. Enable precise unions as lightweight enums and function overloads with literal dispatch.</p>
@@ -344,17 +400,17 @@ type Color = &#039;red&#039;|&#039;green&#039;|&#039;blue&#039;;
 function getExitCode(): 0|1|2 { return 0; }
 </code></pre></div>
 <h2>Structs</h2>
-<p>Lightweight value types that compile to PHP associative arrays. Support typed properties, defaults, array key aliases (<code>as</code>), inheritance, anonymous declarations, and immutable updates with <code>with</code>.</p>
+<p>Lightweight value types that compile to PHP associative arrays. PHP sees <code>array</code>; there is no runtime shape check. Support typed properties, defaults, array key aliases (<code>as</code>), inheritance, anonymous declarations, and updates with <code>with</code>.</p>
 <p><a href="tyhp_0400_structs.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">struct Point { float $x; float $y; }
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">type Point = struct { float $x; float $y; };
 
 Point $p = new Point() with [x =&gt; 10.5, y =&gt; 20.3];
 Point $p2 = clone $p with [x =&gt; 5.0];
 
-struct ApiResponse {
+type ApiResponse = struct {
     int &#039;status_code&#039; as $statusCode;
     string $body;
-}
+};
 </code></pre></div>
 <h2>Short Function Syntax</h2>
 <p>Use <code>fn</code> for single-expression named functions and methods. Compiles to a standard function with an explicit <code>return</code>.</p>
@@ -373,15 +429,15 @@ function convert(string|int|float $v, bool $toInt = false): int|float {
 }
 </code></pre></div>
 <h2>Scalar Pseudo-Objects</h2>
-<p>Call methods on scalar types (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) using object syntax. Compiles to PHP function calls with zero overhead. A <strong>built-in</strong> method catalog (<code>contains</code>, <code>toUpper</code>, <code>map</code>, …) is planned (Story 21) and is not in this alpha; user <code>extension</code> methods work today. The calls below are the planned catalog style.</p>
+<p>Call methods on scalar types (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) and <code>\Closure</code> using object syntax. Compiles to PHP function calls with zero overhead. The <strong>built-in</strong> catalog ships in <code>tyhp/core</code> (<code>global use extension \Tyhp\StringExtensions</code> and the matching Array / Int / Float / Bool / Closure files) — no per-file <code>use extension</code>. String methods prefer <code>\mb_*</code> via <code>\Tyhp\StringHelper</code> when mbstring is loaded, and fall back to byte APIs otherwise; <code>byte</code> prefix is always byte-oriented (<code>byteLength()</code> → <code>\strlen</code>). Local <code>use</code> only when adapting (<code>hide</code> / <code>as</code>).</p>
 <p><a href="tyhp_1000_scalarPseudoObjects.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$name-&gt;contains(&#039;World&#039;);         // \str_contains($name, &#039;World&#039;)
-$name-&gt;trim()-&gt;tolower();         // \strtolower(\trim($name))
-$numbers-&gt;map(fn($n) =&gt; $n * 2);  // \array_map(fn($n) =&gt; $n * 2, $numbers)
-$price-&gt;round(2);                 // \round($price, 2)
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$name-&gt;contains(&#039;World&#039;);              // \str_contains($name, &#039;World&#039;)
+$name-&gt;trim()-&gt;toLower();              // \Tyhp\StringHelper::strtolower(\trim($name))
+$numbers-&gt;mapped(fn($n) =&gt; $n * 2);    // \array_map(fn($n) =&gt; $n * 2, $numbers)
+$price-&gt;round(2);                      // \round($price, 2)
 </code></pre></div>
 <h2>Extensions</h2>
-<p>Add methods and operator overloads to existing types without modifying their source. Extension method calls compile to static method calls. Imported via <code>use extension</code>.</p>
+<p>Add methods and operator overloads to existing types without modifying their source. A member's form decides what PHP keeps: short <code>fn … =&gt; expr;</code> is Tyhp-only (spliced, no PHP method); a single-<code>return</code> brace body is spliced in Tyhp <strong>and</strong> callable from PHP on the backer; a multi-statement body is a real PHP method that Tyhp calls. Imported via opt-in <code>use extension</code> (or <code>global use extension</code> in a loaded tyhpdef — <code>tyhp/core</code> scalars are already on). Generated library tyhpdef emits a backer class (<code>Name__tyhpExtensionBacker</code>) plus thin <code>extension { }</code> mappings. File-level <code>use</code> is not copied; in-package <code>global use extension</code> that the library authored is. Adaptations: method <code>as</code>, postfix <code>hide</code>, operator <code>insteadof</code> (<code>as</code> on operators is an error).</p>
 <p><a href="tyhp_2100_extensions.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">extension StringExtensions {
     function toCamelCase(extends string $this): string { ... }
@@ -389,9 +445,14 @@ $price-&gt;round(2);                 // \round($price, 2)
 
 use extension App\Extensions\StringExtensions;
 $text-&gt;toCamelCase();  // StringExtensions::toCamelCase($text)
+
+use extension StringOperators {
+    StringOperators::toSnakeCase hide;
+    operator *&lt;string&gt; hide;
+};
 </code></pre></div>
 <h2>Object Declaration Changes</h2>
-<p>Constructors <strong>require</strong> <code>: void</code> or <code>: parent(args...)</code>. Constructor property promotion works as in PHP, including <code>readonly</code>.</p>
+<p>Constructors may omit the return type (same as <code>: void</code>) or write <code>: parent(args...)</code> to chain. Constructor property promotion works as in PHP, including <code>readonly</code>.</p>
 <p><a href="tyhp_1300_newObjectDeclSyntax.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class Point {
     public function __construct(
@@ -408,13 +469,13 @@ class NamedPoint extends Point {
 }
 </code></pre></div>
 <h2>The <code>with</code> Keyword</h2>
-<p>Sets properties on objects/structs immediately after <code>new</code> or <code>clone</code>. Combined with <code>readonly</code> properties, enables immutable update patterns (<code>clone $obj with [...]</code> leaves the original unchanged).</p>
+<p>Sets properties on objects and structs after <code>new</code>, <code>clone</code>, or in place. Object <code>with</code> mutates identity; struct <code>with</code> rebinds an array — the same distinction as passing an object vs passing an array into a PHP function. Combined with <code>readonly</code> properties, <code>clone $obj with [...]</code> leaves the original unchanged.</p>
 <p><a href="tyhp_2200_withKeyword.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$user = new User(&#039;Alice&#039;, 30) with [role =&gt; &#039;admin&#039;];
 $updated = clone $user with [name =&gt; &#039;Bob&#039;, age =&gt; 25];
 </code></pre></div>
 <h2>Operator Overloads</h2>
-<p>Define custom operator behavior on classes and enums. Supports binary, unary, comparison, conversion, and special operators (<code>true</code>/<code>false</code>/<code>empty</code>/<code>null</code>). Calls are rewritten to method calls in PHP output.</p>
+<p>Define custom operator behavior on classes and enums. Supports binary, unary, comparison, conversion, and special operators (<code>true</code>/<code>false</code>/<code>empty</code>/<code>null</code>). Calls are rewritten to method calls in PHP output. Extension operators can be hidden or preferred with <code>hide</code> / <code>insteadof</code>; they cannot be renamed with <code>as</code>.</p>
 <p><a href="tyhp_1600_operatorOverloads.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class Vector {
     operator +(self $l, self $r) =&gt; new static($l-&gt;x + $r-&gt;x, $l-&gt;y + $r-&gt;y);
@@ -429,12 +490,12 @@ $updated = clone $user with [name =&gt; &#039;Bob&#039;, age =&gt; 25];
     // can safely use Entity and Serializable members
 }
 </code></pre></div>
-<h2>The <code>internal</code> Modifier (not in this alpha)</h2>
-<p>Restricts access to the defining project (scoped by <code>tyhp.json</code>). Emitted as <code>public</code> in PHP. Internal symbols are excluded from generated tyhpdef files.</p>
+<h2>The <code>internal</code> Modifier</h2>
+<p>Omits the declaration from the published <code>package.tyhpdef</code>. Emitted as <code>public</code> (members) or unprefixed (top-level) in PHP. Cannot combine with <code>public</code> / <code>protected</code> / <code>private</code> (<code>TYHP4002</code>).</p>
 <p><a href="tyhp_3100_internalModifier.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">internal class InternalHelper { ... }
 internal function computeHash(string $data): string { ... }
-internal const int MAX_RETRIES = 3;
+internal const MAX_RETRIES = 3;
 </code></pre></div>
 <h2>Null-Conditional Assignment (not in this alpha)</h2>
 <p>Assignment through <code>?-&gt;</code> on the left-hand side. If any <code>?-&gt;</code> in the chain encounters null, the assignment becomes a no-op. Works with all assignment operators.</p>
@@ -456,11 +517,15 @@ using ($db = new DatabaseConnection($dsn)) {
 using await ($conn = new AsyncConnection($url)) { ... }
 </code></pre></div>
 <h2>Async and Await</h2>
-<p>First-class <code>async</code>/<code>await</code> using PHP Fibers. Async functions return <code>Promise&lt;T&gt;</code>. Includes combinators (<code>Promise::all</code>, <code>race</code>, <code>batch</code>, <code>timeout</code>), async iteration, and cancellation tokens.</p>
+<p>First-class <code>async</code>/<code>await</code> using PHP Fibers. Async functions return <code>Promise&lt;T&gt;</code> and lower to <code>Promise::_async</code> / <code>_await</code>. Blocking PHP I/O blocks the <code>tyhp/async</code> loop. Includes combinators (<code>Promise::all</code>, <code>race</code>, <code>batch</code>, <code>timeout</code>), async iteration, and cancellation tokens.</p>
 <p><a href="tyhp_2600_asyncAndAwait.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">async function fetchUser(int $id): User {
     return await $repo-&gt;find($id);
 }
+
+Promise&lt;int&gt; $pending = async {
+    return await fetchCount();
+};
 
 array $results = await Promise::all([$fetchA, $fetchB, $fetchC]);
 
@@ -469,40 +534,45 @@ foreach (await $queue-&gt;messagesAsync() as Message $msg) {
 }
 </code></pre></div>
 <h2>Parsable Lambdas and Expression Trees</h2>
-<p>When a parameter is typed <code>PropertyPath&lt;T, R&gt;</code> or <code>Expression&lt;T, R&gt;</code>, an inline <code>fn</code> is captured as a data structure instead of compiling to a closure. Enables building SQL queries, validation rules, etc. at runtime.</p>
+<p>When a parameter is typed <code>PropertyPath&lt;callable(T): R&gt;</code> or <code>Expression&lt;callable(T): R&gt;</code>, an inline <code>fn</code> is captured as a data structure instead of compiling to a closure. Enables building SQL queries, validation rules, etc. at runtime.</p>
 <p><a href="tyhp_3000_parsableLambdas.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">$query-&gt;select(fn ($u) =&gt; $u-&gt;address-&gt;city);  // PropertyPath
 $query-&gt;where(fn ($u) =&gt; $u-&gt;age &gt; 18 &amp;&amp; $u-&gt;isActive); // Expression tree
 
-Expression&lt;User, bool&gt; $expr = fn ($u) =&gt; $u-&gt;age &gt; 18;
+Expression&lt;callable(User): bool&gt; $expr = fn ($u) =&gt; $u-&gt;age &gt; 18;
 </code></pre></div>
-<h2>The <code>new&lt;TArgs...&gt;</code> Type Constraint (not in this alpha)</h2>
-<p>The <code>new</code> built-in type constrains a generic parameter to types with a public constructor accepting specific argument types. Enables type-safe factory patterns and DI containers. Erased to <code>object</code> in PHP.</p>
+<h2>Object Shapes and <code>__New&lt;T&gt;</code></h2>
+<p>A <code>type</code> alias whose RHS is <code>object { … }</code> is a structural object type (instance duck typing). <code>__New&lt;Shape&gt;</code> additionally requires a concrete public constructor (<code>new T(...)</code>). Class-name strings are <code>__ClassName&lt;Shape&gt;</code> / <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code>. Erased to <code>object</code> (or nominal conjuncts from an intersection).</p>
 <p><a href="tyhp_3400_newTypeConstraint.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function create&lt;T extends new&lt;string&gt;&gt;(string $value): T {
-    return new T($value);
-}
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">type Named = object {
+    public function __construct(string $name): void;
+    public function ping(): void;
+};
 
-function makeLogger&lt;T extends new &amp; Logger&gt;(): T {
-    return new T();
+function create&lt;T extends __New&lt;Named&gt;&gt;(string $name): T {
+    return new T($name);
 }
 </code></pre></div>
 <h2>Compile-Time Constructs</h2>
-<p>Four compile-time constructs that resolve at compilation with zero runtime cost.</p>
+<p>Four compile-time constructs. <code>nameof</code> and many <code>default</code> / <code>variable_exists</code> uses fold to literals; <code>typeof</code> emits a <code>\Tyhp\Type</code> value.</p>
 <p><a href="tyhp_2700_compileTimeConstructs.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">nameof($user-&gt;name);        // &#039;name&#039; — refactoring-safe string name
 typeof(int);                // \Tyhp\Type::int()
+typeof(UserId);             // UserId()
+typeof(Optional&lt;int&gt;);      // Optional(\Tyhp\Type::int())
 default(int);               // 0 — zero value for a type
 variable_exists($x);        // true/false literal
 </code></pre></div>
 <h2>Use Statements and Imports</h2>
-<p>All PHP <code>use</code> forms plus generic import aliases (<code>use Foo as Bar&lt;int&gt;</code>) and <code>use extension</code> for importing extension method providers. Unused imports are auto-pruned.</p>
+<p>All PHP <code>use</code> forms plus generic import aliases (<code>use Foo as Bar&lt;int&gt;</code>), <code>use extension</code> for importing extension method providers, and <code>global use</code> (compilation-wide, like C# <code>global using</code> — not PHP <code>global $var</code>). A local <code>use</code> may re-import a globally included symbol to alias or adapt it; a redundant non-mutating local <code>use</code> warns (<code>TYHP4169</code>). Unused imports are auto-pruned.</p>
 <p><a href="tyhp_0350_useStatements.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">use App\Collections\TypedList as IntList&lt;int&gt;;
 IntList $numbers = new IntList();
 
 use extension App\Extensions\StringHelpers;
 $camel = $name-&gt;toCamelCase();
+
+global use extension \Tyhp\StringExtensions;
 </code></pre></div>
 <h2>The Mixed Type</h2>
 <p><code>mixed</code> is the top type and always requires type guard narrowing before any type-specific operations — there is no setting that relaxes this, and no permissive counterpart (Tyhp has no equivalent of TypeScript's <code>any</code>). Prefer generics or union types when the accepted types are known.</p>
@@ -522,7 +592,7 @@ if (\class_exists($cls)) {
 <p><code>include</code>/<code>require</code>/<code>include_once</code>/<code>require_once</code> all require static string paths or constants — no dynamic includes. The compiler performs PSR-4 output splitting with one PHP file per class.</p>
 <p><a href="tyhp_0300_includingFiles.html">See full documentation →</a></p>
 <h2>Lost and Changed Functionality</h2>
-<p>Tyhp disables <code>eval()</code>, short open tags (<code>&lt;?</code>), dynamic properties, and untyped catch blocks. All types must be declared or inferred. All catch blocks require a typed variable. Dynamic features require type narrowing.</p>
+<p>Tyhp disables <code>eval()</code>, short open tags (<code>&lt;?</code>), and untyped catch blocks. Undeclared property writes are allowed only on exact <code>\stdClass</code>; other types declare properties or use <code>__get</code>/<code>__set</code>. All types must be declared or inferred. All catch blocks require a typed variable. Dynamic features require type narrowing.</p>
 <p><a href="tyhp_2900_lostFunctionality.html">See full documentation →</a></p>
 
 </section>
@@ -535,6 +605,7 @@ if (\class_exists($cls)) {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

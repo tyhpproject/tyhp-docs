@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -370,8 +386,30 @@ $e = \Money::__add(100, $a);
 </code></pre></div>
 <p><strong>Tyhpdef native passthrough:</strong> a bodyless <code>operator +(…): T;</code> (no <code>extension</code> keyword) on a<br />
 tyhpdef class means the PHP type already supports the operator. Call sites keep the PHP operator —<br />
-they are <strong>not</strong> rewritten to <code>__add</code>. Mapped overloads use <code>extension operator</code> with a required<br />
-body; see <a href="tyhpdef_classes.md#operator-overloads">Tyhpdef classes — Operator Overloads</a>.</p>
+they are <strong>not</strong> rewritten to <code>__add</code>. See <a href="tyhpdef_classes.md#operators">Tyhpdef classes — Operators</a>.<br />
+Mapped overloads use <code>extension operator</code> with a required <code>=&gt;</code> expression; see<br />
+<a href="tyhpdef_extensions.md#native-vs-mapped-operators">Extensions in Tyhpdef</a>.</p>
+<h2>Hiding and preferring extension operators</h2>
+<p>When two in-scope extensions both declare the same operator (for example <code>operator *&lt;string&gt;</code>), that is a conflict — the same idea as conflicting extension methods. Resolve it on <code>use extension</code> with postfix <code>hide</code> or <code>insteadof</code>. <strong>Operators cannot be renamed with <code>as</code></strong> (<code>TYHP4170</code>).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use extension StringOperators {
+    StringOperators::operator *&lt;string&gt; hide;
+    operator *&lt;array&gt; hide;
+};
+
+use extension StringOperators, RepeatOps {
+    RepeatOps::operator *&lt;string&gt; insteadof StringOperators;
+};
+</code></pre></div>
+<ul>
+<li><code>Foo::bar as baz;</code> is a method rename. <code>Foo::operator * as something;</code> is an <strong>error</strong>.</li>
+<li><code>operator *&lt;string&gt; hide</code> hides that target only. <code>operator * hide</code> hides every <code>*</code> member on that extension.</li>
+<li><code>operator convert hide</code> hides every convert on that extension.</li>
+<li><code>operator +&lt;Money&gt; hide</code> hides all <code>+</code> members for that target (unary and binary together).</li>
+<li><code>hide</code> is a contextual keyword only inside <code>{ }</code> adaptations. Do not use overlay <code>omit</code> here, and do not use PHP trait <code>as private</code>.</li>
+</ul>
+<p>The same syntax works in <code>.tyhp</code> and tyhpdef. See <a href="tyhp_0350_useStatements.md">Use statements</a> and <a href="tyhp_2100_extensions.md#importing-extensions-with-use-extension">Extensions</a>.</p>
 <h2>Unary Operators</h2>
 <p>Unary operator overloads take a single self parameter and emit as static methods.</p>
 <p>Unary operators compile to methods with fixed names:</p>
@@ -704,7 +742,7 @@ $wallet = \Money::__add($wallet, $cost);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not define two forms of the same operator that can both match the same runtime operand combination — forms must be mutually distinguishable.</p>
+        <div class="callout-content"><p>Do not rename an extension operator with <code>as</code> — that is <code>TYHP4170</code>. Hide it or pick a winner with <code>insteadof</code>.</p>
 </div>
     </div>
 </div>
@@ -718,6 +756,7 @@ $wallet = \Money::__add($wallet, $cost);
 <li>The convert operator with both parameter and return type as self.</li>
 <li>A decimal convert target when tyhp/decimal is not a project dependency.</li>
 <li>Missing abstract operator implementation in a concrete child class.</li>
+<li>Renaming an extension operator with <code>as</code> (<code>TYHP4170</code>); use <code>hide</code> or <code>insteadof</code>.</li>
 </ul>
 
 </section>
@@ -730,6 +769,7 @@ $wallet = \Money::__add($wallet, $cost);
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

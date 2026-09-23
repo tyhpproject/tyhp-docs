@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -268,7 +284,10 @@
 <p>The fastest way to create a new Tyhp project is with the <code>init</code> command:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">tyhp init
 </code></pre></div>
-<p>This creates a <code>tyhp.json</code> file, <code>src/index.tyhp</code>, a root <code>composer.json</code> pinning <code>tyhp/php</code> and <code>tyhp/core</code>, and <code>src/</code>, <code>build/</code>, and <code>tyhpdef/</code> directories. Init writes <code>source.tagless</code> (default false) and, when you set a namespace, a <code>psr4</code> mapping.</p>
+<p>If Tyhp came from Composer, use <code>vendor/bin/tyhp init</code> (or <code>composer tyhp init</code>).</p>
+<p>This creates <code>tyhp.json</code>, <code>src/index.tyhp</code>, <code>src/</code>, <code>build/</code>, and <code>tyhpdef/</code> directories, and a root <code>composer.json</code>. Init writes <code>source.tagless</code> (default false) and, when you set a namespace, a <code>psr4</code> mapping. It does <strong>not</strong> run <code>composer install</code> — run that next so runtime packages and the dump hooks install.</p>
+<p>Greenfield <code>composer.json</code> uses <strong><code>@dev</code></strong> for <code>tyhp/core</code> in <code>require</code> and for <code>tyhpdef/php</code> in <code>require-dev</code>, adds <code>tyhp/compiler</code> to <code>require-dev</code>, sets <code>config.allow-plugins.tyhp/core</code> to <code>true</code>, and sets <code>scripts.tyhp</code> plus <code>post-autoload-dump</code> (<code>--install-binary</code>, then <code>generate_tyhpdef --vendor</code>). If <code>composer.json</code> already exists, init <strong>merges</strong> missing keys instead of skipping or replacing the file. Existing version pins and <code>scripts.tyhp</code> are left as-is. Init still aborts when <code>tyhp.json</code> already exists.</p>
+<p><code>tyhp.json</code> loads generated vendor stubs with <code>&quot;tyhpdefInclude&quot;: [&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;]</code> and hand overlays with <code>&quot;overlay&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]</code>. <code>.gitignore</code> includes <code>vendor-tyhpdef/</code>.</p>
 <h2>File Location</h2>
 <p>By default, the Tyhp CLI looks for <code>tyhp.json</code> in the current working directory. You can specify a different path using the <code>--tyhp-project</code> option:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">tyhp build --tyhp-project=/path/to/my/tyhp.json
@@ -285,13 +304,14 @@
         &quot;strictTypes&quot;: true
     },
 
-    &quot;tyhpdefInclude&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;],
+    &quot;tyhpdefInclude&quot;: [&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;],
+    &quot;overlay&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;],
     &quot;tyhpdefExclude&quot;: []
 }
 </code></pre></div>
 <h2>Project Structure Conventions</h2>
 <p>While Tyhp does not enforce a specific directory layout, the following structure is conventional and works well with the default configuration:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">my-project/
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">my-project/
 ├── tyhp.json
 ├── composer.json
 ├── src/
@@ -301,21 +321,25 @@
 │   │   └── AuthService.tyhp
 │   └── index.tyhp
 ├── tyhpdef/
-│   ├── vendor.tyhpdef
-│   └── extensions.tyhpdef
+│   └── (hand overlay .tyhpdef files)
+├── vendor-tyhpdef/
+│   └── (generated by generate_tyhpdef --vendor; do not edit)
 └── build/
     └── (compiled PHP output)
 </code></pre></div>
 <ul>
 <li><code>src/</code> — Your Tyhp source files (<code>.tyhp</code>). This is where you write your application code.</li>
-<li><code>tyhpdef/</code> — Type definition files (<code>.tyhpdef</code>) that describe existing PHP libraries, Composer packages, and PHP extensions to the Tyhp compiler.</li>
+<li><code>tyhpdef/</code> — Hand-written overlay tyhpdefs loaded via <code>tyhp.json</code> <code>&quot;overlay&quot;</code>. Lasting type fixes for generated vendor stubs belong here, not in <code>vendor-tyhpdef/</code>.</li>
+<li><code>vendor-tyhpdef/</code> — Stubs generated by <code>tyhp generate_tyhpdef --vendor</code> (also run from <code>post-autoload-dump</code>). Gitignored; overwritten on regen.</li>
 <li><code>build/</code> — The default output directory where compiled PHP files are written. This directory is created automatically by <code>tyhp build</code>.</li>
 </ul>
 <h2>Relationship to Composer</h2>
-<p>Tyhp projects work alongside Composer. Your project can have both a <code>tyhp.json</code> (for the Tyhp compiler) and a <code>composer.json</code> (for PHP dependency management). When the <code>build.updateComposer</code> option is enabled, the Tyhp build process can automatically generate or update a <code>composer.json</code> in the output directory with PSR-4 autoload mappings for the compiled PHP code.</p>
-<p>Tyhp runtime features (such as generics, decimal types, and async/await) are distributed as Composer packages (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>). The build process automatically adds these as dependencies based on which features your code uses. Package MAJOR is the target PHP (<code>804</code> for PHP 8.4); <code>X.Y</code> is <strong>that package's</strong> version, independent of the compiler. See the Composer Runtime Packages page.</p>
+<p>Tyhp projects work alongside Composer. Your project can have both a <code>tyhp.json</code> (for the Tyhp compiler) and a <code>composer.json</code> (for PHP dependency management). Path interpolation in <code>tyhp.json</code> (<code>{name}</code>, <code>{version}</code>) reads the <strong>project-root</strong> <code>composer.json</code> next to <code>tyhp.json</code>, not a file <code>build.updateComposer</code> may write under <code>output.publishPath</code>. When <code>build.updateComposer</code> is enabled, the Tyhp build process can generate or update <code>composer.json</code> in <code>output.publishPath</code> (default: the project root) with PSR-4 autoload mappings for the compiled PHP code. See <a href="project_optionsList.md#string-interpolation">String interpolation</a>.</p>
+<p>A Composer package that ships tyhpdefs declares them on <strong><code>extra.tyhp.package</code></strong> of that package’s <code>composer.json</code> (<code>include</code> / <code>exclude</code> / <code>overlay</code> globs relative to that file, optional <code>source.tagless</code>). Presence of <code>extra.tyhp.package</code> as a JSON object is what makes the install a tyhpdef package. Vendor discovery reads <code>vendor/*/*/composer.json</code>. <code>tyhpdefInclude</code> / promoted <code>include</code> entries may name <code>composer.json</code> files the same way. <code>tyhp.json</code> stays the author project file; <code>package.tyhpdef</code> is the conventional Track C tyhpdef filename listed in <code>include</code>.</p>
+<p>Install the compiler itself with <code>composer require --dev tyhp/compiler</code> and run <code>vendor/bin/tyhp</code> or <code>composer tyhp …</code>. <code>tyhp install composer</code> installs the Composer <strong>tool</strong>; <code>tyhp composer install</code> runs Composer’s <code>install</code>. See <a href="intro_installation.md">Installing Tyhp</a>.</p>
+<p>Tyhp runtime features (such as generics, decimal types, and async/await) are distributed as Composer packages (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>). The build process automatically adds these as dependencies based on which features your code uses. Package MAJOR is the target PHP (<code>804</code> for PHP 8.4); <code>X.Y</code> is <strong>that package's</strong> version, independent of the compiler. <code>tyhp init</code> records <code>tyhp/core</code> as <code>@dev</code> in <code>require</code> and <code>tyhpdef/php</code> as <code>@dev</code> in <code>require-dev</code>. See the Composer Runtime Packages page.</p>
 <h2>No Configuration Required</h2>
-<p>If no <code>tyhp.json</code> file is found, the compiler uses sensible defaults: it looks for <code>.tyhp</code> files in the current directory, outputs to <code>build/</code>, and targets PHP 8.4. An informational message is displayed to let you know defaults are being used.</p>
+<p>If no <code>tyhp.json</code> file is found, the compiler uses sensible defaults: it looks for <code>.tyhp</code> files in the current directory, outputs to <code>build/</code>, and targets PHP <strong>8.2</strong> (warning <strong>TYHP4306</strong>). An informational message is displayed to let you know defaults are being used.</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -339,6 +363,7 @@
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

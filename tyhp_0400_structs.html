@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -272,25 +288,38 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Struct declarations are completely erased from PHP output. They exist only at compile time for type checking. Instantiation produces an associative array.</p>
+        <div class="callout-content"><p>Struct declarations are completely erased from PHP output. They exist only at compile time for type checking. Instantiation produces an associative array. PHP callers see <code>array</code>; the compiler does not emit a runtime shape check.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p><code>#[\Tyhp\Php]</code> is <strong>illegal</strong> on a <code>struct</code> declaration (<strong>TYHP4304</strong>). Gate a struct by PHP version with <code>declare(php=…)</code> instead — see <a href="tyhp_0320_phpVersionGating.md#structs-and-extensions">PHP Version Gating</a>.</p>
+<p>Per-key <code>ArrayAccess</code> over a struct schema is <code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct&gt;</code> — see <a href="tyhp_0150_newTypes.md#the-tyhpcontractsarrayaccessshapetstruct-type">New and Changed Types</a>.</p>
 </div>
     </div>
 </div>
 <h2>Defining a Struct</h2>
-<p>A struct is declared with the struct keyword followed by a name and a body containing typed properties. Each property must have an explicit type annotation and ends with a semicolon.</p>
+<p>A named struct is a <code>type</code> alias whose right-hand side is a struct shape. Each property must have an explicit type annotation and ends with a semicolon. <code>new Alias() with […]</code> constructs the array.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Point {
+type Point = struct {
     float $x;
     float $y;
-}
+};
 
-struct UserProfile {
+type UserProfile = struct {
     string $name;
     string $email;
     int $age;
     ?string $bio;  // Nullable = optional, defaults to null
-}
+};
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — struct declarations are erased entirely.
@@ -300,14 +329,14 @@ struct UserProfile {
 <p>Every struct property must have an explicit type annotation. Type inference is not allowed in struct property declarations. Properties without an initializer (<code>=</code>) are <strong>required</strong> at <code>new</code> — there are no implicit zeros for non-nullable fields. Omitting a required key is <strong>TYHP CheckerStructRequiredPropertyNotSet</strong>. Nullable properties without an explicit default default to <code>null</code> and are optional.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Config {
+type Config = struct {
     string $host;                  // Required — must be set at `new` (no implicit &#039;&#039;)
     int $port = 0;                 // Optional — default 0
     ?string $username;             // Optional — nullable defaults to null
     ?string $password;             // Optional — nullable defaults to null
     bool $useSsl = false;          // Optional — default false
     float $timeout = 0.0;          // Optional — default 0.0
-}
+};
 
 // ERROR — required $host is missing
 // Config $bad = new Config();
@@ -318,16 +347,16 @@ Config $ok = new Config() with [host =&gt; &#039;localhost&#039;];
 <p>Struct properties can be aliased to arbitrary PHP array keys using the as keyword. The alias may be a quoted string or a decimal integer. This lets you map a clean Tyhp property name to an existing array key that is not a valid PHP variable name — special characters, spaces, nested-looking paths, or numeric indexes. This is particularly useful when working with external data sources like APIs, databases, or positional argument lists.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct ApiResponse {
+type ApiResponse = struct {
     int &#039;status_code&#039; as $statusCode;
     string &#039;error-message&#039; as $errorMessage;
     array &#039;data.items&#039; as $items;
-}
+};
 
-struct CallbackArgs {
+type CallbackArgs = struct {
     mixed 0 as $arg1;
     ?mixed 1 as $arg2;
-}
+};
 
 ApiResponse $response = new ApiResponse() with [
     statusCode =&gt; 0,
@@ -355,10 +384,10 @@ $first = $args[0];
 <p>Structs are instantiated with the new keyword. Properties without <code>=</code> must be set in the <code>with</code> clause; <code>new Point()</code> is an error if <code>$x</code> and <code>$y</code> are required. When every value is known at compile time, <code>new Point() with [...]</code> folds to a single array literal. Otherwise <code>with</code> emits <code>\array_replace</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Point {
+type Point = struct {
     float $x;
     float $y;
-}
+};
 
 // ERROR — required x and y are not set
 // Point $origin = new Point();
@@ -369,10 +398,10 @@ Point $p = new Point() with [
     y =&gt; 20.3
 ];
 
-struct Origin {
+type Origin = struct {
     float $x = 0.0;
     float $y = 0.0;
-}
+};
 
 Origin $origin = new Origin();  // OK — defaults fill x and y
 </code></pre></div>
@@ -388,10 +417,10 @@ $origin = [&#039;x&#039; =&gt; 0.0, &#039;y&#039; =&gt; 0.0];
 <p>In Tyhp, you access struct properties using the arrow operator (-&gt;), just like object properties. The compiler rewrites these to array key access in the PHP output.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct User {
+type User = struct {
     string $name;
     int $age;
-}
+};
 
 User $user = new User() with [name =&gt; &#039;Alice&#039;, age =&gt; 30];
 
@@ -417,14 +446,14 @@ $user[&#039;age&#039;] = 31;
 <p>Struct types use structural (schema-based) compatibility, not nominal compatibility. Two struct types are compatible if the source struct has all the properties required by the target struct with compatible types. Extra properties on the source are allowed. This is the opposite of classes, which use nominal (name-based) typing.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Named {
+type Named = struct {
     string $name;
-}
+};
 
-struct Person {
+type Person = struct {
     string $name;
     int $age;
-}
+};
 
 Person $person = new Person() with [name =&gt; &#039;Alice&#039;, age =&gt; 30];
 
@@ -438,15 +467,15 @@ Named $named = $person;
 <p>A struct can extend another struct to inherit its properties. The child struct includes all properties from the parent and can add additional properties.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct BaseEntity {
+type BaseEntity = struct {
     int $id;
     string $createdAt;
-}
+};
 
-struct UserEntity extends BaseEntity {
+type UserEntity = struct extends BaseEntity {
     string $name;
     string $email;
-}
+};
 
 // UserEntity has: $id, $createdAt, $name, $email
 UserEntity $user = new UserEntity() with [
@@ -462,22 +491,22 @@ UserEntity $user = new UserEntity() with [
 $user = [&#039;id&#039; =&gt; 1, &#039;createdAt&#039; =&gt; &#039;2025-01-01&#039;, &#039;name&#039; =&gt; &#039;Alice&#039;, &#039;email&#039; =&gt; &#039;alice@example.com&#039;];
 </code></pre></div>
 <h2>Generic Structs</h2>
-<p>Structs can declare generic type parameters, the same way classes do. Parameters may carry constraints and defaults (generic defaults are the same Story 28 feature as on classes). Instantiation and type annotations supply type arguments; those arguments are substituted into property types (including inherited properties when <code>extends</code> passes type arguments to the parent). Like all struct machinery, generics are compile-time only — the PHP output is still a plain array with no runtime generic tracking.</p>
+<p>Structs can declare generic type parameters, the same way classes do. Parameters may carry constraints and defaults (generic defaults are the same feature as on classes). Instantiation and type annotations supply type arguments; those arguments are substituted into property types (including inherited properties when <code>extends</code> passes type arguments to the parent). Like all struct machinery, generics are compile-time only — the PHP output is still a plain array with no runtime generic tracking.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Box&lt;T&gt; {
+type Box&lt;T&gt; = struct {
     T $value;
-}
+};
 
-struct CallableArgs1&lt;T1&gt; {
+type CallableArgs1&lt;T1&gt; = struct {
     T1 0 as $_1;
-}
+};
 
-struct CallableArgs2&lt;T1, T2&gt; extends CallableArgs1&lt;T1&gt; {
+type CallableArgs2&lt;T1, T2&gt; = struct extends CallableArgs1&lt;T1&gt; {
     T2 1 as $_2;
-}
+};
 
-Box&lt;int&gt; $box = new Box&lt;int&gt;() with [value =&gt; 42];
+Box&lt;int&gt; $box = new Box() with [value =&gt; 42];
 int $n = $box-&gt;value;
 
 CallableArgs2&lt;string, int&gt; $args = new CallableArgs2&lt;string, int&gt;() with [
@@ -496,7 +525,7 @@ $args = [0 =&gt; &quot;hello&quot;, 1 =&gt; 42];
 $first = $args[0];
 </code></pre></div>
 <h2>Anonymous Structs</h2>
-<p>Structs can be declared inline without a name. Anonymous structs are useful for one-off data shapes, such as function return types or local data groupings.</p>
+<p>Structs can appear inline in type position without a name — parameters, returns, properties, bounds, and unions. Expression <code>new struct { … } with […]</code> still builds a one-off value. Group a struct type as an arm of <code>|</code> / <code>&amp;</code> with parentheses.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Anonymous struct as a variable type
@@ -512,6 +541,10 @@ function getCoords(): struct { float $lat; float $lng; } {
         float $lng;
     } with [lat =&gt; 40.7128, lng =&gt; -74.0060];
 }
+
+function maybeOrigin(): (struct { float $lat; float $lng; }) | null {
+    return null;
+}
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 // PHP output — anonymous structs become inline arrays
@@ -526,10 +559,10 @@ function getCoords(): array {
 <p>The with keyword creates a modified copy of a struct. Since structs compile to arrays and arrays are value types in PHP, the original struct is not modified. This enables an immutable update pattern.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Point {
+type Point = struct {
     float $x;
     float $y;
-}
+};
 
 Point $p1 = new Point() with [x =&gt; 1.0, y =&gt; 2.0];
 
@@ -553,10 +586,10 @@ $p2 = \array_replace($p1, [&#039;x&#039; =&gt; 5.0]);
 <p>The with keyword can also be applied directly to an existing struct value — without new or clone — to update properties in place. For structs this is a convenient shorthand for reassigning <code>\array_replace</code> of the existing array back to the same variable. Because structs are value types backed by arrays, only the variable being updated is affected; any prior copies remain unchanged.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Point {
+type Point = struct {
     float $x;
     float $y;
-}
+};
 
 Point $p = new Point() with [x =&gt; 1.0, y =&gt; 2.0];
 
@@ -584,13 +617,13 @@ $p = \array_replace($p, [&#039;x&#039; =&gt; 9.0]);
     </div>
 </div>
 <h2>Structs as Function Parameters</h2>
-<p>Structs can be used as function parameter types and return types. The compiler validates that the passed arguments match the struct schema at compile time.</p>
+<p>Structs can be used as function parameter types and return types. The compiler validates that the passed arguments match the struct schema at compile time. PHP still sees <code>array</code> — a PHP caller can pass any array; there is no runtime shape check.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-struct Dimensions {
+type Dimensions = struct {
     float $width;
     float $height;
-}
+};
 
 function calculateArea(Dimensions $dims): float {
     return $dims-&gt;width * $dims-&gt;height;
@@ -698,12 +731,12 @@ $area = calculateArea($box);
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR — structs cannot contain methods
-// struct BadStruct {
+// type BadStruct = struct {
 //     int $value;
 //     function getValue(): int {  // Compile error!
 //         return $this-&gt;value;
 //     }
-// }
+// };
 </code></pre></div>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
@@ -720,14 +753,14 @@ $area = calculateArea($box);
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR — missing type annotation
-// struct BadStruct {
+// type BadStruct = struct {
 //     $name;  // Compile error! Type required
-// }
+// };
 
 // CORRECT
-struct GoodStruct {
+type GoodStruct = struct {
     string $name;
-}
+};
 </code></pre></div>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
@@ -764,6 +797,7 @@ struct GoodStruct {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link active" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -507,7 +523,7 @@ create&lt;MyClass&gt;();      // T = MyClass (explicit)
 
 function transform&lt;TIn = string, TOut = TIn&gt;(
     TIn $input,
-    callable&lt;TIn, TOut&gt; $fn
+    callable(TIn): TOut $fn
 ): TOut {
     return $fn($input);
 }
@@ -618,11 +634,11 @@ class AsyncTask&lt;TReturn extends void|mixed = mixed&gt; {
 // class Bad5&lt;T = T&gt; {}
 </code></pre></div>
 <h2>Tyhpdef Syntax</h2>
-<p>Hand-written tyhpdefs can declare the same generic defaults. Auto-generation (<code>generate_tyhpdef</code>) is not in this alpha.</p>
+<p>Hand-written tyhpdefs can declare the same generic defaults. Overlay <code>partial class Foo&lt;T = mixed&gt;;</code> adds those defaults without rewriting members. Layer 2 stub harvest emits a default when the stub constrains the parameter (the default is that constraint; <code>of mixed</code> is <code>= mixed</code> with no bound). Unconstrained stub templates stay required unless a preceding default forces a trailing <code>= mixed</code>. PHP-source harvest (<code>--source</code> / <code>--package-path</code>) fills missing type arguments on a <code>@template</code> bound from that bound type's own default, else its constraint, else <code>mixed</code> (<code>@template T of Box</code> when <code>Box</code> is unconstrained → <code>T extends \Ns\Box&lt;mixed&gt;</code>). Header changes are overlay <code>partial class Foo&lt;…&gt;;</code>; member edits are a separate <code>partial class Foo { … }</code>. See <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a> and <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 class Promise&lt;TReturn extends void|mixed = mixed&gt; {
-    public static function _async&lt;T extends void|mixed = mixed&gt;(callable&lt;T&gt; $fn): Promise&lt;T&gt;;
+    public static function _async&lt;T extends void|mixed = mixed&gt;(callable(): T $fn): Promise&lt;T&gt;;
     public static function _await&lt;T&gt;(Promise&lt;T&gt; $promise): T;
 }
 
@@ -772,7 +788,7 @@ type Collection&lt;T = mixed&gt; = array&lt;T&gt;;
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_3400_newTypeConstraint.html">&larr; The new&lt;TArgs...&gt; Constructable Object Type</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_3400_newTypeConstraint.html">&larr; Object Shapes and <code>__New&lt;T&gt;</code></a></div>
     <div class="docs-next"><a class="btn btn-outline-primary" href="diagnostics_overview.html">Compiler Diagnostics Overview &rarr;</a></div>
 </nav>
 
@@ -780,6 +796,7 @@ type Collection&lt;T = mixed&gt; = array&lt;T&gt;;
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

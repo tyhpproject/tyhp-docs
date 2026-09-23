@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link active" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -277,8 +293,9 @@ string $globalAppName;
 // Import a typed array
 array&lt;string, mixed&gt; $globalSettings;
 </code></pre></div>
-<h2><code>??</code> fallbacks (parsed, not applied)</h2>
-<p>The grammar accepts <code>??</code> after a tyhpdef variable or constant (<code>int $maxRetries ?? 3</code>). This alpha does <strong>not</strong> bind that default or emit <code>isset</code> / <code>defined()</code> / <code>ErrorException</code> checks. Treat <code>??</code> as reserved syntax: declare the type you actually use, and handle missing PHP globals in Tyhp/PHP yourself.</p>
+<h2><code>??</code> expected start values</h2>
+<p>The grammar accepts <code>??</code> after a tyhpdef variable, constant, or class property (<code>int $maxRetries ?? 3</code>, <code>const int FLAG ?? 1</code>, <code>public array $items ?? [];</code>). That clause records the value PHP is <strong>expected</strong> to start with. The live value may differ; tyhpdef does not assign or define it. Handle missing PHP globals at the use site (<code>isset</code>, <code>??</code> in <strong>code</strong>, or nullable types).</p>
+<p>Parameter defaults are unrelated: they still use <code>function foo(int $x = 1)</code>.</p>
 <h2>Variable Aliasing</h2>
 <p>Variables can be aliased using <code>as $newName</code> so your Tyhp code uses a different name than the PHP global.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -289,7 +306,7 @@ Guest $blah1 as $globalGuest;
 <h2>Import by reference</h2>
 <p>Tyhpdef variable declarations do <strong>not</strong> accept <code>&amp;</code>. <code>int &amp;$sharedCounter</code> is not a tyhpdef form. Object values are PHP references as usual; scalars are whatever PHP already stored.</p>
 <h2>Declaring Constants</h2>
-<p>Constants are declared using the <code>const</code> keyword followed by the type and name. Constants are always immutable and globally accessible.</p>
+<p>Constants are declared using the <code>const</code> keyword followed by the type and name. Tyhpdef file-level constants <strong>need</strong> a type because they describe existing PHP constants that may not have an exact value in the tyhpdef. (Tyhp source does not allow a type on file-level <code>const</code>; PHP has no typed file-level constants.)</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // Simple constant declarations
@@ -308,7 +325,7 @@ const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 const string \App\Config\DATABASE_URL as DB_URL;
 </code></pre></div>
 <h2>Superglobal Type Declarations</h2>
-<p>PHP superglobals (<code>$_GET</code>, <code>$_POST</code>, <code>$_SERVER</code>, and similar) are typed by the <code>tyhp/php</code> package. You do not need to redeclare them unless you want a narrower project-specific type.</p>
+<p>PHP superglobals (<code>$_GET</code>, <code>$_POST</code>, <code>$_SERVER</code>, and similar) are typed by the <code>tyhpdef/php</code> package. You do not need to redeclare them unless you want a narrower project-specific type.</p>
 <h2>Deprecated and Obsolete</h2>
 <p>Both <strong>top-level</strong> variables and constants can be marked as <code>deprecated</code> or <code>obsolete</code>. Member-level markers on class constants are parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -327,7 +344,7 @@ deprecated string $legacyConfig;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>DO declare accurate types for the globals you actually read. Handle missing values in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types), not via tyhpdef <code>??</code> (not applied in this alpha).</p>
+        <div class="callout-content"><p>DO declare accurate types for the globals you actually read. Handle missing values in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types). Tyhpdef <code>??</code> only documents PHP's expected start value.</p>
 </div>
     </div>
 </div>
@@ -351,7 +368,7 @@ deprecated string $legacyConfig;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T import PHP superglobals ($_GET, $_POST, $_SERVER, etc.) unless you are intentionally narrowing the <code>tyhp/php</code> stubs. Duplicate declarations can conflict.</p>
+        <div class="callout-content"><p>DON'T import PHP superglobals ($_GET, $_POST, $_SERVER, etc.) unless you are intentionally narrowing the <code>tyhpdef/php</code> stubs. Duplicate declarations can conflict.</p>
 </div>
     </div>
 </div>
@@ -367,6 +384,8 @@ deprecated string $legacyConfig;
 </div>
     </div>
 </div>
+<h2>Extern constants</h2>
+<p>A name-only <code>extern const \GMP_ROUND_PLUSINF;</code> occupies the const name when this package mentions a constant it does not own. Using it from <code>.tyhp</code> is <code>TYHP4307</code>. See <a href="tyhpdef_extern.md">Extern Types</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -378,6 +397,7 @@ deprecated string $legacyConfig;
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

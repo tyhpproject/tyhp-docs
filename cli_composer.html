@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto"> 
 <head>
-    <title>Release Planning - Tyhp</title>
+    <title>CLI: Composer - Tyhp</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -211,22 +211,22 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
 
 
-<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
 
-<li class="nav-item"><a class="nav-link active" href="release_planning.html">Release Planning</a></li>
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
 
 <li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
 
 <li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
 
 
-<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
-<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+<li class="nav-item"><a class="nav-link active" href="cli_composer.html">CLI: Composer</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
@@ -274,56 +274,90 @@
 	    </div>
 	    <div class="docs-content">
 		    <div class="container">
-				<section class="docs-section" id="Release_Planning">
-    <h2 class="section-heading">Release Planning</h2>
-    
-    <p>Tyhp <strong>805.1.0-beta.1</strong> is a public beta. This page describes versioning, what “beta” means, and how later releases are expected to work.</p>
-<h2>Current status</h2>
+				<section class="docs-section" id="CLI_Composer">
+    <h2 class="section-heading">CLI: Composer</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 2</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>The <code>composer</code> action runs Composer through Tyhp. After a successful <code>require</code>, <code>install</code>, or <code>update</code>, Tyhp runs <code>generate_tyhpdef --vendor</code> unless <code>--no-tyhpdef</code> is set. <code>TYHP_NO_VENDOR_TYHPDEF=1</code> also skips that hook (and the Composer dump-script generate step).</p>
+<p><code>tyhp composer sync</code> is a Tyhp subcommand: it writes ambient tyhpdef pins from installed <code>extra.tyhp.require</code> onto the root <code>require-dev</code> and Composer-updates those packages. It is the same write path as <code>tyhp build --fix</code>. Ordinary <code>tyhp build</code> and <code>tyhp lint</code> never rewrite <code>composer.json</code> and never run Composer.</p>
+<h2>Usage</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp composer &lt;command&gt; [args]
+tyhp composer sync
+tyhp composer --help
+</code></pre></div>
+<p>When no Composer subcommand is given, Tyhp shows this help instead of forwarding to Composer.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp composer require guzzlehttp/guzzle
+tyhp composer install
+tyhp composer update
+tyhp composer sync
+</code></pre></div>
+<h2>Options</h2>
 <ul>
-<li>Compiler version: <strong>805.1.0-beta.1</strong> (MAJOR <code>805</code> = highest supported PHP is 8.5)</li>
-<li>PHP floor: <strong>8.2</strong> (not 8.1)</li>
-<li>Roadmap: <strong>Tier 1 complete</strong> (stories 01–16.5). Sourcemaps, Xdebug proxy, <code>tyhp language_server</code>, <code>generate_tyhpdef</code>, and <code>tyhpdef/php</code> / <code>tyhpdef/php-ext-*</code> are also in this beta. Remaining Tier 2+ work includes the web playground, optimizer, and later language features.</li>
-<li>Semver compatibility guarantees apply from the first <strong>stable</strong> 805.x release, not from beta.</li>
+<li><code>--help</code> — Show this help (same as <code>help --subject=composer</code>).</li>
+<li><code>--no-tyhpdef</code> — Skip <code>generate_tyhpdef --vendor</code> after Composer <code>require</code>, <code>install</code>, or <code>update</code>. Does not apply to a direct <code>tyhp generate_tyhpdef --vendor</code>.</li>
 </ul>
-<p>A prerelease suffix (<code>-alpha.N</code>, <code>-beta.N</code>, <code>-rc.N</code>) is allowed before stable <code>805.N.N</code>. Beta may still break source compatibility. See <code>VERSIONING.md</code> in the compiler repository.</p>
-<h2>Versioning Strategy</h2>
-<p>Tyhp uses semantic versioning (MAJOR.MINOR.PATCH). The compiler MAJOR encodes the highest PHP version the release explicitly supports, written as the PHP major digit followed by the two-digit PHP minor. For example, compiler version 805.0.0 means &quot;PHP 8.5 and below&quot; — the compiler still emits for 8.2–8.4 when <code>output.phpVersion</code> is set.</p>
-<p>Published runtime packages version independently of the compiler. Compiled <code>tyhp/*</code> helpers (<code>core</code>, <code>async</code>, <code>decimal</code>, <code>lambda</code>) each have their own <code>X.Y</code>; Packagist MAJOR is the PHP target (<code>804.1.4</code> means PHP 8.4 + core <code>1.4</code>). A PHP 8.3 app requires <code>803.{X.Y}</code> for that helper; a library that supports 8.3+ can require <code>803.X.* || 804.X.* || 805.X.*</code> using <strong>that package's</strong> X. <code>tyhpdef/*</code> packages publish the version in that package’s <code>composer.json</code> (not <code>80N.X.Y</code>). See the Composer Runtime Packages page.</p>
+<h2>Ambient tyhpdefs (<code>extra.tyhp.require</code>)</h2>
+<p>Compiled Tyhp libraries declare which Composer packages their <strong>consumers</strong> must install to type-check the public API. That map lives at <code>extra.tyhp.require</code> on the library’s <code>composer.json</code>. See <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+<p><code>tyhp/core</code> is a Composer plugin (<code>type: composer-plugin</code>). Allow it once:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">&quot;config&quot;: {
+    &quot;allow-plugins&quot;: {
+        &quot;tyhp/core&quot;: true
+    }
+}
+</code></pre></div>
+<p><code>tyhp init</code> writes that key. <code>tyhp composer</code> (including <code>install</code>, <code>update</code>, and <code>require</code>) writes it before invoking Composer when the key is missing, as do <code>tyhp composer sync</code> and <code>tyhp build --fix</code>. An explicit <code>false</code> is left as-is. A raw <code>composer</code> command still needs the key already on disk (or Composer’s prompt). A <code>--no-dev</code> Composer install does not write <code>require-dev</code> and does not rewrite <code>composer.json</code>.</p>
+<h2>First <code>composer require tyhp/core</code></h2>
+<p>The first <code>composer require tyhp/core</code> often does <strong>not</strong> install ambient tyhpdefs (<code>tyhpdef/php</code> and any extras further down the require tree) in that same transaction. That is expected.</p>
+<p>After adding <code>tyhp/core</code> (or another Tyhp library that declares extras), run:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer update
+</code></pre></div>
+<p>or:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp composer sync
+</code></pre></div>
+<p>If extras are still missing, <code>tyhp build</code> and <code>tyhp lint</code> explain what to install (<code>TYHP7701</code>). <code>tyhp composer sync</code> or <code>tyhp build --fix</code> writes the installed extra closure onto root <code>require-dev</code> (plus <code>tyhp/compiler</code> when <code>tyhp/core</code> is in the graph, except when the root package is already <code>tyhp/compiler</code>) and Composer-updates those packages. The check reads only the root <code>composer.json</code> and <code>vendor/composer/installed.json</code> — it does not fetch Packagist. If extras on packages that are not installed yet are unknown, run <code>composer update</code> first.</p>
+<h2>Build and lint</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Command</th>
+<th>Extras check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tyhp build</code> / <code>tyhp lint</code> (default)</td>
+<td>Reports missing extras (<code>TYHP7701</code>, compile fails) and a missing <code>tyhp/compiler</code> pin (<code>TYHP7702</code>, warning). Does <strong>not</strong> write <code>composer.json</code> and does <strong>not</strong> run Composer.</td>
+</tr>
+<tr>
+<td><code>tyhp build --strict</code> / <code>tyhp lint --strict</code> / <code>build.strictMode</code></td>
+<td>Same, and <code>TYHP7702</code> fails the run.</td>
+</tr>
+<tr>
+<td><code>tyhp build --fix</code> / <code>tyhp composer sync</code></td>
+<td>Writes root <code>require-dev</code> from the <strong>installed</strong> extra closure, then Composer-updates those packages.</td>
+</tr>
+<tr>
+<td>Ordinary <code>tyhp build</code></td>
+<td>Never auto-updates Composer.</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tyhp lint --fix</code> is the experimental source auto-fixer. It does <strong>not</strong> sync extras. Use <code>tyhp composer sync</code> or <code>tyhp build --fix</code> for that.</p>
+<p>A disjoint extra constraint vs an existing root pin is <code>TYHP7700</code>. A <code>composer.json</code> parse/write failure during sync is <code>TYHP7703</code>.</p>
+<h2>Related</h2>
 <ul>
-<li>MAJOR — Encodes the highest supported PHP version as &lt;php-major&gt;&lt;php-minor-two-digits&gt;. So 704 = PHP 7.4, 800 = PHP 8.0, 804 = PHP 8.4, 805 = PHP 8.5, and (hypothetically) 953 = PHP 9.53. MAJOR <strong>only</strong> changes when that PHP ceiling changes. It is not Tyhp's breaking-change counter.</li>
-<li>MINOR — Tyhp language features, compiler capabilities, deprecations, and — after notice — removal or replacement of Tyhp syntax. This is the Tyhp version axis for a given PHP target. Resets to 0 on a new MAJOR.</li>
-<li>PATCH — Bug fixes and non-breaking tweaks (including opt-in flags that keep current defaults). Resets to 0 on a new MINOR.</li>
-</ul>
-<p>This encoding means a Tyhp MAJOR bump only happens alongside a PHP minor version change (e.g., PHP 8.3 to 8.4). Tyhp syntax deprecation and removal happen on MINOR, even when they are not caused by a new PHP version. When PHP 9.0 is targeted, the corresponding Tyhp MAJOR would be 900.</p>
-<h2>Release Process</h2>
-<p>After alpha, releases are expected to follow:</p>
-<ol>
-<li>Development — New features and fixes land on the default branch.</li>
-<li>Alpha / Beta — Public testing. Breaking changes are allowed.</li>
-<li>Release Candidate (RC) — Feature-complete for that MAJOR; only critical fixes.</li>
-<li>Stable Release — Tagged; semantic versioning guarantees apply from this point.</li>
-<li>Patch Releases — Bug fixes as patch versions on the current stable MAJOR.</li>
-</ol>
-<h2>Backward Compatibility</h2>
-<p>Within a stable major version, Tyhp aims to maintain backward compatibility for compiled output. Alpha and beta do <strong>not</strong> make that promise. When breaking changes to Tyhp syntax are necessary after stable, they follow a deprecation cycle:</p>
-<ol>
-<li>The existing syntax is deprecated with a compiler warning in version N.</li>
-<li>The deprecated syntax continues to work for at least one minor version.</li>
-<li>The syntax is removed or changed in version N+1 or later.</li>
-</ol>
-<h2>PHP Syntax Conflict Resolution</h2>
-<p>Because Tyhp is a superset of PHP, new PHP versions may occasionally introduce syntax that conflicts with Tyhp-specific syntax. When this occurs, Tyhp works through the steps in <code>VERSIONING.md</code> <strong>in order</strong>: first <strong>integrate-and-detect</strong> (keep both syntaxes if they can be distinguished at compile time); then deprecate Tyhp’s form with compile-time options; then remove the old syntax in a later <strong>MINOR</strong>. Do not wait for the next PHP ceiling / MAJOR.</p>
-<h2>Tracking Changes</h2>
-<ul>
-<li>The <a href="release_roadmap.md">roadmap</a> page</li>
-<li>The <a href="https://github.com/tyhpproject/tyhp/issues">GitHub issue tracker</a></li>
-<li>GitHub Release notes</li>
+<li><a href="project_composerPackages.md">Composer Runtime Packages</a> — <code>extra.tyhp.require</code>, library authors, <code>tyhp/core</code> plugin</li>
+<li><a href="intro_gettingStarted.md">Getting Started</a> — init, first require</li>
+<li><a href="cli_build.md">CLI: Build</a> — <code>--fix</code> vs ordinary build</li>
+<li><a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a> — <code>--vendor</code> after Composer</li>
+<li><a href="diagnostics_reference.md">Diagnostic Code Reference</a> — <code>TYHP7700</code>–<code>TYHP7703</code></li>
 </ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhpdef_runTimeErrorsAndExceptions.html">&larr; Runtime Errors and Exceptions in Tyhpdef</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="release_roadmap.html">Roadmap &rarr;</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_build.html">&larr; CLI: Build</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="cli_interopContract.html">CLI: Interop Contract &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,11 +279,11 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 13</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>The Tyhp compiler is a .NET application targeting .NET 9. This page covers system requirements and how to install the <strong>805.0.0-alpha.1</strong> compiler.</p>
+    <p>The Tyhp compiler is a .NET application targeting .NET 9. This page covers system requirements and how to install the <strong>805.1.0-beta.1</strong> compiler.</p>
 <h2>System Requirements</h2>
 <ul>
-<li>PHP 8.2, 8.3, 8.4, or 8.5 — required to run compiled output</li>
-<li>Composer — required to install <code>tyhp/php</code>, <code>tyhp/core</code>, and other runtime packages</li>
+<li>PHP 8.2, 8.3, 8.4, or 8.5 — required to run compiled output, and to use the Composer <code>tyhp/compiler</code> shim</li>
+<li>Composer — required to install <code>tyhpdef/php</code>, <code>tyhp/core</code>, and other runtime packages. If you already have the Tyhp CLI, <code>tyhp install composer</code> can install Composer for you</li>
 <li>Self-contained compiler binaries — no .NET install needed</li>
 <li>Framework-dependent binaries — <a href="https://dotnet.microsoft.com/en-us/download/dotnet/9.0">.NET 9 runtime</a></li>
 </ul>
@@ -283,32 +299,108 @@
 </div>
     </div>
 </div>
-<h2>Installation (recommended)</h2>
+<h2>Install with Composer</h2>
+<p><code>tyhp/compiler</code> is a Composer package. Add it as a <strong>project</strong> <code>require-dev</code> dependency; Composer places a <code>vendor/bin/tyhp</code> shim that downloads the native compiler.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require --dev tyhp/compiler
+vendor/bin/tyhp init
+composer update
+vendor/bin/tyhp build
+</code></pre></div>
+<p>You can also run Tyhp through the root Composer script that <code>tyhp init</code> writes:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer tyhp build
+</code></pre></div>
+<p><code>composer require</code> already installs the compiler package and writes a <code>composer.lock</code>. <code>tyhp init</code> then merges <code>composer.json</code> (adding <code>tyhpdef/php</code>, <code>tyhp/core</code>, <code>allow-plugins.tyhp/core</code>, and the scripts) and writes <code>tyhp.json</code>. Init does <strong>not</strong> install those newly-added packages for you — because the lock file already exists from the <code>require</code> step, use <code>composer update</code> (not <code>composer install</code>, which would only reinstall what the lock already has) so <code>tyhpdef/php</code>, <code>tyhp/core</code>, and the <code>post-autoload-dump</code> hooks land.</p>
+<p>The first <code>composer require tyhp/core</code> often does not install ambient tyhpdefs in that same transaction. After adding core, run <code>composer update</code> or <code>tyhp composer sync</code>. If <code>tyhp build</code> reports missing extras (<code>TYHP7701</code>), that is the recovery path. See <a href="cli_composer.md">CLI: Composer</a>.</p>
+<p>That dump script runs:</p>
+<ol>
+<li><code>vendor/bin/tyhp --install-binary</code> — download the native compiler if it is not already present (idempotent)</li>
+<li><code>vendor/bin/tyhp generate_tyhpdef --vendor</code> — type installed Composer libraries and extensions (see <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a>)</li>
+</ol>
+<p>If you used <code>--no-scripts</code>, or the dump step did not run, call those commands yourself before <code>build</code>. A later <code>vendor/bin/tyhp build</code> does <strong>not</strong> download the native binary; the shim exits with an error and tells you to run <code>--install-binary</code>.</p>
+<h2>Installation from GitHub Releases</h2>
 <p>Download a binary from <a href="https://github.com/tyhpproject/tyhp/releases">GitHub Releases</a>, or:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">curl -fsSL https://raw.githubusercontent.com/tyhpproject/tyhp/main/scripts/install.sh | bash -s --
 </code></pre></div>
 <p>The script selects OS and architecture. If .NET 9 is already installed, it prefers a <strong>framework-dependent</strong> build; otherwise it installs a <strong>self-contained</strong> binary. Pass <code>--self-contained</code> or <code>--framework-dependent</code> to force a variant.</p>
 <p>On Windows, use <a href="https://github.com/tyhpproject/tyhp/blob/main/scripts/install.ps1"><code>scripts/install.ps1</code></a> instead of the bash script.</p>
-<p>There is <strong>no</strong> <code>composer global require tyhp/compiler</code> package in this alpha, and no <code>dotnet tool install --global tyhp</code> feed yet.</p>
-<h2>Manual download</h2>
+<h3>Manual download</h3>
 <ol>
 <li>Open the <a href="https://github.com/tyhpproject/tyhp/releases">releases page</a> and download the asset for your platform (<code>tyhp-osx-arm64</code>, <code>tyhp-linux-x64</code>, <code>tyhp-win-x64.exe</code>, or the <code>-fxdependent</code> variant).</li>
 <li>Place the binary on your PATH (for example <code>/usr/local/bin/tyhp</code>).</li>
 <li>Verify with <code>tyhp version</code>.</li>
 </ol>
+<p>If you already have <code>tyhp</code> on your PATH and still need Composer, use <code>tyhp install composer</code> (below), then <code>tyhp init</code> and <code>composer install</code>.</p>
+<h2><code>tyhp install composer</code> vs <code>tyhp composer install</code></h2>
+<p>These are different commands.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tyhp install composer</code></td>
+<td>Downloads the <a href="https://getcomposer.org/download/">official Composer installer</a>, verifies its SHA-384 signature, and places the Composer binary</td>
+</tr>
+<tr>
+<td><code>tyhp composer install</code></td>
+<td>Proxies Composer’s own <code>install</code> (install packages from <code>composer.lock</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tyhp install composer</code> requires <code>php</code> on <code>PATH</code>. Default destination is <strong><code>./composer.phar</code></strong> in the project directory (<code>--local</code> is the same). <code>--global</code> installs to <strong><code>~/.local/bin/composer</code></strong>. If a binary is already at the destination, the command leaves it in place unless you pass <strong><code>--force</code></strong>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp install composer
+tyhp install composer --global
+tyhp install composer --force
+tyhp install --help
+</code></pre></div>
+<p>After Composer is available:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp init
+composer install
+tyhp build
+</code></pre></div>
+<h2>Running the CLI</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Invocation</th>
+<th>When to use it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vendor/bin/tyhp build</code></td>
+<td>Compiler installed via <code>tyhp/compiler</code>; Composer <code>&quot;bin&quot;</code></td>
+</tr>
+<tr>
+<td><code>composer tyhp build</code></td>
+<td>Same binary; extra args after <code>tyhp</code> are forwarded by the root <code>scripts.tyhp</code> entry (<code>vendor/bin/tyhp</code>)</td>
+</tr>
+<tr>
+<td><code>tyhp build</code></td>
+<td>Native compiler already on <code>PATH</code> (GitHub / install script)</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tyhp init</code> writes <code>&quot;tyhp&quot;: &quot;vendor/bin/tyhp&quot;</code> (or <code>{bin-dir}/tyhp</code> when Composer <code>config.bin-dir</code> is set) and a <code>scripts-descriptions.tyhp</code> string so <code>composer list</code> (and <code>composer run-script --list</code>) describes the script. <code>composer tyhp --help</code> forwards <code>--help</code> to <code>vendor/bin/tyhp</code> instead of showing that description.</p>
 <h2>Verifying Installation</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp version
 </code></pre></div>
+<p>Or, with the Composer shim:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">vendor/bin/tyhp version
+</code></pre></div>
 <p>You should see output similar to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">Tyhp compiler: 805.0.0-alpha.1
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">Tyhp compiler: 805.1.0-beta.1
 .NET runtime:   .NET 9.0.x
 ANTLR runtime:  4.x.x
 OS:             ...
 </code></pre></div>
 <h2>Runtime packages</h2>
-<p>Compiled projects need Composer packages such as <code>tyhp/php</code> (PHP builtin tyhpdefs) and <code>tyhp/core</code>. After those packages are on Packagist, <code>tyhp build</code> writes <code>composer.json</code> requires that match <code>output.phpVersion</code> plus <strong>each package's own</strong> <code>X.Y</code> (<code>8.4</code> + core <code>0.0</code> → <code>tyhp/core: 804.0.0</code>) and you run <code>composer install</code>. Until then, a source checkout of this repository can resolve them via Composer path repositories under <code>runtime/packages/</code> (those pins use the source <code>X.Y</code>, e.g. <code>0.0</code>).</p>
+<p>Compiled projects need Composer packages such as <code>tyhpdef/php</code> (PHP builtin tyhpdefs) and <code>tyhp/core</code>. <code>tyhp init</code> adds <code>tyhp/core</code> as <strong><code>@dev</code></strong> in <code>require</code>, <code>tyhpdef/php</code> as <strong><code>@dev</code></strong> in <code>require-dev</code>, and <code>tyhp/compiler</code> in <code>require-dev</code>. After <code>composer install</code>, <code>tyhp build</code> can still write additional <code>composer.json</code> requires when <code>build.updateComposer</code> is enabled — compiled <code>tyhp/*</code> pins match <code>output.phpVersion</code> plus <strong>that package's own</strong> <code>X.Y</code> (<code>8.4</code> + core <code>0.2</code> → <code>tyhp/core: 804.0.2</code>). Until Packagist lists the runtime packages, a source checkout of this repository can resolve them via Composer path repositories under <code>runtime/packages/</code> (those pins use the source version).</p>
 <p>How to pin versions for apps vs libraries is on the Composer Runtime Packages page.</p>
-<p><code>tyhp/php</code> in this alpha is a <strong>PHP 8.2 baseline</strong>. APIs that exist only on PHP 8.3–8.5 may be missing from the stubs.</p>
+<p><code>tyhpdef/php</code> in this alpha is a <strong>PHP 8.2 baseline</strong>. APIs that exist only on PHP 8.3–8.5 may be missing from the stubs.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -320,6 +412,7 @@ OS:             ...
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

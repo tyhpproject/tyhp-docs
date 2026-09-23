@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,37 +279,74 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Compiled Tyhp programs depend on small Composer packages (<code>tyhp/php</code>, <code>tyhp/core</code>, and others). Those packages <strong>do not</strong> share the compiler version. You can ship a new <code>tyhp/core</code> without bumping the Tyhp compiler.</p>
-<p>The <strong>compiler</strong> version <code>805.0.0-alpha.1</code> only means this toolchain can <em>emit</em> PHP up through 8.5 (and still emit 8.2–8.4 when <code>output.phpVersion</code> says so).</p>
-<p>Each <strong>package</strong> has its own <code>X.Y</code> (in that package’s <code>composer.json</code>). Packagist artifacts are <code>80N.X.Y</code> where <code>80N</code> is the PHP that artifact is for (<code>802</code> = 8.2, <code>803</code> = 8.3, <code>804</code> = 8.4, <code>805</code> = 8.5).</p>
-<p>This alpha’s packages start at source <code>0.0</code>, so the Packagist pins look like <code>804.0.0</code> for PHP 8.4. If <code>tyhp/core</code> later becomes <code>1.4</code>, PHP 8.4 apps require <code>804.1.4</code> (or <code>804.1.*</code>). <code>tyhp/lambda</code> can be <code>2.0</code> at the same time.</p>
-<h2>Version map (this alpha)</h2>
-<p>| <code>output.phpVersion</code> | Package MAJOR | Pin when the package is <code>0.0</code> | Composer <code>php</code> on that artifact |<br />
-|---------------------|---------------|-------------------------------|---------------------------------|<br />
-| <code>&quot;8.2&quot;</code> | <code>802</code> | <code>802.0.0</code> | <code>~8.2.0</code> |<br />
-| <code>&quot;8.3&quot;</code> | <code>803</code> | <code>803.0.0</code> | <code>~8.3.0</code> |<br />
-| <code>&quot;8.4&quot;</code> | <code>804</code> | <code>804.0.0</code> | <code>~8.4.0</code> |<br />
-| <code>&quot;8.5&quot;</code> | <code>805</code> | <code>805.0.0</code> | <code>~8.5.0</code> |</p>
-<p><code>tyhp init</code> and <code>tyhp build</code> (when not using a compiler-checkout path repository) write the pin for <strong>each</strong> package from that package’s own <code>X.Y</code> plus your <code>output.phpVersion</code>. They do not all have to be the same <code>X.Y</code>.</p>
+    <p>Compiled Tyhp programs depend on small Composer packages (<code>tyhpdef/php</code>, <code>tyhp/core</code>, and others). Those packages <strong>do not</strong> share the compiler version. You can ship a new <code>tyhp/core</code> without bumping the Tyhp compiler.</p>
+<p>The <strong>compiler</strong> version <code>805.1.0-beta.1</code> only means this toolchain can <em>emit</em> PHP up through 8.5 (and still emit 8.2–8.4 when <code>output.phpVersion</code> says so).</p>
+<p>Each <strong>package</strong> has its own version (in that package’s <code>composer.json</code>).</p>
+<p>Compiled <code>tyhp/*</code> helpers (<code>core</code>, <code>async</code>, <code>decimal</code>, <code>lambda</code>) publish Packagist artifacts as <code>80N.X.Y</code> where <code>80N</code> is the PHP that artifact is for (<code>802</code> = 8.2, <code>803</code> = 8.3, <code>804</code> = 8.4, <code>805</code> = 8.5).</p>
+<p><code>tyhpdef/*</code> packages (<code>tyhpdef/php</code>, <code>tyhpdef/php-ext-*</code>, Composer-lib wrappers) publish that <code>composer.json</code> version as the Packagist tag. They do not use <code>80N.X.Y</code>.</p>
+<p>This alpha’s compiled helpers start at source <code>0.0</code> / <code>0.1</code> / <code>0.2</code>, so the Packagist pins look like <code>804.0.2</code> for PHP 8.4 <code>tyhp/core</code>. If <code>tyhp/core</code> later becomes <code>1.4</code>, PHP 8.4 apps require <code>804.1.4</code> (or <code>804.1.*</code>). <code>tyhp/lambda</code> can be <code>2.0</code> at the same time. <code>tyhpdef/php</code> currently publishes as <code>0.0.1</code>; put it in <code>require-dev</code> as <strong><code>@dev</code></strong> rather than pinning that tag.</p>
+<h2>Version map (compiled <code>tyhp/*</code> helpers)</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th><code>output.phpVersion</code></th>
+<th>Package MAJOR</th>
+<th>Pin when the package is <code>0.0</code></th>
+<th>Composer <code>php</code> on that artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;8.2&quot;</code></td>
+<td><code>802</code></td>
+<td><code>802.0.0</code></td>
+<td><code>~8.2.0</code></td>
+</tr>
+<tr>
+<td><code>&quot;8.3&quot;</code></td>
+<td><code>803</code></td>
+<td><code>803.0.0</code></td>
+<td><code>~8.3.0</code></td>
+</tr>
+<tr>
+<td><code>&quot;8.4&quot;</code></td>
+<td><code>804</code></td>
+<td><code>804.0.0</code></td>
+<td><code>~8.4.0</code></td>
+</tr>
+<tr>
+<td><code>&quot;8.5&quot;</code></td>
+<td><code>805</code></td>
+<td><code>805.0.0</code></td>
+<td><code>~8.5.0</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tyhp init</code> writes <strong><code>@dev</code></strong> for <code>tyhp/core</code> in <code>require</code> and for <code>tyhpdef/php</code> in <code>require-dev</code> (and <code>--vendor</code> adds the same constraint for missing runtime <code>tyhp/*</code> packages, and <code>@dev</code> in <code>require-dev</code> for missing <code>tyhpdef/php</code>). <code>tyhpdef/*</code> packages are compile-time stubs — prefer <code>require-dev</code> with <code>@dev</code>. Compiled <code>tyhp/*</code> helpers belong in <code>require</code> because emitted PHP loads them at runtime. <code>tyhp build</code> (when not using a compiler-checkout path repository, and when <code>build.updateComposer</code> writes pins) uses the pin for <strong>each compiled</strong> <code>tyhp/*</code> package from that package’s own <code>X.Y</code> plus your <code>output.phpVersion</code>. They do not all have to be the same version.</p>
 <h2>Applications</h2>
-<p>An app targets <strong>one</strong> PHP version. Require that MAJOR and <strong>that package’s</strong> <code>X.Y</code>:</p>
+<p>An app targets <strong>one</strong> PHP version. Pin compiled <code>tyhp/*</code> helpers in <code>require</code> at that MAJOR and <strong>that package’s</strong> <code>X.Y</code>. Put <code>tyhpdef/*</code> in <code>require-dev</code> as <code>@dev</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;require&quot;: {
         &quot;php&quot;: &quot;~8.4.0&quot;,
-        &quot;tyhp/php&quot;: &quot;804.0.0&quot;,
         &quot;tyhp/core&quot;: &quot;804.0.0&quot;
+    },
+    &quot;require-dev&quot;: {
+        &quot;tyhpdef/php&quot;: &quot;@dev&quot;
     }
 }
 </code></pre></div>
 <p>If <code>tyhp/decimal</code> is on <code>1.2</code> and you use decimals, require <code>tyhp/decimal: 804.1.2</code> (or <code>804.1.*</code>). <code>tyhp build</code> adds those packages when the compiled code needs them.</p>
 <p><code>804.0.*</code> is fine for an app if you want patch updates on that package line without changing PHP MAJOR.</p>
+<p>Ambient tyhpdefs for the require tree (<code>extra.tyhp.require</code>) land on root <code>require-dev</code>. Allow <code>tyhp/core</code> under <code>config.allow-plugins</code>. The first <code>composer require tyhp/core</code> often misses that transaction — run <code>composer update</code> or <code>tyhp composer sync</code>. See <a href="#ambient-tyhpdefs-extratyhprequire">Ambient tyhpdefs</a> and <a href="cli_composer.md">CLI: Composer</a>.</p>
 <h2>Libraries</h2>
-<p>A library that supports several PHP versions should <strong>or</strong> the PHP majors and keep <strong>that package’s</strong> X (not the compiler MINOR, and not some other package’s X):</p>
+<p>A library that supports several PHP versions should OR together the PHP majors it supports and keep <strong>that package’s</strong> X (not the compiler MINOR, and not some other package’s X):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;require&quot;: {
         &quot;php&quot;: &quot;&gt;=8.3&quot;,
-        &quot;tyhp/php&quot;: &quot;803.0.* || 804.0.* || 805.0.*&quot;,
         &quot;tyhp/core&quot;: &quot;803.0.* || 804.0.* || 805.0.*&quot;
+    },
+    &quot;require-dev&quot;: {
+        &quot;tyhpdef/php&quot;: &quot;@dev&quot;
     }
 }
 </code></pre></div>
@@ -303,17 +356,124 @@
 </code></pre></div>
 <p>Composer then installs the artifact that matches the <em>consumer's</em> PHP (<code>~8.3.0</code> vs <code>~8.4.0</code> vs <code>~8.5.0</code>).</p>
 <p>Do <strong>not</strong> mix X values for the <strong>same</strong> package (<code>803.0.* || 804.1.*</code> for core). <code>803.1</code> and <code>804.1</code> are the same core line on different PHP; <code>804.0</code> is an older core line.</p>
+<p>Published Tyhp libraries also declare ambient tyhpdefs in <code>extra.tyhp.require</code> (see below). Do not put author-only tyhpdefs there.</p>
 <h2>Packages</h2>
-<p>| Package | Role |<br />
-|---------|------|<br />
-| <code>tyhp/php</code> | Type definitions for PHP builtins (8.2 baseline in this alpha) |<br />
-| <code>tyhp/core</code> | Generics, typed variables, property accessors |<br />
-| <code>tyhp/async</code> | Promise, event loop, cancellation |<br />
-| <code>tyhp/decimal</code> | Arbitrary-precision decimal |<br />
-| <code>tyhp/lambda</code> | Expression-tree / PropertyPath runtime |</p>
-<p>Each is published with four PHP-target tags (<code>802.</code>…<code>805.</code> plus that package’s <code>X.Y</code>).</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Package</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tyhpdef/php</code></td>
+<td>Always-present PHP 8.2+ builtins (Core, date, filter, hash, json, libxml, pcre, random, Reflection, SPL, standard)</td>
+</tr>
+<tr>
+<td><code>tyhpdef/php-ext-*</code></td>
+<td>Optional / disableable / PECL extensions (see below)</td>
+</tr>
+<tr>
+<td><code>tyhp/core</code></td>
+<td>Generics, typed variables, property accessors, scalar extension methods</td>
+</tr>
+<tr>
+<td><code>tyhp/async</code></td>
+<td>Promise, event loop, cancellation</td>
+</tr>
+<tr>
+<td><code>tyhp/decimal</code></td>
+<td>Arbitrary-precision decimal (<code>\Tyhp\Decimal</code>, bcmath-backed)</td>
+</tr>
+<tr>
+<td><code>tyhp/lambda</code></td>
+<td>Expression-tree / PropertyPath runtime</td>
+</tr>
+</tbody>
+</table></div>
+<p>Runtime helpers (<code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) are published with four PHP-target tags (<code>802.</code>…<code>805.</code> plus that package’s <code>X.Y</code>).</p>
+<p><code>tyhpdef/php</code> and <code>tyhpdef/php-ext-*</code> are <strong>one Composer package each</strong> for PHP 8.2–8.5. Their <code>composer.json</code> requires <code>&quot;php&quot;: &quot;&gt;=8.2&quot;</code>, and Packagist uses that file’s <code>version</code> as the tag. There are no <code>tyhpdef/php-8.2</code> / <code>tyhpdef/php-8.x-ext-*</code> forks. APIs that exist only on some minors are marked with <code>declare(php=…)</code> or <code>#[\Tyhp\Php]</code>; the compiler keeps only the declarations that match your <code>output.phpVersion</code>. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
+<h2><code>tyhpdef/php</code> (always present)</h2>
+<p>Install <code>tyhpdef/php</code> in <code>require-dev</code> as <code>@dev</code> so <code>\strlen</code>, <code>DateTime</code>, SPL, json, hash, and libxml type-check. json, hash, and libxml stay in this package — there is no <code>tyhpdef/php-ext-json</code>, <code>tyhpdef/php-ext-hash</code>, or <code>tyhpdef/php-ext-libxml</code>.</p>
+<h2><code>tyhp/core</code> (runtime helpers + scalar methods)</h2>
+<p><code>tyhp/core</code> ships the scalar method catalog (<code>$s-&gt;length()</code>, <code>$arr-&gt;mapped(...)</code>) via <code>_tyhpdef/extensions/</code> and <code>global use extension \Tyhp\StringExtensions</code> (and the matching Array / Int / Float / Bool / Closure files). See <a href="tyhp_1000_scalarPseudoObjects.md">Scalar Pseudo-Objects</a>.</p>
+<h2><code>tyhpdef/php-ext-*</code> (optional extensions)</h2>
+<p>Add a <code>tyhpdef/php-ext-*</code> package in <code>require-dev</code> (also <code>@dev</code>) when your project uses that PHP extension. Each package’s <code>composer.json</code> requires <code>ext-&lt;name&gt;</code> in <code>require</code>, and lists <code>tyhpdef/php</code> in both <code>require-dev</code> and <code>extra.tyhp.require</code>. Driver packages list parent wrappers the same way — for example <code>tyhpdef/php-ext-pdo_mysql</code> lists <code>tyhpdef/php-ext-pdo</code> and <code>tyhpdef/php-ext-mysqlnd</code>.</p>
+<p><code>tyhpdef/php-ext-decimal</code> is the <strong>PECL Decimal</strong> extension (php-decimal / mpdecimal). It is unrelated to <code>tyhp/decimal</code> (<code>\Tyhp\Decimal\</code>, bcmath-backed).</p>
+<p>Shipped packages (Composer name <code>tyhpdef/php-ext-&lt;id&gt;</code>):</p>
+<p>apcu, bcmath, bz2, calendar, csv, ctype, curl, dba, decimal, dom, exif, ffi, fileinfo, ftp, gd, gettext, gmp, iconv, imagick, intl, ldap, lexbor, mbstring, memcached, mysqli, mysqlnd, odbc, opcache, openssl, pcntl, pdo, pdo_dblib, pdo_mysql, pdo_odbc, pdo_pgsql, pdo_sqlite, pgsql, phar, posix, readline, redis, session, shmop, simplexml, snmp, soap, sockets, sodium, sqlite3, sysvmsg, sysvsem, sysvshm, tidy, tokenizer, uri, xml, xmlreader, xmlwriter, xsl, zip, zlib.</p>
+<p>You do not install a PHP version matrix to type-check these packages. Set <code>output.phpVersion</code> to <code>&quot;8.2&quot;</code>, <code>&quot;8.3&quot;</code>, <code>&quot;8.4&quot;</code>, or <code>&quot;8.5&quot;</code> and lint/build; gated symbols appear or disappear for that target.</p>
+<h2>Ambient tyhpdefs (<code>extra.tyhp.require</code>)</h2>
+<p>A Tyhp library can type-check against tyhpdef packages that its <strong>consumers must not install</strong>. List everything this package needs to compile in <code>require-dev</code>. Copy the subset that consumers need into <code>extra.tyhp.require</code>. Duplicate those ambient pins in <code>require-dev</code> so authors lock and install them.</p>
+<p>Any Composer package name is allowed — not only <code>tyhpdef/*</code>. Values are ordinary Composer constraints (including <code>@dev</code> for path repositories).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;require&quot;: {
+        &quot;php&quot;: &quot;&gt;=8.2&quot;,
+        &quot;tyhp/core&quot;: &quot;@dev&quot;
+    },
+    &quot;require-dev&quot;: {
+        &quot;tyhpdef/php&quot;: &quot;@dev&quot;,
+        &quot;tyhpdef/php-ext-bcmath&quot;: &quot;@dev&quot;,
+        &quot;tyhpdef/php-ext-gmp&quot;: &quot;@dev&quot;,
+        &quot;tyhpdef/php-ext-decimal&quot;: &quot;@dev&quot;
+    },
+    &quot;extra&quot;: {
+        &quot;tyhp&quot;: {
+            &quot;interopContractVersion&quot;: 1,
+            &quot;require&quot;: {
+                &quot;tyhpdef/php&quot;: &quot;@dev&quot;
+            }
+        }
+    }
+}
+</code></pre></div>
+<p>That shape is <code>tyhp/decimal</code>: authors compile optional backends against the bcmath / gmp / php-decimal wrappers, but apps that only call <code>\Tyhp\Decimal</code> install <code>tyhpdef/php</code>. They do <strong>not</strong> pick up those three wrappers. <code>tyhp/core</code> keeps <code>tyhpdef/php-ext-mbstring</code> in <code>require-dev</code> only so it can compile <code>\Tyhp\StringHelper</code>; consumers do not need that package to type-check <code>$s-&gt;length()</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Bucket</th>
+<th>Where</th>
+<th>Published <code>package.tyhpdef</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime PHP</td>
+<td><code>require</code></td>
+<td>Spell the FQN. Do not copy. Do not emit <code>extern</code>.</td>
+</tr>
+<tr>
+<td>Ambient for consumers</td>
+<td><code>extra.tyhp.require</code> (also list in <code>require-dev</code>)</td>
+<td>Spell the FQN. Consumers install that tyhpdef.</td>
+</tr>
+<tr>
+<td>Author-only</td>
+<td><code>require-dev</code> only</td>
+<td>Name-only <code>extern</code> plus <code>// @provided-by: &lt;owning package&gt;</code>.</td>
+</tr>
+<tr>
+<td>Omitted / <code>{}</code> extras</td>
+<td>—</td>
+<td>No ambient tyhpdefs from this package.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Never put author-only tyhpdefs in extras. A public type must not <code>extends</code> / <code>implements</code> an author-only name (<code>TYHP3026</code> / <code>TYHP3027</code>) — keep those owners ambient (decimal lists <code>tyhpdef/php</code> so <code>\JsonSerializable</code> stays a real type). Mark author-only classes <code>internal</code> so they drop out of the public tyhpdef; see <a href="tyhp_3100_internalModifier.md">The internal Visibility Modifier</a>.</p>
+<p><code>tyhp/compiler</code> is not listed in extras on <code>tyhp/*</code> packages. Application roots still pin it on <code>require-dev</code> (<code>tyhp init</code> does; <code>tyhp composer sync</code> adds it when <code>tyhp/core</code> is in the graph). The <code>tyhp/compiler</code> package itself does not require itself.</p>
+<h3>Plugin on <code>tyhp/core</code></h3>
+<p><code>tyhp/core</code> is a Composer plugin (<code>type: composer-plugin</code>) that walks <code>extra.tyhp.require</code> and runtime <code>require</code> edges, merges constraints onto the <strong>root</strong> <code>require-dev</code>, and adds <code>tyhp/compiler</code> unless the root package is already <code>tyhp/compiler</code>. Allow it:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">&quot;config&quot;: {
+    &quot;allow-plugins&quot;: {
+        &quot;tyhp/core&quot;: true
+    }
+}
+</code></pre></div>
+<p><code>tyhp init</code> writes that key. <code>tyhp composer</code>, <code>tyhp composer sync</code>, and <code>tyhp build --fix</code> also write it when missing and do not overwrite an explicit <code>false</code>. A raw <code>composer</code> command still needs the key already on disk. A <code>--no-dev</code> install does not rewrite <code>composer.json</code>.</p>
+<p>The first <code>composer require tyhp/core</code> often misses ambient tyhpdefs in that same transaction. Run <code>composer update</code> or <code>tyhp composer sync</code>. If extras are missing, <code>tyhp build</code> explains (<code>TYHP7701</code>) and <code>tyhp composer sync</code> / <code>tyhp build --fix</code> recovers. Ordinary <code>tyhp build</code> never auto-updates Composer. Details: <a href="cli_composer.md">CLI: Composer</a>.</p>
 <h2>Path repositories (compiler checkout)</h2>
-<p>If <code>tyhp build</code> can see <code>runtime/packages/</code> next to the compiler, it pins each package’s <strong>source</strong> <code>X.Y</code> (for example <code>0.0</code>) and adds Composer path repositories. That is only for developing against a compiler tree. Packagist consumers use the <code>80N.X.Y</code> form.</p>
+<p>If <code>tyhp build</code> can see <code>runtime/packages/</code> next to the compiler, it pins each package’s <strong>source</strong> version (for example <code>0.2</code> or <code>0.0.1</code>) and adds Composer path repositories. That is only for developing against a compiler tree. Packagist consumers of compiled <code>tyhp/*</code> helpers use the <code>80N.X.Y</code> form. Packagist consumers of <code>tyhpdef/*</code> typically use <code>@dev</code> in <code>require-dev</code>; the published tag is the source version (currently <code>0.0.1</code> for <code>tyhpdef/php</code>).</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -322,7 +482,7 @@
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p><code>output.phpVersion</code> in <code>tyhp.json</code> chooses the emitted PHP <strong>and</strong> the <code>80N</code> prefix. Each <code>tyhp/*</code> package’s <code>X.Y</code> is independent.</p>
+        <div class="callout-content"><p><code>output.phpVersion</code> in <code>tyhp.json</code> chooses the emitted PHP <strong>and</strong> the <code>80N</code> prefix on compiled <code>tyhp/*</code> helpers. Each <code>tyhp/*</code> package’s <code>X.Y</code> is independent. <code>tyhpdef/*</code> packages are not prefixed.</p>
 </div>
     </div>
 </div>
@@ -337,6 +497,7 @@
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

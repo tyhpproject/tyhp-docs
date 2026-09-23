@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto"> 
 <head>
-    <title>Use Statements and Imports - Tyhp</title>
+    <title>PHP Version Gating - Tyhp</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,11 +108,11 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+<li class="nav-item"><a class="nav-link active" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
-<li class="nav-item"><a class="nav-link active" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
 
@@ -274,261 +274,329 @@
 	    </div>
 	    <div class="docs-content">
 		    <div class="container">
-				<section class="docs-section" id="Use_Statements_and_Imports">
-    <h2 class="section-heading">Use Statements and Imports</h2>
+				<section class="docs-section" id="PHP_Version_Gating">
+    <h2 class="section-heading">PHP Version Gating</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
+    <span class="badge bg-primary me-1">Tier 2 · Story 20.5</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp supports all standard PHP use statement forms and adds Tyhp-specific extensions: generic arguments on import aliases, <code>use extension</code> for importing extension method providers, and <code>global use</code> (compilation-wide, like C# <code>global using</code> — <strong>not</strong> PHP <code>global $var</code>). Use statements work the same in Tyhp as they do in PHP -- they create aliases for fully-qualified class, function, and constant names.</p>
-<h2>Standard Use Statements</h2>
-<p>All PHP use statement forms are supported in Tyhp. These behave identically to PHP -- they create namespace aliases for the current file.</p>
+    <p>Tyhp can keep or drop declarations according to the project's target PHP version. Two compile-time gates exist: <code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code>. Both use Composer version-constraint strings. The compiler evaluates them against <code>output.phpVersion</code> while binding and checking; it never writes the gates into PHP.</p>
+<p>This is not an existence check such as <code>if (!\function_exists(…))</code>. Those declaration gates are covered on <a href="tyhp_0310_declarationGating.md">Declaration Gating</a>. It is also not the managed PHP runtime that <code>tyhp generate_tyhpdef</code> can download for reflection — that tool's <code>--php</code> / <code>--php-targets</code> path is separate from <code>output.phpVersion</code>. <code>#[\Tyhp\PhpType]</code> is a different attribute: it replaces an emitted PHP type hint. See <a href="tyhp_0150_newTypes.md#the-tyhpphptype-attribute">New and Changed Types</a>.</p>
+<p>Version gates are how one <code>tyhpdef/php</code> (and one <code>tyhpdef/php-ext-*</code> per optional extension) stubs package can describe APIs that differ across PHP 8.2–8.5. The compiler keeps only the declarations that match your target.</p>
+<h2>8.2–8.5 matrix in <code>tyhpdef/php</code></h2>
+<p>The same <code>tyhpdef/php</code> tree is used for every supported minor. Change <code>output.phpVersion</code> and lint/build — you do not install four PHP runtimes to type-check the stubs.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Target</th>
+<th>Always-present surface</th>
+<th>Examples that appear at this minor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;8.2&quot;</code></td>
+<td>Core, date, filter, hash, json, libxml, pcre, random, Reflection, SPL, standard</td>
+<td>Baseline only</td>
+</tr>
+<tr>
+<td><code>&quot;8.3&quot;</code></td>
+<td>same</td>
+<td><code>json_validate()</code> (<code>declare(php=&quot;&gt;=8.3&quot;)</code>)</td>
+</tr>
+<tr>
+<td><code>&quot;8.4&quot;</code></td>
+<td>same</td>
+<td><code>array_find()</code> / <code>array_find_key()</code> / <code>array_any()</code> / <code>array_all()</code> (<code>declare(php=&quot;&gt;=8.4&quot;)</code>)</td>
+</tr>
+<tr>
+<td><code>&quot;8.5&quot;</code></td>
+<td>same</td>
+<td><code>array_first()</code> / <code>array_last()</code> (<code>declare(php=&quot;&gt;=8.5&quot;)</code>); <code>#[\Tyhp\Php(&quot;&gt;=8.5&quot;)]</code> on selected Core members</td>
+</tr>
+</tbody>
+</table></div>
+<p>Scalar extension methods that differ by minor (for example <code>pad</code> / <code>ucFirst</code> on strings) use the same <code>declare(php=…)</code> blocks inside <code>tyhp/core</code> <code>_tyhpdef/extensions/</code>.</p>
+<p>PHP Core attribute <strong>classes</strong> are gated the same way (<code>\Override</code> at 8.3, <code>\Deprecated</code> at 8.4, <code>\NoDiscard</code> and <code>\DelayedTargetValidation</code> at 8.5). Some <strong>checks</strong> still run below those minors — see <a href="#engine-attributes-and-outputphpversion">Engine attributes and <code>output.phpVersion</code></a>.</p>
+<h2>The compile target</h2>
+<p>Set the target in <code>tyhp.json</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;output&quot;: {
+        &quot;phpVersion&quot;: &quot;8.4&quot;
+    }
+}
+</code></pre></div>
+<p>Supported values are <code>&quot;8.0&quot;</code> through <code>&quot;8.5&quot;</code>. A target such as <code>&quot;8.2&quot;</code> is compared as PHP <code>8.2.0</code>. Gate constraints accept any PHP version string; the <code>tyhpdef/php</code> stubs package specifically covers 8.2–8.5, so <code>output.phpVersion</code> values of <code>&quot;8.0&quot;</code> or <code>&quot;8.1&quot;</code> see none of that package's version-gated declarations.</p>
+<p>If <code>output.phpVersion</code> is omitted (and the legacy top-level <code>phpVersion</code> key is omitted too), the compiler uses <strong><code>8.2</code></strong> and emits warning <strong>TYHP4306</strong> once per compilation — not once per file:</p>
+<blockquote>
+<p><code>output.phpVersion</code> is unset; defaulting to <code>8.2</code></p>
+</blockquote>
+<p>An explicit but unsupported value is a different path: the compiler warns <strong>TYHP6006</strong> and falls back to <code>8.4</code>.</p>
+<h2><code>declare(php=&quot;…&quot;)</code></h2>
+<p>The declare key is <code>php</code>. The value is a string. That directive must appear <strong>alone</strong> in that <code>declare</code> statement (<strong>TYHP4301</strong> if you mix it with <code>strict_types</code>, <code>output_file</code>, or anything else). Consecutive declares are fine:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import a class
-use App\Models\User;
-
-// Import with alias
-use App\Models\User as UserModel;
-
-// Import a function
-use function App\Helpers\formatDate;
-
-// Import a constant
-use const App\Config\MAX_RETRIES;
-</code></pre></div>
-<h2>Group Use Declarations</h2>
-<p>Group use declarations import multiple symbols from the same namespace prefix in a single statement.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Group import -- same type
-use App\Models\{User, Post, Comment};
-
-// Group import -- mixed types
-use App\Services\{
-    AuthService,
-    function validateToken,
-    const MAX_LOGIN_ATTEMPTS
-};
-</code></pre></div>
-<h2>Compiled PHP Output for Standard Use Statements</h2>
-<p>Standard use statements pass through to PHP largely unchanged. The emitter automatically prunes unused imports and sorts them alphabetically:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
-
-use App\Models\{User, Post, Comment};
-
-use App\Services\{
-    AuthService,
-    function validateToken,
-    const MAX_LOGIN_ATTEMPTS
-};
+declare(php=&quot;&gt;=8.4&quot;);
 </code></pre></div>
-<h2>Generic Import Aliases</h2>
-<p>Tyhp allows generic type arguments on import aliases. This lets you create a local alias for a specific instantiation of a generic class. The generic arguments are compile-time only -- they are erased from the PHP output. The alias becomes a regular PHP use statement without the generic arguments.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import a generic class with specific type arguments
-use App\Collections\TypedList as IntList&lt;int&gt;;
-use App\Collections\TypedMap as UserMap&lt;string, User&gt;;
-
-// Now IntList is an alias for TypedList&lt;int&gt;
-IntList $numbers = new IntList();
-$numbers-&gt;add(42);        // OK -- int
-// $numbers-&gt;add(&#039;hello&#039;);   // Compile error -- string is not int
-
-// UserMap is an alias for TypedMap&lt;string, User&gt;
-UserMap $users = new UserMap();
-$users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
+// ERROR TYHP4301 — php is not alone
+// declare(php=&quot;&gt;=8.4&quot;, strict_types=1);
 </code></pre></div>
-<p>Compiles to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-use App\Collections\TypedList as IntList;
-use App\Collections\TypedMap as UserMap;
-
-$numbers = new IntList();
-$numbers-&gt;add(42);
-
-$users = new UserMap();
-$users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
-</code></pre></div>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>The generic arguments on the alias are a compile-time concept. They tell the Tyhp compiler to treat the alias as if it were the generic class with those specific type arguments. In the PHP output, only the plain alias remains.</p>
-</div>
-    </div>
-</div>
-<h2>Use Extension Statements</h2>
-<p>The <code>use extension</code> statement imports extension method providers into the current scope. Extension methods allow adding methods to existing types without modifying them. When you import an extension, its methods become available on the extended type within the importing file.</p>
+<h3>File-level (semicolon form)</h3>
+<p>A non-block <code>declare(php=&quot;…&quot;);</code> gates the <strong>entire file</strong>. If the constraint does not match <code>output.phpVersion</code>, the compiler skips the file's declarations silently — no TYHP4302, and those symbols are simply absent.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import an extension -- its methods are now available on the extended type
-use extension App\Extensions\StringHelpers;
+declare(php=&quot;&gt;=8.5&quot;);
 
-// StringHelpers extends string with methods like toCamelCase()
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCamelCase();  // &#039;helloWorld&#039;
+function only_on_php85(): void {}
 </code></pre></div>
-<p>Use extension statements also support trait-like adaptation syntax. This allows you to rename methods with <code>as</code>, exclude them with postfix <code>hide</code>, and pick a winner with <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_2100_extensions.md#importing-extensions-with-use-extension">Extensions</a> and <a href="tyhp_1600_operatorOverloads.md#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
+<p>Use this form when you want a whole <code>.tyhp</code> file (including a top-level <code>extension</code> or <code>struct</code>) to exist only for some PHP minors. See <a href="#structs-and-extensions">Structs and extensions</a>.</p>
+<h3>Block-level</h3>
+<p>A <code>declare(php=&quot;…&quot;) { … }</code> block gates only its body. Sibling code outside the block is unchanged. Inactive bodies contribute no symbols.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import extension with adaptations
-use extension App\Extensions\StringHelpers {
-    StringHelpers::toCamelCase as toCC;
-    StringHelpers::toSnakeCase hide;
+function always_present(): void {}
+
+declare(php=&quot;&gt;=8.4&quot;) {
+    function json_validate(string $json, int $depth = 512, int $flags = 0): bool {
+        return true;
+    }
+}
+</code></pre></div>
+<p>The colon / <code>enddeclare</code> form is the same kind of block for Tyhp statements.</p>
+<h2><code>#[\Tyhp\Php]</code></h2>
+<p><code>\Tyhp\Php</code> lives in <code>tyhp/core</code>. The constructor takes a string <code>$version</code>. Positional and named arguments are equivalent:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
+function array_find(array $array, callable $callback): mixed {
+    return null;
 }
 
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCC();  // Uses the renamed method
+#[\Tyhp\Php(version: &quot;&gt;=8.2 &lt;8.4&quot;)]
+function example(string $v): mixed {
+    return $v;
+}
+
+#[\Tyhp\Php(version: &quot;&gt;=8.4&quot;)]
+function example(string $v, bool $strict = false): string {
+    return $v;
+}
 </code></pre></div>
-<h2>Global use</h2>
-<p><code>global</code> prefixes any <code>use</code> / <code>use function</code> / <code>use const</code> / <code>use extension</code> and applies to the <strong>entire compilation</strong> that loaded that file. This is C# <code>global using</code>, <strong>not</strong> PHP <code>global $var</code>.</p>
+<p>The attribute is legal on class, interface, enum, trait, their members, functions, and other ordinary attribute targets. It is <strong>illegal</strong> on <code>struct</code> and on Tyhp <strong>and</strong> tyhpdef <code>extension</code> declarations (<strong>TYHP4304</strong>). Wrap those with <code>declare(php=…)</code> instead — see <a href="#structs-and-extensions">Structs and extensions</a>.</p>
+<p>Missing or non-string <code>version</code> is <strong>TYHP4305</strong>. On a tyhpdef hooked property, put <code>#[\Tyhp\Php]</code> on the property, not on <code>get</code> or <code>set</code> (<strong>TYHP8016</strong>).</p>
+<p>If the constraint does not match the target, the compiler omits the symbol (as if it were not declared).</p>
+<h2>Constraint syntax</h2>
+<p>Gates use full Composer version-constraint syntax. Examples:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Constraint</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&quot;&gt;=8.4&quot;</code></td>
+<td>8.4 and later</td>
+</tr>
+<tr>
+<td><code>&quot;&lt;8.4&quot;</code></td>
+<td>before 8.4</td>
+</tr>
+<tr>
+<td><code>&quot;&gt;=8.2 &lt;8.4&quot;</code></td>
+<td>8.2 and 8.3 (space or comma means AND)</td>
+</tr>
+<tr>
+<td><code>&quot;^8.2&quot;</code></td>
+<td><code>&gt;=8.2.0 &lt;9.0.0</code></td>
+</tr>
+<tr>
+<td><code>&quot;~8.2.3&quot;</code></td>
+<td><code>&gt;=8.2.3 &lt;8.3.0</code></td>
+</tr>
+<tr>
+<td><code>&quot;8.2.*&quot;</code></td>
+<td>the 8.2 minor</td>
+</tr>
+<tr>
+<td><code>&quot;8.2&quot;</code></td>
+<td>same as <code>8.2.*</code> (bare minor = whole minor)</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>||</code> (or a single <code>|</code>) is OR; AND binds tighter. Tyhp treats a <strong>bare</strong> (or <code>=</code>) partial version as the <strong>whole minor</strong>. So <code>&quot;8.2&quot;</code> and <code>&quot;=8.2&quot;</code> in a gate mean <code>8.2.*</code> (<code>&gt;=8.2.0 &lt;8.3.0</code>), not “exactly 8.2.0”. Comparison operators still pad missing components with zeros the way Composer does: <code>&quot;&gt;=8.2&quot;</code> means <code>&gt;=8.2.0</code>.</p>
+<p>Invalid constraint strings are <strong>TYHP4300</strong>.</p>
+<h2>Nesting is AND</h2>
+<p>A declaration must satisfy <strong>every</strong> active constraint around it. A <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]</code> member inside <code>declare(php=&quot;&gt;=8.3&quot;) { … }</code> is kept only when the target matches both.</p>
+<p>If the outer gate is inactive, the whole inner region is inactive with it.</p>
+<h2>Unreachable vs alternate variants</h2>
+<p><strong>TYHP4302</strong> is only for a <strong>nested</strong> constraint that cannot overlap its enclosing constraint — the inner gate can never be true given the outer one. Example (outer <code>&gt;=8.4</code> with inner <code>&lt;8.3</code>):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-global use App\Models\User;
-global use function App\Helpers\formatDate;
-global use const App\Config\MAX_RETRIES;
-global use extension \Tyhp\StringExtensions;
+declare(php=&quot;&gt;=8.4&quot;) {
+    function outer(): void {}
+
+    // ERROR TYHP4302 — unsatisfiable given the outer constraint
+    declare(php=&quot;&lt;8.3&quot;) {
+        function never(): void {}
+    }
+}
 </code></pre></div>
-<p>When a <strong>loaded tyhpdef</strong> contains <code>global use extension X</code>, every <code>.tyhp</code> file in that compilation sees <code>X</code> as imported. <code>tyhp/core</code> does this for <code>\Tyhp\StringExtensions</code>, <code>\Tyhp\ArrayExtensions</code>, <code>\Tyhp\IntExtensions</code>, <code>\Tyhp\FloatExtensions</code>, <code>\Tyhp\BoolExtensions</code>, and <code>\Tyhp\ClosureExtensions</code>, so <code>$s-&gt;length()</code> works with no per-file import. A compiled library that authored in-package <code>global use</code> / <code>global use extension</code> copies those statements into <code>package.tyhpdef</code>. File-level <code>use</code> is not copied. Libraries that did not author <code>global use</code> stay opt-in.</p>
-<p>Same-file Tyhp <code>extension { }</code> stays in scope in that file without an import.</p>
-<h3>Local <code>use</code> overlaying <code>global use</code></h3>
-<p>A non-<code>global</code> <code>use</code> in a file (or braced namespace) may re-import a globally included symbol <strong>in order to mutate it for that scope</strong>:</p>
+<p>Sibling blocks that cover different PHP versions are <strong>alternate variants</strong>, not unreachable code. They do not report TYHP4302:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+declare(php=&quot;&gt;=8.4&quot;) {
+    function example(): string {
+        return &#039;8.4+&#039;;
+    }
+}
+
+declare(php=&quot;&lt;8.4&quot;) {
+    function example(): string {
+        return &#039;pre-8.4&#039;;
+    }
+}
+</code></pre></div>
+<p>An inactive <strong>file-level</strong> <code>declare(php=&quot;…&quot;);</code> is also not TYHP4302 — the file is skipped silently.</p>
+<h2>Same name, different versions</h2>
+<p>Two declarations of the same symbol are allowed when their <strong>effective</strong> constraints are pairwise <strong>disjoint</strong>. The compiler keeps the variant that matches <code>output.phpVersion</code>.</p>
+<p>If the constraints <strong>overlap</strong> (both could match some PHP version, including the current target) <strong>and</strong> the declarations would also collide as ordinary overloads (same parameter-list shape), that is <strong>TYHP4303</strong>:</p>
+<blockquote>
+<p>Duplicate declaration of <code>{0}</code> with overlapping PHP version constraints</p>
+</blockquote>
+<p><code>#[\Tyhp\Php(&quot;&gt;=8.3&quot;)] function foo()</code> together with <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)] function foo()</code> overlaps on 8.4+ and is an error. <code>&quot;&gt;=8.4&quot;</code> together with <code>&quot;&lt;8.4&quot;</code> does not overlap. Distinct parameter lists under the same gate are overloads, not TYHP4303 — for example a no-argument <code>get_defined_functions()</code> beside a deprecated <code>get_defined_functions(bool $exclude_disabled)</code> in <code>declare(php=&quot;&gt;=8.5&quot;)</code>. A static method and an instance method still cannot share a name, even with different parameter lists: that pairing is TYHP4303 under overlapping gates.</p>
+<h2>Compile-time only — never emitted</h2>
+<p><code>declare(php=…)</code> and <code>#[\Tyhp\Php]</code> are Tyhp-only, in the same family as <code>declare(output_file=…)</code>. The emitter:</p>
 <ul>
-<li>An <code>as</code> alias that changes the short name (<code>use App\Models\User as UserModel</code>, <code>use extension StringExtensions as SE</code>)</li>
-<li>A non-empty adaptation block (<code>as</code> method rename, postfix <code>hide</code>, <code>insteadof</code>)</li>
+<li>does not write <code>declare(php=…)</code> (file or block)</li>
+<li>does not write <code>#[\Tyhp\Php(…)]</code> on emitted declarations (<code>\Tyhp\Php</code> is tagged <code>#[\Tyhp\NoEmit]</code>, which omits that class and any usage of a NoEmit-tagged type as an attribute)</li>
+<li>does not write the <code>\Tyhp\Php</code> class itself</li>
+<li>emits only the <strong>active</strong> body when a block gate was satisfied; inactive bodies emit nothing</li>
 </ul>
-<p>Those mutations apply <strong>only</strong> to that file / namespace. Other files still see the unadapted global import.</p>
-<p>A local <code>use</code> that does <strong>not</strong> mutate is redundant and warns (<code>TYHP4169</code>, <code>CheckerRedundantGlobalImport</code>). No mutation means: same imported FQN, no <code>as</code> (or <code>as</code> to the same short name the global import already uses), and either no <code>{ }</code> or an empty <code>{ }</code>. Group <code>use</code> warns <strong>per name</strong> that is globally included and unmutated; names in the same group that do alias or adapt are silent. The statement remains valid.</p>
+<p>The compiled PHP contains the surviving declarations as ordinary PHP, with no version checks.</p>
+<h2>Structs and extensions</h2>
+<p>Do not put <code>#[\Tyhp\Php]</code> on a <code>struct</code> or on a Tyhp or tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>). Gate those declarations with <code>declare(php=…)</code> instead.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Assume a loaded tyhpdef already has:
-//   global use extension \Tyhp\StringExtensions;
-//   global use App\Models\User;
-
-use extension \Tyhp\StringExtensions;           // warning TYHP4169 — already globally included
-use App\Models\User;                            // warning TYHP4169 — already globally included
-use extension \Tyhp\StringExtensions { };       // warning TYHP4169 — empty adaptations
-
-use App\Models\User as UserModel;               // OK — local alias
-use extension \Tyhp\StringExtensions {
-    StringExtensions::toLower hide;
-    StringExtensions::toUpper as toCC;
-};                                              // OK — scope-local hide / rename
+declare(php=&quot;&gt;=8.4&quot;) {
+    extension GatedStringOps {
+        function gated_tag(extends string $this): string {
+            return \strtoupper($this);
+        }
+    }
+}
 </code></pre></div>
-<h2>Compiled PHP Output for Use Extension</h2>
-<p>Extension method calls compile to static method calls on the extension class. The <code>use extension</code> statement itself is removed from the output (resolved at compile time) and replaced with a standard <code>use</code> import for the extension class:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-use extension App\Extensions\StringHelpers;
-
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCamelCase();
-</code></pre></div>
-<p>Compiles to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-$name = &#039;hello_world&#039;;
-$camel = \StringHelpers::toCamelCase($name);
-</code></pre></div>
-<h2>Tyhpdef Use Statements</h2>
-<p>In tyhpdef files, use statements serve the same purpose -- importing type symbols into the current scope. Tyhpdef files describe external PHP library signatures for the Tyhp compiler. The same use statement forms (including group use, typed use, <code>use extension</code>, and <code>global use</code>) are supported in tyhpdef files.</p>
+<p>File-level <code>declare(php=&quot;&gt;=8.4&quot;);</code> is also valid: it gates the rest of that file.</p>
+<h3>Tyhpdef</h3>
+<p><code>.tyhpdef</code> accepts the same file-level <code>;</code> and brace <code>{ }</code> declare forms. Use <code>#[\Tyhp\Php]</code> on classes, functions, and other legal attribute targets; wrap <code>struct</code> / <code>extension { }</code> in <code>declare(php=…)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-// Tyhpdef use statements follow the same syntax
-use Some\External\Library\{ClassA, ClassB};
-use function Some\External\Library\helperFunction;
-use const Some\External\Library\SOME_CONSTANT;
+#[\Tyhp\Php(&quot;&gt;=8.2 &lt;8.4&quot;)]
+function example(string $v): mixed;
 
-// Tyhpdef can also declare type aliases
-type StringOrNull = string|null;
+#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
+function example(string $v, bool $strict = false): string;
+
+declare(php=&quot;&gt;=8.3&quot;) {
+    function json_validate(string $json, int $depth = 512, int $flags = 0): bool;
+}
+
+declare(php=&quot;&gt;=8.4&quot;) {
+    extension GatedStringOps {
+        fn gated_tag(extends string $this): string =&gt; \strtoupper($this);
+    }
+}
 </code></pre></div>
-<h2>Importing Type Aliases</h2>
-<p>Import a source type alias with a plain <code>use</code>, the same as a class. That import binds the name for type position and for factory calls (<code>UserId()</code>). Tyhp source does not need a second <code>use function</code>.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-use App\Types\UserId;
-use App\Types\Optional;
-
-function f(UserId $id): void { }
-
-\Tyhp\Type $t = typeof(UserId);
-Optional(typeof(int));
-</code></pre></div>
-<p>When the factory is used by short name, emitted PHP rewrites the import to <code>use function App\Types\UserId;</code>. Hints-only usage still drops the import. Mixed groups split: <code>use App\Types\{ User, UserId }</code> emits a class <code>use</code> for <code>User</code> and <code>use function</code> for <code>UserId</code> when the factory is used.</p>
-<h2>Import Pruning</h2>
-<p>During compilation, the emitter automatically prunes unused use statements from the PHP output. If a use statement is declared but never referenced in the emitted code, it is removed. The emitter also sorts remaining imports alphabetically and groups them by type (classes, functions, constants) following PHP community conventions.</p>
-<p>Imports for Tyhp-only constructs that are erased during emission (generic type parameters, struct types) are automatically removed since they have no PHP equivalent. A <code>use</code> of a source type alias stays class-kind in Tyhp. When emitted PHP references the alias factory by short name (<code>UserId()</code>, <code>typeof(UserId)</code>, <code>$x is UserId</code>), that import is rewritten to <code>use function</code>. Hints-only usage of an alias is still pruned. Check-only tyhpdef aliases (no <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>) never emit a factory, so their imports stay erased. Compiled-library aliases that stamp <code>aliasFactory</code> follow the same factory import rewrite as source aliases. Class and method <code>GenericRuntime</code> stamps are independent of <code>aliasFactory</code> and do not require helpers.</p>
-<h2>Best Practices</h2>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use group imports to keep use statements organized when importing multiple symbols from the same namespace.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use generic import aliases to create type-safe aliases for specific generic instantiations. This is cleaner than repeating generic arguments everywhere.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use the <code>use extension</code> statement to bring extension methods into scope. Extension methods are opt-in unless a loaded tyhpdef (or this file) used <code>global use extension</code>. The <code>tyhp/core</code> scalar catalog is already globally imported — add a local <code>use extension \Tyhp\StringExtensions { … }</code> only to hide or rename methods in that file.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Place use statements at the top of the file, before any namespace or class declarations. The emitter handles automatic import pruning, so unused imports are cleaned up in the output.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use trait-like adaptation syntax on <code>use extension</code> when you need to rename methods, <code>hide</code> them, or pick a winner with <code>insteadof</code>. Operators cannot be renamed with <code>as</code>.</p>
-</div>
-    </div>
-</div>
-<h2>Common Mistakes</h2>
+<h2>Engine attributes and <code>output.phpVersion</code></h2>
+<p><code>#[\Tyhp\Php]</code> on a Core attribute class hides that class when the target is too low. Tyhp still recognizes several engine attributes <strong>by name</strong> and runs their checks:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Class visible</th>
+<th>Checker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>#[\Deprecated]</code></td>
+<td>8.4+</td>
+<td>Use-site <strong>TYHP4500</strong> at every <code>output.phpVersion</code>. Literal <code>$message</code> is included in the warning.</td>
+</tr>
+<tr>
+<td><code>#[\Override]</code></td>
+<td>8.3+</td>
+<td>Methods: <strong>TYHP4129</strong> when not overriding. Properties: legal at <strong>8.5+</strong>; below 8.5, <strong>TYHP4127</strong>. <code>__construct</code>: <strong>TYHP4339</strong> at every target.</td>
+</tr>
+<tr>
+<td><code>#[\NoDiscard]</code></td>
+<td>8.5+</td>
+<td>Unused-return <strong>TYHP4165</strong> at every <code>output.phpVersion</code>. <code>(void)</code> suppresses.</td>
+</tr>
+<tr>
+<td><code>#[\DelayedTargetValidation]</code></td>
+<td>8.5+</td>
+<td>At <strong>8.5+</strong>, skip <strong>TYHP4127</strong> for Core attributes on that declaration. Below 8.5 the skip is ignored. Functional checks (4129, 4165, 4339, 4500) still run.</td>
+</tr>
+</tbody>
+</table></div>
+<p>See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<h2>Diagnostics</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Code</th>
+<th>Severity</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TYHP4300</td>
+<td>Error</td>
+<td>Invalid Composer constraint string</td>
+</tr>
+<tr>
+<td>TYHP4301</td>
+<td>Error</td>
+<td><code>php</code> mixed with other directives in the same <code>declare</code></td>
+</tr>
+<tr>
+<td>TYHP4302</td>
+<td>Error</td>
+<td>Nested constraint unsatisfiable given the outer constraint</td>
+</tr>
+<tr>
+<td>TYHP4303</td>
+<td>Error</td>
+<td>Same name with overlapping version constraints, unless they are distinct same-staticness overloads</td>
+</tr>
+<tr>
+<td>TYHP4304</td>
+<td>Error</td>
+<td><code>#[\Tyhp\Php]</code> on <code>struct</code> or <code>extension</code> (Tyhp or tyhpdef)</td>
+</tr>
+<tr>
+<td>TYHP4305</td>
+<td>Error</td>
+<td>Missing or non-string <code>version</code> argument</td>
+</tr>
+<tr>
+<td>TYHP4306</td>
+<td>Warning</td>
+<td><code>output.phpVersion</code> unset; defaulted to <code>8.2</code> (once per compilation)</td>
+</tr>
+<tr>
+<td>TYHP8016</td>
+<td>Error</td>
+<td><code>#[\Tyhp\Php]</code> on a tyhpdef property hook (<code>get</code>/<code>set</code>); place it on the property or <code>declare(php=…)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>See the <a href="diagnostics_reference.md">Diagnostic Code Reference</a> for the compiler's short messages.</p>
+<h2>Common mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -537,31 +605,7 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use generic arguments on imports without an alias. The syntax requires <code>as AliasName&lt;GenericArgs&gt;</code> -- you cannot write <code>use App\MyClass&lt;int&gt;;</code> directly.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't import extension classes with a plain <code>use</code> statement and expect extension methods to work. You must use the <code>use extension</code> syntax to activate extension methods on the target type.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't import struct names in PHP interop code — struct declarations are erased and do not exist at runtime. Source type aliases exist in PHP as functions or static methods returning <code>\Tyhp\Type</code>; call <code>UserId()</code> / <code>Optional(\Tyhp\Type::int())</code> / <code>UserService::NameType()</code>, not as PHP types. See <a href="tyhp_0700_typeAliases.md">Type Aliases</a>.</p>
+        <div class="callout-content"><p>Don't mix <code>php</code> with other declare directives in one statement. Use a separate <code>declare(php=&quot;…&quot;)</code>.</p>
 </div>
     </div>
 </div>
@@ -573,34 +617,39 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't re-import a globally included symbol with a local <code>use</code> unless you are aliasing it or applying <code>hide</code> / <code>insteadof</code> / method <code>as</code>. A redundant non-mutating local <code>use</code> warns (<code>TYHP4169</code>).</p>
+        <div class="callout-content"><p>Don't put <code>#[\Tyhp\Php]</code> on <code>struct</code> or <code>extension</code>. That is TYHP4304; wrap those declarations in <code>declare(php=…) { }</code> instead.</p>
 </div>
     </div>
 </div>
-<h2>Compiler Error Examples</h2>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// ERROR: Generic arguments require an alias
-// use App\Collections\TypedList&lt;int&gt;;
-
-// Correct: use &#039;as&#039; to create a named alias with generic args
-use App\Collections\TypedList as IntList&lt;int&gt;;
-
-// ERROR: Extension methods not available without &#039;use extension&#039;
-// (unless a loaded tyhpdef already has `global use extension` for this name)
-// use App\Extensions\StringHelpers;  // plain import, not extension import
-// $name-&gt;toCamelCase();  // method not found on string
-
-// Correct: use &#039;use extension&#039; to activate extension methods
-use extension App\Extensions\StringHelpers;
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCamelCase();  // OK
-</code></pre></div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't treat sibling version variants as unreachable. TYHP4302 is only for nested constraints that can never overlap the outer gate.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't expect version gates in the compiled PHP. They are stripped, like <code>declare(output_file=…)</code>.</p>
+</div>
+    </div>
+</div>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0330_phpEngineAttributes.html">&larr; PHP Engine Attributes</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0400_structs.html">Structs &rarr;</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0310_declarationGating.html">&larr; Declaration Gating</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">

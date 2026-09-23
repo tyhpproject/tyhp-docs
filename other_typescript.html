@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -261,13 +277,13 @@
 				<section class="docs-section" id="TypeScript">
     <h2 class="section-heading">TypeScript</h2>
     
-    <p>TypeScript is the closest analogy to what Tyhp does and serves as a direct inspiration for the project. TypeScript adds a type system on top of JavaScript and compiles to standard JavaScript. Tyhp does the same for PHP. The relationship can be expressed as: TypeScript is to JavaScript what Tyhp is to PHP.</p>
+    <p>TypeScript is the closest analogy to what Tyhp does and a direct inspiration for the project. TypeScript is a typed superset of JavaScript that compiles to JavaScript. Tyhp is a typed superset of the PHP language that compiles to PHP. TypeScript is not JavaScript; Tyhp is not PHP.</p>
 <h2>What TypeScript Is</h2>
-<p>TypeScript is a strongly-typed superset of JavaScript developed by Microsoft. It adds static type checking, interfaces, generics, type inference, and other type system features to JavaScript. TypeScript compiles (transpiles) to standard JavaScript, erasing all type information at compile time. Since its introduction in 2012, TypeScript has become one of the most widely adopted programming languages, demonstrating that a typed superset approach can succeed at massive scale.</p>
+<p>TypeScript is a typed superset of JavaScript developed by Microsoft. It adds static type checking, interfaces, generics, type inference, and other type system features to JavaScript. TypeScript compiles (transpiles) to standard JavaScript, erasing all type information at compile time. Since its introduction in 2012, TypeScript has become one of the most widely adopted programming languages, demonstrating that a typed superset approach can succeed at massive scale.</p>
 <h2>Similarities</h2>
 <p>Tyhp follows the TypeScript model closely in philosophy and approach:</p>
 <ul>
-<li>Both are strongly-typed supersets of a dynamically-typed language</li>
+<li>Both are typed supersets of a dynamically typed language</li>
 <li>Both transpile to the original language — TypeScript to JavaScript, Tyhp to PHP</li>
 <li>Both erase generic type information at compile time (type erasure)</li>
 <li>Both support generics with type parameters and constraints</li>
@@ -276,7 +292,7 @@
 <li>Both aim to produce readable, idiomatic output code</li>
 <li>Both allow gradual adoption in existing codebases</li>
 <li>Both use declaration files for describing external libraries (TypeScript uses .d.ts files, Tyhp uses Tyhpdef files)</li>
-<li>TypeScript ships a mature Language Server; Tyhp's LSP is planned (Story 19) and is not in this alpha.</li>
+<li>TypeScript ships a mature Language Server; Tyhp provides <code>tyhp language_server</code> (LSP over stdin/stdout) and the Tyhp Language editor clients.</li>
 </ul>
 <h2>Differences</h2>
 <p>While Tyhp follows the TypeScript model, the differences between PHP and JavaScript lead to meaningful differences between Tyhp and TypeScript:</p>
@@ -290,7 +306,7 @@
 <li>TypeScript has a larger team and broader community. Tyhp is a smaller project focused specifically on the PHP ecosystem.</li>
 </ul>
 <h2>The TypeScript Model</h2>
-<p>TypeScript's success has proven that a typed superset approach works. It demonstrated that developers will adopt gradual typing when the tooling is good, the migration path is smooth, and the output code is readable. Tyhp aims to bring these same benefits to the PHP ecosystem — not by copying TypeScript feature-for-feature, but by applying the same philosophy to PHP's unique strengths and constraints.</p>
+<p>TypeScript showed that a typed-superset approach can work when the tooling is usable, the migration path is gradual, and the output is readable. Tyhp applies that model to PHP’s runtime and ecosystem, not a feature-for-feature copy of TypeScript.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -302,6 +318,7 @@
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

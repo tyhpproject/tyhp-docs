@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,24 +279,43 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 03</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp lets you call methods on scalar values (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) using object syntax when you define <strong>extension</strong> methods. The compiler rewrites <code>$value-&gt;method($args)</code> to a static call on the extension class. There is zero runtime overhead — no wrapper objects are created.</p>
+    <p>Tyhp lets you call methods on scalar values (<code>string</code>, <code>int</code>, <code>float</code>, <code>bool</code>, <code>array</code>) and on <code>\Closure</code> using object syntax. The compiler rewrites <code>$value-&gt;method($args)</code> to a PHP expression or a static call. There is zero runtime overhead — no wrapper objects are created.</p>
 <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Complete</span>
 </p>
-<div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Not in this alpha
-        </h4>
-        <div class="callout-content"><p>A built-in catalog of scalar methods (<code>toUpper</code>, <code>contains</code>, <code>len</code>, <code>map</code>, …) is <strong>planned</strong> for Story 21 (<code>tyhp/php</code> support extensions). It is <strong>not included</strong> in Tyhp 805.0.0-alpha.1. User-defined <code>extension</code> methods work today. Until the catalog ships, call PHP functions such as <code>\strtoupper($name)</code> or write (and import) your own extensions.</p>
-</div>
-    </div>
-</div>
+<p>The <code>tyhp/core</code> package ships a built-in catalog of those methods (<code>length</code>, <code>contains</code>, <code>toUpper</code>, <code>mapped</code>, …) and activates them for the whole compilation with <code>global use extension \Tyhp\StringExtensions</code> (and the matching <code>ArrayExtensions</code>, <code>IntExtensions</code>, <code>FloatExtensions</code>, <code>BoolExtensions</code>, <code>ClosureExtensions</code>). You do <strong>not</strong> write <code>use extension</code> in each file.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $name = &quot;Hello, World!&quot;;
+int $len = $name-&gt;length();
+bool $has = $name-&gt;contains(&quot;World&quot;);
+string $upper = $name-&gt;toUpper();
+string $trimmed = &quot;  spaces  &quot;-&gt;trim();
+
+array&lt;int, int&gt; $nums = [3, 1, 4];
+array&lt;int, int&gt; $evens = $nums-&gt;filtered(fn(int $v): bool =&gt; $v % 2 === 0);
+array&lt;int, string&gt; $labels = $nums-&gt;mapped(fn(int $v): string =&gt; (string)$v);
+int $n = 42-&gt;abs();
+float $rounded = 3.14159-&gt;round(2);
+</code></pre></div>
+<p><code>$name-&gt;length()</code> emits <code>\Tyhp\StringHelper::strlen($name)</code>. <code>$name-&gt;contains(&quot;World&quot;)</code> emits <code>\str_contains($name, &quot;World&quot;)</code>.</p>
+<h2>Unicode by default, <code>byte</code> prefix for bytes</h2>
+<p>String methods that measure or slice characters prefer the multibyte (<code>\mb_*</code>) APIs when <code>ext-mbstring</code> is loaded: <code>length()</code> is <code>\mb_strlen</code>, <code>toUpper()</code> is <code>\mb_strtoupper</code>, <code>substring()</code> is <code>\mb_substr</code>, and so on. Those calls go through <code>\Tyhp\StringHelper</code>, which caches the extension check and falls back to the matching byte API (<code>\strlen</code>, <code>\strtoupper</code>, <code>\substr</code>, …) when mbstring is not installed.</p>
+<p>Byte-oriented variants use a <code>byte</code> prefix and the corresponding byte API: <code>byteLength()</code> is <code>\strlen</code>, <code>byteReverse()</code> is <code>\strrev</code>.</p>
+<h2>Local <code>use</code> only when adapting</h2>
+<p>Because <code>tyhp/core</code> already issued <code>global use extension</code>, a file-level <code>use extension \Tyhp\StringExtensions;</code> with no adaptations is redundant and warns (<code>TYHP4169</code>). Use a local <code>use</code> only to <strong>adapt</strong> the catalog in that file (<code>hide</code>, method <code>as</code>, <code>insteadof</code>):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use extension \Tyhp\StringExtensions {
+    StringExtensions::toLower hide;
+};
+
+string $name = &#039;hello_world&#039;;
+int $len = $name-&gt;length();
+</code></pre></div>
+<p>See <a href="tyhp_0350_useStatements.md#local-use-overlaying-global-use">Use Statements</a>.</p>
 <h2>How to Write an Extension</h2>
-<p>Declare an <code>extension</code> with methods whose first parameter is marked <code>extends Type $this</code> (the receiver). The method body is ordinary Tyhp; <code>$this</code> has the extended type.</p>
+<p>Declare an <code>extension</code> with methods whose first parameter is marked <code>extends Type $this</code> (the receiver). The method body is ordinary Tyhp; <code>$this</code> has the extended type. Same-file extensions are in scope without an import. Extensions from another file or namespace need <code>use extension</code> unless a loaded tyhpdef used <code>global use extension</code> for that name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 extension StringHelpers {
@@ -338,24 +373,13 @@ $result = $input-&gt;trimmed()-&gt;lower()-&gt;dashed();
 $input = &quot;  Hello World  &quot;;
 $result = \StringHelpers::dashed(\StringHelpers::lower(\StringHelpers::trimmed($input)));
 </code></pre></div>
+<p>The built-in catalog chains the same way: <code>&quot;  Hello  &quot;-&gt;trim()-&gt;toLower()</code>.</p>
 <h2>Calling on Literal Values</h2>
-<p>User extension methods can be called on literals. Wrap integer and float literals in parentheses.</p>
+<p>Extension methods can be called on literals. Wrap integer and float literals in parentheses.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension IntHelpers {
-    function asChar(extends int $this): string {
-        return \chr($this);
-    }
-}
-
-extension StringHelpers {
-    function parts(extends string $this, string $sep): array {
-        return \explode($sep, $this);
-    }
-}
-
-$char = (65)-&gt;asChar();
-$parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
+$char = (65)-&gt;toHex();
+$parts = &quot;a,b,c&quot;-&gt;split(&quot;,&quot;);
 </code></pre></div>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
@@ -366,7 +390,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Write small extension methods that wrap <code>\str_*</code> / <code>\array_*</code> (or your own helpers) when the method-call style helps readability. Import them with <code>use extension</code> in each file that needs them.</p>
+        <div class="callout-content"><p>Prefer the <code>tyhp/core</code> catalog (<code>$name-&gt;toUpper()</code>, <code>$nums-&gt;mapped(...)</code>) when a method exists. Write a small user <code>extension</code> when you need a project-specific helper, and import it with <code>use extension</code> in each file that needs it.</p>
 </div>
     </div>
 </div>
@@ -378,19 +402,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Chain only extensions you defined (or imported). A built-in <code>$name-&gt;trim()-&gt;tolower()</code> catalog is planned (Story 21) and is not in this alpha — use <code>\strtolower(\trim($name))</code> or your own wrappers until then.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Keep the receiver as <code>extends string $this</code> (or <code>extends array $this</code>, …) so call sites read as instance methods while emit stays a static call.</p>
+        <div class="callout-content"><p>Keep the receiver as <code>extends string $this</code> (or <code>extends array $this</code>, …) so call sites read as instance methods while emit stays a static call or a spliced expression.</p>
 </div>
     </div>
 </div>
@@ -403,7 +415,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't assume PHP string/array functions are already methods on scalars in this alpha. <code>$name-&gt;toUpper()</code> and <code>$numbers-&gt;map(...)</code> are <strong>planned</strong> (Story 21). Until that catalog ships, use <code>\strtoupper($name)</code> / <code>\array_map(...)</code> or your own extensions.</p>
+        <div class="callout-content"><p>Don't add <code>use extension \Tyhp\StringExtensions;</code> with no adaptations. The catalog is already globally imported; that local <code>use</code> warns <code>TYHP4169</code>.</p>
 </div>
     </div>
 </div>
@@ -415,7 +427,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't expect actual object instances — these are compile-time rewrites. Calling a method that is not an imported extension produces a compile error.</p>
+        <div class="callout-content"><p>Don't expect actual object instances — these are compile-time rewrites. Calling a method that is not an in-scope extension produces a compile error.</p>
 </div>
     </div>
 </div>
@@ -427,7 +439,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't import an extension class with a plain <code>use</code> and expect methods to attach. Use <code>use extension</code> to activate extension methods on the target type (same-file extensions are already in scope).</p>
+        <div class="callout-content"><p>Don't import an extension class with a plain <code>use</code> and expect methods to attach. Use <code>use extension</code> to activate extension methods on the target type (same-file extensions and <code>tyhp/core</code> globals are already in scope).</p>
 </div>
     </div>
 </div>
@@ -439,7 +451,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't try to assign scalar methods to variables — <code>$fn = $name-&gt;trimmed</code> is not valid. These are method calls, not callable properties.</p>
+        <div class="callout-content"><p>Don't try to assign scalar methods to variables — <code>$fn = $name-&gt;trim</code> is not valid. These are method calls, not callable properties.</p>
 </div>
     </div>
 </div>
@@ -454,6 +466,7 @@ $parts = &quot;a,b,c&quot;-&gt;parts(&quot;,&quot;);
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

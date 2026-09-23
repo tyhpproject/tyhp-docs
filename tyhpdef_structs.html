@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -264,70 +280,82 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhpdef lets you define structs that describe PHP associative array structures to the Tyhp compiler. Structs are value types backed by arrays in PHP but treated as typed objects in Tyhp, providing compile-time property access checking, default values, and structural type compatibility. A struct defined in Tyhpdef works exactly the same as one defined in regular Tyhp code.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p><code>#[\Tyhp\Php]</code> is <strong>illegal</strong> on a <code>struct</code> declaration (<strong>TYHP4304</strong>), including in <code>.tyhpdef</code>. Wrap the struct in <code>declare(php=…)</code> instead — see <a href="tyhp_0320_phpVersionGating.md#structs-and-extensions">PHP Version Gating</a>.</p>
+</div>
+    </div>
+</div>
 <h2>Basic Struct Declaration</h2>
-<p>A struct declares typed properties that correspond to keys in a PHP associative array. Properties do not have visibility modifiers — all struct properties are public.</p>
+<p>A named struct is a <code>type</code> alias whose right-hand side is a struct shape. Properties do not have visibility modifiers — all struct properties are public. Inline <code>struct { … }</code> is also legal in type position (parameters, returns, unions).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct Credentials {
+type Credentials = struct {
     string $username;
     string $password;
-}
+};
 </code></pre></div>
 <p>This struct describes PHP arrays of the shape <code>['username' =&gt; 'admin', 'password' =&gt; 'secret']</code>. In Tyhp code, you access struct properties with arrow syntax (<code>$creds-&gt;username</code>) and the compiler translates that to array key access.</p>
 <h2>Required vs Optional Properties</h2>
 <p>A property is required if it is non-nullable and has no default value. A property is optional if it is nullable without a default — it may or may not be present in the array.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct UserProfile {
+type UserProfile = struct {
     string $name;              // Required: non-nullable, no default
     string $email;             // Required
     ?string $bio;              // Optional: nullable, no default
     string $role = &quot;user&quot;;     // Has a default value
     ?int $age;                 // Optional
-}
+};
 </code></pre></div>
 <h2>Property Aliases</h2>
 <p>PHP associative arrays can have keys that are not valid PHP variable names. Property aliases let you map a readable Tyhp property name to an arbitrary string array key using the <code>'key' as $name</code> syntax.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct EmailEnvelope {
+type EmailEnvelope = struct {
     string $to;
     string $subject;
     string $body;
     ?string &#039;fromEmailAddress&#039; as $from;
     ?string &#039;Reply-To&#039; as $replyTo;
     ?string &#039;Unsubscribe Link @ Your \&quot;Domain\&quot;&#039; as $unsubscribeLink;
-}
+};
 </code></pre></div>
 <p>With this declaration, <code>$envelope-&gt;replyTo</code> in Tyhp compiles to <code>$envelope['Reply-To']</code> in PHP.</p>
 <h2>Default Values</h2>
 <p>Properties can have default values. When a struct is instantiated, properties with defaults use those values unless overridden.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct DatabaseConfig {
+type DatabaseConfig = struct {
     string $host = &quot;localhost&quot;;
     int $port = 3306;
     string $charset = &quot;utf8mb4&quot;;
     ?string $database;
     ?string $username;
     ?string $password;
-}
+};
 </code></pre></div>
 <h2>Struct Inheritance</h2>
 <p>Structs can extend other structs using the <code>extends</code> keyword. The child struct inherits all properties from the parent and can add new ones.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct BaseEntity {
+type BaseEntity = struct {
     int $id;
     string $createdAt;
     string $updatedAt;
-}
+};
 
-struct UserEntity extends BaseEntity {
+type UserEntity = struct extends BaseEntity {
     string $name;
     string $email;
     ?string $avatar;
-}
+};
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -345,52 +373,60 @@ struct UserEntity extends BaseEntity {
 <p>Struct properties can reference other struct types, creating nested structures.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct Address {
+type Address = struct {
     string $street;
     string $city;
     string $state;
     string $zipCode;
     string $country = &quot;US&quot;;
-}
+};
 
-struct Company {
+type Company = struct {
     string $name;
     Address $headquarters;
     ?Address $mailingAddress;
     array&lt;string&gt; $departments;
-}
+};
 </code></pre></div>
 <h2>Generic Structs</h2>
 <p>Structs support generic type parameters, making them reusable across different types.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct ApiResponse&lt;T&gt; {
+type ApiResponse&lt;T&gt; = struct {
     bool $success;
     ?T $data;
     ?string $error;
     int $statusCode;
-}
+};
 
-struct PaginatedResult&lt;T&gt; {
+type PaginatedResult&lt;T&gt; = struct {
     array&lt;T&gt; $items;
     int $total;
     int $page;
     int $perPage;
     bool $hasMore;
-}
+};
+</code></pre></div>
+<h2>Inline struct types</h2>
+<p>A struct shape may appear in type position without an alias name. Group it with parentheses when it is an arm of <code>|</code> / <code>&amp;</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+function origin(): struct { float $lat; float $lng; };
+
+function maybeOrigin(): (struct { float $lat; float $lng; }) | null;
 </code></pre></div>
 <h2>Using Tyhpdef Structs with Functions</h2>
 <p>Tyhpdef structs are commonly used to describe the shape of arrays accepted or returned by PHP functions.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct MailOptions {
+type MailOptions = struct {
     string $to;
     string $subject;
     string $body;
     ?string $from;
     ?array&lt;string&gt; $cc;
     ?array&lt;string&gt; $bcc;
-}
+};
 
 function sendMail(MailOptions $options): bool;
 function getMailConfig(): MailOptions;
@@ -455,6 +491,7 @@ function getMailConfig(): MailOptions;
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

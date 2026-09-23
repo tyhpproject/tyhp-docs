@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,7 +279,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhpdef lets you describe existing PHP interfaces to the Tyhp compiler. When importing an interface, you provide fully typed method signatures, constants, and property declarations. You only need to declare the members you intend to use in your Tyhp code — the compiler treats undeclared members as nonexistent.</p>
+    <p>Tyhpdef lets you describe existing PHP interfaces to the Tyhp compiler. When importing an interface, you provide fully typed method signatures, constants, and property declarations. Hooked properties use the same bodyless <code>{ get; set; }</code> form as on classes. You only need to declare the members you intend to use in your Tyhp code — the compiler treats undeclared members as nonexistent.</p>
 <h2>Basic Interface Declaration</h2>
 <p>Consider a PHP interface that you want to use from Tyhp:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -283,8 +299,9 @@ interface Logger {
     public function debug(string $message, array&lt;string, mixed&gt; $context = []): void;
 }
 </code></pre></div>
+<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
 <h2>Interface Constants</h2>
-<p>Interfaces can declare typed constants. The constant type and name are specified, but the value itself is not included since Tyhpdef is declaration-only.</p>
+<p>Interfaces can declare typed constants. The constant type and name are specified, but the value itself is not included since Tyhpdef is declaration-only. An implementing class that redeclares the same constant must keep that type (or omit the type and inherit it).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 interface Cacheable {
@@ -312,6 +329,8 @@ interface Stream extends Readable, Writable {
     public function isOpen(): bool;
 }
 </code></pre></div>
+<h2>Partial interfaces</h2>
+<p><code>partial</code> on a tyhpdef interface follows the same rules as on classes. In include files, brace <code>partial interface Foo { … }</code> <strong>adds</strong> members (<code>TYHP8002</code> on a duplicate, <code>TYHP8014</code> if the type is missing). Overlay brace <code>partial</code> replaces listed members. Overlay <code>partial interface Foo&lt;T&gt;;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a>.</p>
 <h2>Generic Interfaces</h2>
 <p>Interfaces support generic type parameters with optional constraints. This lets you describe PHP interfaces that work with different types while maintaining type safety in Tyhp.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -330,6 +349,7 @@ interface SortableCollection&lt;T extends \Comparable&gt; {
     public function first(): ?T;
 }
 </code></pre></div>
+<p>Harvested <code>@template</code> bounds on interfaces follow the same FQCN and missing-argument rules as <a href="tyhpdef_classes.md#generic-classes">classes</a>.</p>
 <h2>Generic Interface Inheritance</h2>
 <p>Generic interfaces can extend other generic interfaces, passing through or constraining type parameters.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -348,10 +368,10 @@ interface UserRepository extends Repository&lt;\App\Models\User&gt; {
 <p>Tyhpdef supports method overloads on interfaces. You declare multiple signatures for the same method name with different parameter types and return types. Tyhp uses these overloads to narrow return types based on how the method is called.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-struct PersonName {
+type PersonName = struct {
     string $first;
     string $last;
-}
+};
 
 interface Person {
     public function getFirstName(): ?string;
@@ -446,6 +466,7 @@ interface ModernLogger {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

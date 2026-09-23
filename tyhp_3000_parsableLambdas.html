@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,7 +279,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 16</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp supports parsable lambdas — a feature that allows the compiler to capture the abstract syntax tree (AST) of an inline fn expression instead of just compiling it to a closure. When a function parameter is typed as PropertyPath&lt;T, R&gt; or Expression&lt;T, R&gt;, passing an inline fn expression causes the compiler to emit a data structure describing the expression tree. The receiving function can then inspect the structure of the lambda at runtime — walking property accesses, method calls, operators, and constants — to translate the expression into another domain such as SQL queries, validation rules, or serialization mappings.</p>
+    <p>Tyhp supports parsable lambdas — a feature that allows the compiler to capture the abstract syntax tree (AST) of an inline fn expression instead of just compiling it to a closure. When a function parameter is typed as PropertyPath&lt;callable(T): R&gt; or Expression&lt;callable(T): R&gt;, passing an inline fn expression causes the compiler to emit a data structure describing the expression tree. The receiving function can then inspect the structure of the lambda at runtime — walking property accesses, method calls, operators, and constants — to translate the expression into another domain such as SQL queries, validation rules, or serialization mappings.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -272,12 +288,12 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>This is the same concept as C#'s Expression&lt;Func&lt;T, TResult&gt;&gt;, which powers Entity Framework's LINQ-to-SQL. The parameter type drives the behavior: if a parameter is typed Expression&lt;T, R&gt;, the compiler emits an expression tree; if typed callable or \Closure, the compiler emits a normal closure.</p>
+        <div class="callout-content"><p>This is the same concept as C#'s Expression&lt;Func&lt;T, TResult&gt;&gt;, which powers Entity Framework's LINQ-to-SQL. The parameter type drives the behavior: if a parameter is typed Expression&lt;callable(T): R&gt;, the compiler emits an expression tree; if typed callable or \Closure, the compiler emits a normal closure.</p>
 </div>
     </div>
 </div>
-<h2>PropertyPath&lt;T, R&gt; — Type-Safe Property References</h2>
-<p>PropertyPath&lt;T, R&gt; is the simplest form of parsable lambda. It captures a chain of property accesses from an fn expression. When a parameter is typed PropertyPath&lt;T, R&gt;, the compiler converts fn (T $x) =&gt; $x-&gt;propA-&gt;propB into a PropertyPath object containing the chain ['propA', 'propB'] plus type information.</p>
+<h2>PropertyPath&lt;callable(T): R&gt; — Type-Safe Property References</h2>
+<p>PropertyPath&lt;callable(T): R&gt; is the simplest form of parsable lambda. It captures a chain of property accesses from an fn expression. When a parameter is typed PropertyPath&lt;callable(T): R&gt;, the compiler converts fn (T $x) =&gt; $x-&gt;propA-&gt;propB into a PropertyPath object containing the chain ['propA', 'propB'] plus type information.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class User {
@@ -292,7 +308,7 @@ class Address {
 }
 
 class QueryBuilder&lt;T&gt; {
-    public function select(PropertyPath&lt;T, string&gt; $prop): static {
+    public function select(PropertyPath&lt;callable(T): string&gt; $prop): static {
         string $column = $prop-&gt;getPropertyName();
         string $path = $prop-&gt;getPath();
         return $this;
@@ -313,7 +329,7 @@ $query-&gt;select(fn ($u) =&gt; $u-&gt;address-&gt;city);
 <p>The constructor takes <code>$sourceType</code> and <code>$resultType</code> as strings and passes them to the parent <code>Expression</code>. PropertyPath itself does <strong>not</strong> expose <code>$sourceType</code> / <code>$resultType</code> properties. The parent stores the result type as <code>$returnType</code>. PropertyPath adds <code>readonly array&lt;string&gt; $path</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly array&lt;string&gt; $path</code></h4><br/><p>The property names in the access chain, in order. For fn (User $u) =&gt; $u-&gt;address-&gt;city, this is ['address', 'city'].</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>readonly \Closure $callable</code></h4><br/><p>The compiled closure that can execute the property access. This allows PropertyPath to be used as a callable fallback.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly \Closure&lt;TCallableShape&gt; $callable</code></h4><br/><p>The compiled closure that can execute the property access. This allows PropertyPath to be used as a callable fallback.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>getPropertyName(): string</code></h4><br/><p>Returns the final property name (last element of the path). For fn (User $u) =&gt; $u-&gt;address-&gt;city, returns 'city'.</p>
 </div>
@@ -321,7 +337,7 @@ $query-&gt;select(fn ($u) =&gt; $u-&gt;address-&gt;city);
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>getSegments(): array</code></h4><br/><p>Returns the path as an array of property names.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>getValue(T $source): R</code></h4><br/><p>Executes the property access chain on an object instance. Equivalent to calling the compiled callable.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>getValue(mixed $source): __CallableReturnType&lt;TCallableShape&gt;</code></h4><br/><p>Executes the property access chain on an object instance. Equivalent to calling the compiled callable.</p>
 </div>
 <h2>PropertyPath Compiled PHP Output</h2>
 <p>When you pass an fn expression to a PropertyPath parameter, the compiler emits a new \Tyhp\PropertyPath(...) construction. The original fn is included as the callable parameter so the PropertyPath can be executed directly.</p>
@@ -361,18 +377,18 @@ $query-&gt;select(new \Tyhp\PropertyPath(
     nullSafeFlags: [true, true]
 ));
 </code></pre></div>
-<h2>Expression&lt;T, R&gt; — Full Expression Trees</h2>
-<p><code>PropertyPath&lt;T, R&gt;</code> extends <code>Expression&lt;T, R&gt;</code>. <code>Expression</code> supports full expression trees: any supported inline <code>fn</code> body — not just property chains — can be captured as a tree of expression nodes. This enables runtime inspection of comparison operators, method calls, binary expressions, captured variables, and more.</p>
-<p>Expression uses the same generic parameter convention as callable: the last type argument is the return type, and everything before represents parameter types. Expression&lt;User, string&gt; is a single-parameter lambda taking User and returning string. Expression&lt;T, T, int&gt; is a two-parameter lambda returning int.</p>
+<h2>Expression&lt;callable(T): R&gt; — Full Expression Trees</h2>
+<p><code>PropertyPath&lt;callable(T): R&gt;</code> extends <code>Expression&lt;callable(T): R&gt;</code>. <code>Expression</code> supports full expression trees: any supported inline <code>fn</code> body — not just property chains — can be captured as a tree of expression nodes. This enables runtime inspection of comparison operators, method calls, binary expressions, captured variables, and more.</p>
+<p><code>Expression</code> takes one type argument: the callable shape of the lambda. <code>Expression&lt;callable(User): string&gt;</code> is a single-parameter lambda taking <code>User</code> and returning <code>string</code>. <code>Expression&lt;callable(T, T): int&gt;</code> is a two-parameter lambda returning <code>int</code>. Zero-parameter lambdas are <code>Expression&lt;callable(): R&gt;</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class QueryBuilder&lt;T&gt; {
-    public function where(Expression&lt;T, bool&gt; $predicate): static {
+    public function where(Expression&lt;callable(T): bool&gt; $predicate): static {
         // Walk the expression tree to build SQL WHERE clause
         return $this;
     }
 
-    public function select&lt;R&gt;(Expression&lt;T, R&gt; $selector): QueryBuilder&lt;R&gt; {
+    public function select&lt;R&gt;(Expression&lt;callable(T): R&gt; $selector): QueryBuilder&lt;R&gt; {
         // Walk the expression tree to build SQL SELECT clause
         return new QueryBuilder&lt;R&gt;();
     }
@@ -385,22 +401,22 @@ $query = new QueryBuilder&lt;User&gt;()
     -&gt;select(fn ($u) =&gt; $u-&gt;firstName);
 
 // The fn expressions are automatically converted to Expression trees
-// because the parameter types are Expression&lt;T, R&gt;
+// because the parameter types are Expression&lt;callable(T): R&gt;
 </code></pre></div>
 <h2>Expression Members</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly ExpressionNode $body</code></h4><br/><p>The expression tree root node representing the fn body.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly array $parameters</code></h4><br/><p>The lambda parameters as ParameterExpression nodes.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>readonly \Closure $callable</code></h4><br/><p>The compiled closure for execution. Every Expression carries its original compiled closure so it can be executed as a fallback.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly \Closure&lt;TCallableShape&gt; $callable</code></h4><br/><p>The compiled closure for execution. Every Expression carries its original compiled closure so it can be executed as a fallback.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly string $returnType</code></h4><br/><p>The resolved return type of the expression.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>mixed $lastResult</code></h4><br/><p>The last value produced by <code>__invoke</code> or <code>PropertyPath::getValue</code>. Stashed before the return-type check so callers who catch <code>IncompatibleTypeException</code> can inspect the mismatched value.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__invoke(mixed ...$args): mixed</code></h4><br/><p>Execute the expression by delegating to the stored callable. This makes Expression callable via $expr($arg).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__invoke(...): __CallableReturnType&lt;TCallableShape&gt;</code></h4><br/><p>Execute the expression by delegating to the stored callable. This makes Expression callable via $expr($arg).</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>compile(): \Closure</code></h4><br/><p>Returns the stored compiled closure.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>compile(): \Closure&lt;TCallableShape&gt;</code></h4><br/><p>Returns the stored compiled closure.</p>
 </div>
 <h2>Expression Node Types</h2>
 <p>Expression trees are built from a hierarchy of node types. Every node extends ExpressionNode and carries a resolved type string and a nodeType identifier. The following table lists all supported node types.</p>
@@ -431,7 +447,7 @@ $query = new QueryBuilder&lt;User&gt;()
 <div class="alert alert-secondary" role="alert"><h4><code>NewExpression</code></h4><br/><p>Represents a new expression (new Money($x-&gt;amount)). Properties: string $class, array $arguments.</p>
 </div>
 <h2>Expression Tree Compiled PHP Output</h2>
-<p>When you pass an fn expression to an Expression&lt;T, R&gt; parameter, the compiler emits a tree of \Tyhp\Expression*Expression node constructors wrapped in a \Tyhp\Expression. The tree is built bottom-up: leaf nodes first, then their parents.</p>
+<p>When you pass an fn expression to an Expression&lt;callable(T): R&gt; parameter, the compiler emits a tree of \Tyhp\Expression*Expression node constructors wrapped in a \Tyhp\Expression. The tree is built bottom-up: leaf nodes first, then their parents.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 int $minAge = 18;
@@ -530,11 +546,11 @@ string $sql = $visitor-&gt;visit($expression-&gt;body);
 // Result: &quot;age &gt; 18&quot;
 </code></pre></div>
 <h2>Multi-Parameter Expressions</h2>
-<p>Expression trees support multi-parameter lambdas for comparison-style expressions. The type becomes Expression&lt;T, T, int&gt; for comparators, where the last type argument is always the return type.</p>
+<p>Expression trees support multi-parameter lambdas for comparison-style expressions. Write the callable shape on <code>Expression</code>: <code>Expression&lt;callable(T, T): int&gt;</code> for comparators.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class SortableList&lt;T&gt; {
-    public function sortBy(Expression&lt;T, T, int&gt; $comparator): static {
+    public function sortBy(Expression&lt;callable(T, T): int&gt; $comparator): static {
         // Walk the expression tree to determine sort columns
         return $this;
     }
@@ -560,7 +576,7 @@ string $city = nameof(fn (User $u) =&gt; $u-&gt;address-&gt;city); // &#039;city
 
 use \Tyhp\Expression\ExpressionSerializer;
 
-Expression&lt;User, bool&gt; $expr = fn ($u) =&gt; $u-&gt;age &gt; 18;
+Expression&lt;callable(User $u): bool&gt; $expr = fn ($u) =&gt; $u-&gt;age &gt; 18;
 string $json = ExpressionSerializer::toJson($expr);
 
 // Result wraps { parameters, returnType, body }.
@@ -584,15 +600,15 @@ bool $alsoSame = $expr-&gt;equals($expr);
 <h2>Type System Integration</h2>
 <p>Expression trees integrate with the type system as follows:</p>
 <ul>
-<li>Expression&lt;T, R&gt; is assignable to callable&lt;T, R&gt; (via __invoke). You can call an Expression directly: $expr($userInstance).</li>
-<li>Expression&lt;T, R&gt; is NOT assignable to \Closure. PHP's \Closure class is final and cannot be extended.</li>
-<li>PropertyPath&lt;T, R&gt; is a subtype of Expression&lt;T, R&gt;. Code accepting Expression also accepts PropertyPath.</li>
+<li>Expression&lt;callable(T): R&gt; is assignable to callable(T): R (via __invoke). You can call an Expression directly: $expr($userInstance). <code>compile()</code> returns <code>\Closure&lt;callable(T): R&gt;</code>.</li>
+<li>Expression&lt;callable(T): R&gt; is NOT assignable to \Closure. PHP's \Closure class is final and cannot be extended.</li>
+<li>PropertyPath&lt;callable(T): R&gt; is a subtype of Expression&lt;callable(T): R&gt;. Code accepting Expression also accepts PropertyPath.</li>
 <li>When passing Expression where \Closure is expected, the emitter automatically extracts $expression-&gt;callable.</li>
 <li>When passing a regular fn expression to a callable or \Closure parameter (not Expression), the compiler emits a normal closure — no expression tree.</li>
 <li>The parameter type drives the behavior: only Expression&lt;&gt; and PropertyPath&lt;&gt; parameters trigger expression tree generation.</li>
 </ul>
 <h2>Supported Expression Types</h2>
-<p>The following expression types are supported inside fn expressions that target Expression&lt;T, R&gt; parameters:</p>
+<p>The following expression types are supported inside fn expressions that target Expression&lt;callable(T): R&gt; parameters:</p>
 <ul>
 <li>Property access: $x-&gt;prop</li>
 <li>Null-safe property access: $x?-&gt;prop</li>
@@ -636,17 +652,17 @@ class QueryBuilder&lt;T&gt; {
     private array $conditions = [];
     private ?string $selectColumn = null;
 
-    public function where(Expression&lt;T, bool&gt; $predicate): static {
+    public function where(Expression&lt;callable(T): bool&gt; $predicate): static {
         $this-&gt;conditions[] = $predicate;
         return $this;
     }
 
-    public function select&lt;R&gt;(PropertyPath&lt;T, R&gt; $selector): static {
+    public function select&lt;R&gt;(PropertyPath&lt;callable(T): R&gt; $selector): static {
         $this-&gt;selectColumn = $selector-&gt;getPropertyName();
         return $this;
     }
 
-    public function orderBy&lt;R&gt;(PropertyPath&lt;T, R&gt; $prop): static {
+    public function orderBy&lt;R&gt;(PropertyPath&lt;callable(T): R&gt; $prop): static {
         // Use $prop-&gt;getPropertyName() for the ORDER BY clause
         return $this;
     }
@@ -667,7 +683,7 @@ $users = new QueryBuilder&lt;User&gt;()
 <p>Every Expression carries its compiled closure, so it can be called directly. This allows code that receives an Expression to either inspect the tree or just execute it.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function process(Expression&lt;User, bool&gt; $predicate, User $user): void {
+function process(Expression&lt;callable(User): bool&gt; $predicate, User $user): void {
     // Option 1: Inspect the expression tree
     ExpressionNode $body = $predicate-&gt;body;
 
@@ -690,7 +706,7 @@ process(fn ($u) =&gt; $u-&gt;age &gt;= 18, $user);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use PropertyPath&lt;T, R&gt; for simple property references in ORM column mappings, validation, and serialization configuration. It is lightweight and covers the most common use case.</p>
+        <div class="callout-content"><p>Use PropertyPath&lt;callable(T): R&gt; for simple property references in ORM column mappings, validation, and serialization configuration. It is lightweight and covers the most common use case.</p>
 </div>
     </div>
 </div>
@@ -702,7 +718,7 @@ process(fn ($u) =&gt; $u-&gt;age &gt;= 18, $user);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use Expression&lt;T, R&gt; when you need to inspect the full structure of a predicate — comparisons, boolean logic, method calls — such as building SQL WHERE clauses or DSL translators.</p>
+        <div class="callout-content"><p>Use Expression&lt;callable(T): R&gt; when you need to inspect the full structure of a predicate — comparisons, boolean logic, method calls — such as building SQL WHERE clauses or DSL translators.</p>
 </div>
     </div>
 </div>
@@ -738,7 +754,7 @@ process(fn ($u) =&gt; $u-&gt;age &gt;= 18, $user);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Every Expression carries its compiled callable. Design your API to accept Expression&lt;T, R&gt; even if you sometimes just want to execute it — the caller can pass an fn expression and the library can either inspect or call it.</p>
+        <div class="callout-content"><p>Every Expression carries its compiled callable. Design your API to accept Expression&lt;callable(T): R&gt; even if you sometimes just want to execute it — the caller can pass an fn expression and the library can either inspect or call it.</p>
 </div>
     </div>
 </div>
@@ -799,13 +815,13 @@ process(fn ($u) =&gt; $u-&gt;age &gt;= 18, $user);
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't assume Expression&lt;T, R&gt; is assignable to \Closure — PHP's \Closure class is final. The emitter extracts -&gt;callable automatically when needed, but avoid explicit \Closure type hints when you want to accept expression trees.</p>
+        <div class="callout-content"><p>Don't assume Expression&lt;callable(T): R&gt; is assignable to \Closure — PHP's \Closure class is final. The emitter extracts -&gt;callable automatically when needed, but avoid explicit \Closure type hints when you want to accept expression trees.</p>
 </div>
     </div>
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function findColumn(PropertyPath&lt;User, string&gt; $prop): string {
+function findColumn(PropertyPath&lt;callable(User): string&gt; $prop): string {
     return $prop-&gt;getPropertyName();
 }
 
@@ -820,17 +836,17 @@ findColumn(fn ($u) =&gt; $u-&gt;firstName);
 // findColumn(fn ($u) =&gt; $u-&gt;getFullName());  // Compiler error: method call not allowed in PropertyPath
 
 // OK — use Expression for method calls
-function findExpr(Expression&lt;User, string&gt; $expr): string {
+function findExpr(Expression&lt;callable(User): string&gt; $expr): string {
     return &#039;&#039;;
 }
 findExpr(fn ($u) =&gt; $u-&gt;getFullName());  // This works
 </code></pre></div>
 <h2>Compiler Errors</h2>
 <ul>
-<li>TYHP4320: Parameter of type 'PropertyPath&lt;T, R&gt;' requires an inline fn expression — triggered when a non-fn argument is passed to a PropertyPath parameter.</li>
+<li>TYHP4320: Parameter of type 'PropertyPath&lt;callable(T): R&gt;' requires an inline fn expression — triggered when a non-fn argument is passed to a PropertyPath parameter.</li>
 <li>TYHP4321: PropertyPath expression must be a simple property access chain — triggered when the fn body contains method calls, operators, or other non-property-access expressions in a PropertyPath context.</li>
 <li>TYHP4322: Expression trees do not support '{0}' expressions — triggered when an unsupported expression type (assignments, await, yield, match, etc.) is used in an Expression fn body.</li>
-<li>TYHP4323: Parameter of type 'Expression&lt;T, R&gt;' requires an inline fn expression — triggered when a non-fn argument is passed to an Expression parameter.</li>
+<li>TYHP4323: Parameter of type 'Expression&lt;callable(T): R&gt;' requires an inline fn expression — triggered when a non-fn argument is passed to an Expression parameter.</li>
 <li>TYHP4324: Captured variable '${0}' in expression tree must be definitely assigned — triggered when a captured variable may not be initialized at the point of capture.</li>
 </ul>
 
@@ -844,6 +860,7 @@ findExpr(fn ($u) =&gt; $u-&gt;getFullName());  // This works
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

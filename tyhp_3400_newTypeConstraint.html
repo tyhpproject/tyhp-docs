@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto"> 
 <head>
-    <title>The new&lt;TArgs...&gt; Constructable Object Type - Tyhp</title>
+    <title>Object Shapes and `__New&lt;T&gt;` - Tyhp</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link active" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link active" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -258,534 +274,169 @@
 	    </div>
 	    <div class="docs-content">
 		    <div class="container">
-				<section class="docs-section" id="The_new_TArgs_Constructable_Object_Type">
-    <h2 class="section-heading">The new&lt;TArgs...&gt; Constructable Object Type</h2>
+				<section class="docs-section" id="Object_Shapes_and___New_T_">
+    <h2 class="section-heading">Object Shapes and <code>__New&lt;T&gt;</code></h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 3 · Story 27</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 2 · Story 27</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Not in this alpha
-        </h4>
-        <div class="callout-content"><p>This feature is <strong>not included</strong> in Tyhp 805.0.0-alpha.1 (roadmap Tier 2/3). The rest of this page describes the planned design. Do not expect these commands or syntax to work yet.</p>
-</div>
-    </div>
-</div>
-<p>Tyhp provides a built-in type called new that represents &quot;an object that can be constructed.&quot; Used exclusively in type positions, new enables type-safe factory patterns, dependency injection containers, and generic constructor constraints. It works analogously to other built-in type facets like callable and iterable — new&lt;TArgs...&gt; specifies the constructor parameter types that a class must accept.</p>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>The new type is purely a compile-time construct. It is completely erased from PHP output — replaced with object in type positions and stripped from generic constraints. There is zero runtime cost.</p>
-</div>
-    </div>
-</div>
-<h2>Basic Syntax</h2>
-<p>The new type is used in type positions (parameter types, return types, property types, generic constraints). Bare new means &quot;constructable with zero arguments.&quot; new&lt;TArgs...&gt; means &quot;constructable with the specified argument types.&quot; Unlike callable&lt;TArgs..., TReturn&gt; which uses a return-last convention, new&lt;TArgs...&gt; has no return type parameter — the return type of a constructor is always the class itself.</p>
+    <p>An <strong>object shape</strong> is a structural object type: a named predicate on an instance. It is the object counterpart of a struct (an array shape). Two values may match the same shape and still be different PHP classes.</p>
+<p>A shape is declared only as the right-hand side of a <code>type</code> alias, using <code>object { … }</code>. Use the alias name everywhere else (parameters, properties, returns, generic bounds, unions). <code>new class { … }</code> remains the anonymous-class <strong>expression</strong>.</p>
+<p><code>__New&lt;T&gt;</code> marks a shape as <strong>constructable</strong>: a concrete class with a public constructor that can be invoked as the shape’s <code>__construct</code> (or the PHP default zero-argument constructor when the shape has no <code>__construct</code>). Values of a shape and of <code>__New&lt;Shape&gt;</code> are <strong>instances</strong>. Class-name strings use <code>__ClassName&lt;Shape&gt;</code> and <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code>.</p>
+<h2>Object shapes</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Accept any class constructable with zero arguments
-function createDefault(new $constructable): object {
-    return new $constructable();
-}
+type ClockShape = object {
+    public function now(): \DateTimeImmutable;
+};
 
-// Accept any class constructable with (string, int)
-function createWithArgs(new&lt;string, int&gt; $constructable, string $name, int $id): object {
-    return new $constructable($name, $id);
-}
-
-// As a return type
-function getFactory(): new&lt;string&gt; {
-    return SomeClass::class;
-}
-</code></pre></div>
-<h2>Compiled PHP Output</h2>
-<p>The new type has no PHP runtime equivalent. In type positions, new is replaced with object. Generic arguments are stripped. Generic constraints containing new&lt;&gt; are erased entirely as part of generic erasure.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-// function createDefault(new $constructable): object
-// compiles to:
-function createDefault(object $constructable): object {
-    return new $constructable();
-}
-
-// function createWithArgs(new&lt;string, int&gt; $constructable, string $name, int $id): object
-// compiles to:
-function createWithArgs(object $constructable, string $name, int $id): object {
-    return new $constructable($name, $id);
-}
-
-// function getFactory(): new&lt;string&gt;
-// compiles to:
-function getFactory(): object {
-    return SomeClass::class;
-}
-</code></pre></div>
-<h2>Generic Constraints with new&lt;&gt;</h2>
-<p>The most common use of new&lt;&gt; is as a generic constraint. This allows you to write generic factory functions that are type-safe: the compiler verifies that any concrete class passed as a type argument has a public constructor matching the specified signature.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// T must be constructable with a string argument
-function create&lt;T extends new&lt;string&gt;&gt;(string $value): T {
-    return new T($value);
-}
-
-// T must be constructable with zero args AND implement Logger
-function makeLogger&lt;T extends new &amp; Logger&gt;(): T {
-    return new T();
-}
-
-// Multiple constructor parameter types
-function buildService&lt;T extends new&lt;Config, Database&gt; &amp; Service&gt;(
-    Config $config,
-    Database $db
-): T {
-    return new T($config, $db);
-}
-
-// Usage:
-class UserService extends Service {
-    public function __construct(Config $config, Database $db): void {
-        // ...
+class WallClock {
+    public function now(): \DateTimeImmutable {
+        return new \DateTimeImmutable();
     }
 }
 
-UserService $svc = buildService&lt;UserService&gt;($config, $db);
+function formatNow(ClockShape $c): string {
+    return $c-&gt;now()-&gt;format(&#039;c&#039;);
+}
+
+formatNow(new WallClock());
 </code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-// Generic constraints are erased — T becomes mixed
-function create(string $value): mixed {
-    // At runtime, the class name is passed as a parameter or determined by context
-    return new $value();
-}
+type FallbackConstraint = object {
+    public function getPrettyString(): string;
+    public function __toString(): string;
+};
 
-function makeLogger(): mixed {
-    return new $class();
-}
-
-function buildService(Config $config, Database $db): mixed {
-    return new $class($config, $db);
-}
+function parseConstraint(string $pretty): \Composer\Semver\Constraint\ConstraintInterface | FallbackConstraint;
 </code></pre></div>
-<h2>Computed Intersection Types</h2>
-<p>Tyhp's type system automatically computes new&lt;&gt; type facets for every class based on its constructor signature. A class with N constructor parameters where the last M have defaults generates M+1 new&lt;&gt; facets — one for each valid prefix of arguments, down to the required minimum. These facets are included in the class's computed intersection type.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// No constructor — constructable with zero args
-class SimpleClass {
-}
-// Computed type includes: new
-
-// One required param, two optional
-class ConfiguredClass {
-    public function __construct(
-        string $name,
-        int $priority = 0,
-        bool $active = true
-    ): void {
-        // ...
-    }
-}
-// Computed type includes: new&lt;string&gt;, new&lt;string, int&gt;, new&lt;string, int, bool&gt;
-// Does NOT include bare new (first param is required)
-
-// All defaults — constructable with zero, one, or two args
-class AllDefaultsClass {
-    public function __construct(string $label = &#039;default&#039;, int $count = 0): void {
-        // ...
-    }
-}
-// Computed type includes: new, new&lt;string&gt;, new&lt;string, int&gt;
-</code></pre></div>
-<h2>What Satisfies new&lt;&gt;</h2>
-<p>Only concrete classes with public constructors can satisfy new&lt;&gt; constraints. Abstract classes, interfaces, traits, enums, and classes with private or protected constructors do not satisfy new&lt;&gt;.</p>
+<p><code>ClockShape</code> in type position means <code>object</code> refined by that shape. You do not write <code>object &amp; ClockShape</code>.</p>
+<h3>What a shape matches</h3>
+<p>A nominal object type (or another shape) assigns to a shape when:</p>
 <ul>
-<li>Concrete class with no constructor: satisfies bare new (zero-arg constructable)</li>
-<li>Concrete class with public constructor: satisfies new&lt;TArgs...&gt; based on its parameter types</li>
-<li>Concrete class with all-default constructor: satisfies bare new and each prefix variant</li>
-<li>Variadic-only constructor (__construct(mixed ...$args)): satisfies bare new</li>
-<li>Abstract class: does NOT satisfy new&lt;&gt; — cannot be instantiated</li>
-<li>Interface: does NOT satisfy new&lt;&gt; — cannot be instantiated</li>
-<li>Trait: does NOT satisfy new&lt;&gt; — cannot be instantiated</li>
-<li>Enum: does NOT satisfy new&lt;&gt; — enums use cases, not constructors</li>
-<li>Private/protected constructor: does NOT satisfy new&lt;&gt; — not externally constructable</li>
-<li>Struct: does NOT satisfy new&lt;&gt; — structs use struct literal syntax, not new</li>
+<li>Every <strong>public</strong> member of the shape exists on the source (extra source members are allowed).</li>
+<li>Methods match by callable compatibility (parameter contravariance, return covariance).</li>
+<li>Properties match with readonly / hook variance (a writable shape property must be writable on the source).</li>
+<li><code>protected</code> / <code>private</code> members on the source do not satisfy the shape.</li>
+<li><code>__get</code> / <code>__call</code> / other magic satisfy a shape member only when the shape lists <strong>that</strong> magic method.</li>
 </ul>
-<h2>Type Hierarchy</h2>
-<p>All new variants extend object directly. They are sibling types, not a nested subtype chain — new&lt;T1, T2&gt; does NOT extend new&lt;T1&gt;. A concrete class may satisfy multiple new&lt;&gt; variants independently based on its constructor's default parameter values. Every new type is assignable to object and mixed.</p>
+<p><code>object</code> and <code>mixed</code> do not assign to a shape. Narrow with <code>$x is ClockShape</code> or declare the value as the shape (including tyhpdef returns).</p>
+<p>Empty <code>type X = object {};</code> is illegal; write <code>object</code>.</p>
+<h3>What a shape cannot do</h3>
+<p>A shape alias is not a PHP class. These are errors:</p>
+<ul>
+<li><code>new ClockShape</code></li>
+<li><code>ClockShape::foo()</code> / <code>ClockShape::class</code></li>
+<li><code>extends ClockShape</code> / <code>implements ClockShape</code></li>
+<li><code>$x-&gt;__construct(...)</code> when <code>$x</code> is shape-typed (<code>__construct</code> on a shape is only for <code>__New</code> / <code>new T()</code>)</li>
+</ul>
+<p><code>object { … }</code> is illegal except as the alias right-hand side.</p>
+<h3>Nominal parents plus extra members</h3>
+<p>There is no <code>extends</code> / <code>implements</code> on the <code>object { }</code> header. Nominal parents are intersections:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">type TimestampedLogger = \Psr\Log\LoggerInterface &amp; object {
+    public function getLastLogAt(): \DateTimeImmutable;
+};
+</code></pre></div>
+<p>That type is <code>\Psr\Log\LoggerInterface</code> plus <code>getLastLogAt()</code>.</p>
+<h2><code>__New&lt;T&gt;</code></h2>
+<p><code>T</code> must be an object-shape alias. <code>T extends ClockShape</code> is an instance bound. <code>T extends __New&lt;ClockShape&gt;</code> is the same instance API <strong>and</strong> <code>new T(...)</code> is allowed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// new extends object
-object $obj = getConstructable();  // Always valid
+type Named = object {
+    public function __construct(string $name): void;
+    public function ping(): void;
+};
 
-// Each new&lt;&gt; variant is independent
-// A class with __construct(string $a, int $b = 0) satisfies:
-//   new&lt;string&gt;        — required arg only
-//   new&lt;string, int&gt;   — both args
-// But it does NOT satisfy:
-//   new                — $a has no default
-//   new&lt;int&gt;           — wrong type for first arg
-//   new&lt;string, int, bool&gt; — too many params
-</code></pre></div>
-<h2>Intersection Types with new&lt;&gt;</h2>
-<p>The new type can be combined with other types in intersection types. This is useful when you need a type that is both constructable and implements a specific interface.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Must be constructable with zero args AND implement Serializable
-function createAndSerialize&lt;T extends new &amp; Serializable&gt;(): string {
-    T $instance = new T();
-    return \serialize($instance);
-}
-
-// Must be constructable with Config AND implement Service
-function bootService&lt;T extends new&lt;Config&gt; &amp; Service&gt;(Config $config): T {
-    T $service = new T($config);
-    $service-&gt;boot();
-    return $service;
-}
-</code></pre></div>
-<p>In the compiled PHP output, the new&lt;&gt; component is removed from intersection types. If only one component remains, it is emitted directly. If new&lt;&gt; was the only component, it is replaced with object.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-// new &amp; Serializable in a non-generic context compiles to:
-// Serializable (the new component is stripped)
-
-// new&lt;string&gt; | null compiles to:
-// object | null (new&lt;&gt; replaced with object in unions)
-</code></pre></div>
-<h2>Default Parameter Expansion</h2>
-<p>A constructor with default parameters generates multiple new&lt;&gt; facets. Each valid prefix of arguments (from the minimum required count up to the total parameter count) produces a separate facet. This means a class can satisfy more specific and less specific new&lt;&gt; constraints simultaneously.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class Flexible {
-    public function __construct(
-        string $name,
-        int $priority = 0,
-        bool $active = true
-    ): void {
-        // ...
-    }
-}
-
-// All of these are valid because Flexible&#039;s defaults expand to
-// new&lt;string&gt;, new&lt;string, int&gt;, and new&lt;string, int, bool&gt;
-function f1&lt;T extends new&lt;string&gt;&gt;(): T { return new T(&#039;test&#039;); }
-function f2&lt;T extends new&lt;string, int&gt;&gt;(): T { return new T(&#039;test&#039;, 1); }
-function f3&lt;T extends new&lt;string, int, bool&gt;&gt;(): T { return new T(&#039;test&#039;, 1, true); }
-
-Flexible $a = f1&lt;Flexible&gt;();
-Flexible $b = f2&lt;Flexible&gt;();
-Flexible $c = f3&lt;Flexible&gt;();
-</code></pre></div>
-<h2>Inherited Constructors</h2>
-<p>If a class does not declare its own constructor but inherits one from a parent class, the parent's constructor signature is used for new&lt;&gt; facet computation. If the parent constructor is protected and the child does not override it with a public one, the child is not externally constructable.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class Base {
-    public function __construct(string $name): void {
-        // ...
-    }
-}
-
-// Child inherits Base&#039;s constructor
-class Child extends Base {
-    // No own constructor — uses Base&#039;s __construct(string $name)
-}
-
-// Child satisfies new&lt;string&gt; because it inherits Base&#039;s constructor
-function create&lt;T extends new&lt;string&gt;&gt;(string $name): T {
+function makeNamed&lt;T extends __New&lt;Named&gt;&gt;(string $name): T {
     return new T($name);
 }
-
-Child $child = create&lt;Child&gt;(&#039;test&#039;);
 </code></pre></div>
-<h2>Dependency Injection Example</h2>
-<p>The new&lt;&gt; type is particularly useful for dependency injection containers and service locators that need to construct objects generically while maintaining type safety.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class Container {
-    private array&lt;string, object&gt; $instances = [];
-
-    public function singleton&lt;T extends new&gt;(string $className): T {
-        if (!isset($this-&gt;instances[$className])) {
-            $this-&gt;instances[$className] = new T();
-        }
-        return $this-&gt;instances[$className];
-    }
-
-    public function make&lt;T extends new&lt;Config&gt;&gt;(string $className, Config $config): T {
-        return new T($config);
-    }
+<p>If the shape has <strong>no</strong> <code>__construct</code>, <code>__New&lt;Shape&gt;</code> requires the PHP default <strong>zero-argument</strong> public constructor (no constructor in source, or every constructor parameter has a default). That is not “any constructor.” A type can match <code>HasQuery</code> as an instance and still fail <code>__New&lt;HasQuery&gt;</code> if its constructor needs arguments.</p>
+<p><code>public function __construct(): void;</code> on a shape is the explicit zero-argument form (same matching rule). <code>__construct</code> on a shape is never an instance method.</p>
+<p>Abstract classes, interfaces, traits, enums, and non-public constructors do not satisfy <code>__New&lt;T&gt;</code>. They may still satisfy the shape as instance types when the public members match.</p>
+<h2>Class-name strings</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Shape</code> / <code>__New&lt;Shape&gt;</code></td>
+<td>Object <strong>instance</strong></td>
+</tr>
+<tr>
+<td><code>__ClassName&lt;Shape&gt;</code></td>
+<td>Name of some class whose instances match <code>Shape</code> (may be abstract or non-<code>new</code>-able)</td>
+</tr>
+<tr>
+<td><code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code></td>
+<td>Name of a concrete, public-<code>new</code>-able class matching <code>Shape</code></td>
+</tr>
+</tbody>
+</table></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function spinUp(__ClassName&lt;__New&lt;Named&gt;&gt; $cls, string $name): Named {
+    return new $cls($name);
 }
 
-class CacheService {
-    public function __construct(): void { }
+string $raw = \getClassName();
+if (\class_exists&lt;__New&lt;Named&gt;&gt;($raw)) {
+    Named $obj = spinUp($raw, &#039;x&#039;);
 }
-
-class DatabaseService {
-    public function __construct(Config $config): void { }
-}
-
-Container $container = new Container();
-CacheService $cache = $container-&gt;singleton&lt;CacheService&gt;(CacheService::class);
-DatabaseService $db = $container-&gt;make&lt;DatabaseService&gt;(DatabaseService::class, $config);
 </code></pre></div>
-<h2>Compiler Error Examples</h2>
-<p>The compiler reports specific errors when new&lt;&gt; constraints are violated. Different error codes distinguish between abstract types, missing constructors, and signature mismatches.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-abstract class AbstractBase {
-    public function __construct(string $name): void { }
-}
-
-interface Buildable {
-}
-
-class PrivateCtorClass {
-    private function __construct(): void { }
-}
-
-class StringCtorClass {
-    public function __construct(string $name): void { }
-}
-
-function createNew&lt;T extends new&gt;(): T { return new T(); }
-function createString&lt;T extends new&lt;string&gt;&gt;(string $v): T { return new T($v); }
-function createInt&lt;T extends new&lt;int&gt;&gt;(int $v): T { return new T($v); }
-
-// ERROR TYHP4060: Abstract type &#039;AbstractBase&#039; cannot satisfy &#039;new&#039; constraint
-// createNew&lt;AbstractBase&gt;();
-
-// ERROR TYHP4058: Type &#039;Buildable&#039; does not satisfy &#039;new&#039; constraint
-// — it must be a concrete class with a public constructor
-// createNew&lt;Buildable&gt;();
-
-// ERROR TYHP4058: Type &#039;PrivateCtorClass&#039; does not satisfy &#039;new&#039; constraint
-// — it must be a concrete class with a public constructor
-// createNew&lt;PrivateCtorClass&gt;();
-
-// ERROR TYHP4059: Type &#039;StringCtorClass&#039; does not satisfy &#039;new&lt;int&gt;&#039;
-// — constructor signature does not match
-// createInt&lt;StringCtorClass&gt;(42);
-</code></pre></div>
-<div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Warning
-        </h4>
-        <div class="callout-content"><p>Error TYHP4058 (CheckerTypeNotConstructable): &quot;Type '{0}' does not satisfy 'new' constraint — it must be a concrete class with a public constructor&quot;</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Warning
-        </h4>
-        <div class="callout-content"><p>Error TYHP4059 (CheckerConstructorSignatureMismatch): &quot;Type '{0}' does not satisfy 'new&lt;{1}&gt;' — constructor signature does not match&quot;</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Warning
-        </h4>
-        <div class="callout-content"><p>Error TYHP4060 (CheckerAbstractNotConstructable): &quot;Abstract type '{0}' cannot satisfy 'new' constraint&quot;</p>
-</div>
-    </div>
-</div>
-<h2>Interaction with callable&lt;&gt;</h2>
-<p>The new&lt;&gt; type and callable&lt;&gt; type are independent facets in a class's computed intersection type. A class that has both a public constructor and an __invoke method satisfies both. A constraint like T extends new<string> &amp; callable&lt;int, bool&gt; requires both.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class Validator {
-    public function __construct(string $pattern): void {
-        // ...
-    }
-
-    public function __invoke(string $input): bool {
-        // ...
+<p><code>new $cls(...)</code> is an error when <code>$cls</code> is <code>__ClassName&lt;Shape&gt;</code> without <code>__New</code>. Bare <code>__ClassName</code> / <code>__ClassName&lt;object&gt;</code> / <code>__ClassName&lt;SomeClass&gt;</code> keep their existing dynamic-<code>new</code> rules.</p>
+<p><code>\class_exists&lt;ClockShape&gt;($name)</code> narrows to <code>__ClassName&lt;ClockShape&gt;</code>. <code>\class_exists&lt;__New&lt;ClockShape&gt;&gt;($name)</code> narrows to <code>__ClassName&lt;__New&lt;ClockShape&gt;&gt;</code>. A string literal that already names a matching class can assign without a guard.</p>
+<h2><code>is</code> and <code>instanceof</code></h2>
+<p><code>is</code> and <code>instanceof</code> are the same operator in Tyhp. Prefer <code>is</code> in examples.</p>
+<p><code>$x is ClockShape</code> is a <strong>shape guard</strong>, not PHP <code>instanceof</code> of a class. It emits <code>\Tyhp\Type::is(...)</code>. After a pass, <code>$x</code> is narrowed to the shape. <code>$x is User</code> when <code>User</code> is a real class still emits native <code>instanceof</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function fromObject(object $obj): void {
+    if ($obj is ClockShape) {
+        formatNow($obj);
     }
 }
-
-// Validator satisfies both new&lt;string&gt; AND callable&lt;string, bool&gt;
-function createAndRun&lt;T extends new&lt;string&gt; &amp; callable&lt;string, bool&gt;&gt;(
-    string $pattern,
-    string $input
-): bool {
-    T $validator = new T($pattern);
-    return $validator($input);
-}
 </code></pre></div>
-<h2>Tyhpdef Integration</h2>
-<p>The binder computes new&lt;&gt; facets for tyhpdef-declared classes (external PHP classes) just as it does for user-declared classes. This enables using new&lt;&gt; constraints with standard library and third-party classes.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// DateTime has __construct(string $datetime = &#039;now&#039;, ?DateTimeZone $timezone = null)
-// So DateTime satisfies: new, new&lt;string&gt;, new&lt;string, ?DateTimeZone&gt;
-
-function createDated&lt;T extends new&lt;string&gt;&gt;(string $date): T {
-    return new T($date);
-}
-
-DateTime $dt = createDated&lt;DateTime&gt;(&#039;2026-01-01&#039;);
-</code></pre></div>
-<h2>Best Practices</h2>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use new&lt;&gt; constraints for generic factory functions, builders, and dependency injection. They provide compile-time verification that a class can actually be constructed with the expected arguments.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Combine new&lt;&gt; with interface constraints (T extends new&lt;Config&gt; &amp; Service) to require both constructability and interface compliance in a single generic parameter.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use bare new (without generic arguments) when you only need zero-argument constructability. This is common for singleton and prototype patterns.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Prefer new&lt;&gt; constraints over runtime reflection for constructor validation. The compiler catches mismatches at compile time instead of at runtime.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Remember that default parameter expansion allows a class with __construct(string $a, int $b = 0) to satisfy both new<string> and new&lt;string, int&gt;. Design constraints to match the minimum required arguments.</p>
-</div>
-    </div>
-</div>
-<h2>Common Mistakes</h2>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't use new&lt;&gt; on types you will not construct — it adds an unnecessary constraint. Only use new&lt;&gt; when the generic function or class actually creates instances.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't forget that new&lt;&gt; only constrains the constructor signature. It does not guarantee the class has specific methods or properties — use interface constraints for that.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't expect new&lt;&gt; to work with abstract classes, interfaces, or enums. These types cannot be directly instantiated and will produce a compiler error.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't confuse new&lt;string, int&gt; with callable&lt;string, int&gt;. The new type has no return type parameter (the constructor always returns the class itself), while callable uses a return-last convention.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't rely on new&lt;&gt; at runtime — it is completely erased from PHP output. The constraint exists only at compile time for type safety.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't assume new&lt;T1, T2&gt; is a subtype of new&lt;T1&gt;. Each new&lt;&gt; variant is an independent facet — a class satisfies them based on its actual constructor defaults, not by subtyping between new&lt;&gt; types.</p>
-</div>
-    </div>
-</div>
+<h2>Compiled PHP</h2>
+<p>Shapes and <code>__New&lt;Shape&gt;</code> erase to <code>object</code>, or to nominal conjuncts from an intersection when those are legal PHP hints (<code>LoggerInterface &amp; ClockShape</code> → <code>LoggerInterface</code>). Generic bounds erase with other generics. The compiler never emits a PHP class for the alias. <code>$x is ClockShape</code> emits <code>\Tyhp\Type::is</code>. <code>typeof(ClockShape)</code> / a source-alias factory produces a <code>\Tyhp\Type</code> descriptor for matching; it does not construct instances.</p>
+<h2>Recovering an unnamed return</h2>
+<p>If a tyhpdef function returns a shape without a hand-written alias name, <code>__FunctionReturnType&lt;'fn'&gt;</code> / <code>__MethodReturnType&lt;T, 'method'&gt;</code> is that return type. Harvest of PHP <code>return new class { … }</code> writes a generated shape alias so the return is not <code>object</code>.</p>
+<h2>Related</h2>
+<p>The three gradual PHP bases and their refinements:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Base (untyped)</th>
+<th>Shape</th>
+<th><code>new Alias</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>object</code></td>
+<td><code>object { … }</code> — alias-only</td>
+<td>illegal</td>
+</tr>
+<tr>
+<td><code>callable</code></td>
+<td><code>callable(…): R</code> — alias or inline</td>
+<td>illegal</td>
+</tr>
+<tr>
+<td><code>struct</code> / <code>array</code></td>
+<td><code>struct { … }</code> — named as <code>type</code>, inline in type position</td>
+<td>legal (array construction)</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><a href="tyhp_0700_typeAliases.md">Type Aliases</a></li>
+<li><a href="tyhp_0150_newTypes.md">New and Changed Types</a> (<code>__ClassName</code>, <code>__New</code>, <code>__FunctionReturnType</code>, callable shapes)</li>
+<li><a href="tyhp_0200_typeNarrowingAndGuards.md">Type Narrowing and Guards</a></li>
+<li><a href="tyhp_2400_dynamicLanguageFeatures.md">Dynamic Language Features</a></li>
+<li><a href="cli_tyhpdefGeneration.md">Tyhpdef Generation</a> (anonymous-class harvest)</li>
+<li><a href="tyhp_0400_structs.md">Structs</a></li>
+</ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -797,6 +448,7 @@ DateTime $dt = createDated&lt;DateTime&gt;(&#039;2026-01-01&#039;);
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

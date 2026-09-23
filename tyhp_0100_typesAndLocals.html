@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto"> 
 <head>
-    <title>Use Statements and Imports - Tyhp</title>
+    <title>Types and Locals - Tyhp</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+<li class="nav-item"><a class="nav-link active" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -112,7 +112,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
-<li class="nav-item"><a class="nav-link active" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
 
@@ -274,84 +274,40 @@
 	    </div>
 	    <div class="docs-content">
 		    <div class="container">
-				<section class="docs-section" id="Use_Statements_and_Imports">
-    <h2 class="section-heading">Use Statements and Imports</h2>
+				<section class="docs-section" id="Types_and_Locals">
+    <h2 class="section-heading">Types and Locals</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
+    <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp supports all standard PHP use statement forms and adds Tyhp-specific extensions: generic arguments on import aliases, <code>use extension</code> for importing extension method providers, and <code>global use</code> (compilation-wide, like C# <code>global using</code> — <strong>not</strong> PHP <code>global $var</code>). Use statements work the same in Tyhp as they do in PHP -- they create aliases for fully-qualified class, function, and constant names.</p>
-<h2>Standard Use Statements</h2>
-<p>All PHP use statement forms are supported in Tyhp. These behave identically to PHP -- they create namespace aliases for the current file.</p>
+    <p>Tyhp requires types throughout <code>&lt;?tyhp</code> source. PHP’s type declarations are optional; in Tyhp they are required or inferred. Locals use <code>$var = …</code> as the primary form — the type is inferred from the first assignment. Write <code>int $x = …</code> when inference is not enough. Parameters, properties, and return types still need a type. These are not optional “type hints” — they are enforced. Types are also non-nullable by default: <code>string $x</code> means <code>$x</code> can only hold a <code>string</code>, never <code>null</code>. To allow null, declare the type as nullable: <code>?string $x</code> or <code>string|null $x</code>.</p>
+<h2>Where Types Are Required</h2>
+<p>The places in PHP that already support optional type hints are required to be typed in Tyhp:</p>
+<ul>
+<li>Class, interface, and trait properties</li>
+<li>Method and function parameters</li>
+<li>Method and function return types</li>
+<li>Class, interface, trait, and enum constants (a type is required on the original declaration; a child redeclaration may omit it and inherits that type invariantly)</li>
+</ul>
+<p>Additionally, Tyhp requires types for:</p>
+<ul>
+<li>Variables -- inferred from the first assignment (<code>$sum = 0;</code>), or an explicit <code>int $x = …</code> when inference is not enough</li>
+<li>Closure / arrow function parameters and return types — required unless the type is inferable from an expected callable type</li>
+<li>Catch block exception types</li>
+</ul>
+<p>File-level <code>const NAME = value;</code> is untyped (PHP has no typed file-level constants). Write the type on a class constant, or describe an existing PHP constant in <code>.tyhpdef</code> as <code>const int NAME;</code>.</p>
+<p><code>foreach</code> bindings may be typed (<code>foreach ($xs as int $k =&gt; string $v)</code> or value-only <code>foreach ($xs as string $v)</code>). The iterable’s key and value types must be assignable to those annotations; the loop variables then have the <strong>declared</strong> types and are not narrowed further. Omitting the types infers key and value from the iterable.</p>
+<h2>Variable Type Declarations</h2>
+<p>The primary form for locals is inference from the first assignment. An explicit <code>Type $var</code> declaration is legal when inference is not enough.</p>
+<h2>1. Type Inference from First Assignment</h2>
+<p>When you assign a value to a variable without an explicit type declaration, Tyhp infers the type from the right-hand side. The inferred type is locked in at the first assignment and cannot change. The inference uses the narrowest possible type based on the expression. No <code>var</code> or <code>auto</code> keyword is needed — the absence of a type annotation combined with an assignment is sufficient.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import a class
-use App\Models\User;
-
-// Import with alias
-use App\Models\User as UserModel;
-
-// Import a function
-use function App\Helpers\formatDate;
-
-// Import a constant
-use const App\Config\MAX_RETRIES;
-</code></pre></div>
-<h2>Group Use Declarations</h2>
-<p>Group use declarations import multiple symbols from the same namespace prefix in a single statement.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Group import -- same type
-use App\Models\{User, Post, Comment};
-
-// Group import -- mixed types
-use App\Services\{
-    AuthService,
-    function validateToken,
-    const MAX_LOGIN_ATTEMPTS
-};
-</code></pre></div>
-<h2>Compiled PHP Output for Standard Use Statements</h2>
-<p>Standard use statements pass through to PHP largely unchanged. The emitter automatically prunes unused imports and sorts them alphabetically:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-use App\Models\{User, Post, Comment};
-
-use App\Services\{
-    AuthService,
-    function validateToken,
-    const MAX_LOGIN_ATTEMPTS
-};
-</code></pre></div>
-<h2>Generic Import Aliases</h2>
-<p>Tyhp allows generic type arguments on import aliases. This lets you create a local alias for a specific instantiation of a generic class. The generic arguments are compile-time only -- they are erased from the PHP output. The alias becomes a regular PHP use statement without the generic arguments.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Import a generic class with specific type arguments
-use App\Collections\TypedList as IntList&lt;int&gt;;
-use App\Collections\TypedMap as UserMap&lt;string, User&gt;;
-
-// Now IntList is an alias for TypedList&lt;int&gt;
-IntList $numbers = new IntList();
-$numbers-&gt;add(42);        // OK -- int
-// $numbers-&gt;add(&#039;hello&#039;);   // Compile error -- string is not int
-
-// UserMap is an alias for TypedMap&lt;string, User&gt;
-UserMap $users = new UserMap();
-$users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
-</code></pre></div>
-<p>Compiles to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-use App\Collections\TypedList as IntList;
-use App\Collections\TypedMap as UserMap;
-
-$numbers = new IntList();
-$numbers-&gt;add(42);
-
-$users = new UserMap();
-$users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
+$sum = 0;                  // Inferred as `int`
+$myStr = &quot;asdf&quot;;           // Inferred as `string`
+$myBool = \canIMoveThis(); // Inferred from the function&#039;s return type
+$price = 19.99;            // Inferred as `float`
+$amount = \Tyhp\decimal(&#039;1.89&#039;); // Inferred as `decimal`
+$items = [1, 2, 3];       // Inferred as `array&lt;int&gt;` (list shorthand for `array&lt;int|string, int&gt;`)
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -361,112 +317,124 @@ $users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>The generic arguments on the alias are a compile-time concept. They tell the Tyhp compiler to treat the alias as if it were the generic class with those specific type arguments. In the PHP output, only the plain alias remains.</p>
+        <div class="callout-content"><p>Type inference only works on the first assignment. If a variable has no type annotation and no initializer, the compiler reports an error requiring either an explicit type or an initial value.</p>
 </div>
     </div>
 </div>
-<h2>Use Extension Statements</h2>
-<p>The <code>use extension</code> statement imports extension method providers into the current scope. Extension methods allow adding methods to existing types without modifying them. When you import an extension, its methods become available on the extended type within the importing file.</p>
+<h2>2. Explicit Type Declaration</h2>
+<p>Write a type before the variable name when there is no initializer, or when you need a wider type than inference would give. This is similar to typed properties in PHP classes, but extended to all variables in any scope.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import an extension -- its methods are now available on the extended type
-use extension App\Extensions\StringHelpers;
+// Declare a typed variable without assigning a value
+// The variable exists but is unset -- using it before assignment is an error
+bool $myBool;
 
-// StringHelpers extends string with methods like toCamelCase()
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCamelCase();  // &#039;helloWorld&#039;
+// Assign a value to the typed variable
+$myBool = \isDatabaseServerUp();
+
+// Declare and assign in one statement when inference is not enough
+int $total = 0;
+
+// Union types are supported
+string|int $myKey = $myBool ? 1 : &quot;hello&quot;;
+
+// Since $myKey is a union type, either branch is valid
+$myKey = &quot;foo&quot;;
+$myKey = 35;
+
+// Nullable types must be explicit
+?string $maybeName = null;
+string|null $alsoMaybeName = null;
 </code></pre></div>
-<p>Use extension statements also support trait-like adaptation syntax. This allows you to rename methods with <code>as</code>, exclude them with postfix <code>hide</code>, and pick a winner with <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_2100_extensions.md#importing-extensions-with-use-extension">Extensions</a> and <a href="tyhp_1600_operatorOverloads.md#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
+<h2>Parenthesized Type Declarations</h2>
+<p>Tyhp also supports parenthesized type declarations, where the type is wrapped in parentheses before the variable name. This is equivalent to the standard form and is purely a stylistic choice. It can help visually distinguish complex union or intersection types from the variable name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Import extension with adaptations
-use extension App\Extensions\StringHelpers {
-    StringHelpers::toCamelCase as toCC;
-    StringHelpers::toSnakeCase hide;
+// Parenthesized type declaration
+(string) $myStr = &quot;hello&quot;;
+(int|float) $number = 3.14;
+(decimal) $price = \Tyhp\decimal(&#039;19.99&#039;);
+
+// Equivalent to:
+string $myStr2 = &quot;hello&quot;;
+int|float $number2 = 3.14;
+decimal $price2 = \Tyhp\decimal(&#039;19.99&#039;);
+</code></pre></div>
+<h2>Non-Nullable by Default</h2>
+<p>All types in Tyhp are non-nullable by default. A variable declared as <code>string $x</code> cannot hold <code>null</code> -- it must be explicitly declared as <code>?string $x</code> (or <code>string|null $x</code>) to allow null. This is a fundamental difference from PHP, where any typed variable can silently receive <code>null</code> at runtime.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $name = &quot;Alice&quot;;
+// $name = null;  // ERROR: Cannot assign null to non-nullable string
+
+// To allow null, declare as nullable
+?string $maybeName = null;  // OK
+string|null $alsoNullable = null;  // Also OK
+</code></pre></div>
+<h2>Closure and Arrow Parameter Inference</h2>
+<p>Named function and method parameters always need an explicit type. Closure and arrow-function parameters also need a type, unless the expected callable type supplies it. If there is no expected callable type (or the parameter cannot be inferred), the compiler requires an annotation.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// $u is inferred as User from the expected callable type
+callable(User): bool $isAdult = fn ($u) =&gt; $u-&gt;age &gt; 18;
+
+// Same inference when the expected type is a Closure
+\Closure&lt;callable(User): bool&gt; $alsoAdult = fn ($u) =&gt; $u-&gt;age &gt; 18;
+
+// No expected type — annotate the parameter
+$double = fn (int $n): int =&gt; $n * 2;
+</code></pre></div>
+<h2>Type Immutability</h2>
+<p>Once a variable is typed -- whether explicitly declared or inferred -- its type is immutable. You cannot assign a value of an incompatible type, and you cannot re-declare a variable with a different type in the same scope. <code>unset($x)</code> does not let you redeclare <code>$x</code> with a new type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $myStr = &quot;hello&quot;;
+
+// ERROR: Cannot assign int to variable of type string
+// $myStr = 42;
+
+// ERROR: Cannot re-declare type for an already typed variable
+// int $myStr = 42;
+</code></pre></div>
+<h2>Array and Generic Types</h2>
+<p>Tyhp extends PHP's <code>array</code> type with generic parameters for type-safe collections. See the New Types page for the full list of generic types.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Typed arrays using generics (`array&lt;string&gt;` is list shorthand for `array&lt;int|string, string&gt;`)
+array&lt;string&gt; $names = [&quot;Alice&quot;, &quot;Bob&quot;];
+array&lt;string, int&gt; $ages = [&quot;Alice&quot; =&gt; 30, &quot;Bob&quot; =&gt; 25];
+
+// The generic type constrains what can be added
+$names[] = &quot;Charlie&quot;;  // OK: string
+// $names[] = 42;      // ERROR: int is not assignable to array&lt;string&gt;
+</code></pre></div>
+<h2>Compiled PHP Output</h2>
+<p>Tyhp's variable type declarations are a compile-time concept. In the compiled PHP output, variable type annotations are stripped because PHP does not support typed local variables. However, function/method parameter types, return types, and property types are preserved in the PHP output since PHP supports those natively. Generic type parameters are also erased.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+string $name = &quot;Alice&quot;;
+int $age = 30;
+array&lt;string&gt; $hobbies = [&quot;reading&quot;, &quot;coding&quot;];
+
+function greet(string $name): string {
+    string $greeting = &quot;Hello, &quot; . $name;
+    return $greeting;
 }
-
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCC();  // Uses the renamed method
-</code></pre></div>
-<h2>Global use</h2>
-<p><code>global</code> prefixes any <code>use</code> / <code>use function</code> / <code>use const</code> / <code>use extension</code> and applies to the <strong>entire compilation</strong> that loaded that file. This is C# <code>global using</code>, <strong>not</strong> PHP <code>global $var</code>.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-global use App\Models\User;
-global use function App\Helpers\formatDate;
-global use const App\Config\MAX_RETRIES;
-global use extension \Tyhp\StringExtensions;
-</code></pre></div>
-<p>When a <strong>loaded tyhpdef</strong> contains <code>global use extension X</code>, every <code>.tyhp</code> file in that compilation sees <code>X</code> as imported. <code>tyhp/core</code> does this for <code>\Tyhp\StringExtensions</code>, <code>\Tyhp\ArrayExtensions</code>, <code>\Tyhp\IntExtensions</code>, <code>\Tyhp\FloatExtensions</code>, <code>\Tyhp\BoolExtensions</code>, and <code>\Tyhp\ClosureExtensions</code>, so <code>$s-&gt;length()</code> works with no per-file import. A compiled library that authored in-package <code>global use</code> / <code>global use extension</code> copies those statements into <code>package.tyhpdef</code>. File-level <code>use</code> is not copied. Libraries that did not author <code>global use</code> stay opt-in.</p>
-<p>Same-file Tyhp <code>extension { }</code> stays in scope in that file without an import.</p>
-<h3>Local <code>use</code> overlaying <code>global use</code></h3>
-<p>A non-<code>global</code> <code>use</code> in a file (or braced namespace) may re-import a globally included symbol <strong>in order to mutate it for that scope</strong>:</p>
-<ul>
-<li>An <code>as</code> alias that changes the short name (<code>use App\Models\User as UserModel</code>, <code>use extension StringExtensions as SE</code>)</li>
-<li>A non-empty adaptation block (<code>as</code> method rename, postfix <code>hide</code>, <code>insteadof</code>)</li>
-</ul>
-<p>Those mutations apply <strong>only</strong> to that file / namespace. Other files still see the unadapted global import.</p>
-<p>A local <code>use</code> that does <strong>not</strong> mutate is redundant and warns (<code>TYHP4169</code>, <code>CheckerRedundantGlobalImport</code>). No mutation means: same imported FQN, no <code>as</code> (or <code>as</code> to the same short name the global import already uses), and either no <code>{ }</code> or an empty <code>{ }</code>. Group <code>use</code> warns <strong>per name</strong> that is globally included and unmutated; names in the same group that do alias or adapt are silent. The statement remains valid.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Assume a loaded tyhpdef already has:
-//   global use extension \Tyhp\StringExtensions;
-//   global use App\Models\User;
-
-use extension \Tyhp\StringExtensions;           // warning TYHP4169 — already globally included
-use App\Models\User;                            // warning TYHP4169 — already globally included
-use extension \Tyhp\StringExtensions { };       // warning TYHP4169 — empty adaptations
-
-use App\Models\User as UserModel;               // OK — local alias
-use extension \Tyhp\StringExtensions {
-    StringExtensions::toLower hide;
-    StringExtensions::toUpper as toCC;
-};                                              // OK — scope-local hide / rename
-</code></pre></div>
-<h2>Compiled PHP Output for Use Extension</h2>
-<p>Extension method calls compile to static method calls on the extension class. The <code>use extension</code> statement itself is removed from the output (resolved at compile time) and replaced with a standard <code>use</code> import for the extension class:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-use extension App\Extensions\StringHelpers;
-
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCamelCase();
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
 
-$name = &#039;hello_world&#039;;
-$camel = \StringHelpers::toCamelCase($name);
+$name = &quot;Alice&quot;;
+$age = 30;
+$hobbies = [&quot;reading&quot;, &quot;coding&quot;];
+
+function greet(string $name): string {
+    $greeting = &quot;Hello, &quot; . $name;
+    return $greeting;
+}
 </code></pre></div>
-<h2>Tyhpdef Use Statements</h2>
-<p>In tyhpdef files, use statements serve the same purpose -- importing type symbols into the current scope. Tyhpdef files describe external PHP library signatures for the Tyhp compiler. The same use statement forms (including group use, typed use, <code>use extension</code>, and <code>global use</code>) are supported in tyhpdef files.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-
-// Tyhpdef use statements follow the same syntax
-use Some\External\Library\{ClassA, ClassB};
-use function Some\External\Library\helperFunction;
-use const Some\External\Library\SOME_CONSTANT;
-
-// Tyhpdef can also declare type aliases
-type StringOrNull = string|null;
-</code></pre></div>
-<h2>Importing Type Aliases</h2>
-<p>Import a source type alias with a plain <code>use</code>, the same as a class. That import binds the name for type position and for factory calls (<code>UserId()</code>). Tyhp source does not need a second <code>use function</code>.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-use App\Types\UserId;
-use App\Types\Optional;
-
-function f(UserId $id): void { }
-
-\Tyhp\Type $t = typeof(UserId);
-Optional(typeof(int));
-</code></pre></div>
-<p>When the factory is used by short name, emitted PHP rewrites the import to <code>use function App\Types\UserId;</code>. Hints-only usage still drops the import. Mixed groups split: <code>use App\Types\{ User, UserId }</code> emits a class <code>use</code> for <code>User</code> and <code>use function</code> for <code>UserId</code> when the factory is used.</p>
-<h2>Import Pruning</h2>
-<p>During compilation, the emitter automatically prunes unused use statements from the PHP output. If a use statement is declared but never referenced in the emitted code, it is removed. The emitter also sorts remaining imports alphabetically and groups them by type (classes, functions, constants) following PHP community conventions.</p>
-<p>Imports for Tyhp-only constructs that are erased during emission (generic type parameters, struct types) are automatically removed since they have no PHP equivalent. A <code>use</code> of a source type alias stays class-kind in Tyhp. When emitted PHP references the alias factory by short name (<code>UserId()</code>, <code>typeof(UserId)</code>, <code>$x is UserId</code>), that import is rewritten to <code>use function</code>. Hints-only usage of an alias is still pruned. Check-only tyhpdef aliases (no <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>) never emit a factory, so their imports stay erased. Compiled-library aliases that stamp <code>aliasFactory</code> follow the same factory import rewrite as source aliases. Class and method <code>GenericRuntime</code> stamps are independent of <code>aliasFactory</code> and do not require helpers.</p>
+<p>Note how <code>string $name</code> and <code>int $age</code> at the local variable level are stripped to just <code>$name</code> and <code>$age</code>, while the function parameter <code>string $name</code> and return type <code>: string</code> are preserved because PHP supports those natively. The generic <code>array&lt;string&gt;</code> becomes just <code>array</code> in the output.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -476,7 +444,7 @@ Optional(typeof(int));
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use group imports to keep use statements organized when importing multiple symbols from the same namespace.</p>
+        <div class="callout-content"><p>Always declare types for function/method parameters and return types. The compiler enforces this, but doing so proactively makes your code self-documenting.</p>
 </div>
     </div>
 </div>
@@ -488,7 +456,7 @@ Optional(typeof(int));
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use generic import aliases to create type-safe aliases for specific generic instantiations. This is cleaner than repeating generic arguments everywhere.</p>
+        <div class="callout-content"><p>Use explicit type declarations for variables when the type might not be obvious from context. Let inference handle cases where the type is immediately clear from the assigned value.</p>
 </div>
     </div>
 </div>
@@ -500,7 +468,7 @@ Optional(typeof(int));
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use the <code>use extension</code> statement to bring extension methods into scope. Extension methods are opt-in unless a loaded tyhpdef (or this file) used <code>global use extension</code>. The <code>tyhp/core</code> scalar catalog is already globally imported — add a local <code>use extension \Tyhp\StringExtensions { … }</code> only to hide or rename methods in that file.</p>
+        <div class="callout-content"><p>Use union types (<code>string|int</code>) when a variable legitimately needs to hold multiple types. Prefer specific types or union types over <code>mixed</code>.</p>
 </div>
     </div>
 </div>
@@ -512,7 +480,7 @@ Optional(typeof(int));
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Place use statements at the top of the file, before any namespace or class declarations. The emitter handles automatic import pruning, so unused imports are cleaned up in the output.</p>
+        <div class="callout-content"><p>Use generic types (<code>array&lt;string&gt;</code>) for collections to get element-level type safety. This prevents accidentally inserting wrong types into arrays.</p>
 </div>
     </div>
 </div>
@@ -524,7 +492,7 @@ Optional(typeof(int));
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use trait-like adaptation syntax on <code>use extension</code> when you need to rename methods, <code>hide</code> them, or pick a winner with <code>insteadof</code>. Operators cannot be renamed with <code>as</code>.</p>
+        <div class="callout-content"><p>Use nullable types (<code>?string</code> or <code>string|null</code>) explicitly when a variable may be null. Non-nullable by default catches many null-related bugs at compile time.</p>
 </div>
     </div>
 </div>
@@ -537,7 +505,7 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use generic arguments on imports without an alias. The syntax requires <code>as AliasName&lt;GenericArgs&gt;</code> -- you cannot write <code>use App\MyClass&lt;int&gt;;</code> directly.</p>
+        <div class="callout-content"><p>Don't assign a value of an incompatible type to a typed variable. Once a variable's type is set (explicitly or by inference), it cannot hold values of different types.</p>
 </div>
     </div>
 </div>
@@ -549,7 +517,7 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't import extension classes with a plain <code>use</code> statement and expect extension methods to work. You must use the <code>use extension</code> syntax to activate extension methods on the target type.</p>
+        <div class="callout-content"><p>Don't try to re-declare a variable's type in the same scope. Duplicate type declarations produce a <code>BinderDuplicateSymbolDeclaration</code> error. <code>unset()</code> does not start a new typed declaration.</p>
 </div>
     </div>
 </div>
@@ -561,7 +529,7 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't import struct names in PHP interop code — struct declarations are erased and do not exist at runtime. Source type aliases exist in PHP as functions or static methods returning <code>\Tyhp\Type</code>; call <code>UserId()</code> / <code>Optional(\Tyhp\Type::int())</code> / <code>UserService::NameType()</code>, not as PHP types. See <a href="tyhp_0700_typeAliases.md">Type Aliases</a>.</p>
+        <div class="callout-content"><p>Don't use <code>mixed</code> as a type unless absolutely necessary. Tyhp's type system should eliminate most needs for <code>mixed</code> -- prefer specific types or union types.</p>
 </div>
     </div>
 </div>
@@ -573,34 +541,45 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't re-import a globally included symbol with a local <code>use</code> unless you are aliasing it or applying <code>hide</code> / <code>insteadof</code> / method <code>as</code>. A redundant non-mutating local <code>use</code> warns (<code>TYHP4169</code>).</p>
+        <div class="callout-content"><p>Don't omit types on function parameters or return types. The compiler requires all function signatures to be fully typed.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't assume a variable is nullable. All types are non-nullable by default in Tyhp. Assigning <code>null</code> to a non-nullable variable produces a <code>CheckerTypeMismatch</code> error.</p>
 </div>
     </div>
 </div>
 <h2>Compiler Error Examples</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR: Generic arguments require an alias
-// use App\Collections\TypedList&lt;int&gt;;
+// ERROR: CheckerTypeMismatch -- Cannot assign int to string
+string $x = &quot;hello&quot;;
+// $x = 42;
 
-// Correct: use &#039;as&#039; to create a named alias with generic args
-use App\Collections\TypedList as IntList&lt;int&gt;;
+// ERROR: CheckerTypeMismatch -- Cannot assign null to non-nullable string
+string $name = &quot;Alice&quot;;
+// $name = null;
 
-// ERROR: Extension methods not available without &#039;use extension&#039;
-// (unless a loaded tyhpdef already has `global use extension` for this name)
-// use App\Extensions\StringHelpers;  // plain import, not extension import
-// $name-&gt;toCamelCase();  // method not found on string
+// ERROR: BinderDuplicateSymbolDeclaration -- Variable already declared in this scope
+int $count = 1;
+// int $count = 2;
 
-// Correct: use &#039;use extension&#039; to activate extension methods
-use extension App\Extensions\StringHelpers;
-string $name = &#039;hello_world&#039;;
-string $camel = $name-&gt;toCamelCase();  // OK
+// ERROR: CheckerVariableTypeRequired -- Variable has no type and no initializer
+// $mystery;
 </code></pre></div>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0330_phpEngineAttributes.html">&larr; PHP Engine Attributes</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0400_structs.html">Structs &rarr;</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0000_openTag.html">&larr; The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">

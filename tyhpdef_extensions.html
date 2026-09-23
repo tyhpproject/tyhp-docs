@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Extensions in Tyhpdef - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Extensions_in_Tyhpdef">
+    <h2 class="section-heading">Extensions in Tyhpdef</h2>
+    <p class="tyhp-status-badge mb-3">
+    <span class="badge bg-primary me-1">Tier 0 · Story 03</span><span class="badge bg-secondary">Complete</span>
+</p>
+    <p>Tyhpdef can attach Tyhp extension methods and operator overloads to PHP types you do not own. That lets Tyhp callers write <code>$money-&gt;formatCurrency()</code> or <code>$a + $b</code> while the compiler rewrites those sites to the underlying PHP.</p>
+<p>Tyhpdef offers three forms:</p>
+<ol>
+<li><strong>Standalone <code>extension Name { }</code></strong> — compile-time <code>fn</code> / <code>operator</code> mappings that replace call sites with <code>=&gt;</code> expressions</li>
+<li><strong>Thin mappings</strong> on a tyhpdef class — <code>extension fn</code> and <code>extension operator</code> with a <code>=&gt;</code> expression; fully erased</li>
+<li><strong><code>use extension</code></strong> on a tyhpdef class — attach a standalone extension so callers of <strong>that type</strong> do not need their own import</li>
+</ol>
+<p><code>use extension</code> at file level is <strong>opt-in</strong>. Loading a package does <strong>not</strong> auto-activate its standalone <code>extension { }</code> blocks unless that tyhpdef contains <code>global use extension …</code>. <code>tyhp/core</code> does this for <code>\Tyhp\StringExtensions</code> and the other scalar catalogs, so those methods are compilation-wide. Class-body <code>use extension</code> on a type still auto-activates that type’s attached surface for consumers (minus hidden members).</p>
+<p>For the Tyhp-side <code>extension { }</code> syntax, <code>use extension</code> in <code>.tyhp</code> files, generated PHP backer classes, <code>hide</code> / <code>insteadof</code>, and emit details, see <a href="tyhp_2100_extensions.md">Extensions</a>.</p>
+<h2>Standalone <code>extension Name { }</code></h2>
+<p>A standalone extension in a <code>.tyhpdef</code> file is a compile-time mapping from Tyhp method or operator syntax to a PHP expression. Without <code>#[\Tyhp\GenericRuntime]</code>, the compiler replaces every call site with the member's <code>=&gt;</code> expression. A compiled Tyhp library stamps <code>GenericRuntime</code> on emitted generic mappings (<code>binder</code> only when the companion exists). Foreign consumer sites use <code>\Tyhp\Generic::bind</code> instead of splicing a wrapper that drops the type argument.</p>
+<p>When the extension is active and the member has no <code>#[\Tyhp\GenericRuntime(binder: …)]</code>, the compiler replaces every call site with the member's <code>=&gt;</code> expression and substitutes the receiver and arguments into that expression. For example:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+extension StringExtensions {
+    fn toUpper(extends string $this): string =&gt; \strtoupper($this);
+}
+</code></pre></div>
+<p>With <code>StringExtensions</code> in scope, this Tyhp call:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">use extension StringExtensions;
+
+string $upper = $name-&gt;toUpper();
+</code></pre></div>
+<p>is emitted as:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$upper = (\strtoupper($name));
+</code></pre></div>
+<p>PHP cannot call an erased member — there is no method on a PHP class to invoke. Only Tyhp call sites, after splicing, remain.</p>
+<p>Because the declaration has no runtime representation, each member must be a single expression:</p>
+<ul>
+<li>Functions use <code>fn</code>, a required return type, and <code>=&gt; expression;</code>.</li>
+<li>Operators use <code>operator</code>, a required return type, and <code>=&gt; expression;</code>.</li>
+<li>Call-site splicing is intrinsic, so <code>#[\Tyhp\Optimize\Inline]</code> on an extension member is an error (<code>TYHP4176</code>).</li>
+</ul>
+<p>The extension header names the extension for imports; it does not select a receiver and therefore has no <code>extends</code> clause. Each member declares its own target:</p>
+<ul>
+<li>A function marks its first parameter with <code>extends</code>.</li>
+<li>An operator declares its target in <code>&lt;Type&gt;</code> and marks its first operand with <code>extends</code>.</li>
+<li><code>$this</code> and <code>self</code> inside the member refer to that target type, not to an extension or backer class.</li>
+</ul>
+<p>Mappings may delegate to declared PHP methods as well as builtins:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+class StringOperators as StringOperators__tyhpExtensionBacker {
+    public static function __multiply&lt;T extends string|array&gt;(T $left, int $right): T;
+}
+
+extension StringOperators {
+    operator *&lt;string&gt;(extends self $left, int $right): string
+        =&gt; StringOperators__tyhpExtensionBacker::__multiply($left, $right);
+}
+</code></pre></div>
+<p>Here <code>StringOperators__tyhpExtensionBacker</code> is the Tyhp name for the declared PHP backer. The compiler rewrites it to <code>StringOperators</code> in emitted PHP while splicing the mapping expression into each operator call site.</p>
+<p>Package authors put multi-statement bodies in <code>tyhp_src/</code> and describe the emitted PHP class with <code>class PhpName as Name__tyhpExtensionBacker</code>. Short <code>=&gt;</code> members that map onto builtins need no backer. <code>tyhp/core</code> follows this split: <code>_tyhpdef/extensions/*.tyhpdef</code> holds the mappings plus <code>global use extension \Tyhp\StringExtensions;</code> (and the matching Array / Int / Float / Bool / Closure files); <code>tyhp_src/</code> holds brace-body helpers such as <code>StringExtensions::reverse</code>.</p>
+<p>An extension must contain at least one member; an empty block reports <code>TYHP4172</code>. Declaring the same extension name more than once in the base and included tyhpdefs is also an error. <code>deprecated</code> and <code>obsolete</code> are allowed on the extension and its members.</p>
+<p>A parameter the mapping writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.md#by-reference-parameters">By-reference parameters</a> on the Tyhp extensions page.</p>
+<h2>Thin mappings on a tyhpdef class</h2>
+<p>Inside a tyhpdef class body you can declare <code>extension fn</code> and <code>extension operator</code> members. Each is a <strong>thin mapping</strong>: a single <code>=&gt;</code> expression that the compiler splices into every Tyhp call site. The compiler treats them as a synthetic extension for that class. These members are <strong>auto-active</strong>: Tyhp code that uses the type does not need a separate <code>use extension</code> import.</p>
+<p><code>extension</code> replaces a visibility modifier — members are always public. <code>abstract</code> and <code>final</code> are not allowed. <code>$this</code> in an <code>extension fn</code> and <code>self</code> in an inline <code>extension operator</code> resolve to the enclosing tyhpdef class.</p>
+<p>A thin mapping is fully erased. The <code>.tyhpdef</code> file is never emitted as PHP, and the member does not become a PHP method. PHP cannot call it.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+class Money {
+    public function plus(Money $other): Money;
+    public function isEqualTo(Money $other): bool;
+    public function __toString(): string;
+
+    extension fn formatCurrency(string $locale = &#039;en_US&#039;): string
+        =&gt; $locale . &#039; &#039; . $this-&gt;__toString();
+
+    extension fn shortLabel(): string =&gt; $this-&gt;formatCurrency();
+
+    extension operator +(self $left, self $right): self =&gt; $left-&gt;plus($right);
+
+    extension operator ==(self $left, self $right): bool =&gt; $left-&gt;isEqualTo($right);
+}
+</code></pre></div>
+<p>Tyhp callers then write:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+Money $total = $a + $b;
+string $label = $total-&gt;formatCurrency();
+</code></pre></div>
+<p>The compiler splices the mapping expressions into those sites. For example <code>$a + $b</code> becomes <code>($a-&gt;plus($b))</code>, and <code>$name-&gt;toUpper()</code> with <code>extension fn toUpper(): string =&gt; \strtoupper($this);</code> becomes <code>(\strtoupper($name))</code>.</p>
+<p><code>extension fn</code> does <strong>not</strong> use <code>extends</code> on the first parameter. The receiver is implicit <code>$this</code>. Do not write <code>extension fn format(extends Money $this)</code>.</p>
+<p><code>extension operator</code> does <strong>not</strong> use <code>&lt;Type&gt;</code> after the operator token. The target is the enclosing class. Do not write <code>extension operator +&lt;Money&gt;(…)</code>.</p>
+<p>The same by-reference rules as Tyhp <code>extension { }</code> apply: a parameter the expression writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.md#by-reference-parameters">By-reference parameters</a>.</p>
+<h2>Native vs Mapped Operators</h2>
+<p>Tyhpdef has two operator members. Mixing them up is a common source of <code>TYHP8013</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Form</th>
+<th>Meaning</th>
+<th>Emitter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operator +(…): T;</code> (no <code>extension</code>)</td>
+<td>Native PHP operator — the type already supports it</td>
+<td><strong>No rewrite</strong> — leave <code>$a + $b</code></td>
+</tr>
+<tr>
+<td><code>extension operator +(…): T =&gt; …;</code></td>
+<td>Thin mapping onto an expression</td>
+<td>Splice the <code>=&gt;</code> expression</td>
+</tr>
+<tr>
+<td><code>extension operator +(…): T;</code> (bodyless)</td>
+<td><strong>Illegal</strong></td>
+<td>Diagnostic <code>TYHP8013</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Bare <code>operator</code> is documented in <a href="tyhpdef_classes.md#operators">Classes in Tyhpdef</a>. The rest of this section is the mapped form.</p>
+<p><code>DateTimeInterface</code> comparisons (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>) are native. <code>DateTime</code> and <code>DateTimeImmutable</code> <code>+</code> / <code>-</code> map onto <code>add</code> / <code>sub</code> / <code>diff</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+class Money {
+    public function plus(Money $other): Money;
+
+    extension operator +(self $left, self $right): self =&gt; $left-&gt;plus($right);
+}
+</code></pre></div>
+<p>Unary and conversion overloads use the same mapped form. A single-parameter <code>extension operator</code> is unary; <code>extension operator convert</code> maps conversions:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+namespace Tyhp;
+
+final class Decimal {
+    extension operator +(self $value): int|float =&gt; \Tyhp\Decimal::__asNumeric($value);
+
+    extension operator convert(int $value): self =&gt; \Tyhp\Decimal::__from($value);
+
+    extension operator convert(self $value): string =&gt; $value-&gt;__toString();
+}
+</code></pre></div>
+<h2>use extension in Tyhpdef Class Bodies</h2>
+<p><code>use extension</code> on a tyhpdef class is the extension analogue of <code>use SomeTrait;</code> in a Tyhp or PHP class: it attaches an existing standalone <code>extension { }</code> to this type. Matching methods become part of the type's surface. Callers that use the type do <strong>not</strong> need their own <code>use extension</code>.</p>
+<p>The import supports the same adaptation syntax as traits, plus postfix <code>hide</code> and operator <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_1600_operatorOverloads.md#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+class Money {
+    public function plus(Money $other): Money;
+    public function format(): string;
+
+    use extension MoneyFormatting {
+        MoneyFormatting::format as formatExtended;
+        operator + hide;
+    };
+}
+</code></pre></div>
+<p>Only methods whose first parameter <code>extends</code> this class are attached. A method in the same extension that <code>extends</code> a different type is skipped for this class — it is not an error. If nothing in the extension targets the enclosing class, the <code>use</code> adds no methods (a no-op for this type, unless the name itself is missing).</p>
+<p>The referenced extension must resolve to a real <code>extension Name { … }</code> (Tyhp source or tyhpdef). If the name does not resolve to an extension, the compiler reports <code>TYHP8011</code>.</p>
+<p>File-level <code>use extension</code> is also valid in tyhpdef (same syntax as Tyhp) when the tyhpdef file needs the extension name in scope. That form is opt-in unless the file (or another loaded tyhpdef) uses <code>global use extension</code>.</p>
+<h2>PHP version gating</h2>
+<p><code>#[\Tyhp\Php]</code> is <strong>illegal</strong> on a standalone tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>), the same as on Tyhp <code>extension { }</code>. Wrap the extension in <code>declare(php=…)</code> instead — file-level <code>declare(php=&quot;…&quot;);</code> and brace <code>declare(php=&quot;…&quot;) { … }</code> both parse in <code>.tyhpdef</code>. See <a href="tyhp_0320_phpVersionGating.md#structs-and-extensions">PHP Version Gating</a>.</p>
+<p><code>extension fn</code> / <code>extension operator</code> members inside a tyhpdef <strong>class</strong> body are not affected by this restriction — <code>#[\Tyhp\Php]</code> on the enclosing class or on ordinary methods works normally; the restriction is on the <code>extension { }</code> declaration itself.</p>
+<h2>Access and Conflicts</h2>
+<p>Thin mapping members can only use the <strong>public</strong> API of the enclosing type. They cannot access private or protected members — extensions are external to the class.</p>
+<p>An inline extension member must not collide with a member already declared on the same class (<code>TYHP8010</code>).</p>
+<p>A user type whose Tyhp name ends with <code>__tyhpExtensionBacker</code> collides with the reserved backer suffix (<code>TYHP4171</code>).</p>
+<h2>Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO use standalone tyhpdef <code>extension Name { }</code> with short <code>=&gt;</code> mappings when describing a compiled Tyhp extension (or a hand mapping onto builtins). Keep <code>$this</code> / <code>self</code> as the target type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO use a class-body <code>extension operator … =&gt; …;</code> when a PHP type has methods such as <code>plus()</code> / <code>isEqualTo()</code> and you want Tyhp to accept <code>$a + $b</code>. Keep the expression a thin mapping onto those methods.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO use bodyless <code>operator …;</code> (no <code>extension</code>) when the PHP type already implements the operator natively (engine magic, PECL, <code>DateTime</code> comparison).</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO use <code>use extension</code> on a tyhpdef class to auto-activate a shared extension for every consumer of that type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>DO keep mapping expressions small. They exist so the consumer compiler can splice call sites; they are not a place to reimplement the PHP library.</p>
+</div>
+    </div>
+</div>
+<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T write a bodyless <code>extension operator +(…): T;</code>. That is <code>TYHP8013</code>. Use bodyless <code>operator</code> for native ops, or give <code>extension operator</code> a thin <code>=&gt;</code> expression.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T put <code>extends Type $this</code> on a class-body <code>extension fn</code>, and DON'T put <code>&lt;Type&gt;</code> on a class-body <code>extension operator</code>. Those forms belong to standalone <code>extension { }</code> blocks.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T put <code>extends</code> on the standalone <code>extension Name { }</code> header. Each member carries its own receiver.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T omit return types on tyhpdef <code>extension</code> members. Short <code>fn</code> / <code>operator</code> + <code>=&gt;</code> only. Empty <code>{}</code> is <code>TYHP4172</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T use <code>abstract</code> or <code>final</code> on <code>extension fn</code> or <code>extension operator</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T write <code>function name(...): T =&gt; expr;</code> for a short body. Standalone extension members and class-body thin mappings use <code>fn</code> (or <code>extension fn</code>); tyhpdef class, enum, and trait methods that declare PHP signatures use <code>function name(...): T;</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>DON'T put <code>#[\Tyhp\Optimize\Inline]</code> on a tyhpdef extension member. Splicing is decided by the member's form (<code>TYHP4176</code>).</p>
+</div>
+    </div>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+class Money {
+    public function plus(Money $other): Money;
+
+    // ERROR TYHP8013: mapped overload missing a =&gt; expression
+    // extension operator +(self $left, self $right): self;
+
+    // OK: native passthrough
+    // operator +(self $left, self $right): self;
+
+    // OK: thin mapping
+    extension operator +(self $left, self $right): self =&gt; $left-&gt;plus($right);
+}
+</code></pre></div>
+<h2>Compiler Errors</h2>
+<ul>
+<li><code>TYHP4170</code> — <code>as</code> on an operator in a <code>use extension</code> adaptation; use <code>hide</code> or <code>insteadof</code></li>
+<li><code>TYHP4171</code> — type name collides with the reserved <code>__tyhpExtensionBacker</code> suffix</li>
+<li><code>TYHP4172</code> — empty <code>extension Name {}</code></li>
+<li><code>TYHP4173</code> — <code>hide</code> of a member that extension does not declare</li>
+<li><code>TYHP4174</code> — a spliced member writes a parameter not declared <code>&amp;</code>, declares <code>&amp;</code> on a parameter it does not write, or mutates <code>$this</code> without <code>&amp;</code></li>
+<li><code>TYHP4175</code> — a spliced member reduces to itself, directly or through other spliced members</li>
+<li><code>TYHP4176</code> — <code>#[\Tyhp\Optimize\Inline]</code> on an extension member</li>
+<li><code>TYHP4177</code> — a variable name collides with the generated inline temporary prefix</li>
+<li><code>TYHP4180</code> — argument for a <code>&amp;</code> parameter is not something PHP can reference</li>
+<li><code>TYHP4181</code> — an erased member's call site cannot be spliced faithfully (no PHP method to fall back to)</li>
+<li><code>TYHP8010</code> — an inline extension member conflicts with a declared member on the same class</li>
+<li><code>TYHP8011</code> — a <code>use extension</code> reference in tyhpdef does not resolve to an extension declaration</li>
+<li><code>TYHP8012</code> — a member marked <code>extension</code> is not a valid extension member (<code>fn</code> / <code>operator</code> only)</li>
+<li><code>TYHP8013</code> — <code>extension operator</code> is missing a thin <code>=&gt;</code> expression; use bodyless <code>operator</code> for native PHP operators</li>
+</ul>
+<h2>Summary</h2>
+<ul>
+<li>Tyhpdef <strong>can</strong> declare standalone <code>extension Name { }</code> — no <code>extends</code> on the header; members are short <code>fn</code> / <code>operator</code> + <code>=&gt;</code>; return types required; empty <code>{}</code> is an error</li>
+<li>Class-body members are <strong>thin mappings</strong> (<code>extension fn</code> / <code>extension operator</code> + <code>=&gt;</code>). They erase completely; PHP cannot call them. <code>$name-&gt;toUpper()</code> with <code>=&gt; \strtoupper($this)</code> emits <code>(\strtoupper($name))</code></li>
+<li><code>$this</code> / <code>self</code> in standalone members refer to the <strong>target</strong>; in class-body mappings they refer to the enclosing tyhpdef class</li>
+<li>Bodyless <code>operator …;</code> means native PHP passthrough; <code>extension operator</code> always needs a <code>=&gt;</code> expression</li>
+<li>File-level <code>use extension</code> is opt-in unless <code>global use extension</code>; class-body <code>use extension</code> auto-activates that type’s attached surface (minus <code>hide</code>)</li>
+<li><code>tyhp/core</code> ships <code>_tyhpdef/extensions/*.tyhpdef</code> with <code>global use extension \Tyhp\&lt;ScalarType&gt;Extensions</code> and <code>tyhp_src/</code> backers (<code>class PhpName as Name__tyhpExtensionBacker</code>) for multi-statement bodies</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhpdef_functions.html">&larr; Functions in Tyhpdef</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

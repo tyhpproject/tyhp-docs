@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,7 +279,8 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhpdef supports declaring type aliases using the type keyword. Type aliases give a name to a complex type expression, making declarations more readable and reusable. In tyhpdef, type aliases are used to describe common PHP type patterns that lack a formal definition — such as union types representing valid option sets, array shapes, or callback signatures. Type aliases can be declared at the root level or within a namespace block.</p>
+    <p>Tyhpdef supports declaring type aliases using the type keyword. Type aliases give a name to a complex type expression, making declarations more readable and reusable. They can be declared at the root level, inside a namespace block, or in a class body with a visibility modifier.</p>
+<p>A tyhpdef alias is check-only unless it carries <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>. Check-only aliases (PHP overlays, harvested stubs) expand in hints and <code>typeof</code> inlines the body. A compiled Tyhp library stamps <code>aliasFactory</code> when it actually emitted a <code>\Tyhp\Type</code> factory; consumers then call that factory (<code>DecimalCoercible()</code>, <code>UserService::NameType()</code>) instead of inlining. Class and method <code>GenericRuntime</code> stamps are independent and do not require helpers (<code>erased: true</code> is still written).</p>
 <h2>Basic Type Aliases</h2>
 <p>A type alias is declared with the type keyword, followed by the alias name, an equals sign, the underlying type expression, and a semicolon.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -278,6 +295,41 @@ type OptionalString = ?string;
 
 type StatusCode = 200|301|302|404|500;
 </code></pre></div>
+<h2>Object-shape aliases</h2>
+<p>The right-hand side of a tyhpdef <code>type</code> alias may be <code>object { … }</code> (or a nominal type intersected with a shape). That alias is a structural instance type. Use the name in signatures; see <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+type ClockShape = object {
+    public function now(): \DateTimeImmutable;
+};
+
+type FallbackConstraint = object {
+    public function getPrettyString(): string;
+    public function __toString(): string;
+};
+
+type TimestampedLogger = \Psr\Log\LoggerInterface &amp; object {
+    public function getLastLogAt(): \DateTimeImmutable;
+};
+
+function createClock(): ClockShape;
+function parseConstraint(string $pretty): \Composer\Semver\Constraint\ConstraintInterface | FallbackConstraint;
+</code></pre></div>
+<p>Recursive shapes that mention their own name are allowed. Empty <code>type X = object {};</code> is illegal; write <code>object</code>.</p>
+<h2>Callable-shape and struct-shape aliases</h2>
+<p>A tyhpdef alias may also name a callable shape or a struct shape. Inline <code>callable(…): R</code> and <code>struct { … }</code> are legal in signatures. <code>new</code> of a callable-shape alias is illegal; <code>new</code> of a struct-shape alias constructs the array.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+type Predicate&lt;T&gt; = callable(T $value): bool;
+type Mapper&lt;TIn, TOut&gt; = callable(TIn): TOut;
+type Point = struct {
+    float $x;
+    float $y;
+};
+
+function allMatch&lt;T&gt;(array&lt;T&gt; $items, Predicate&lt;T&gt; $p): bool;
+function origin(): struct { float $lat; float $lng; };
+</code></pre></div>
 <h2>Union and Intersection Type Aliases</h2>
 <p>Type aliases can represent union types (using the pipe operator) and intersection types (using the ampersand operator). These are especially useful for describing PHP functions that accept or return multiple types.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -290,7 +342,7 @@ type JsonValue = string|int|float|bool|null|array&lt;JsonValue&gt;;
 
 type Countable = \Countable&amp;\Traversable;
 
-type TagLine = string|callable&lt;string&gt;|CheesyTagLineGeneratorInterface;
+type TagLine = string|(callable(): string)|CheesyTagLineGeneratorInterface;
 </code></pre></div>
 <h2>Generic Type Aliases</h2>
 <p>Type aliases can have generic type parameters, making them reusable across different concrete types. Generic parameters are declared in angle brackets after the alias name and can include constraints.</p>
@@ -304,11 +356,11 @@ type Pair&lt;TFirst, TSecond&gt; = array{TFirst, TSecond};
 
 type Result&lt;T, TError extends \Throwable&gt; = T|TError;
 
-type Predicate&lt;T&gt; = callable&lt;T, bool&gt;;
+type Predicate&lt;T&gt; = callable(T): bool;
 
-type Mapper&lt;TIn, TOut&gt; = callable&lt;TIn, TOut&gt;;
+type Mapper&lt;TIn, TOut&gt; = callable(TIn): TOut;
 
-type Callback&lt;TReturn extends void|never|mixed&gt; = callable&lt;string, TReturn&gt;;
+type Callback&lt;TReturn extends void|never|mixed&gt; = callable(string): TReturn;
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -380,15 +432,15 @@ class UserService {
 </div>
     </div>
 </div>
-<div class="callout-block callout-block-danger me-1">
+<div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
             </span>
-            Danger
+            Tip
         </h4>
-        <div class="callout-content"><p>DON'T: Declare type aliases inside class, interface, or trait blocks within tyhpdef. Type aliases in tyhpdef can only appear at the root level or within namespace blocks. Class-level type aliases are a Tyhp code feature, not a tyhpdef feature.</p>
+        <div class="callout-content"><p>DO: Use class-body <code>type</code> with a visibility modifier when the alias belongs to that class. Compiled libraries copy public and protected class-level aliases into <code>package.tyhpdef</code>.</p>
 </div>
     </div>
 </div>
@@ -400,25 +452,26 @@ class UserService {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T: Create circular type aliases where alias A references alias B and alias B references alias A. This alpha does not emit a dedicated circular-alias diagnostic; keep aliases acyclic yourself.</p>
+        <div class="callout-content"><p>DON'T: Create circular type aliases where alias A references alias B and alias B references alias A, unless every participant is an object-shape alias (recursive <code>type Node = object { public function parent(): ?Node; }</code> is allowed).</p>
 </div>
     </div>
 </div>
 <h2>Summary</h2>
 <ul>
-<li>Type aliases use the syntax: <code>type Name = TypeExpr;</code></li>
+<li>Type aliases use the syntax: <code>type Name = TypeExpr;</code> (the RHS may also be <code>object { … }</code> or a nominal type <code>&amp; object { … }</code>)</li>
 <li>Generic type parameters are supported: <code>type Name&lt;T&gt; = TypeExpr;</code></li>
 <li>Generic parameters can have constraints: <code>type Name&lt;T extends SomeType&gt; = TypeExpr;</code></li>
 <li>Union and intersection types are fully supported in type alias definitions</li>
-<li>Type aliases in tyhpdef can only appear at root level or inside namespace blocks</li>
-<li>Type aliases are a compile-time construct — they are erased during PHP emission</li>
-<li>Type aliases are interchangeable with their underlying type at compile time</li>
-<li>Type aliases can reference other type aliases (avoid cycles; they are not diagnosed in this alpha)</li>
+<li>Type aliases may appear at file/namespace scope or in a class body (<code>public</code> / <code>protected</code> / <code>private type</code>)</li>
+<li>Hints always expand to the underlying type</li>
+<li>Check-only tyhpdef aliases (no <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>) inline in <code>typeof</code></li>
+<li>Compiled-library aliases stamped with <code>aliasFactory</code> call the library's factory</li>
+<li>Type aliases can reference other type aliases; keep non-shape aliases acyclic. Recursive object-shape aliases that mention their own name are allowed.</li>
 </ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhpdef_functions.html">&larr; Functions in Tyhpdef</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhpdef_extensions.html">&larr; Extensions in Tyhpdef</a></div>
     <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef &rarr;</a></div>
 </nav>
 
@@ -426,6 +479,7 @@ class UserService {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

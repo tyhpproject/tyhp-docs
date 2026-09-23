@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -282,7 +298,7 @@ if (\is_string($myVar)) {
 // string|int|float|bool
 </code></pre></div>
 <h2>Built-in Type Guards</h2>
-<p>PHP's built-in type checking functions act as type guards in Tyhp. When used in a conditional check, they narrow the type of the checked variable.</p>
+<p>PHP's built-in type checking functions act as type guards in Tyhp because their php-package tyhpdefs declare type-guard returns. When used in a conditional check, they narrow the type of the checked variable.</p>
 <ul>
 <li><code>\is_string($val)</code> -- narrows to <code>string</code></li>
 <li><code>\is_int($val)</code> -- narrows to <code>int</code></li>
@@ -296,16 +312,21 @@ if (\is_string($myVar)) {
 <li><code>\is_resource($val)</code> -- narrows to <code>resource</code></li>
 </ul>
 <h2>The <code>instanceof</code> and <code>is</code> Keywords</h2>
-<p>Tyhp supports <code>instanceof</code> from PHP and adds several aliases. The following keywords are all equivalent and can be used interchangeably as type guard expressions:</p>
+<p>Tyhp supports <code>instanceof</code> from PHP and <code>is</code> as a Tyhp alias. They are equivalent type-guard expressions:</p>
 <ul>
 <li><code>instanceof</code> -- the standard PHP keyword</li>
 <li><code>is</code> -- Tyhp alias</li>
-<li><code>isa</code> -- Tyhp alias (reads naturally: &quot;$x isa Foo&quot;)</li>
-<li><code>isan</code> -- Tyhp alias (reads naturally: &quot;$x isan Iterator&quot;)</li>
-<li><code>is_a</code> -- Tyhp alias (with underscore)</li>
-<li><code>is_an</code> -- Tyhp alias (with underscore)</li>
 </ul>
-<p>All of these check if a value is an instance of a specific class or interface (or a descendant of that type) and narrow the variable's type accordingly. They are defined in the lexer as the <code>T_TYHP_IS</code> token and are only available in Tyhp mode. For scalar types, <code>$x is int</code> compiles to <code>\Tyhp\Type::is($x, \Tyhp\Type::int())</code>. For object types, it compiles to <code>instanceof</code>. Do not write <code>$x is null</code>; use <code>$x !== null</code> (or <code>\is_null($x)</code>). <code>\is_a(...)</code> as a function call is not how Tyhp <code>is</code> works — <code>is</code> is a keyword.</p>
+<p>Both check if a value is an instance of a specific class or interface (or a descendant of that type) and narrow the variable's type accordingly. <code>is</code> is the <code>T_TYHP_IS</code> token and is only available in Tyhp mode. Emit follows <code>#[\Tyhp\NativeTypeTest]</code> on a type-guard function or concrete static method: <code>$x is string</code> becomes <code>\is_string($x)</code> when <code>is_string</code> is marked that way. Unmarked class / interface / enum / trait names still emit native <code>$x instanceof Fqn</code>. Unions, nullables, structs, object-shape aliases, generic parameters, and other unmarked types emit <code>\Tyhp\Type::is</code>. <code>$x is null</code> is allowed and uses <code>\is_null($x)</code> when that function is marked. <code>\is_a(...)</code> is PHP's function; it is not the <code>is</code> operator.</p>
+<p>When the right-hand side is an object-shape alias, <code>$x is ClockShape</code> / <code>$x instanceof ClockShape</code> is a <strong>shape guard</strong>. After a pass, <code>$x</code> is narrowed to that shape. The check is existence-only at runtime (public methods and properties listed on the shape). <code>$x is ClockShape</code> does not make <code>$x-&gt;__construct()</code> legal. <code>$x is User</code> when <code>User</code> is a real class still emits native <code>instanceof</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function fromObject(object $obj): void {
+    if ($obj is ClockShape) {
+        formatNow($obj);
+    }
+}
+</code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 BuilderInterface|ConnectionInterface|null $builder = \getRemoteBuilderInstance();
@@ -328,19 +349,15 @@ if ($builder is ConnectionInterface) {
     $builder-&gt;disconnect();
 }
 
-// Scalars use `is` too — emit is \Tyhp\Type::is(...)
+// Scalars use `is` too — emit is `\is_string($value)` / `\is_int($value)` when those
+// tyhpdef functions carry `#[\Tyhp\NativeTypeTest]`
 mixed $value = \getMixedValue();
 if ($value is int) {
     // $value is narrowed to int
 }
-
-// Natural English-like syntax
-if ($builder isa BuilderInterface) {
-    $builder-&gt;build();
-}
 </code></pre></div>
 <h2>Null Checks as Type Guards</h2>
-<p>Null comparisons also act as type guards. Checking <code>!== null</code>, <code>=== null</code>, or <code>!\is_null()</code> narrows nullable types:</p>
+<p>Null comparisons also act as type guards. Checking <code>!== null</code>, <code>=== null</code>, <code>$x is null</code>, or <code>!\is_null()</code> narrows nullable types:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 ?string $name = \getOptionalName();
@@ -370,10 +387,12 @@ if (\is_string($value)) {
 }
 </code></pre></div>
 <h2>Narrowing Through Logical Operators</h2>
-<p>Type narrowing compounds through <code>&amp;&amp;</code> (AND) and distributes through <code>||</code> (OR) operators:</p>
+<p>Type narrowing compounds through <code>&amp;&amp;</code> (AND) and distributes through <code>||</code> (OR) operators. Later operands are type-checked the way PHP short-circuits: after a true <code>&amp;&amp;</code> left operand, and after a false <code>||</code> left operand.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 string|int|null $val = \getData();
+string $name = \getClassName();
+\__ClassName $base = \getBaseClassName();
 
 // AND narrows cumulatively
 if ($val !== null &amp;&amp; \is_string($val)) {
@@ -384,9 +403,14 @@ if ($val !== null &amp;&amp; \is_string($val)) {
 if (\is_string($val) || \is_int($val)) {
     // $val is `string|int`
 }
+
+// A failed `||` operand&#039;s negation applies to later operands in the same condition
+if (!\class_exists($name) || !\is_subclass_of($name, $base)) {
+    // `\is_subclass_of` sees `$name` as `__ClassName` because `class_exists` was true
+}
 </code></pre></div>
 <h2>Custom Type Guard Functions</h2>
-<p>You can define your own type guard functions using a special return type syntax. Instead of returning <code>bool</code>, the return type declares which parameter is narrowed to which type using the syntax: <code>$paramName is TypeExpr</code> or <code>$paramName instanceof TypeExpr</code>.</p>
+<p>You can define your own type guard functions using a special return type syntax. Instead of returning <code>bool</code>, the return type declares which subject is narrowed to which type using <code>$paramName is TypeExpr</code>, <code>$paramName instanceof TypeExpr</code>, or an index read <code>$array[$key] is TypeExpr</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Custom type guard function
@@ -404,7 +428,7 @@ if (isNonEmptyArray($val)) {
     // (array was removed from the union)
 }
 </code></pre></div>
-<p>The guard return type syntax is defined in the grammar's <code>returnTypeGrammarAddon</code> rule. You can use any of the <code>is</code>/<code>instanceof</code> variants in the return type declaration.</p>
+<p>The guard return type syntax is defined in the grammar's <code>returnTypeGrammarAddon</code> rule. You can use any of the <code>is</code>/<code>instanceof</code> variants in the return type declaration. The subject may be a parameter or one index read of a parameter (<code>$array[$key]</code>, <code>$array[0]</code>, <code>$array['k']</code>). At a call site, those parameter names are substituted for the arguments, so <code>hasStringAt($k, $arr)</code> narrows <code>$arr[$k]</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Guard with a class type
@@ -421,12 +445,26 @@ function isStringOrInt(mixed $val): $val is string|int {
 function isPositiveInt(mixed $val): $val is int {
     return \is_int($val) &amp;&amp; $val &gt; 0;
 }
+
+// Guard that narrows an index read, not the array itself
+function hasStringAt(int $key, array $array): $array[$key] is string {
+    return \array_key_exists($key, $array) &amp;&amp; \is_string($array[$key]);
+}
+
+function demo(array $arr, int $k): void {
+    if (hasStringAt(0, $arr)) {
+        string $first = $arr[0];
+    }
+    if (hasStringAt($k, $arr)) {
+        string $value = $arr[$k];
+    }
+}
 </code></pre></div>
 <h2>Dynamic Guard Functions</h2>
 <p>PHP's symbol existence functions also act as type guards, narrowing string values to Tyhp's symbol name types. This enables type-safe dynamic programming:</p>
 <ul>
 <li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
-<li><code>\class_exists($name)</code> -- narrows <code>$name</code> to <code>__ClassName&lt;object&gt;</code> (omit <code>&lt;T&gt;</code>; use <code>\class_exists&lt;Foo&gt;($name)</code> for <code>__ClassName&lt;Foo&gt;</code>)</li>
+<li><code>\class_exists($name)</code> -- narrows <code>$name</code> to <code>__ClassName&lt;object&gt;</code> (omit <code>&lt;T&gt;</code>; use <code>\class_exists&lt;Foo&gt;($name)</code> for <code>__ClassName&lt;Foo&gt;</code>, or <code>\class_exists&lt;ClockShape&gt;($name)</code> / <code>\class_exists&lt;__New&lt;ClockShape&gt;&gt;($name)</code> for a shape brand)</li>
 <li><code>\interface_exists($name)</code> -- narrows <code>$name</code> to <code>__InterfaceName</code></li>
 <li><code>\trait_exists($name)</code> -- narrows <code>$name</code> to <code>__TraitName</code></li>
 <li><code>\enum_exists($name)</code> -- narrows <code>$name</code> to <code>__EnumName</code></li>
@@ -511,7 +549,7 @@ function isPositiveInt(mixed $val): bool {
     return \is_int($val) &amp;&amp; $val &gt; 0;
 }
 </code></pre></div>
-<p>The <code>is</code> keyword compiles to <code>instanceof</code> for object types and to <code>\Tyhp\Type::is(...)</code> for scalars:</p>
+<p>The <code>is</code> keyword compiles the same way as <code>instanceof</code>. When a free function or concrete static method marked <code>#[\Tyhp\NativeTypeTest]</code> tests for exact <code>T</code> (<code>function is_string(mixed $value): $value is string</code>), <code>$x is T</code> emits a call to that callable. Otherwise a resolved class, interface, enum, or trait emits native <code>instanceof</code>. Remaining forms (unions, <code>?T</code>, structs, generic parameters, unmarked aliases) emit <code>\Tyhp\Type::is</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 function checkBuilder(object $obj): void {
@@ -537,7 +575,7 @@ function checkBuilder(object $obj): void {
 }
 
 function checkInt(mixed $n): void {
-    if (\Tyhp\Type::is($n, \Tyhp\Type::int())) {
+    if (\is_int($n)) {
         echo $n;
     }
 }
@@ -693,7 +731,7 @@ if ($user !== null) {
 <li>Type narrowing is scope-sensitive -- it only applies within the guarded block.</li>
 <li>Assigning a value of a different type within a narrowed scope ends the current narrowing and starts a new one based on the assigned type.</li>
 <li>Early returns, throws, continues, and breaks narrow the type for the remaining code after them.</li>
-<li>The narrowed type can only be one of the types in the original union type -- narrowing never introduces new types.</li>
+<li>The narrowed type is usually one of the types in the original union — except a shape guard, which refines <code>object</code> / <code>mixed</code> (or a union containing them) to the object-shape alias.</li>
 <li>Outside of the guarded scope, the variable reverts to its full declared type.</li>
 <li>Multiple guards compound: after checking <code>!== null</code> and then <code>is Foo</code>, the type is <code>Foo</code>.</li>
 <li>Custom type guard functions must actually return a boolean value at runtime -- the guard return type only tells the compiler about the narrowing effect.</li>
@@ -709,6 +747,7 @@ if ($user !== null) {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

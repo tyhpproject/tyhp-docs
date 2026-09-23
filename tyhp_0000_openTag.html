@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link active" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,15 +279,15 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 06</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Two of the first differences you will notice in Tyhp are a new open tag and a new file extension. These allow the Tyhp compiler to distinguish Tyhp code from PHP code and apply its strongly-typed compilation rules only to the appropriate sections. The new open tags work the same way as the existing PHP open tag <code>&lt;?php</code>. The echo open tag <code>&lt;?=</code> is PHP echo mode (not Tyhp). A bare <code>&lt;?</code> is not a PHP short open tag — Tyhp uses <code>&lt;?</code> only as the start of <code>&lt;?tyhp</code>, <code>&lt;?tyhpdef</code>, or <code>&lt;?php</code>.</p>
+    <p>Two of the first differences you will notice in Tyhp are a new open tag and a new file extension. These allow the Tyhp compiler to distinguish Tyhp code from PHP code and apply its type-checking and compilation rules only to the appropriate sections. The new open tags work the same way as the existing PHP open tag <code>&lt;?php</code>. The echo open tag <code>&lt;?=</code> is PHP echo mode (not Tyhp). A bare <code>&lt;?</code> is not a PHP short open tag — Tyhp uses <code>&lt;?</code> only as the start of <code>&lt;?tyhp</code>, <code>&lt;?tyhpdef</code>, or <code>&lt;?php</code>.</p>
 <h2>The <code>&lt;?tyhp</code> Open Tag</h2>
 <p>The <code>&lt;?tyhp</code> open tag marks the start of a Tyhp code block. It is the primary open tag for all Tyhp source files. Like <code>&lt;?php</code>, it must be followed by at least one whitespace character. Tyhp code blocks can be closed with <code>?&gt;</code> for inline output (same as PHP), and the file can contain multiple Tyhp code blocks interleaved with inline HTML.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-string $greeting = &quot;Hello, Tyhp!&quot;;
+$greeting = &quot;Hello, Tyhp!&quot;;
 echo $greeting;
 </code></pre></div>
-<p>When the compiler encounters <code>&lt;?tyhp</code>, it enters Tyhp language mode. All code within this block is subject to Tyhp's strong typing rules, new keywords (<code>struct</code>, <code>extension</code>, <code>async</code>, <code>await</code>, <code>with</code>, <code>operator</code>, <code>is</code>, <code>typeof</code>, <code>nameof</code>, <code>variable_exists</code>, etc.), and compile-time checks. The block ends at <code>?&gt;</code> (for inline output) or at the end of the file.</p>
+<p>When the compiler encounters <code>&lt;?tyhp</code>, it enters Tyhp language mode. All code within this block is subject to Tyhp's type checking, new keywords (<code>struct</code>, <code>extension</code>, <code>async</code>, <code>await</code>, <code>with</code>, <code>operator</code>, <code>is</code>, <code>typeof</code>, <code>nameof</code>, <code>variable_exists</code>, etc.), and compile-time checks. The block ends at <code>?&gt;</code> (for inline output) or at the end of the file.</p>
 <h2>The <code>&lt;?tyhpdef</code> Open Tag</h2>
 <p>The <code>&lt;?tyhpdef</code> open tag marks the start of a Tyhp type definition file. Tyhpdef files describe the type signatures of external PHP code -- extensions, Composer packages, or any PHP code that your Tyhp project depends on. They provide the compiler with type information without containing any runtime logic.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -292,7 +308,7 @@ class PaymentGateway {
 </ul>
 <p>The compiler uses the file extension to determine how to parse the file. A <code>.tyhp</code> file is parsed starting with the <code>tyhpSrcFile</code> grammar rule, which expects <code>&lt;?tyhp</code> blocks (with optional inline HTML output between blocks). A <code>.tyhpdef</code> file is parsed starting with the <code>tyhpdefSrcFile</code> grammar rule, which expects a single <code>&lt;?tyhpdef</code> block.</p>
 <h2>Tagless source (<code>source.tagless</code>)</h2>
-<p>Set <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code> in <code>tyhp.json</code> (or <code>source.tagless</code> on a <code>package.tyhp.json</code> manifest) to parse <code>.tyhp</code> / <code>.tyhpdef</code> files as Tyhp/tyhpdef from the first token, without an open tag. Closing <code>?&gt;</code> is not allowed in that mode. Use this for files that are entirely Tyhp (no interleaved HTML). The default remains tagged <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code> files.</p>
+<p>Set <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code> in <code>tyhp.json</code> (or <code>source.tagless</code> on a package's <code>extra.tyhp.package</code>) to parse <code>.tyhp</code> / <code>.tyhpdef</code> files as Tyhp/tyhpdef from the first token, without an open tag. Closing <code>?&gt;</code> is not allowed in that mode. Use this for files that are entirely Tyhp (no interleaved HTML). The default remains tagged <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code> files.</p>
 <h2>Strict Types Are Always Enabled</h2>
 <p>In Tyhp, compiled PHP output always includes <code>declare(strict_types=1);</code>. Every <code>.tyhp</code> file is compiled with strict types enforced. This means PHP's type coercion rules do not apply in Tyhp code -- passing an <code>int</code> where a <code>string</code> is expected always produces a type error, never a silent conversion.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -339,9 +355,9 @@ $app-&gt;run();
 <h2>The <code>declare(autoload=…)</code> Directive</h2>
 <p><code>declare(autoload=…)</code> is a per-file override for <code>build.entryPointAutoloader</code>. Values:</p>
 <ul>
-<li><code>'composer'</code> — inject the configured Composer autoloader (default <code>vendor/autoload.php</code> under the output directory)</li>
+<li><code>'composer'</code> — inject the configured Composer autoloader (default <code>vendor/autoload.php</code> under <code>output.publishPath</code>)</li>
 <li><code>'none'</code> (or empty) — do not inject an autoloader for this file</li>
-<li>a config map key or a path — look up <code>build.entryPointAutoloader</code> first, otherwise treat the value as a path relative to the output directory</li>
+<li>a config map key or a path — look up <code>build.entryPointAutoloader</code> first, otherwise treat the value as a path relative to <code>output.publishPath</code></li>
 </ul>
 <p>The emitter writes the <code>require_once</code> into the PHP output. Do not put <code>require_once 'vendor/autoload.php'</code> in Tyhp source.</p>
 <h2>How the Compiler Distinguishes Tyhp from PHP</h2>
@@ -349,8 +365,8 @@ $app-&gt;run();
 <h2>Mixing <code>&lt;?tyhp</code> and <code>&lt;?php</code> in <code>.tyhp</code> Files</h2>
 <p>A <code>.tyhp</code> file can contain both <code>&lt;?tyhp</code> and <code>&lt;?php</code> code blocks. This is useful for gradual migration or when you need to include PHP code that uses features outside Tyhp's type system. Each block is independently parsed in its respective language mode:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-// This block is Tyhp code -- strongly typed
-string $name = &quot;World&quot;;
+// This block is Tyhp code -- type-checked
+$name = &quot;World&quot;;
 ?&gt;
 
 &lt;!-- This is inline HTML output --&gt;
@@ -487,7 +503,7 @@ class HomeController {
 <p>If you accidentally use <code>&lt;?php</code> in a <code>.tyhp</code> file and try to use Tyhp-specific syntax, the compiler reports parse errors because those keywords are not active in PHP mode:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?php
 // ERROR: &#039;struct&#039; is not recognized as a keyword in PHP mode
-// struct Point { int $x; int $y; }
+// type Point = struct { int $x; int $y; };
 
 // ERROR: Variable type declarations are not valid PHP syntax
 // string $name = &quot;hello&quot;;
@@ -496,10 +512,10 @@ class HomeController {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // All Tyhp keywords are active in &lt;?tyhp blocks
-struct Point {
+type Point = struct {
     int $x;
     int $y;
-}
+};
 
 // Variable type declarations work
 string $name = &quot;hello&quot;;
@@ -508,13 +524,14 @@ string $name = &quot;hello&quot;;
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
     <div class="docs-prev"><a class="btn btn-outline-primary" href="other_typescript.html">&larr; TypeScript</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0100_stronglyTyped.html">Strongly Typed &rarr;</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0100_typesAndLocals.html">Types and Locals &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

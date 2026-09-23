@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,28 +279,27 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 13</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>The Tyhp CLI is the primary tool for working with Tyhp projects. In this alpha it covers building, linting, project init, version, help, and Composer-aware project wiring.</p>
+    <p>The Tyhp CLI is the primary tool for working with Tyhp projects. It covers building, linting, project init, version, help, installing Composer, Composer-aware project wiring (<code>tyhp composer</code> / <code>tyhp composer sync</code>), the language server, Xdebug debugging, <code>generate_tyhpdef</code>, <code>overlay</code>, and debug dumps (<code>tokenize</code>, <code>dump_ast</code>, <code>symbol_tree</code>).</p>
 <h2>Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp &lt;action&gt; [options]
 </code></pre></div>
-<h2>Available in this alpha</h2>
+<h2>Actions</h2>
 <ul>
 <li><code>build</code> — Compile <code>.tyhp</code> source files into <code>.php</code> output. Runs parse, bind, check, emit.</li>
 <li><code>lint</code> — Check the project for errors and warnings without producing output files. Supports text, JSON, and SARIF formats.</li>
-<li><code>init</code> — Initialize a new Tyhp project with a default <code>tyhp.json</code>.</li>
+<li><code>init</code> — Initialize a new Tyhp project with a default <code>tyhp.json</code> and create or merge <code>composer.json</code>.</li>
+<li><code>install</code> — Download toolchain tools. <code>tyhp install composer</code> installs Composer (<code>./composer.phar</code> by default; <code>--global</code> → <code>~/.local/bin/composer</code>; <code>--force</code> to replace). This is not <code>tyhp composer install</code>.</li>
 <li><code>version</code> — Display the compiler version (<code>tyhp version</code>, not a <code>--version</code> flag).</li>
 <li><code>help</code> — Display help. <code>tyhp help --subject=&lt;action&gt;</code> for action-specific help.</li>
 <li><code>explain</code> — Print the long-form explanation for a diagnostic code (<code>tyhp explain TYHP4001</code>).</li>
-<li><code>composer</code> — Run Composer with Tyhp-aware processing when configured.</li>
+<li><code>composer</code> — Run Composer with Tyhp-aware processing (<code>tyhp composer install</code> proxies Composer’s <code>install</code>). <code>tyhp composer sync</code> writes ambient <code>extra.tyhp.require</code> pins onto root <code>require-dev</code>. See <a href="cli_composer.md">CLI: Composer</a>.</li>
+<li><code>language_server</code> — Language Server Protocol over stdin/stdout. See <a href="cli_languageServer.md">CLI: Language Server</a>.</li>
+<li><code>xdebug_proxy</code> — Xdebug + sourcemap debugging. See <a href="cli_xdebugProxy.md">CLI: XDebug Proxy</a>.</li>
+<li><code>generate_tyhpdef</code> — Generate <code>.tyhpdef</code> files from PHP extensions, Composer packages, PHP sources, or the whole <code>vendor/</code> tree (<code>--vendor</code>). See <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a>. <code>--php-targets</code> reflects each listed minor with managed PHP and emits one gated tree. <code>--php</code> is the single-target escape hatch for private unpublished extensions.</li>
+<li><code>overlay</code> — Copy a declaration into a hand-written overlay file (<code>create</code>) or write <code>@overlay-against</code> stamps (<code>stamp</code>). See <a href="cli_overlay.md">CLI: Overlay</a>.</li>
+<li><code>symbol_tree</code> — Parse and bind the project, then dump the resolved symbol tree as JSON. See <a href="cli_symbolTree.md">CLI: Symbol Tree</a>.</li>
 </ul>
 <p>Developer/debug actions also exist (<code>tokenize</code>, <code>dump_ast</code>, <code>clear_cache</code>, <code>integrity_check</code>) and are documented by <code>tyhp help</code>.</p>
-<h2>Not in this alpha</h2>
-<p>These actions are planned (Tier 2) and are <strong>not</strong> available in 805.0.0-alpha.1:</p>
-<ul>
-<li><code>language_server</code> — Language Server Protocol</li>
-<li><code>xdebug_proxy</code> — Xdebug + sourcemap debugging</li>
-<li><code>generate_tyhpdef</code> — Reflection-based tyhpdef generation</li>
-</ul>
 <h2>Global Options</h2>
 <ul>
 <li><code>--help</code> — Display help. Use <code>tyhp help --subject=&lt;action&gt;</code> for action-specific help.</li>
@@ -292,6 +307,7 @@
 <li><code>--quiet</code> — Suppress the banner and non-diagnostic output.</li>
 <li><code>--verbose</code> — Enable detailed output for each compilation phase.</li>
 <li><code>--locale=&lt;locale&gt;</code> — Set the locale for diagnostic messages (default: en-US).</li>
+<li><code>--pid-file=&lt;path&gt;</code> — Write the process id to this file while the process is running. Opt-in; nothing is written by default. Use a unique path per process if you run more than one long-lived Tyhp command.</li>
 </ul>
 <h2>Project File</h2>
 <p>Most actions require a <code>tyhp.json</code> project configuration file. The CLI looks for this file in the current directory by default, or you can specify a path with <code>--tyhp-project</code>. If no <code>tyhp.json</code> is found, the compiler uses sensible defaults and displays an informational message.</p>
@@ -305,7 +321,14 @@
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp help --subject=build
 tyhp help --subject=lint
 tyhp help --subject=init
+tyhp help --subject=install
+tyhp help --subject=composer
+tyhp help --subject=generate_tyhpdef
+tyhp help --subject=overlay
+tyhp help --subject=symbol_tree
+tyhp help --subject=language_server
 </code></pre></div>
+<p>With <code>tyhp/compiler</code> installed, the same verbs work as <code>vendor/bin/tyhp …</code> or <code>composer tyhp …</code> (root <code>scripts.tyhp</code> forwards extra args). See <a href="intro_installation.md">Installing Tyhp</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -317,6 +340,7 @@ tyhp help --subject=init
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

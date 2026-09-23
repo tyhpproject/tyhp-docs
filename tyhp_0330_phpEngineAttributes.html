@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto"> 
 <head>
-    <title>Strongly Typed - Tyhp</title>
+    <title>PHP Engine Attributes - Tyhp</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link active" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -258,314 +274,211 @@
 	    </div>
 	    <div class="docs-content">
 		    <div class="container">
-				<section class="docs-section" id="Strongly_Typed">
-    <h2 class="section-heading">Strongly Typed</h2>
+				<section class="docs-section" id="PHP_Engine_Attributes">
+    <h2 class="section-heading">PHP Engine Attributes</h2>
     <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
+    <span class="badge bg-primary me-1">Tier 2</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>The primary feature of Tyhp is making PHP strongly typed. While PHP allows optional type hints in some places, Tyhp enforces explicit typing throughout your code. Every variable, parameter, property, and return type must have an explicit type declaration or be inferable from context. In Tyhp, we do not refer to these as &quot;type hints&quot; since they are not hints -- they are enforced type declarations. All types are also non-nullable by default: <code>string $x</code> means <code>$x</code> can only hold a <code>string</code>, never <code>null</code>. To allow null, you must explicitly declare the type as nullable: <code>?string $x</code> or <code>string|null $x</code>.</p>
-<h2>Where Types Are Required</h2>
-<p>The places in PHP that already support optional type hints are required to be typed in Tyhp:</p>
+    <p>PHP Core attributes such as <code>#[\Deprecated]</code>, <code>#[\Override]</code>, <code>#[\NoDiscard]</code>, and <code>#[\DelayedTargetValidation]</code> emit as ordinary PHP attributes. Tyhp type-checks them at compile time. The attribute <strong>classes</strong> stay version-gated in <code>tyhpdef/php</code>; some <strong>checks</strong> still run when <code>output.phpVersion</code> is below the introducing minor. See <a href="tyhp_0320_phpVersionGating.md#engine-attributes-and-outputphpversion">PHP Version Gating</a>.</p>
+<p><code>tyhp --explain TYHP####</code> prints the long-form text for each code below.</p>
+<h2><code>#[\Deprecated]</code></h2>
+<p><code>#[\Deprecated]</code> marks a declaration as deprecated. Using that symbol warns <strong>TYHP4500</strong>. The binder treats the attribute the same way as the tyhpdef <code>deprecated</code> keyword — both set deprecation on the symbol, and both produce this one warning.</p>
+<p>When <code>$message</code> is a string literal, it is appended to the diagnostic after a colon (<code>{0}</code> is the name, <code>{1}</code> is <code>: </code> plus the message). Omit <code>$message</code> and the warning stays the one-argument form <code>`{0}` is deprecated</code>. <code>$since</code> is not part of the short message.</p>
+<p>Tyhp warns even when <code>output.phpVersion</code> is below 8.4. PHP’s runtime <code>E_USER_DEPRECATED</code> is a no-op on older minors; the compile-time warning still fires.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+#[\Deprecated(&#039;use bar()&#039;)]
+function foo(): void {}
+
+foo();  // WARNING TYHP4500: `foo` is deprecated: use bar()
+</code></pre></div>
+<p>On a tyhpdef, <code>deprecated function baz();</code> is the same warning without an attribute. See <a href="tyhpdef_deprecatedKeyword.md">The deprecated and obsolete Keywords</a>.</p>
+<h2><code>#[\Override]</code></h2>
+<p><code>#[\Override]</code> marks a method — and, when <code>output.phpVersion</code> is <strong>8.5 or later</strong>, a property — as intended to replace a parent or interface member.</p>
 <ul>
-<li>Class, interface, and trait properties</li>
-<li>Method and function parameters</li>
-<li>Method and function return types</li>
-<li>Class and object constants (typed constants)</li>
+<li>If no same-name non-private ancestor or interface member exists, that is <strong>TYHP4129</strong>.</li>
+<li>On a target below 8.5, <code>#[\Override]</code> on a <strong>property</strong> is a target mismatch (<strong>TYHP4127</strong>).</li>
+<li>On <code>__construct</code>, <strong>TYHP4339</strong> always — constructors are exempt from override semantics, even when a parent constructor exists.</li>
 </ul>
-<p>Additionally, Tyhp requires types for:</p>
-<ul>
-<li>Variables -- either an explicit type declaration or type inference on first assignment</li>
-<li>Closure / arrow function parameters and return types — required unless the type is inferable from an expected callable type</li>
-<li>Catch block exception types</li>
-</ul>
-<h2>Variable Type Declarations</h2>
-<p>There are two ways to type a variable in Tyhp: explicit type declaration and type inference.</p>
-<h2>1. Explicit Type Declaration</h2>
-<p>You can declare a variable's type by placing the type before the variable name. This is similar to typed properties in PHP classes, but extended to all variables in any scope.</p>
+<p>Trait method bodies are not checked here; PHP applies the attribute on the composing class.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Declare a typed variable without assigning a value
-// The variable exists but is unset -- using it before assignment is an error
-bool $myBool;
+class Base {
+    public int $x = 0;
 
-// Assign a value to the typed variable
-$myBool = \isDatabaseServerUp();
+    public function label(): string {
+        return &#039;base&#039;;
+    }
+}
 
-// Declare and assign in one statement
-string $myStr = &quot;hello world&quot;;
+class Child extends Base {
+    #[\Override]
+    public function label(): string {
+        return &#039;child&#039;;
+    }
 
-// Union types are supported
-string|int $myKey = $myBool ? 1 : $myStr;
+    // Legal when output.phpVersion is 8.5 or later and Base has $x:
+    #[\Override]
+    public int $x = 1;
 
-// Since $myKey is a union type, either branch is valid
-$myKey = &quot;foo&quot;;
-$myKey = 35;
-
-// Nullable types must be explicit
-?string $maybeName = null;
-string|null $alsoMaybeName = null;
-</code></pre></div>
-<h2>Parenthesized Type Declarations</h2>
-<p>Tyhp also supports parenthesized type declarations, where the type is wrapped in parentheses before the variable name. This is equivalent to the standard form and is purely a stylistic choice. It can help visually distinguish complex union or intersection types from the variable name.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Parenthesized type declaration
-(string) $myStr = &quot;hello&quot;;
-(int|float) $number = 3.14;
-(decimal) $price = \Tyhp\decimal(&#039;19.99&#039;);
-
-// Equivalent to:
-string $myStr2 = &quot;hello&quot;;
-int|float $number2 = 3.14;
-decimal $price2 = \Tyhp\decimal(&#039;19.99&#039;);
-</code></pre></div>
-<h2>2. Type Inference from First Assignment</h2>
-<p>When you assign a value to a variable without an explicit type declaration, Tyhp automatically infers the type from the right-hand side expression. The inferred type is locked in at the first assignment and cannot change. The inference uses the narrowest possible type based on the expression. No <code>var</code> or <code>auto</code> keyword is needed -- the absence of a type annotation combined with an assignment is sufficient.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Type is inferred from the assigned value
-$myStr = &quot;asdf&quot;;           // Inferred as `string`
-$myBool = \canIMoveThis(); // Inferred from the function&#039;s return type
-$price = 19.99;            // Inferred as `float`
-$amount = \Tyhp\decimal(&#039;1.89&#039;); // Inferred as `decimal`
-$count = 42;              // Inferred as `int`
-$items = [1, 2, 3];       // Inferred as `array&lt;int&gt;` (list shorthand for `array&lt;int|string, int&gt;`)
-</code></pre></div>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>Type inference only works on the first assignment. If a variable has no type annotation and no initializer, the compiler reports an error requiring either an explicit type or an initial value.</p>
-</div>
-    </div>
-</div>
-<h2>Non-Nullable by Default</h2>
-<p>All types in Tyhp are non-nullable by default. A variable declared as <code>string $x</code> cannot hold <code>null</code> -- it must be explicitly declared as <code>?string $x</code> (or <code>string|null $x</code>) to allow null. This is a fundamental difference from PHP, where any typed variable can silently receive <code>null</code> at runtime.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-string $name = &quot;Alice&quot;;
-// $name = null;  // ERROR: Cannot assign null to non-nullable string
-
-// To allow null, declare as nullable
-?string $maybeName = null;  // OK
-string|null $alsoNullable = null;  // Also OK
-</code></pre></div>
-<h2>Closure and Arrow Parameter Inference</h2>
-<p>Named function and method parameters always need an explicit type. Closure and arrow-function parameters also need a type, unless the expected callable type supplies it. If there is no expected callable type (or the parameter cannot be inferred), the compiler requires an annotation.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// $u is inferred as User from the expected callable type
-callable&lt;User, bool&gt; $isAdult = fn ($u) =&gt; $u-&gt;age &gt; 18;
-
-// No expected type — annotate the parameter
-$double = fn (int $n): int =&gt; $n * 2;
-</code></pre></div>
-<h2>Type Immutability</h2>
-<p>Once a variable is typed -- whether explicitly declared or inferred -- its type is immutable. You cannot assign a value of an incompatible type, and you cannot re-declare a variable with a different type in the same scope. <code>unset($x)</code> does not let you redeclare <code>$x</code> with a new type.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-string $myStr = &quot;hello&quot;;
-
-// ERROR: Cannot assign int to variable of type string
-// $myStr = 42;
-
-// ERROR: Cannot re-declare type for an already typed variable
-// int $myStr = 42;
-</code></pre></div>
-<h2>Array and Generic Types</h2>
-<p>Tyhp extends PHP's <code>array</code> type with generic parameters for type-safe collections. See the New Types page for the full list of generic types.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-// Typed arrays using generics (`array&lt;string&gt;` is list shorthand for `array&lt;int|string, string&gt;`)
-array&lt;string&gt; $names = [&quot;Alice&quot;, &quot;Bob&quot;];
-array&lt;string, int&gt; $ages = [&quot;Alice&quot; =&gt; 30, &quot;Bob&quot; =&gt; 25];
-
-// The generic type constrains what can be added
-$names[] = &quot;Charlie&quot;;  // OK: string
-// $names[] = 42;      // ERROR: int is not assignable to array&lt;string&gt;
-</code></pre></div>
-<h2>Compiled PHP Output</h2>
-<p>Tyhp's variable type declarations are a compile-time concept. In the compiled PHP output, variable type annotations are stripped because PHP does not support typed local variables. However, function/method parameter types, return types, and property types are preserved in the PHP output since PHP supports those natively. Generic type parameters are also erased.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-string $name = &quot;Alice&quot;;
-int $age = 30;
-array&lt;string&gt; $hobbies = [&quot;reading&quot;, &quot;coding&quot;];
-
-function greet(string $name): string {
-    string $greeting = &quot;Hello, &quot; . $name;
-    return $greeting;
+    // ERROR TYHP4339 at every phpVersion:
+    // #[\Override]
+    // public function __construct(): void {}
 }
 </code></pre></div>
-<p>Compiles to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-declare(strict_types=1);
-
-$name = &quot;Alice&quot;;
-$age = 30;
-$hobbies = [&quot;reading&quot;, &quot;coding&quot;];
-
-function greet(string $name): string {
-    $greeting = &quot;Hello, &quot; . $name;
-    return $greeting;
-}
-</code></pre></div>
-<p>Note how <code>string $name</code> and <code>int $age</code> at the local variable level are stripped to just <code>$name</code> and <code>$age</code>, while the function parameter <code>string $name</code> and return type <code>: string</code> are preserved because PHP supports those natively. The generic <code>array&lt;string&gt;</code> becomes just <code>array</code> in the output.</p>
-<h2>Best Practices</h2>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Always declare types for function/method parameters and return types. The compiler enforces this, but doing so proactively makes your code self-documenting.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use explicit type declarations for variables when the type might not be obvious from context. Let inference handle cases where the type is immediately clear from the assigned value.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use union types (<code>string|int</code>) when a variable legitimately needs to hold multiple types. Prefer specific types or union types over <code>mixed</code>.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use generic types (<code>array&lt;string&gt;</code>) for collections to get element-level type safety. This prevents accidentally inserting wrong types into arrays.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use nullable types (<code>?string</code> or <code>string|null</code>) explicitly when a variable may be null. Non-nullable by default catches many null-related bugs at compile time.</p>
-</div>
-    </div>
-</div>
-<h2>Common Mistakes</h2>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't assign a value of an incompatible type to a typed variable. Once a variable's type is set (explicitly or by inference), it cannot hold values of different types.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't try to re-declare a variable's type in the same scope. Duplicate type declarations produce a <code>BinderDuplicateSymbolDeclaration</code> error. <code>unset()</code> does not start a new typed declaration.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't use <code>mixed</code> as a type unless absolutely necessary. Tyhp's strong type system should eliminate most needs for <code>mixed</code> -- prefer specific types or union types.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't omit types on function parameters or return types. The compiler requires all function signatures to be fully typed.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Don't assume a variable is nullable. All types are non-nullable by default in Tyhp. Assigning <code>null</code> to a non-nullable variable produces a <code>CheckerTypeMismatch</code> error.</p>
-</div>
-    </div>
-</div>
-<h2>Compiler Error Examples</h2>
+<p>A method or property that is marked but does not override uses TYHP4129, not TYHP4339.</p>
+<h2><code>#[\NoDiscard]</code></h2>
+<p><code>#[\NoDiscard]</code> marks a function or method whose return value should be used. A discarded call (an expression statement, or a non-final <code>for</code> list item) warns <strong>TYHP4165</strong>. When <code>$message</code> is a string literal, it is appended after a colon, the same way as <code>#[\Deprecated]</code>.</p>
+<p>Use the return (assignment, argument, condition, and so on), or discard it on purpose with <code>(void)</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR: CheckerTypeMismatch -- Cannot assign int to string
-string $x = &quot;hello&quot;;
-// $x = 42;
+#[\NoDiscard(&#039;check the status&#039;)]
+function save(): int {
+    return 1;
+}
 
-// ERROR: CheckerTypeMismatch -- Cannot assign null to non-nullable string
-string $name = &quot;Alice&quot;;
-// $name = null;
-
-// ERROR: BinderDuplicateSymbolDeclaration -- Variable already declared in this scope
-int $count = 1;
-// int $count = 2;
-
-// ERROR: CheckerVariableTypeRequired -- Variable has no type and no initializer
-// $mystery;
+function run(): void {
+    save();               // WARNING TYHP4165, including &quot;: check the status&quot;
+    (void)save();         // OK
+    int $n = save();      // OK
+    $_ = save();          // OK — assignment is a use
+}
 </code></pre></div>
+<p>The warning comes from the <strong>invoked</strong> declaration:</p>
+<ul>
+<li>Calling through an <strong>interface</strong> or <strong>abstract</strong> method does not warn, even if that declaration is marked.</li>
+<li>An <strong>override</strong> does not inherit the warning unless it is itself marked.</li>
+<li>A <strong>trait-imported</strong> method keeps the attribute (PHP copies it onto the using class).</li>
+</ul>
+<p>Tyhp reports this even when <code>output.phpVersion</code> is below 8.5. <code>(void)</code> is native PHP on 8.5 or later; below 8.5 the emitter omits the cast and still treats it as an intentional discard.</p>
+<h2><code>#[\DelayedTargetValidation]</code></h2>
+<p>On PHP 8.5, <code>#[\DelayedTargetValidation]</code> on a declaration defers <strong>target</strong> (<code>TARGET_*</code>) errors for <strong>internal</strong> (Core) attributes on that same declaration until <code>ReflectionAttribute::newInstance()</code>. Tyhp’s compile-time analogue: when <code>output.phpVersion</code> is <strong>8.5 or later</strong> and this attribute is on the declaration, <strong>TYHP4127</strong> is skipped for Core attributes on that declaration.</p>
+<p>Functional checks still run. <code>#[\Override]</code> that does not override is still TYHP4129. Unused <code>#[\NoDiscard]</code> returns are still TYHP4165. <code>#[\Override]</code> on <code>__construct</code> is still TYHP4339.</p>
+<p>Below 8.5 the skip is ignored — target mismatches are still reported.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Base {
+    public int $x = 0;
+}
+
+class Child extends Base {
+    // On 8.5, `#[\Override]` on a property is already a legal target, so there is nothing
+    // for `#[\DelayedTargetValidation]` to skip here. Base has $x, so this is not TYHP4129 either.
+    #[\DelayedTargetValidation]
+    #[\Override]
+    public int $x = 1;
+}
+
+class Orphan {
+    // Still TYHP4129: `#[\DelayedTargetValidation]` only skips the TARGET_* check, not the
+    // override check. Orphan has no parent, so there is no $y to override.
+    #[\DelayedTargetValidation]
+    #[\Override]
+    public int $y = 1;
+}
+</code></pre></div>
+<p>Userland attributes are still target-checked. Only PHP Core engine attributes on that declaration skip TYHP4127.</p>
+<h2><code>#[\SensitiveParameter]</code></h2>
+<p><code>#[\SensitiveParameter]</code> on a parameter has no use-site diagnostic. In the debugger, marked arguments stay wrapped as <code>\SensitiveParameterValue</code>. See <a href="cli_xdebugProxy.md">CLI: Xdebug Proxy</a>.</p>
+<h2>Diagnostics</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Code</th>
+<th>Severity</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TYHP4500</td>
+<td>Warning</td>
+<td>Use of a <code>#[\Deprecated]</code> or tyhpdef <code>deprecated</code> symbol</td>
+</tr>
+<tr>
+<td>TYHP4129</td>
+<td>Error</td>
+<td><code>#[\Override]</code> on a method or (8.5+) property that does not override</td>
+</tr>
+<tr>
+<td>TYHP4339</td>
+<td>Error</td>
+<td><code>#[\Override]</code> on <code>__construct</code></td>
+</tr>
+<tr>
+<td>TYHP4165</td>
+<td>Warning</td>
+<td>Unused return from a <code>#[\NoDiscard]</code> callee</td>
+</tr>
+<tr>
+<td>TYHP4127</td>
+<td>Error</td>
+<td>Attribute target mismatch, including <code>#[\Override]</code> on a property below 8.5</td>
+</tr>
+</tbody>
+</table></div>
+<p>See the <a href="diagnostics_reference.md">Diagnostic Code Reference</a> for the compiler’s short messages.</p>
+<h2>Common mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't put <code>#[\Override]</code> on <code>__construct</code>. That is TYHP4339 at every <code>output.phpVersion</code>, including when a parent constructor exists.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't expect <code>#[\Override]</code> on a property to type-check on a target below 8.5. That is TYHP4127 until <code>output.phpVersion</code> is 8.5 or later.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't assume an interface or abstract <code>#[\NoDiscard]</code> warns at the call site. Mark the invoked implementor or override.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p><code>(void)expr</code> is the intentional discard for unused <code>#[\NoDiscard]</code> returns and for empty <code>catch</code> bodies (<code>(void)$e</code>). See <a href="tyhp_2900_lostFunctionality.md">Lost and Changed Functionality</a>.</p>
+</div>
+    </div>
+</div>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0000_openTag.html">&larr; The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp &rarr;</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0320_phpVersionGating.html">&larr; PHP Version Gating</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0350_useStatements.html">Use Statements and Imports &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

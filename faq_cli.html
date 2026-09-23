@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -280,10 +296,17 @@ tyhp build --clean            # wipe output directory first
 
 Output written to: ./build/
 </code></pre></div>
+<h2>How do I inspect the bound symbol tree?</h2>
+<p><code>tyhp symbol_tree</code> parses and binds the project (the same environment <code>lint</code> / <code>build</code> use) and dumps every declared symbol and signature as JSON. That includes PHP builtins, Composer package tyhpdefs, overlays, and your <code>.tyhp</code> sources — useful when an overlay rename, <code>partial function</code> alias, or <code>partial class X as Y</code> is not showing up where you expect.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp symbol_tree
+tyhp symbol_tree --filter=strtoupper
+tyhp symbol_tree --out=symbols.json
+</code></pre></div>
+<p>Status lines go to stderr; the JSON document goes to stdout (or <code>--out</code>). <code>--filter</code> matches the current Tyhp name, FQN, or PHP emit name (case-insensitive substring). See <a href="cli_symbolTree.md">CLI: Symbol Tree</a>.</p>
 <h2>How do I use watch mode?</h2>
 <p>Watch mode is <strong>not</strong> in this alpha. <code>tyhp build --watch</code> reports that it is unimplemented. Rebuild with <code>tyhp build</code> after edits, or use an external file watcher.</p>
 <h2>How do I debug Tyhp code?</h2>
-<p>This alpha has no sourcemaps or Xdebug proxy. Debug the compiled PHP under <code>output.path</code> (default <code>build/</code>), or iterate with <code>tyhp lint</code>. Sourcemaps and <code>tyhp xdebug_proxy</code> are planned (Stories 17–18).</p>
+<p>Build with <code>build.generateSourcemap</code> enabled, then run <code>tyhp xdebug_proxy</code> so the IDE talks to the proxy IDE port (default 9003) and XDebug connects to the proxy XDebug port (default 9004). The proxy translates breakpoints and stack frames back to <code>.tyhp</code> using the <code>.php.map</code> files next to compiled PHP. Without sourcemaps, debug the compiled PHP under <code>output.path</code> (default <code>build/</code>), or iterate with <code>tyhp lint</code>.</p>
 <h2>How do I integrate Tyhp with CI/CD?</h2>
 <p>Use <code>tyhp lint</code> in your CI pipeline to check for type errors without producing output files. The <code>--format json</code> flag provides machine-readable output for integration with CI tools. Use <code>--strict</code> to fail the build on warnings as well as errors.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs"># In your CI pipeline:
@@ -291,9 +314,45 @@ tyhp lint --format json --strict
 </code></pre></div>
 <p>For production builds, run <code>tyhp build --strict</code> to ensure a clean build with no warnings. The exit code reflects the result: 0 for success, 4 for errors, 5 for warnings (when <code>--strict</code> is not set).</p>
 <h2>How do I generate tyhpdef files?</h2>
-<p><code>tyhp generate_tyhpdef</code> is <strong>not</strong> in this alpha (Story 20). Write <code>.tyhpdef</code> files by hand. PHP builtins are provided by the <code>tyhp/php</code> Composer package (PHP 8.2 baseline).</p>
+<p>Use <code>tyhp generate_tyhpdef</code> for <strong>external PHP</strong> (not the current project's <code>.tyhp</code>):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --ext-name=curl --php-targets=8.2,8.3,8.4,8.5
+tyhp generate_tyhpdef --package-path=./vendor/guzzlehttp/guzzle
+tyhp generate_tyhpdef --vendor
+tyhp generate_tyhpdef --source=./lib/**/*.php
+tyhp generate_tyhpdef --validate ./tyhpdef/
+tyhp generate_tyhpdef --audit-stubs=runtime/packages/php/_tyhpdef --out=stub-audit.md
+</code></pre></div>
+<p>Exactly one of <code>--ext-name</code>, <code>--package-path</code>, <code>--source</code>, or <code>--vendor</code> is required, except <code>--validate</code> or <code>--audit-stubs</code> which can run alone.</p>
+<ul>
+<li><code>--vendor</code> scans <code>vendor/composer/installed.json</code> (default <code>{projectRoot}/vendor</code>) and writes to <strong><code>vendor-tyhpdef/</code></strong>. It prefers published <code>tyhpdef/*</code> companions and <code>tyhpdef/php-ext-*</code>; otherwise it generates stubs. Do not edit those files — use overlays (<code>tyhp.json</code> <code>&quot;overlay&quot;</code> / <code>tyhp overlay create</code>). <code>post-autoload-dump</code> and <code>tyhp composer</code> <code>require</code> / <code>install</code> / <code>update</code> run the same mode. <code>TYHP_NO_VENDOR_TYHPDEF=1</code> skips the dump-script and <code>tyhp composer</code> generate step; <code>--no-tyhpdef</code> applies only to <code>tyhp composer</code>.</li>
+<li><code>--package-path</code> reads <code>composer.json</code> autoload. <code>--include-dev</code> also reads <code>autoload-dev</code>.</li>
+<li><code>--source</code> is <code>.php</code> only (<code>TYHP7507</code> otherwise).</li>
+<li>Harvested types rewrite PHPDoc <code>callable(...)</code> / <code>closure(...)</code> to <code>callable</code> and Psalm/PHPStan <code>empty</code> to <code>mixed</code>. PHP <code>static</code> in a value position (parameter, property, <code>@param</code>, <code>@var</code>, magic <code>@method</code> parameter, <code>@property</code>) is written as <code>self</code>; return positions keep <code>static</code> (<code>: static</code>, magic <code>@method</code> return types, including generic arguments such as <code>Builder&lt;static&gt;</code>). Unqualified class names inside <code>@template</code> bounds and other generic / union / intersection PHPDoc strings become FQCNs (<code>use</code> imports, unique PHP / <code>\Psr\*</code> shorts, same-package declared types); template parameters and builtins stay unqualified. Native <code>extends</code> / <code>implements</code> / trait <code>use</code> prefer a same-package declared type over a unique PHP / <code>\Psr\*</code> short of the same name; a true global the package does not declare stays global. Missing generic args on a bound are filled from that type's own default, else its constraint, else <code>mixed</code>. PHP-source harvest keeps the first type per FQCN when a later body is identical (kind, modifiers, <code>extends</code> / <code>implements</code>, members, flags — not doc comments) and warns; divergent bodies are both written and include-layer <code>TYHP8002</code> still fires. See <a href="cli_tyhpdefGeneration.md#repeated-fqcns">Repeated FQCNs</a>. Harvested <code>=</code> / <code>??</code> values are tyhpdef literals only (quoted string, number, <code>true</code>/<code>false</code>/<code>null</code>/<code>[]</code>, <code>Class::CONST</code>). A parameter whose PHP default is not a tyhpdef-safe literal stays optional with <code>= null</code> (the same dummy used for harvested implicit-nullable PHP; the declared type is not widened). Const and property <code>??</code> values that are not literals are omitted. Unmatched <code>#[Name(args)]</code> is reduced to <code>#[Name]</code>. See <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>.</li>
+<li>Default output for <code>--ext-name</code> / <code>--package-path</code> / <code>--source</code> is <code>{projectRoot|cwd}/tyhpdef/</code>. <code>--vendor</code> always uses <code>vendor-tyhpdef/</code>. <code>--split</code> is <code>file</code> (default), <code>namespace</code>, or <code>type</code>.</li>
+<li><code>--ext-name</code> uses <strong>Tyhp-managed PHP</strong> by default. <code>--php-targets=8.2,8.3,8.4,8.5</code> reflects each listed minor and emits one gated tree. <code>--php=&lt;path&gt;</code> is a single-target escape hatch for private unpublished extensions (illegal with <code>--php-targets</code>).</li>
+<li><code>--locale</code> / <code>--no-docs</code> control php.net manual comments on <code>--ext-name</code>. <code>--verify</code> applies overlays and checks the final API (<code>omit</code> is not a fail).</li>
+</ul>
+<p><code>tyhp overlay create \Iterator</code> copies a declaration into a hand-written overlay. <code>tyhp overlay stamp</code> writes <code>@overlay-against</code> comments. See <a href="cli_overlay.md">CLI: Overlay</a>.</p>
+<p>Tyhp <strong>libraries</strong> always emit <code>package.tyhpdef</code> and additive-merge <code>extra.tyhp.package</code> onto publish-directory <code>composer.json</code> during <code>tyhp build</code>. Applications emit <code>package.tyhpdef</code> only when <code>build.generateTyhpdef</code> is true. PHP builtins are provided by the <code>tyhpdef/php</code> Composer package; optional extensions are <code>tyhpdef/php-ext-*</code>.</p>
+<p>Full flag list: <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a>.</p>
+<h2>How do I install Composer from Tyhp?</h2>
+<p><code>tyhp install composer</code> downloads the official Composer installer (SHA-384 verified) and places the binary. Default is <code>./composer.phar</code> (<code>--local</code>). <code>--global</code> installs to <code>~/.local/bin/composer</code>. <code>--force</code> replaces an existing binary at the destination.</p>
+<p>That is not <code>tyhp composer install</code>, which runs Composer’s own <code>install</code> command (install packages from <code>composer.lock</code>). See <a href="intro_installation.md">Installing Tyhp</a>.</p>
+<h2>How do I run Tyhp through Composer?</h2>
+<p>Install <code>tyhp/compiler</code> with <code>composer require --dev tyhp/compiler</code>. Then:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">vendor/bin/tyhp build
+composer tyhp build
+</code></pre></div>
+<p><code>vendor/bin/tyhp</code> is the package <code>&quot;bin&quot;</code>. <code>composer tyhp …</code> uses the root <code>scripts.tyhp</code> entry (<code>vendor/bin/tyhp</code>) so extra args are forwarded. <code>tyhp init</code> writes that script and a <code>post-autoload-dump</code> that runs <code>--install-binary</code> then <code>generate_tyhpdef --vendor</code>.</p>
 <h2>What is the language server for?</h2>
-<p>The language server is <strong>not</strong> in this alpha (Story 19). Use <code>tyhp lint</code> from the CLI or your editor's build task. LSP support is planned for a later release.</p>
+<p><code>tyhp language_server</code> starts the Tyhp Language Server Protocol (LSP) server over stdin/stdout. It uses the same parse, bind, and check pipeline as <code>tyhp lint</code>, then keeps that analysis live as you edit. Editors that speak LSP get diagnostics, completion, hover, go-to-definition, find references, rename, and related features.</p>
+<p>The Tyhp Language extension for VS Code / Cursor and the PhpStorm plugin launch this command for you. Any other LSP client can start:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp language_server --quiet --stdio --tyhp-project=./tyhp.json
+</code></pre></div>
+<p>See <a href="cli_languageServer.md">CLI: Language Server</a>.</p>
+<h2>How do I sync ambient tyhpdefs after adding <code>tyhp/core</code>?</h2>
+<p>The first <code>composer require tyhp/core</code> often does not install <code>extra.tyhp.require</code> packages in that same transaction. Allow the plugin (<code>config.allow-plugins.tyhp/core</code> — <code>tyhp init</code> and <code>tyhp composer</code> write this when missing), then run <code>composer update</code> or <code>tyhp composer sync</code>.</p>
+<p>Default <code>tyhp build</code> / <code>tyhp lint</code> explain missing extras (<code>TYHP7701</code>) and do not rewrite <code>composer.json</code>. <code>tyhp build --fix</code> and <code>tyhp composer sync</code> write root <code>require-dev</code> from the installed extra closure. Ordinary <code>tyhp build</code> never auto-updates Composer. See <a href="cli_composer.md">CLI: Composer</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -305,6 +364,7 @@ tyhp lint --format json --strict
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

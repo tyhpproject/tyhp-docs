@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,7 +279,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp adds generic type parameters to classes, interfaces, traits, enums, structs, functions, and methods. Generics provide compile-time type safety for reusable components without any runtime overhead — they are completely erased from PHP output. Tyhp generics support constraints via extends, default type parameters, and generic import aliases.</p>
+    <p>Tyhp adds generic type parameters to classes, interfaces, traits, enums, structs, functions, and methods. Generics provide compile-time type safety for reusable components. Type parameters are erased from PHP signatures. Tyhp generics support constraints via extends, default type parameters, and generic import aliases.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -272,7 +288,7 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Generics are a compile-time-only feature. All generic type parameters, arguments, and constraints are erased from the PHP output. There is zero runtime cost.</p>
+        <div class="callout-content"><p>Generic type parameters, arguments, and constraints are erased from PHP signatures. Same-compilation sites that still need the bound type at runtime (<code>typeof</code>, generic-typed properties, …) emit Mechanism C factories / Mechanism D binders; everything else is a plain class or function. Every emitted generic class, method, and function still carries <code>#[\Tyhp\GenericRuntime]</code> (<code>erased</code> + <code>layouts: [1]</code>). Foreign compiled-library sites always go through <code>\Tyhp\Generic::bind</code>. PHP builtin and overlay tyhpdefs that omit the stamp keep erase / inline emit. <code>#[\Tyhp\EraseGeneric]</code> opts a property (or a whole class of properties) out of Mechanism C set checks.</p>
 </div>
     </div>
 </div>
@@ -295,27 +311,31 @@ class Box&lt;T&gt; {
 Box&lt;int&gt; $intBox = new Box&lt;int&gt;(42);
 int $val = $intBox-&gt;getValue();  // Type-safe: returns int
 </code></pre></div>
+<p>When the expected type of a <code>new</code> expression is a unique instantiation of the same generic, the type-argument list may be omitted. <code>Box&lt;int&gt; $intBox = new Box(42);</code> and <code>function make(): Box&lt;string&gt; { return new Box(&quot;x&quot;); }</code> infer <code>T</code> from the typed local / return type. Explicit arguments still win; a defaulted parameter still fills in when there is no unique expected instantiation.</p>
 <h2>Compiled PHP Output</h2>
-<p>Generic type parameters are erased from the PHP output. Unconstrained type parameters become mixed. Constrained type parameters use their constraint type as the PHP type hint.</p>
+<p>Generic type parameters are erased from PHP signatures. Unconstrained type parameters become <code>mixed</code>. Constrained type parameters use their constraint type as the PHP type hint.</p>
+<p>A generic-typed <strong>property</strong> (including a promoted constructor property) opts the class into runtime tracking (Mechanism C: <code>HasGenerics</code>, factory, set checks) unless the property or class carries <code>#[\Tyhp\EraseGeneric]</code>. Runtime-use constructs (<code>typeof(T)</code>, <code>default(T)</code>, <code>is T</code>, <code>new T()</code>, forwarded type arguments) also force tracking. Mixed mode is allowed: the class stays tracked while opted-out properties skip set checks.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — generic type parameters are erased
+// PHP output — signatures erase; this Box is tracked because it stores T
 declare(strict_types=1);
 
+/**
+ * @template T
+ */
+#[\Tyhp\GenericRuntime(erased: false, factory: &quot;new_Box__tyhpGeneric&quot;, layouts: [1])]
 class Box {
-    private mixed $value;
-
-    public function __construct(mixed $value) {
-        $this-&gt;value = $value;
-    }
-
-    public function getValue(): mixed {
-        return $this-&gt;value;
-    }
+    use \Tyhp\Concerns\HasGenerics;
+    // …
 }
 
-$intBox = new Box(42);
-$val = $intBox-&gt;getValue();
+$intBox = \Box::new_Box__tyhpGeneric(\Tyhp\Type::int(), 42);
 </code></pre></div>
+<p>From <strong>another compilation</strong> (a vendor <code>package.tyhpdef</code> that stamps <code>GenericRuntime</code>), Tyhp emits <code>\Tyhp\Generic::bind</code> instead of baking the factory name:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$intBox = \Tyhp\Generic::bind(\Vendor\Box::class, \Tyhp\Type::int())(42);
+$result = \Tyhp\Generic::bind($h-&gt;identity(...), \Tyhp\Type::string())($value);
+</code></pre></div>
+<p>PHP builtin and overlay generics that omit the stamp stay erased / inlined. Same-compilation erased classes (no remaining runtime use and no remaining generic-typed properties) emit a plain <code>new</code> / plain call, still stamped <code>erased: true</code>.</p>
+<p><code>#[\Tyhp\EraseGeneric]</code> is compile-only (<code>#[\Tyhp\NoEmit]</code>). It is legal on a class, a property, or a promoted constructor parameter. On a method or function it is an error. The attribute is not inherited; a tracked child of an erased generic parent does not call <code>parent::__initGenerics__</code>.</p>
 <h2>Generic Interfaces</h2>
 <p>Interfaces can declare generic type parameters. Classes that implement a generic interface must specify concrete type arguments, and the compiler validates that the implementing methods match the parameterized signatures.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -390,7 +410,7 @@ enum Result&lt;T&gt; {
     case Ok;
     case Error;
 
-    public function map&lt;U&gt;(callable&lt;T, U&gt; $fn): Result&lt;U&gt; {
+    public function map&lt;U&gt;(callable(T): U $fn): Result&lt;U&gt; {
         // ...
     }
 }
@@ -412,7 +432,7 @@ function firstOrNull&lt;T&gt;(array&lt;T&gt; $items): ?T {
 
 // Generic method on a class
 class Transformer {
-    public function transform&lt;TIn, TOut&gt;(TIn $input, callable&lt;TIn, TOut&gt; $fn): TOut {
+    public function transform&lt;TIn, TOut&gt;(TIn $input, callable(TIn): TOut $fn): TOut {
         return $fn($input);
     }
 }
@@ -727,7 +747,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't rely on generics at runtime — they are erased from PHP output and exist only at compile time. There is no runtime type checking of generic parameters.</p>
+        <div class="callout-content"><p>Don't treat erased type parameters as a PHP runtime API — they are stripped from signatures. From hand-written PHP and from Tyhp that consumes a <strong>foreign</strong> compiled library, construct or call generics with <code>\Tyhp\Generic::bind</code>. Same-compilation Tyhp still emits the factory or binder directly when the class or callable is tracked.</p>
 </div>
     </div>
 </div>
@@ -790,6 +810,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -299,7 +315,7 @@ echo nameof($user-&gt;greet);        // &#039;greet&#039;
 // Class constant
 echo nameof(User::MAX_AGE);       // &#039;MAX_AGE&#039;
 
-// PropertyPath-style arrow fn — last segment only (Story 16)
+// PropertyPath-style arrow fn — last segment only
 echo nameof(fn (User $u) =&gt; $u-&gt;name);        // &#039;name&#039;
 echo nameof(fn (User $u) =&gt; $u-&gt;address-&gt;city); // &#039;city&#039;
 </code></pre></div>
@@ -365,24 +381,23 @@ $query-&gt;orderBy(&#039;name&#039;);
 </div>
     </div>
 </div>
-<h2>typeof() — Get Type at Compile Time</h2>
-<p>The typeof() construct returns a \Tyhp\Type instance representing the compile-time type of its argument. It accepts type names (like int, string, User). Scalars compile to <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc.; declared classes compile to <code>\Tyhp\Type::fromClassName(...)</code>. This is different from PHP's gettype() (a runtime string) and from <code>\Tyhp\Type::of($value)</code> (runtime inspection of a value).</p>
+<h2>typeof() — Get a <code>\Tyhp\Type</code> from a type</h2>
+<p>The typeof() construct returns a <code>\Tyhp\Type</code> instance for a type expression. It accepts types (<code>int</code>, <code>User</code>, <code>int|string</code>, <code>Optional&lt;int&gt;</code>, <code>?int</code>, <code>T</code>). Scalars compile to <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc.; declared classes compile to <code>\Tyhp\Type::fromClassName(...)</code>; structs compile to <code>\Tyhp\Type::struct(...)</code> with the property schema; source type aliases compile to a factory call (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>). This is different from PHP's gettype() (a runtime string) and from <code>\Tyhp\Type::of($value)</code> (runtime inspection of a value).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// typeof with scalar type names
+type UserId = int;
+type Optional&lt;T = mixed&gt; = T|null;
+
 \Tyhp\Type $intType = typeof(int);
-\Tyhp\Type $stringType = typeof(string);
-
-// typeof with class names
+\Tyhp\Type $unionType = typeof(int|string);
 \Tyhp\Type $userType = typeof(User);
-\Tyhp\Type $dateType = typeof(\DateTimeInterface);
+\Tyhp\Type $idType = typeof(UserId);
+\Tyhp\Type $optType = typeof(Optional&lt;int&gt;);
 
-// Use for runtime type checks with the Tyhp type system
 if (\Tyhp\Type::is($value, typeof(string))) {
     echo &#039;Value is a string&#039;;
 }
 
-// Use in generic contexts for runtime type information
 class Repository&lt;T&gt; {
     public function getEntityType(): \Tyhp\Type {
         return typeof(T);
@@ -392,21 +407,24 @@ class Repository&lt;T&gt; {
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 $intType = \Tyhp\Type::int();
-$stringType = \Tyhp\Type::string();
-
-$userType = \Tyhp\Type::fromClassName(&#039;User&#039;::class);
-$dateType = \Tyhp\Type::fromClassName(&#039;DateTimeInterface&#039;::class);
+$unionType = \Tyhp\Type::union(\Tyhp\Type::int(), \Tyhp\Type::string());
+$userType = \Tyhp\Type::fromClassName(User::class);
+$idType = UserId();
+$optType = Optional(\Tyhp\Type::int());
 
 if (\Tyhp\Type::is($value, \Tyhp\Type::string())) {
     echo &#039;Value is a string&#039;;
 }
 
-// typeof(T) on a class generic — HasGenerics / variant lookup, not Type::of(&#039;T&#039;)
 return ($this-&gt;__tyhpGeneric-&gt;resolvedType(\Repository::class, &#039;T&#039;));
 </code></pre></div>
+<p><code>typeof(UserId)</code> and <code>UserId()</code> emit the same factory call. <code>typeof(Optional&lt;int&gt;)</code> is how to spell a generic alias as a Type value; <code>Optional(typeof(int))</code> is the factory with a <code>\Tyhp\Type</code> argument. <code>Optional&lt;int&gt;()</code> is invalid.</p>
+<p>Inspect a <strong>value</strong> with <code>\Tyhp\Type::of($value)</code>, not <code>typeof</code>.</p>
 <h2>default() — Get Default Value for a Type</h2>
 <p>The default() construct returns the default value for a given type. The argument must be a valid type name. The result is a constant value emitted directly into the PHP output. This is particularly useful in generic contexts where you need a type-appropriate zero value, or when initializing variables with sensible defaults.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type UserId = int;
 
 // Scalar type defaults
 int $i = default(int);         // 0
@@ -421,6 +439,9 @@ array $a = default(array);     // []
 
 // Object types default to null
 ?User $u = default(User);      // null
+
+// Source type alias — emits UserId()-&gt;defaultValue()
+int $id = default(UserId);
 
 // Useful in generic code
 function getOrDefault&lt;T&gt;(array $data, string $key): T {
@@ -447,6 +468,7 @@ $a = [];
 $ni = null;
 $ns = null;
 $u = null;
+$id = UserId()-&gt;defaultValue();
 
 function sum(array $values): int {
     $total = 0;
@@ -518,15 +540,16 @@ function processConfig(): void {
 }
 </code></pre></div>
 <h2>Other Compile-Time Features</h2>
-<p>Beyond the four compile-time constructs above, Tyhp has several other features that are resolved entirely at compile time and produce no runtime overhead. These features exist only during compilation and are erased from the PHP output.</p>
+<p>Beyond the four compile-time constructs above, Tyhp has several other features that are resolved entirely at compile time and erased from the type system. Most produce no PHP output at all; type-alias hints are the same way, though a source alias <em>declaration</em> also emits a small runtime factory (see below).</p>
 <ul>
-<li>Type aliases (type MyType = int|string) — resolved during compilation, erased from PHP output. All references to the alias are replaced with the underlying type.</li>
+<li>Type aliases (<code>type MyType = int|string</code>) — hints expand to the underlying type with no runtime trace. A source <code>.tyhp</code> alias <em>declaration</em> also emits a <code>\Tyhp\Type</code> factory (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>) so PHP and <code>typeof</code> can name it at runtime. Tyhpdef aliases inline unless they carry <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>. See <a href="tyhp_0700_typeAliases.md">Type Aliases</a>.</li>
 <li>Structs — compiled to PHP associative arrays. Struct declarations are erased; struct property access compiles to array key access.</li>
-<li>Generics — type parameters are erased via type erasure. Generic annotations produce no PHP code. Optional runtime type tracking is available via the <code>HasGenerics</code> trait (<code>\Tyhp\Concerns\HasGenerics</code>).</li>
+<li>Generics — type parameters are erased from PHP signatures. Tracking (<code>HasGenerics</code>, factories, binders) is emitted only when the bound type is used at runtime or a generic-typed property remains. Every emitted generic class/method/function is stamped <code>#[\Tyhp\GenericRuntime]</code>. Foreign compiled-library sites use <code>\Tyhp\Generic::bind</code>; PHP / <code>typeof</code> interop for aliases still uses <code>aliasFactory</code> (not <code>bind</code>). See <a href="tyhp_0500_generics.md">Generics</a>.</li>
 <li>Static value types (__ClassName, __FunctionName, etc.) — compile-time string subtypes that are erased to plain string in PHP output.</li>
 <li>Type guard return types ($param is Type) — compiled to bool return type in PHP output. The type narrowing information is used only by the checker.</li>
 <li>Function overload signatures — only the implementation body is emitted to PHP. Overload signatures are compile-time declarations for the checker.</li>
 <li>Trait extends/implements requirements — validated at compile time, stripped from PHP output. PHP traits cannot extend or implement.</li>
+<li>PHP version gates (<code>declare(php=…)</code> and <code>#[\Tyhp\Php]</code>) — compile-time only, never emitted, same treatment as <code>declare(output_file=…)</code>. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</li>
 <li>The is keyword (alias for instanceof) — compiled to standard PHP instanceof operator.</li>
 </ul>
 <h2>Best Practices</h2>
@@ -562,7 +585,7 @@ function processConfig(): void {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use typeof() for runtime type introspection that integrates with Tyhp's \Tyhp\Type system. It provides structured type information instead of raw strings.</p>
+        <div class="callout-content"><p>Use typeof() when you need a <code>\Tyhp\Type</code> value for a type (<code>typeof(int)</code>, <code>typeof(UserId)</code>, <code>typeof(Optional&lt;int&gt;)</code>). For a class-name string, use <code>nameof(User)</code> or <code>User::class</code>. To inspect a value, use <code>\Tyhp\Type::of($value)</code>.</p>
 </div>
     </div>
 </div>
@@ -599,7 +622,7 @@ function processConfig(): void {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Confusing typeof() with PHP's \gettype(). typeof() is a compile-time construct that returns a \Tyhp\Type object. PHP's \gettype() is a runtime function that returns a string like 'integer' or 'string'. They serve different purposes and are not interchangeable.</p>
+        <div class="callout-content"><p>Confusing typeof() with PHP's \gettype() or with <code>\Tyhp\Type::of($value)</code>. typeof() takes a type (<code>typeof(int)</code>, <code>typeof(UserId)</code>, <code>typeof(Optional&lt;int&gt;)</code>) and returns a <code>\Tyhp\Type</code> object. PHP's \gettype() returns a string like 'integer'. <code>\Tyhp\Type::of($value)</code> inspects a value at runtime.</p>
 </div>
     </div>
 </div>
@@ -673,6 +696,7 @@ bool $exists = variable_exists($existingVar); // true
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

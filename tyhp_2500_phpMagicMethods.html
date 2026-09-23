@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -266,13 +282,13 @@
     <p>Tyhp supports all of PHP's magic methods with additional type safety requirements. Magic methods that return mixed in PHP must have their return values type-narrowed before use. The compiler enforces correct signatures, auto-generates certain magic methods for generic classes, and prioritizes extension methods over __call for compile-time-safe dispatch.</p>
 <h2>Supported Magic Methods</h2>
 <p>All standard PHP magic methods are supported in Tyhp. They must follow PHP's expected signatures but can use Tyhp's enhanced type system. The following table lists every supported magic method and its Tyhp-specific behavior.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>__construct()</code></h4><br/><p>Constructor. Supports Tyhp constructor property promotion with modifiers like <code>readonly</code>. The return type is required: <code>: void</code>, or <code>: parent(args)</code> for explicit parent constructor invocation.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__construct()</code></h4><br/><p>Constructor. Supports Tyhp constructor property promotion with modifiers like <code>readonly</code>. The return type is optional: <code>: void</code> (or omit it) when the constructor does not chain, or <code>: parent(args)</code> for explicit parent constructor invocation. Omitting the return type is equivalent to <code>: void</code> — no <code>parent::__construct(...)</code> call is inserted.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__destruct()</code></h4><br/><p>Destructor. Called when an object is garbage collected. Used internally by DisposableScope for automatic resource disposal via the := operator.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__get(string $name): mixed</code></h4><br/><p>Called when reading an inaccessible or non-existent property. Returns mixed — must be narrowed before use in a type-safe context.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__get(string $name): mixed</code></h4><br/><p>Called when reading an inaccessible or non-existent property. Returns mixed — must be narrowed before use in a type-safe context. Without <code>__get</code>, an undeclared read is unresolved (including on <code>\stdClass</code>).</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__set(string $name, mixed $value): void</code></h4><br/><p>Called when writing to an inaccessible or non-existent property. Type-safe wrapper methods are encouraged instead of direct __set usage.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__set(string $name, mixed $value): void</code></h4><br/><p>Called when writing to an inaccessible or non-existent property. Without <code>__set</code>, undeclared writes are TYHP4134 except on exact <code>\stdClass</code>. Type-safe wrapper methods are encouraged instead of direct __set usage.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__isset(string $name): bool</code></h4><br/><p>Called by isset() or empty() on inaccessible or non-existent properties.</p>
 </div>
@@ -282,9 +298,9 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__callStatic(string $name, array $arguments): mixed</code></h4><br/><p>Called when invoking inaccessible or non-existent static methods. Returns mixed. Same extension method priority applies as __call.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__toString(): string</code></h4><br/><p>Called when an object is used in a string context. Must return string — the compiler enforces this return type strictly.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__toString(): string</code></h4><br/><p>Called when an object is used in a string context. Must return string — the compiler enforces this return type strictly. Declaring <code>__toString</code> makes the type <code>\Stringable</code> (PHP auto-implement); you do not need to write <code>implements \Stringable</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__invoke(...$args): mixed</code></h4><br/><p>Called when an object is used as a function ($obj()). Return type is mixed — must be narrowed before use.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__invoke(...$args): mixed</code></h4><br/><p>Called when an object is used as a function ($obj()). Return type is mixed — must be narrowed before use. <code>\Closure</code> is callable through <code>__invoke</code>; its generic shape is <code>\Closure&lt;TCallableShape, TThis, TScope&gt;</code> — see <a href="tyhp_0150_newTypes.md#the-closuretcallableshape-tthis-tscope-type">New and Changed Types</a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__clone(): void</code></h4><br/><p>Called after an object is cloned with clone. You may implement it yourself. For PHP &lt; 8.5, the compiler may emit a clone wrapper when <code>with</code> updates <code>readonly</code> properties.</p>
 </div>
@@ -358,7 +374,8 @@ class ApiClient {
 
 // Extension method — compile-time type safety.
 // Members are top-level `function` forms (optional `async` only).
-// Visibility/`static` cannot appear. `extension Name extends ApiClient` is optional.
+// Visibility/`static` cannot appear. Extensions cannot `extends`; the receiver type
+// comes from `extends ApiClient $client` on the parameter itself.
 extension ApiClientExtensions {
     function getUsers(extends ApiClient $client): array&lt;User&gt; {
         mixed $result = $client-&gt;sendRequest(&#039;getUsers&#039;, []);
@@ -383,8 +400,28 @@ $users = ApiClientExtensions::getUsers($api);
 // __call compiles to standard PHP magic method dispatch:
 $result = $api-&gt;unknownMethod();
 </code></pre></div>
+<h2>Property Hooks (PHP 8.4)</h2>
+<p>Tyhp supports PHP 8.4 property hooks (<code>get</code> / <code>set</code>) on class properties. Hook bodies match PHP: a parameter-less <code>get { ... }</code>, optional <code>set { ... }</code> (the incoming value is <code>$value</code>), or a typed <code>set(string $value) { ... }</code>. <code>&amp;get</code> and <code>final get</code> / <code>final set</code> are also valid.</p>
+<p>When <code>output.phpVersion</code> is <strong>8.4 or later</strong>, the compiler emits native hook syntax. When the target is <strong>below 8.4</strong>, it polyfills the same source through <code>\Tyhp\Concerns\UsesPropertyAccessors</code> and <code>$this-&gt;__tyhpPropertyHook</code>. <code>&amp;get</code> requires PHP 8.4.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+final class Widget {
+    private string $_name = &#039;&#039;;
+
+    public string $name {
+        get {
+            return $this-&gt;_name;
+        }
+        set(string $value) {
+            $this-&gt;_name = $value;
+        }
+    }
+}
+</code></pre></div>
+<p>See <a href="tyhp_1300_newObjectDeclSyntax.md#property-accessors-php-84-hooks">Object Declaration Changes</a> for tyhpdef <code>{ get; set; }</code> form.</p>
 <h2>Auto-Generated Magic Methods for Generics</h2>
-<p>When a class uses generics with runtime type tracking (for example <code>typeof(T)</code>), the Tyhp compiler adds the <code>HasGenerics</code> trait from the tyhp/core package (<code>\Tyhp\Concerns\HasGenerics</code>). <code>Concerns\GenericObject</code> is the legacy name. The compiler also auto-generates constructor logic to initialize the generic type information (<code>__initGenerics__tyhpGeneric</code> and <code>$this-&gt;__tyhpGeneric-&gt;init(...)</code>). Generic classes that never use <code>typeof(T)</code> or other tracking triggers emit <strong>no</strong> trait.</p>
+<p>When a class uses generics with runtime type tracking, the Tyhp compiler adds the <code>HasGenerics</code> trait from the tyhp/core package (<code>\Tyhp\Concerns\HasGenerics</code>). <code>Concerns\GenericObject</code> is the legacy name. The compiler also auto-generates constructor logic to initialize the generic type information (<code>__initGenerics__tyhpGeneric</code> and <code>$this-&gt;__tyhpGeneric-&gt;init(...)</code>).</p>
+<p>Tracking is on when the class uses <code>typeof(T)</code> / <code>default(T)</code> / <code>is T</code> / <code>new T()</code> / forwarded type arguments, or when it has a generic-typed instance property (including promoted constructor properties) that is not opted out with <code>#[\Tyhp\EraseGeneric]</code>. Mixed mode is allowed: the class stays tracked while opted-out properties skip set checks. Fully erased generic classes emit <strong>no</strong> trait. The attribute is not inherited.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class TypedCollection&lt;T&gt; {
@@ -440,6 +477,28 @@ class Money {
         return &quot;{$this-&gt;amount} {$this-&gt;currency}&quot;;
     }
 }
+</code></pre></div>
+<p>A class or interface that declares <code>__toString(): string</code> is a <code>\Stringable</code> type. Echo, concatenation, interpolation, and assignability to <code>\Stringable</code> follow that rule. Written <code>implements \Stringable</code> is still allowed.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Money {
+    public function __construct(
+        private int $amount,
+        private string $currency
+    ): void {}
+
+    public function __toString(): string {
+        return &quot;{$this-&gt;amount} {$this-&gt;currency}&quot;;
+    }
+}
+
+function label(\Stringable $value): void {}
+
+Money $pay = new Money(10, &quot;USD&quot;);
+label($pay);
+echo $pay;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR: __toString must return string
 // class Bad {
@@ -447,7 +506,7 @@ class Money {
 // }
 </code></pre></div>
 <h2>Constructor Return Type Syntax</h2>
-<p>Tyhp constructors <strong>must</strong> declare a return type: <code>: void</code>, or <code>: parent(args)</code> to insert <code>parent::__construct(...)</code> at the start of the body. PHP output strips the annotation.</p>
+<p>Tyhp constructors may declare a return type: <code>: void</code> (or omit it) when the constructor does not chain, or <code>: parent(args)</code> to insert <code>parent::__construct(...)</code> at the start of the body. Omitting the return type is equivalent to <code>: void</code>. PHP output strips the annotation.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Base {
@@ -550,7 +609,7 @@ Point $p2 = clone $p1 with [x =&gt; 10]; // $p2-&gt;x is 10, $p2-&gt;y is 2
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Relying on __get() and __set() for dynamic property creation. Tyhp disables dynamic property creation on classes — all properties must be declared in the class definition. Use __get/__set only for controlled access to a backing store like an array.</p>
+        <div class="callout-content"><p>Using __get/__set as a substitute for declared properties on ordinary classes. Undeclared writes are legal only on exact <code>\stdClass</code>. Other types — including <code>class Bag extends \stdClass</code> — must declare properties or implement <code>__set</code> (TYHP4134). Use __get/__set when you need a controlled backing store.</p>
 </div>
     </div>
 </div>
@@ -603,7 +662,7 @@ Point $p2 = clone $p1 with [x =&gt; 10]; // $p2-&gt;x is 10, $p2-&gt;y is 2
     </div>
 </div>
 <h2>Compiled PHP Output</h2>
-<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated generic-tracking members when needed (<code>HasGenerics</code> trait, <code>__initGenerics__tyhpGeneric</code>). Readonly <code>clone ... with</code> on PHP &lt; 8.5 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
+<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated generic-tracking members when needed (<code>HasGenerics</code> trait, <code>__initGenerics__tyhpGeneric</code>). Property hooks on <code>output.phpVersion</code> below 8.4 emit the <code>UsesPropertyAccessors</code> polyfill rather than native PHP 8.4 hook syntax. Readonly <code>clone ... with</code> on PHP &lt; 8.5 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Entity {
@@ -650,6 +709,7 @@ class Entity {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

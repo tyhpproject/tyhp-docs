@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -325,7 +341,7 @@ function callIfExists(string $funcName, string $arg): mixed {
 <h2>Array Functions</h2>
 <p>Signatures come from the shipped PHP tyhpdefs. Some functions are generic; many are not. Do not assume a generic form unless the tyhpdef declares it.</p>
 <ul>
-<li><code>\array_map&lt;TValue = mixed, TResult extends void|never|mixed = mixed&gt;(?callable&lt;TValue, TResult&gt; $callback, array&lt;TValue&gt; $array, array ...$arrays): array&lt;TResult&gt;</code></li>
+<li><code>\array_map&lt;TValue = mixed, TResult extends void|never|mixed = mixed&gt;(?callable(TValue): TResult $callback, array&lt;TValue&gt; $array, array ...$arrays): array&lt;TResult&gt;</code></li>
 <li><code>\array_values&lt;TKey extends int|string, TValue = mixed&gt;(array&lt;TKey, TValue&gt; $array): array&lt;int, TValue&gt;</code></li>
 <li><code>\array_reverse&lt;TKey extends int|string = int|string, TValue = mixed&gt;(array&lt;TKey, TValue&gt; $array, bool $preserve_keys = false): array&lt;TKey, TValue&gt;</code></li>
 <li><code>\array_pop(array &amp;$array): mixed</code> — not generic</li>
@@ -394,15 +410,20 @@ function validate(string $field, mixed $value): void {
 }
 validate(&#039;email&#039;, $emailInput);
 </code></pre></div>
-<h2><code>typeof(expr)</code></h2>
-<p>Returns a <code>\Tyhp\Type</code> instance representing the compile-time type of its argument. Scalars emit <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc. Declared classes emit <code>\Tyhp\Type::fromClassName(...)</code>. <code>\Tyhp\Type::of($value)</code> is a <strong>runtime</strong> helper that inspects a value — it is not what <code>typeof()</code> compiles to.</p>
+<h2><code>typeof(Type)</code></h2>
+<p>Returns a <code>\Tyhp\Type</code> instance for a type expression. Scalars emit <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc. Declared classes emit <code>\Tyhp\Type::fromClassName(...)</code>. Structs emit <code>\Tyhp\Type::struct(...)</code> with the property schema. Source type aliases emit a factory call (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>). <code>\Tyhp\Type::of($value)</code> is a <strong>runtime</strong> helper that inspects a value — it is not what <code>typeof()</code> compiles to.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 use App\Models\User;
+use App\Types\UserId;
+use App\Types\Optional;
 
-string $name = &quot;Alice&quot;;
 \Tyhp\Type $type = typeof(string);
 \Tyhp\Type $userType = typeof(User);
+\Tyhp\Type $unionType = typeof(int|string);
+\Tyhp\Type $idType = typeof(UserId);
+\Tyhp\Type $optType = typeof(Optional&lt;int&gt;);
+\Tyhp\Type $also = Optional(typeof(int));
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -410,10 +431,17 @@ declare(strict_types=1);
 
 use App\Models\User;
 
-$name = &quot;Alice&quot;;
+use function App\Types\Optional;
+use function App\Types\UserId;
+
 $type = \Tyhp\Type::string();
-$userType = \Tyhp\Type::fromClassName(&#039;User&#039;::class);
+$userType = \Tyhp\Type::fromClassName(User::class);
+$unionType = \Tyhp\Type::union(\Tyhp\Type::int(), \Tyhp\Type::string());
+$idType = UserId();
+$optType = Optional(\Tyhp\Type::int());
+$also = Optional(\Tyhp\Type::int());
 </code></pre></div>
+<p><code>typeof(Optional&lt;int&gt;)</code> and <code>Optional(typeof(int))</code> are the two ways to get a Type value for a generic alias. <code>Optional&lt;int&gt;()</code> is invalid. PHP writes <code>Optional(\Tyhp\Type::int())</code>.</p>
 <h2><code>default(Type)</code></h2>
 <p>Returns the default value for a given type at compile time. The argument must be a type expression, not a value. Each type has a well-defined default value:</p>
 <ul>
@@ -519,20 +547,31 @@ $camel = \StringHelpers::toCamelCase($name);
 </code></pre></div>
 <h2>Built-in Scalar Methods</h2>
 <p class="tyhp-status-badge mb-3">
-    <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Planned</span>
+    <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Complete</span>
 </p>
-<div class="callout-block callout-block-warning">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-bullhorn"></i>
-            </span>
-            Not in this alpha
-        </h4>
-        <div class="callout-content"><p>A built-in catalog of scalar methods (<code>$name-&gt;toUpper()</code>, <code>$name-&gt;contains(...)</code>, array <code>map</code>, …) is <strong>planned</strong> for Story 21 (<code>tyhp/php</code> support extensions). It is <strong>not included</strong> in Tyhp 805.0.0-alpha.1. Until it ships, call PHP functions (<code>\strtoupper($name)</code>) or write and import your own extensions as in the example above.</p>
-</div>
-    </div>
-</div>
+<p><code>tyhp/core</code> attaches methods on <code>string</code>, <code>array</code>, <code>int</code>, <code>float</code>, <code>bool</code>, and <code>\Closure</code> via <code>global use extension \Tyhp\StringExtensions</code> (and the matching catalogs). No per-file <code>use extension</code> is required. <code>$name-&gt;toUpper()</code> emits <code>\Tyhp\StringHelper::strtoupper($name)</code>, which uses <code>\mb_strtoupper</code> when mbstring is loaded. See <a href="tyhp_1000_scalarPseudoObjects.md">Scalar Pseudo-Objects</a>.</p>
+<h2><code>\Tyhp\Json::decode&lt;T&gt;</code></h2>
+<p><code>tyhp/core</code> also ships <code>\Tyhp\Json::decode&lt;T&gt;(string $json): T</code> and <code>\Tyhp\Json::tryDecode&lt;T&gt;(string $json, T &amp;$out): bool</code>. Both always decode JSON objects as associative arrays. <code>decode</code> throws <code>\JsonException</code> on invalid JSON and <code>\Tyhp\Exceptions\IncompatibleTypeException</code> when the value does not match <code>T</code>. <code>tryDecode</code> writes <code>$out</code> and returns <code>true</code> on success, or leaves <code>$out</code> unchanged and returns <code>false</code> for those failures. <code>\json_decode</code> stays a PHP builtin whose Layer 3 overlay returns <code>JsonAssoc</code> / <code>JsonObject</code> (or those plus <code>null</code>) from <code>$associative</code> and <code>JSON_THROW_ON_ERROR</code> literals.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type User = struct {
+    string $name;
+    int $age;
+};
+
+User $user = \Tyhp\Json::decode&lt;User&gt;(&#039;{&quot;name&quot;:&quot;Ann&quot;,&quot;age&quot;:30}&#039;);
+User $fromString = $json-&gt;jsonDecodeAs&lt;User&gt;();
+
+User $maybe;
+if (\Tyhp\Json::tryDecode&lt;User&gt;(&#039;{&quot;name&quot;:&quot;Ann&quot;,&quot;age&quot;:30}&#039;, $maybe)) {
+    // $maybe is User
+}
+
+User $maybeFromString;
+if ($json-&gt;jsonTryDecodeAs&lt;User&gt;($maybeFromString)) {
+    // $maybeFromString is User
+}
+</code></pre></div>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -566,7 +605,7 @@ $camel = \StringHelpers::toCamelCase($name);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use <code>typeof()</code> when you need a <code>\Tyhp\Type</code> value for Tyhp's runtime type helpers. For a class-name string, use <code>nameof(User)</code> or <code>User::class</code>.</p>
+        <div class="callout-content"><p>Use <code>typeof()</code> when you need a <code>\Tyhp\Type</code> value for a type (<code>typeof(int)</code>, <code>typeof(UserId)</code>, <code>typeof(Optional&lt;int&gt;)</code>). For a class-name string, use <code>nameof(User)</code> or <code>User::class</code>. To inspect a value, use <code>\Tyhp\Type::of($value)</code>.</p>
 </div>
     </div>
 </div>
@@ -676,6 +715,7 @@ string $name = nameof($myNumber);  // &quot;myNumber&quot;
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

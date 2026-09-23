@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link active" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -290,13 +306,14 @@ function \json_encode(
     int $depth = 512
 ): string|false;
 </code></pre></div>
+<p><code>tyhp generate_tyhpdef</code> copies a PHP parameter default when it is already a tyhpdef literal. When the default is not tyhpdef-safe (concatenation, nowdoc, const expression, unbalanced quotes), the parameter stays optional: generate writes <code>= null</code>, the same dummy used for harvested implicit-nullable PHP (<code>string $timezone = null</code>). The declared type is not widened. See <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>.</p>
 <h2>Reference and Variadic Parameters</h2>
 <p>Reference parameters use the ampersand prefix, and variadic parameters use the ellipsis syntax. Variadic parameters must be the last parameter.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 function \sort(array &amp;$array, int $flags = SORT_REGULAR): true;
 
-function \usort&lt;T&gt;(array&lt;T&gt; &amp;$array, callable&lt;T, T, int&gt; $callback): true;
+function \usort&lt;T&gt;(array&lt;T&gt; &amp;$array, callable(T, T): int $callback): true;
 
 function \array_push&lt;T&gt;(array&lt;T&gt; &amp;$array, T ...$values): int;
 
@@ -307,18 +324,18 @@ function \sprintf(string $format, mixed ...$values): string;
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 function \array_map&lt;T, U&gt;(
-    callable&lt;T, U&gt; $callback,
+    callable(T): U $callback,
     array&lt;T&gt; $array
 ): array&lt;U&gt;;
 
 function \array_filter&lt;T&gt;(
     array&lt;T&gt; $array,
-    ?callable&lt;T, bool&gt; $callback = null
+    ?callable(T): bool $callback = null
 ): array&lt;T&gt;;
 
 function \array_reduce&lt;T, TCarry&gt;(
     array&lt;T&gt; $array,
-    callable&lt;TCarry, T, TCarry&gt; $callback,
+    callable(TCarry, T): TCarry $callback,
     TCarry $initial
 ): TCarry;
 
@@ -335,7 +352,7 @@ async function downloadFile(string $url): string;
 async function sendNotification(string $to, string $message): void;
 </code></pre></div>
 <h2>Function Aliases</h2>
-<p>A function can be imported under a different name using the as keyword. The original PHP function name comes first, then as, then the alias name that Tyhp code will use.</p>
+<p>A function can be imported under a different name using the <code>as</code> keyword. The original PHP function name comes first, then <code>as</code>, then the alias name that Tyhp code will use. This <strong>adds</strong> a Tyhp name; the PHP name remains callable unless you also overlay <code>omit</code> or a <code>partial function</code> rename (see below).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 function \testEmail as test_email(string $emailAddress): bool;
@@ -345,6 +362,7 @@ function \array_key_exists as keyExists(
     array $array
 ): bool;
 </code></pre></div>
+<p>To <strong>rename</strong> without restating the signature, use overlay <code>partial function X as Y</code> — see <a href="tyhpdef_overlays.md#overlay-partial-function">Tyhpdef Overlays</a>.</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -394,22 +412,22 @@ function \array_key_exists as keyExists(
     </div>
 </div>
 <h2>Callable Parameter Types</h2>
-<p>When a function accepts a callable parameter, you can specify the callable's parameter and return types using the return-last generic convention. The last generic argument is always the return type, and all preceding arguments are the parameter types.</p>
+<p>When a function accepts a callable parameter, write a callable shape: <code>callable(…): R</code>. Parameter names are optional. <code>=</code> marks a parameter as optional. <code>\Closure</code> is a class: write <code>\Closure&lt;callable(int $i): string&gt;</code>, not <code>\Closure&lt;int, string&gt;</code>. See <a href="tyhp_0150_newTypes.md#the-closuretcallableshape-tthis-tscope-type">New and Changed Types</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-// callable&lt;ReturnType&gt; -- zero params, returns ReturnType
-function \registerShutdown(callable&lt;void&gt; $callback): void;
+// callable(): ReturnType -- zero params, returns ReturnType
+function \registerShutdown(callable(): void $callback): void;
 
-// callable&lt;ParamType, ReturnType&gt; -- one param, returns ReturnType
+// callable(ParamType): ReturnType -- one param, returns ReturnType
 function \array_walk&lt;T&gt;(
     array&lt;T&gt; &amp;$array,
-    callable&lt;T, void&gt; $callback
+    callable(T): void $callback
 ): true;
 
-// callable&lt;Param1, Param2, ReturnType&gt; -- two params
+// callable(Param1, Param2): ReturnType -- two params
 function \usort&lt;T&gt;(
     array&lt;T&gt; &amp;$array,
-    callable&lt;T, T, int&gt; $callback
+    callable(T, T): int $callback
 ): true;
 </code></pre></div>
 <h2>Extension Function Declarations</h2>
@@ -422,6 +440,46 @@ function toSnakeCase(extends string $str): string;
 
 function toSlug(extends string $str, string $separator = &quot;-&quot;): string;
 </code></pre></div>
+<p>To map operators and methods onto an existing PHP class (inline <code>extension fn</code> / <code>extension operator</code>, or <code>use extension</code> on the type), see <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a>. Standalone tyhpdef <code>extension Name { }</code> uses short <code>fn</code> / <code>operator</code> + <code>=&gt;</code> members, not these file-level <code>extends</code> forms.</p>
+<h2>PHP version gating</h2>
+<p>Version-specific PHP functions use <code>#[\Tyhp\Php(&quot;…&quot;)]</code> or <code>#[\Tyhp\Php(version: &quot;…&quot;)]</code> on the signature. Disjoint constraints may declare the same name with different parameter lists. Overlapping constraints on the <strong>same</strong> parameter list are <strong>TYHP4303</strong>; distinct parameter lists under the same gate are overloads.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+#[\Tyhp\Php(&quot;&gt;=8.2 &lt;8.4&quot;)]
+function example(string $v): mixed;
+
+#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
+function example(string $v, bool $strict = false): string;
+</code></pre></div>
+<p><code>declare(php=&quot;…&quot;) { function …; }</code> also parses in <code>.tyhpdef</code>. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
+<h2>Native type tests (<code>#[\Tyhp\NativeTypeTest]</code>)</h2>
+<p>A free function or concrete static method with a type-guard return can be marked as the native lowering for <code>$x is T</code> / <code>$x instanceof T</code>. <code>T</code> is the guard type, not an attribute argument:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+#[\Tyhp\NativeTypeTest]
+function is_string(mixed $value): $value is string;
+
+class Tests {
+    #[\Tyhp\NativeTypeTest]
+    public static function isPositiveInt(mixed $value): $value is int;
+}
+</code></pre></div>
+<p>The same attribute is legal on Tyhp source. Usages and the <code>NativeTypeTest</code> class itself are compile-only (<code>#[\Tyhp\NoEmit]</code>). Extra parameters are allowed only when they have defaults so emit stays <code>fqn($x)</code> or <code>\Class::method($x)</code>. Unions, nullables, duplicate <code>T</code>, and overlapping guarded types are errors. Instance, abstract, and interface methods cannot be marked. Unmarked guards still narrow when called; they do not change <code>$x is T</code> emit.</p>
+<p><code>tyhpdef/php</code> marks <code>is_string</code>, <code>is_int</code>, <code>is_float</code>, <code>is_bool</code>, <code>is_array</code>, <code>is_object</code>, <code>is_null</code>, <code>is_resource</code>, and the defaulted <code>is_callable</code> overload. It does not mark <code>is_integer</code> / <code>is_long</code> / <code>is_numeric</code> / <code>is_scalar</code>.</p>
+<h2>Overlay <code>partial function</code></h2>
+<p>Overlay files may write name-only <code>partial function</code> to merge attributes onto an existing callable, or to rename it, without restating the signature:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+#[\Tyhp\Optimize\Pure]
+partial function \str_contains;
+
+partial function \strtolower as str2LC;
+partial function \strtoupper;
+partial function \strtoupper as str2UC;
+</code></pre></div>
+<p><code>partial function X as Y;</code> replaces Tyhp name <code>X</code> with <code>Y</code> (same PHP emit name) unless the same overlay file also has <code>partial function X;</code>. Match is the <strong>current Tyhp name</strong>. Overlay-only (<code>TYHP8032</code>); missing target warns (<code>TYHP8031</code>). Methods belong inside an overlay <code>partial</code> type (<code>TYHP8033</code>). Confirm live names with <code>tyhp symbol_tree --filter=&lt;name&gt;</code> (<a href="cli_symbolTree.md">CLI: Symbol Tree</a>).</p>
+<p>Include / baseline <code>partial</code> still applies only to <strong>types</strong> (<code>class</code> / <code>enum</code> / <code>interface</code> / <code>trait</code>): additive members, duplicate members error (<code>TYHP8002</code>), missing target error (<code>TYHP8014</code>). Overlay <code>omit</code> may hide a whole function (<code>omit function \array_map();</code>) or a member inside overlay <code>partial</code>.</p>
+<p>See <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a> and <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>. Overlay type headers (<code>partial class Foo&lt;T&gt;;</code>) are documented there as well.</p>
 <h2>Summary</h2>
 <ul>
 <li>All parameters must be fully typed — no untyped parameters are allowed</li>
@@ -431,21 +489,27 @@ function toSlug(extends string $str, string $separator = &quot;-&quot;): string;
 <li>Variadic parameters use <code>...</code> and must be the last parameter</li>
 <li>Generic type parameters with constraints are supported via angle bracket syntax</li>
 <li>Async functions use the <code>async</code> keyword and represent the resolved return type</li>
-<li>Functions can be aliased using <code>as</code> to expose them under a different name in Tyhp</li>
+<li>Functions can be aliased using <code>as</code> to expose them under a different name in Tyhp. Overlay <code>partial function X as Y</code> renames without restating the signature.</li>
 <li>An imported function can be marked as <code>deprecated</code> or <code>obsolete</code></li>
-<li>Callable parameters use return-last generic convention: <code>callable&lt;Params..., ReturnType&gt;</code></li>
+<li><code>#[\Tyhp\Php]</code> gates a function to a PHP version constraint; <code>declare(php=…)</code> also parses in <code>.tyhpdef</code></li>
+<li>Callable parameters use callable shapes: <code>callable(Params …): ReturnType</code>. <code>\Closure</code> takes that shape as <code>TCallableShape</code>.</li>
+<li>Top-level functions can use <code>extends</code> on the first parameter to import PHP functions as extension methods; standalone tyhpdef <code>extension Name { }</code> and class-body <code>extension fn</code> / <code>extension operator</code> are covered in <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a></li>
+<li>Overlay <code>partial function</code> merges attributes or renames a live callable — see <a href="tyhpdef_overlays.md#overlay-partial-function">Tyhpdef Overlays</a>. Overlay <code>omit</code> can hide a function.</li>
+<li><code>#[\Tyhp\NativeTypeTest]</code> on a free function or concrete static method with a type-guard return (<code>$param is T</code> on the first parameter) makes <code>$x is T</code> emit a call to that callable (<code>\is_string($x)</code> or <code>\Foo::isString($x)</code>). <code>T</code> must be a single type. Extra parameters need defaults. Duplicate or overlapping <code>T</code> is an error. Canonical PHP tests (<code>is_int</code>, not <code>is_integer</code>) are marked this way in <code>tyhpdef/php</code>.</li>
+<li><code>extern function \bcadd;</code> is a name-only placeholder when this package mentions a function it does not own. See <a href="tyhpdef_extern.md">Extern Types</a>.</li>
 </ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
     <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhpdef_variablesAndConstants.html">&larr; Variables and Constants in Tyhpdef</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef &rarr;</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhpdef_extensions.html">Extensions in Tyhpdef &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

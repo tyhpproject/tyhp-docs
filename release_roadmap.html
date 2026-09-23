@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -264,8 +280,8 @@
     <span class="badge bg-primary me-1">Tier 3 · Story 30</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp is built in a deliberately ordered sequence of stories, grouped into four tiers. The guiding principle is a thin vertical slice that compiles and runs end-to-end as early as possible.</p>
-<p><strong>This alpha (805.0.0-alpha.1) is Tier 1 complete</strong> — stories <strong>01 through 16.5</strong>. Stories 17+ are not shipped.</p>
-<p>Stories are numbered contiguously from 01 to 30 with additive sub-stories (<code>08.5</code>, <code>10.5</code>, <code>14.5</code>, <code>16.5</code>, <code>19.5</code>, <code>20.5</code>). Each documentation page carries a Tier/Story badge.</p>
+<p><strong>This beta (805.1.0-beta.1) is Tier 2 through 21.12.</strong> Stories <strong>27</strong> (object shapes), <strong>27.1</strong> (callable shapes + <code>type Name = struct { };</code>), <strong>27.2</strong> (block-target extension syntax), and <strong>27.3</strong> (split runtime / docs / AIDevGuide / IDE plugin into dedicated git repos) are next, still in this beta, before deferred Story 22. Other stories remain planned unless noted below.</p>
+<p>Stories are numbered contiguously from 01 to 30 with additive sub-stories (<code>08.5</code>, <code>10.5</code>, <code>14.5</code>, <code>16.5</code>, <code>19.5</code>, <code>20.5</code>, <code>27.1</code>, <code>27.2</code>, <code>27.3</code>). Each documentation page carries a Tier/Story badge.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -293,7 +309,7 @@
 <li><strong>Story 10 — Build action</strong> (wires everything together).</li>
 <li><strong>Story 10.5 — Deferred correctness &amp; quality fixes.</strong></li>
 </ol>
-<h2>Tier 1 — Usable — done (this alpha)</h2>
+<h2>Tier 1 — Usable — done (previous alpha)</h2>
 <ol>
 <li><strong>Story 11 — Emitter feature expansion:</strong> structs, generics erasure, extension methods, operator overloads, type aliases, with, disposables, async/await, compile-time constructs, short function syntax, overloads, type guards, trait requirements, and import lowering.</li>
 <li><strong>Story 12 — Lint action.</strong></li>
@@ -303,43 +319,47 @@
 <li><strong>Story 15 — The Tyhp ↔ PHP interop contract</strong> (written down).</li>
 <li><strong>Story 16 — Parsable lambdas (expression trees)</strong> — <i>flagship wedge showcase</i>.</li>
 <li><strong>Story 16.5 — Callable signature utilities</strong> (<code>__CallableParametersStruct</code> / <code>__CallableParametersTuple</code> / <code>__CallableReturnType</code>).</li>
-<li><strong>Story 28 — Generic type parameter defaults</strong> (originally sequenced in Tier 3; already in this alpha).</li>
+<li><strong>Story 28 — Generic type parameter defaults</strong> (originally sequenced in Tier 3; already in the alpha).</li>
 </ol>
-<h2>Tier 2 — Developer Experience &amp; Ecosystem — not in this alpha</h2>
+<h2>Tier 2 — Developer Experience &amp; Ecosystem (this beta)</h2>
 <ol>
-<li><strong>Story 17 — Sourcemap generation.</strong></li>
-<li><strong>Story 18 — XDebug proxy.</strong></li>
-<li><strong>Story 19 — Language Server (LSP).</strong></li>
-<li><strong>Story 19.5 — VS Code extension (<code>vscode-tyhp</code>).</strong></li>
-<li><strong>Story 20 — Tyhpdef generator</strong> (C# CLI integration).</li>
+<li><strong>Story 17 — Sourcemap generation</strong> (shipped).</li>
+<li><strong>Story 18 — XDebug proxy</strong> (shipped).</li>
+<li><strong>Story 19 — Language Server (LSP)</strong> (shipped; stdio only).</li>
+<li><strong>Story 19.5 — IDE clients (<code>tyhp-lang</code>)</strong> (shipped).</li>
+<li><strong>Story 20 — Tyhpdef generator</strong> (C# CLI integration; <code>generate_tyhpdef</code> and <code>package.tyhpdef</code> on <code>tyhp build</code> shipped, plus <code>--php-targets</code> gated emit).</li>
 <li><strong>Story 20.5 — PHP version gating</strong> (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>).</li>
-<li><strong>Story 21 — PHP extension Composer packages</strong> (<code>tyhp/php</code> + <code>tyhp/php-ext-*</code>; this alpha ships a thin PHP 8.2-baseline <code>tyhp/php</code> only). Includes the planned built-in scalar method catalog (<code>$name-&gt;toUpper()</code>, …).</li>
-<li><strong>Story 22 — Web playground</strong> (live .tyhp → PHP).</li>
+<li><strong>Story 21 — PHP extension Composer packages</strong> (<code>tyhpdef/php</code> + <code>tyhpdef/php-ext-*</code>; one package per extension across 8.2–8.5 with <code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code> gates). Includes the built-in scalar method catalog (<code>$name-&gt;toUpper()</code>, …) via <code>global use extension \Tyhp\StringExtensions</code>.</li>
+<li><strong>Story 21.1 – 21.12</strong> — Addendum work for tier 2 (shipped).</li>
+<li><strong>Story 27 — Object shapes and <code>__New&lt;T&gt;</code></strong> (next).</li>
+<li><strong>Story 27.1 — Callable shapes and <code>type Name = struct { };</code></strong> (after 27).</li>
+<li><strong>Story 27.2 — Block-target extension syntax</strong> (<code>extension Name extends Type</code>; after 27.1 in numbering, may run in parallel).</li>
+<li><strong>Story 27.3 — Split runtime, docs, AIDevGuide, and IDE plugin into dedicated git repos</strong> (after 27.2).</li>
+<li><strong>Story 22 — Web playground</strong> (live .tyhp → PHP) — DEFERRED, not in this beta.</li>
 </ol>
-<h2>Tier 3 — Advanced — not in this alpha</h2>
+<h2>Tier 3 — Advanced — not in this beta</h2>
 <ol>
 <li><strong>Story 23 — Compiler optimizer (MVP).</strong></li>
 <li><strong>Story 24 — Advanced optimizations.</strong></li>
-<li><strong>Story 25 — <code>internal</code> visibility modifier.</strong></li>
+<li><strong>Story 25 — <code>internal</code> project-boundary enforcement and the internals overlay (<code>includeInternals</code>)</strong> (the modifier itself already hides symbols from published <code>package.tyhpdef</code>; see <a href="tyhp_3100_internalModifier.md">The internal Visibility Modifier</a>).</li>
 <li><strong>Story 26 — Null-conditional chaining with assignment.</strong></li>
-<li><strong>Story 27 — <code>new&lt;TArgs...&gt;</code> constructable object type.</strong></li>
 <li><strong>Story 29 — Tyhp reflection API</strong> (sourcemap-backed).</li>
 <li><strong>Story 30 — Documentation &amp; polish</strong> (final capstone).</li>
 </ol>
 <blockquote>
-<p>Story 28 (generic defaults) shipped with this alpha; see Tier 1 above.</p>
+<p>Story 28 (generic defaults) shipped with the alpha; see Tier 1 above.</p>
 </blockquote>
 <h2>Runtime Library Packages</h2>
 <p>Compiled Tyhp code depends on Composer packages under the <code>tyhp/</code> vendor (GitHub org <code>tyhpproject</code>):</p>
 <ul>
-<li><code>tyhp/core</code> — type-system support, property accessors, strongly-typed variable wrappers, and disposable interfaces</li>
+<li><code>tyhp/core</code> — type-system support, typed variables, property accessors, and disposable interfaces</li>
 <li><code>tyhp/async</code> — Promise&lt;T&gt;, event loop, cancellation tokens, deferred execution, and async iterators</li>
 <li><code>tyhp/decimal</code> — the decimal type with operator-overload support for precise arithmetic</li>
 <li><code>tyhp/lambda</code> — expression-tree nodes, visitors, and serialization for parsable lambdas</li>
-<li><code>tyhp/php</code> — PHP builtin tyhpdefs (8.2 baseline in this alpha)</li>
+<li><code>tyhpdef/php</code> — PHP builtin tyhpdefs (8.2 baseline in the alpha)</li>
 </ul>
 <h2>Long-Term Vision</h2>
-<p>Tyhp's long-term goal is to be for PHP what TypeScript is for JavaScript: a mature, widely-adopted typed superset that makes PHP development safer, more productive, and more enjoyable — while always producing standard PHP that runs anywhere PHP runs.</p>
+<p>Tyhp's long-term goal is a typed superset of the PHP language in the same role TypeScript has for JavaScript: compile-time types, readable PHP output, and use of the existing PHP runtime and ecosystem.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
@@ -351,6 +371,7 @@
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

@@ -12672,6 +12672,24 @@ a.text-link:hover {
     padding-top: 0.5rem;
   }
 }
+/*************************** Markdown tables ****************************/
+.docs-article .table-responsive {
+  margin-bottom: 1.5rem;
+}
+
+.docs-article .table-responsive > .table {
+  margin-bottom: 0;
+}
+
+.docs-article table.table {
+  width: 100%;
+}
+
+.docs-article table.table th,
+.docs-article table.table td {
+  vertical-align: top;
+}
+
 [data-bs-theme=dark] {
   /*!  
    * CoderDocs - Bootstrap 5 Documentation Template for Software Projects

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -265,9 +281,9 @@
 </p>
     <p>Tyhp adds new syntax to class declarations that does not exist in PHP. This includes constructor return types for explicit constructor chaining, promoted constructor parameters, and property accessors. These features make class declarations more expressive and self-documenting.</p>
 <h2>Constructor Return Types</h2>
-<p>In PHP, constructors never have a return type. Tyhp <strong>requires</strong> a constructor return type: <code>: void</code> when the constructor does not chain to a parent, or <code>: parent(args...)</code> when it does. Omitting both is a parse error.</p>
+<p>In PHP, constructors never have a return type. Tyhp constructors may declare <code>: void</code> when the constructor does not chain to a parent, or <code>: parent(args...)</code> when it does. Omitting the return type is equivalent to <code>: void</code>: no <code>parent::__construct(...)</code> call is inserted. Use <code>: parent(args...)</code> when you want the parent constructor called first.</p>
 <h2>Explicit Void Constructor</h2>
-<p>Every constructor that does not use <code>: parent(...)</code> must be declared <code>: void</code>. That is required grammar, not optional documentation. <code>: void</code> means this constructor does not insert a <code>parent::__construct(...)</code> call.</p>
+<p>A constructor that does not use <code>: parent(...)</code> may be declared <code>: void</code>, or the return type may be omitted entirely — the two forms are equivalent. Both mean this constructor does not insert a <code>parent::__construct(...)</code> call.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class SimpleClass
@@ -276,6 +292,15 @@ class SimpleClass
         public string $name,
         public int $age
     ): void {}
+}
+
+// Equivalent: the return type may be omitted.
+class AnotherClass
+{
+    public function __construct(
+        public string $name,
+        public int $age
+    ) {}
 }
 </code></pre></div>
 <h2>Compiled PHP Output</h2>
@@ -449,6 +474,7 @@ final class Widget {
 }
 </code></pre></div>
 <p>On PHP 8.4+, the compiler emits native hook syntax. On PHP 8.2–8.3, it lowers the same source through a polyfill (<code>\Tyhp\Concerns\UsesPropertyAccessors</code> and <code>$this-&gt;__tyhpPropertyHook</code>) so hooked properties work without native PHP 8.4 hooks.</p>
+<p>To <strong>describe</strong> a hooked PHP property in a <code>.tyhpdef</code> file, write the bodyless list <code>{ get; set; }</code> (or <code>{ &amp;get; }</code>). Hook bodies stay in <code>.tyhp</code> (and in PHP). See <a href="tyhpdef_classes.md#properties">Classes in Tyhpdef</a>.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -458,7 +484,7 @@ final class Widget {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Every constructor must be <code>: void</code> or <code>: parent(...)</code>. Use <code>: void</code> when there is no parent call; use <code>: parent(args...)</code> when chaining so the parent constructor always runs first.</p>
+        <div class="callout-content"><p>A constructor without a return type is <code>: void</code>. Use <code>: void</code> (or omit it) when there is no parent call; use <code>: parent(args...)</code> when chaining so the parent constructor always runs first.</p>
 </div>
     </div>
 </div>
@@ -470,7 +496,7 @@ final class Widget {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use : void on constructors that do not chain — it is required, and it is stripped from PHP output.</p>
+        <div class="callout-content"><p><code>: void</code> on constructors is optional and stripped from PHP output. Omitting it produces the same emitted PHP.</p>
 </div>
     </div>
 </div>
@@ -557,6 +583,7 @@ final class Widget {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

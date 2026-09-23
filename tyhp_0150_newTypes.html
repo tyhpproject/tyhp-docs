@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -295,6 +311,7 @@ function processItems(iterable&lt;string&gt; $items): void {
 <p>The <code>\Traversable</code> interface from PHP gains optional generic parameters for the key and value types.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Traversable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed traversable with 2 generic parameters. The <code>iterable&lt;TKey, TValue&gt;</code> built-in is equivalent to <code>array&lt;TKey, TValue&gt;|\Traversable&lt;TKey, TValue&gt;</code>.</p>
 </div>
+<p><code>\Traversable</code> is an engine interface. Only <code>\Iterator</code> and <code>\IteratorAggregate</code> (in <code>tyhpdef/php</code>) may <code>extends \Traversable</code>. User classes, enums, interfaces, and traits must not list <code>\Traversable</code> in <code>implements</code> or <code>extends</code> — implement <code>\Iterator</code> or <code>\IteratorAggregate</code> instead (Traversable is inherited). Listing both (<code>implements \Iterator, \Traversable</code>) is <strong>TYHP4326</strong>. Harvested <code>.tyhpdef</code> stubs may still list both; the checker does not flag those shells.</p>
 <h2>The <code>\Iterator&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\Iterator</code> interface extends <code>\Traversable</code> and gains generic parameters. <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code> instead of <code>mixed</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Iterator&lt;TKey, TValue&gt;</code></h4><br/><p>A generic iterator where <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code>. Extends <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
@@ -304,21 +321,172 @@ function processItems(iterable&lt;string&gt; $items): void {
 <div class="alert alert-secondary" role="alert"><h4><code>\IteratorAggregate&lt;TKey, TValue&gt;</code></h4><br/><p>A generic iterable aggregate where <code>getIterator()</code> returns <code>\Traversable&lt;TKey, TValue&gt;</code>. Extends <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
 </div>
 <h2>The <code>\ArrayAccess&lt;TKey, TValue&gt;</code> Type</h2>
-<p>The <code>\ArrayAccess</code> interface gains generic parameters for type-safe array-like access.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>\ArrayAccess&lt;TKey, TValue&gt;</code></h4><br/><p>Provides type-safe array-like access. <code>offsetGet(TKey $offset): TValue</code>, <code>offsetSet(TKey $offset, TValue $value): void</code>, <code>offsetExists(TKey $offset): bool</code>, <code>offsetUnset(TKey $offset): void</code>.</p>
+<p>The <code>\ArrayAccess</code> interface gains generic parameters for homogeneous array-like access: every offset has the same value type.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\ArrayAccess&lt;TKey, TValue&gt;</code></h4><br/><p><code>$obj[$k]</code> is <code>TValue</code> when <code>$k</code> is assignable to <code>TKey</code>. <code>$obj[$k] = $v</code> writes a <code>TValue</code>. <code>$obj[] = $v</code> is <code>offsetSet(null, $v)</code> (<code>null|TKey</code> on <code>offsetSet</code>). <code>isset</code> / <code>empty</code> / <code>unset</code> on offsets use <code>offsetExists</code> / <code>offsetUnset</code>. <code>list()</code> / <code>[]</code> destructure (positional and named keys) is the same <code>offsetGet</code> read as <code>$obj[$k]</code>: each bound key is <code>TValue</code> when the key is assignable to <code>TKey</code>. A receiver that is not an array, string, or <code>ArrayAccess</code> cannot be destructured (<strong>TYHP4094</strong>).</p>
 </div>
-<h2>The <code>\Closure&lt;TArgs..., TReturn&gt;</code> Type</h2>
-<p>The <code>\Closure</code> class gains generic parameters for its argument types and return type. It follows the same return-last convention as <code>callable</code> -- the last generic parameter is the return type, and all preceding parameters are the argument types. Optional trailing parameters expand to an intersection of arity facets the same way as <code>callable</code> (see below).</p>
-<div class="alert alert-secondary" role="alert"><h4><code>\Closure&lt;TArgs..., TReturn&gt;</code></h4><br/><p>A typed closure where the compiler knows the parameter types and return type. Follows the return-last generic convention. Defaults yield arity-sibling intersections.</p>
+<p><code>TKey</code> must be a legal PHP offset (<code>int</code>, <code>string</code>, <code>int|string</code>, or an object key such as <code>\WeakMap</code>). A struct or <code>array</code> as <code>TKey</code> is <strong>TYHP4330</strong> — structs erase to arrays, and PHP cannot use arrays as offsets. Per-key maps over a struct are <a href="#the-tyhpcontractsarrayaccessshapetstruct-type"><code>ArrayAccessShape</code></a>, not <code>ArrayAccess&lt;SomeStruct&gt;</code>.</p>
+<p>A receiver that is not an <code>array</code>, <code>string</code>, or <code>ArrayAccess</code> cannot be indexed (<strong>TYHP4093</strong>). <code>foreach</code> does not use ArrayAccess; it needs <code>\Traversable</code> / <code>\Iterator</code> / <code>\IteratorAggregate</code>.</p>
+<p>PHP’s <code>ArrayAccess</code> methods are <code>mixed</code> (contravariant parameters). Implementors emit <code>offsetExists</code> / <code>offsetGet</code> / <code>offsetSet</code> / <code>offsetUnset</code> with PHP <code>mixed</code> parameters, and <code>offsetGet</code> with a PHP <code>mixed</code> return, as if <code>#[\Tyhp\PhpType('mixed')]</code> were present. Checker types stay <code>TKey</code> / <code>TValue</code>.</p>
+<h2>The <code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct&gt;</code> Type</h2>
+<p>Per-key indexing over a struct schema. <code>$obj['host']</code> is that field’s type; <code>$obj['port']</code> can be a different type. Canonical source: <code>tyhp/core</code> (<code>\Tyhp\Contracts\ArrayAccessShape</code>).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct extends struct&gt;</code></h4><br/><p>Extends <code>\ArrayAccess&lt;__IndexKeys&lt;TStruct&gt;, __IndexValueTypes&lt;TStruct&gt;&gt;</code>. <code>offsetGet</code> / <code>offsetSet</code> use a method generic <code>TKey extends __IndexKeys&lt;T&gt;</code> so the value type is <code>__IndexValueType&lt;T, TKey&gt;</code>.</p>
 </div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type ConfigMap = struct {
+    string $host = &#039;&#039;;
+    int $port = 0;
+};
+
+function read(\Tyhp\Contracts\ArrayAccessShape&lt;ConfigMap&gt; $o): string {
+    return $o[&#039;host&#039;];  // string
+}
+
+function hostOf(\Tyhp\Contracts\ArrayAccessShape&lt;ConfigMap&gt; $o): string {
+    [&#039;host&#039; =&gt; $h] = $o;  // same type as $o[&#039;host&#039;]
+    return $h;
+}
+</code></pre></div>
+<p>A wide <code>string</code> / <code>int</code> / <code>mixed</code> key at the call site is <strong>TYHP4331</strong> — use a key literal or assert with <code>as</code> (<code>$o[$s as 'host']</code>). Append (<code>$obj[] =</code>) is <strong>TYHP4332</strong>. <code>offsetExists</code> on a schema key is <code>bool</code> (the map may be sparse).</p>
+<p>For <code>offsetGet</code> / <code>offsetSet</code> bodies, when <code>TKey</code> is a finite literal union the checker instantiates once per key. A key is covered only by a reachable value <code>return</code> (<code>offsetGet</code>) or a typed write of <code>$value</code> (<code>offsetSet</code>). <code>throw</code> / <code>never</code> does not cover a key (<strong>TYHP4333</strong>). <code>match</code> is sufficient, not required. Infinite key types (<code>string</code>) get one envelope check against <code>__IndexValueTypes&lt;T&gt;</code>.</p>
+<p><code>TStruct</code> is invariant. A value typed only as <code>ArrayAccess&lt;…&gt;</code> is the homogeneous envelope (key union, value union). <code>#[\Tyhp\PhpType('mixed')]</code> on the interface members is inherited by implementors.</p>
+<h2>The <code>\Closure&lt;TCallableShape, TThis, TScope&gt;</code> Type</h2>
+<p><code>\Closure</code> is PHP’s closure <strong>class</strong>. It is generic over the callable shape plus bound <code>$this</code> and visibility scope. It is not a second <code>callable</code> spelling: argument and return types go on <code>callable(…): R</code>, then that shape is the first type argument of <code>\Closure</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Closure&lt;TCallableShape extends callable, TThis extends __ClosureThis = __ClosureThis, TScope extends __ClosureScope&lt;TThis&gt; = __ClosureScope&lt;TThis&gt;&gt;</code></h4><br/><p><code>TCallableShape</code> is the <code>__invoke</code> signature. <code>TThis</code> is the bound <code>$this</code> (<code>object|null</code>; default <code>__ClosureThis</code>). <code>TScope</code> is the stored visibility scope (an object type, a class-name string of that type or a parent, or <code>null</code>; default <code>__ClosureScope&lt;TThis&gt;</code>). Bare <code>\Closure</code> stays gradual. <code>\Closure&lt;callable(int): string&gt;</code> fills <code>TThis</code> / <code>TScope</code> from the defaults.</p>
+</div>
+<p>Instances come from <code>function</code> / <code>fn</code> literals, first-class callables (<code>foo(...)</code>), or <code>\Closure::fromCallable</code> — generics are inferred. Do not write <code>new \Closure&lt;…&gt;()</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Takes int, returns string
+\Closure&lt;callable(int): string&gt; $parser;
+
+callable(int): string $also = $parser;  // Closure is callable via __invoke
+
+// Zero-parameter void callback
+\Closure&lt;callable(): void&gt; $ping;
+</code></pre></div>
+<h3><code>callable</code> vs <code>\Closure</code></h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Write</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>callable</code> / <code>callable(TArgs …): TReturn</code></td>
+<td>Any invokable: closures, functions, methods, <code>__invoke</code> objects.</td>
+</tr>
+<tr>
+<td><code>\Closure</code> / <code>\Closure&lt;callable(...)&gt;</code></td>
+<td>A Closure <strong>object</strong> (<code>bind</code> / <code>bindTo</code> / <code>call</code> / <code>fromCallable</code>, or you need the class).</td>
+</tr>
+</tbody>
+</table></div>
+<p>Every Closure is callable. Not every callable is a Closure — wrap the rest with <code>fromCallable</code>. An invokable class is not a <code>\Closure</code>; <code>fromCallable</code> stores the <code>__invoke</code> arity intersection as <code>TCallableShape</code> and drops the class type. Untyped <code>callable</code> is not assignable to a parameterized <code>\Closure&lt;…&gt;</code>.</p>
+<p><code>TThis</code> and <code>TScope</code> are <strong>invariant</strong>. Callable variance applies to <code>TCallableShape</code> (and thus to assigning a Closure to <code>callable</code> / that facet). Optional parameters on <code>__invoke</code> still produce an intersection of arity facets on the object (see <a href="#optional-parameters-and-arity-facets">Optional parameters</a>).</p>
+<h3>Inference</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Producer</th>
+<th><code>TCallableShape</code></th>
+<th><code>TThis</code></th>
+<th><code>TScope</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>function</code> / <code>fn</code> literal</td>
+<td>signature of the literal</td>
+<td>enclosing <code>$this</code>, or <code>null</code> for <code>static fn</code></td>
+<td>enclosing class, or <code>null</code></td>
+</tr>
+<tr>
+<td>FCC <code>$obj-&gt;m(...)</code></td>
+<td>method signature</td>
+<td><code>typeof($obj)</code></td>
+<td>the method’s class</td>
+</tr>
+<tr>
+<td>FCC <code>Foo::m(...)</code></td>
+<td>method signature</td>
+<td><code>null</code></td>
+<td><code>Foo</code></td>
+</tr>
+<tr>
+<td>FCC <code>foo(...)</code></td>
+<td>function signature</td>
+<td><code>null</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>fromCallable($cb)</code></td>
+<td>inferred from <code>$cb</code></td>
+<td><code>__CallableThis&lt;typeof($cb)&gt;</code></td>
+<td><code>__CallableScope&lt;typeof($cb)&gt;</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>fromCallable</code> copies <code>$this</code> and scope from <strong><code>$callback</code></strong>, not from the caller. If the checker can see that <code>$callback</code> is not callable from <code>__CurrentScope</code> (for example another class’s <code>private</code> method), that is a compile error.</p>
+<h3><code>bind</code> / <code>bindTo</code> / <code>call</code> and <code>'static'</code></h3>
+<p><code>'static'</code> on <code>bind</code> / <code>bindTo</code> means “keep the old stored <code>TScope</code>”. It is not a class-name string and must not appear as a Closure type argument (<strong>TYHP4335</strong>). Omitting <code>$newScope</code> is the same keep-old-scope overload. After <code>'static'</code> / omitted scope, <code>$newThis</code> must still be an instance of the leftover scope (<strong>TYHP4334</strong>). An explicit object <code>$newScope</code> requires <code>TNewThis</code> to be a subtype of that object’s type; a string <code>$newScope</code> must be <code>__SuperTypeName&lt;TNewThis&gt;</code> (an ancestor name).</p>
+<p><code>call($newThis, …)</code> is a temporary bind: <code>$newThis</code> must be a non-null object (<code>TNewThis extends object</code>) compatible the same way. Arrow functions, some first-class callables, and internal-class <code>$newThis</code> / <code>$newScope</code> cannot be rebound (<strong>TYHP4336</strong>). Gradual <code>TThis</code> (<code>object|null</code> / bare <code>\Closure</code>) does not prove a bind error.</p>
+<h3>Generic shapes and <code>as</code></h3>
+<p>Generic arguments are compile-time. Assert a specific Closure (or Fiber) shape with <code>as</code>, for example <code>$fn as \Closure&lt;callable(int): string&gt;</code>. <code>instanceof</code> / <code>is</code> test the PHP class (<code>\Closure</code> / <code>\Fiber</code>).</p>
 <h2>The <code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code> Type</h2>
-<p>The <code>\Generator</code> class gains four generic parameters for full type safety in generator functions.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code></h4><br/><p><code>TKey</code> is the yield key type, <code>TValue</code> is the yield value type, <code>TSend</code> is the type accepted by <code>send()</code>, and <code>TReturn</code> is the type returned by <code>getReturn()</code>.</p>
+<p>A function that contains <code>yield</code> is a generator. The <strong>declared</strong> return type is what a <strong>call</strong> returns — a Generator object — not the value of <code>return</code> inside the body. That inner <code>return</code> is <code>TReturn</code>, available as <code>$g-&gt;getReturn()</code> after the generator is exhausted.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code></h4><br/><p><code>TKey</code> is the yield key type, <code>TValue</code> is the yield value type, <code>TSend</code> is the type accepted by <code>send()</code> (the value of a <code>yield</code> <strong>expression</strong>), and <code>TReturn</code> is <code>getReturn()</code>.</p>
 </div>
-<h2>The <code>\Fiber&lt;TStart, TResume, TSuspend, TReturn&gt;</code> Type</h2>
-<p>The <code>\Fiber</code> class gains four generic parameters for the start value, resume value, suspend value, and return value.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>\Fiber&lt;TStart, TResume, TSuspend, TReturn&gt;</code></h4><br/><p><code>TStart</code> is the type of the initial value passed to <code>start()</code>, <code>TResume</code> is the type accepted by <code>resume()</code>, <code>TSuspend</code> is the type returned by <code>suspend()</code>, and <code>TReturn</code> is the final return type from <code>getReturn()</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Written return type</th>
+<th>Checker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Generator</code></td>
+<td>Infer all four arguments from the body; callers see that inferred type</td>
+</tr>
+<tr>
+<td><code>\Generator&lt;TKey, TValue&gt;</code></td>
+<td>Pin key/value; infer <code>TSend</code> / <code>TReturn</code> (default <code>mixed</code> until the body fills them)</td>
+</tr>
+<tr>
+<td><code>\Generator&lt;K, V, S, R&gt;</code></td>
+<td>Fully explicit; the body must match</td>
+</tr>
+<tr>
+<td><code>iterable</code> / <code>\Iterator</code> / <code>\Traversable</code> (and generic forms)</td>
+<td>Legal weaker export. Callers do not get <code>send</code> / <code>getReturn</code>. Inside the body, yield is still checked against an inferred Generator shape</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>function foo(): string { yield 1; }</code> is <strong>TYHP4087</strong>. Async functions must not return Generator.</p>
+<p><strong>Body inference:</strong> <code>TValue</code> is the union of <code>yield $v</code> / <code>yield $k =&gt; $v</code> values. <code>TKey</code> is the union of explicit keys; a key-less <code>yield $v</code> contributes <code>int</code>. <code>TReturn</code> is the union of <code>return $x</code> values, plus <code>null</code> if any path falls off without <code>return</code>. Unused <code>yield $v;</code> leaves <code>TSend</code> as <code>mixed</code>. A typed target (<code>int $x = yield</code>, or <code>foo(yield)</code> with <code>foo(int $x)</code>) constrains <code>TSend</code>. Several typed targets are <strong>intersected</strong>; an empty intersection is <strong>TYHP4328</strong>. Untyped <code>$x = yield</code> keeps <code>TSend</code> and <code>$x</code> as <code>mixed</code> — narrow before use.</p>
+<p><code>yield from $inner</code> must be iterable or a Generator (<strong>TYHP4089</strong>). Inner <code>TKey</code> / <code>TValue</code> merge; outer <code>TSend</code> must be a legal <code>send()</code> into the inner. The <code>yield from</code> expression is the inner <code>TReturn</code> (arrays and non-Generator Traversables evaluate to <code>null</code>).</p>
+<h2>The <code>\Fiber&lt;TResume, TCallableShape&gt;</code> Type</h2>
+<p><code>\Fiber</code> is generic over the resume protocol and the callback shape.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>\Fiber&lt;TResume = mixed, TCallableShape extends callable = callable&gt;</code></h4><br/><p><code>TResume</code> types the argument of <code>$fiber-&gt;resume($value)</code> only. <code>TCallableShape</code> is the callback passed to <code>new Fiber</code>. <code>start(…)</code>, <code>throw(…)</code>, and <code>Fiber::suspend()</code> <strong>return</strong> <code>mixed|null</code>. <code>getReturn()</code> is <code>__CallableReturnType&lt;TCallableShape&gt;</code>. <code>Fiber::getCurrent()</code> is <code>?\Fiber&lt;mixed, callable&gt;</code>.</p>
 </div>
+<p><code>Fiber::suspend()</code> is static: it suspends whichever fiber is running, including helpers shared by many fibers. Its argument and return are <code>mixed</code> at every call site. Narrow from <code>mixed</code> before use. Assert a tighter Fiber shape with <code>as</code> (same rule as Closure).</p>
+<h2>The <code>#[\Tyhp\PhpType]</code> Attribute</h2>
+<p><code>#[\Tyhp\PhpType('mixed')]</code> (constructor argument: a PHP type-hint spelling) replaces the <strong>emitted PHP type</strong> of the declaration it sits on. Checker types are unchanged. Usages and the <code>PhpType</code> class itself are omitted from emitted PHP because the class is tagged <code>#[\Tyhp\NoEmit]</code>.</p>
+<p>Legal sites: parameter (function, method, closure, property-hook <code>set</code>), function or method <strong>return</strong> (attribute on the function/method), property (including hooked and constructor-promoted), typed constant (class / interface / trait / enum). Constructor promotion: one attribute covers both the parameter and the property.</p>
+<p>Implementing a method or property <strong>inherits</strong> <code>PhpType</code> from the interface or abstract member it satisfies.</p>
+<p>Invalid spelling (<code>int[]</code>, <code>?mixed</code>, missing argument) is <strong>TYHP4329</strong>. Illegal targets — class / interface / trait / enum (including enum backing type), enum cases, catch types, local variables, property <code>get</code>/<code>set</code> hooks — are <strong>TYHP4327</strong>. Put the attribute on the property or on the <code>set</code> parameter instead of on the hook.</p>
+<p>This is not <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]</code> (that is a <a href="tyhp_0320_phpVersionGating.md">PHP version gate</a>).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+#[\Tyhp\PhpType(&#039;mixed&#039;)]
+function offsetGet(#[\Tyhp\PhpType(&#039;mixed&#039;)] string $offset): User {
+    return $this-&gt;users[$offset];
+}
+</code></pre></div>
+<p>The checker still sees <code>string</code> / <code>User</code>. The emitted PHP is <code>function offsetGet(mixed $offset): mixed</code>.</p>
 <h2>The <code>\WeakReference&lt;T&gt;</code> Type</h2>
 <p>The <code>\WeakReference</code> class gains a generic parameter for the referenced object type. The <code>get()</code> method returns <code>?T</code> instead of <code>?object</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\WeakReference&lt;T&gt;</code></h4><br/><p>A weak reference to an object of type <code>T</code>. <code>get()</code> returns <code>?T</code>.</p>
@@ -331,6 +499,7 @@ function processItems(iterable&lt;string&gt; $items): void {
 <p>The <code>\UnitEnum</code> interface remains as-is. <code>\BackedEnum</code> gains a generic parameter <code>TValue extends string|int</code> for the backing value type. The <code>from()</code> and <code>tryFrom()</code> methods use <code>TValue</code> for their parameter and return types.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\BackedEnum&lt;TValue extends string|int&gt;</code></h4><br/><p>A backed enum where <code>from(TValue): static</code> and <code>tryFrom(TValue): ?static</code> use the backing type parameter.</p>
 </div>
+<p>Every enumeration is <code>\UnitEnum</code> without a written <code>implements</code>. A backed enumeration is also <code>\BackedEnum</code>. <code>cases()</code> resolves on every enum; backed enums also have <code>from()</code> / <code>tryFrom()</code>. User classes, interfaces, and traits must not list <code>\UnitEnum</code> or <code>\BackedEnum</code> in <code>implements</code> or <code>extends</code> (<strong>TYHP4337</strong>). User enums must not list those interfaces either, and must not redeclare <code>cases</code>, <code>from</code>, or <code>tryFrom</code> (<strong>TYHP4338</strong>). Only the engine <code>\BackedEnum</code> declaration may extend <code>\UnitEnum</code>. Harvested <code>.tyhpdef</code> stubs may still list <code>\UnitEnum</code> / <code>\BackedEnum</code>; the checker does not flag those shells.</p>
 <h2>The <code>\SensitiveParameterValue&lt;T&gt;</code> Type</h2>
 <p>The <code>\SensitiveParameterValue</code> class gains a generic parameter <code>T</code> so <code>getValue()</code> returns <code>T</code> instead of <code>mixed</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\SensitiveParameterValue&lt;T&gt;</code></h4><br/><p>Wraps a sensitive parameter value. <code>getValue()</code> returns <code>T</code>.</p>
@@ -365,23 +534,25 @@ function processItems(iterable&lt;string&gt; $items): void {
 <li><code>\RegexIterator&lt;TKey, TValue&gt;</code> -- extends <code>\FilterIterator&lt;TKey, TValue&gt;</code></li>
 <li>All <code>Recursive*</code> variants of the above iterators also gain the same generic parameters</li>
 </ul>
-<h2>The <code>callable&lt;TArgs..., TReturn&gt;</code> Type</h2>
-<p>In Tyhp, the <code>callable</code> type can accept generic parameters that specify the argument types and return type. The convention is return-last: argument types come first, followed by the return type as the final generic parameter. This mirrors the natural reading order of a function signature.</p>
+<h2>The <code>callable(…): R</code> Type</h2>
+<p>Bare <code>callable</code> is “invokable, signature unknown.” A <strong>callable shape</strong> adds a PHP-style parameter list and a return type. Names are optional. <code>=</code> marks a parameter as optional; a written default expression is parsed and discarded, so <code>bool $b = false</code> and <code>bool $b =</code> are the same shape.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// A callable that takes a string and returns int
-callable&lt;string, int&gt; $parser;
+callable(string $s): int $parser;
+callable(int, int): bool $comparator;
+callable(): void $callback;
+callable(int $i, bool $b =): string $greet;
 
-// A callable that takes two ints and returns bool
-callable&lt;int, int, bool&gt; $comparator;
-
-// A callable with no parameters that returns void
-callable&lt;void&gt; $callback;
-
-// Using generic callables in function signatures
-function apply&lt;T, U&gt;(callable&lt;T, U&gt; $fn, T $value): U {
+function apply&lt;T, U&gt;(callable(T $item): U $fn, T $value): U {
     return $fn($value);
 }
+</code></pre></div>
+<p>A shape is assignable to bare <code>callable</code>. Bare <code>callable</code> and <code>mixed</code> are not assignable to a shape without a guard or a tyhpdef assertion. Parentheses group a function type as an arm of <code>|</code> / <code>&amp;</code>. Prefix <code>?</code> binds to the whole shape; <code>?</code> on the return binds inside:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+(callable(int $x): int) | null $maybe;
+?callable(int $x): string $orNull;   // null | (int → string)
+callable(int $x): ?string $nullRet;  // int → string|null
 </code></pre></div>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -391,27 +562,112 @@ function apply&lt;T, U&gt;(callable&lt;T, U&gt; $fn, T $value): U {
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>The <code>void</code> and <code>never</code> types are restricted types -- they cannot be used as generic type arguments unless the generic parameter's constraint explicitly allows them. The <code>callable</code> type's return parameter uses <code>TReturn extends void|never|mixed</code>, which opts in to both restricted types, making <code>callable&lt;void&gt;</code> and <code>callable&lt;never&gt;</code> valid.</p>
+        <div class="callout-content"><p>The <code>void</code> and <code>never</code> types are restricted types -- they cannot be used as generic type arguments unless the generic parameter's constraint explicitly allows them. The <code>callable</code> type's return parameter uses <code>TReturn extends void|never|mixed</code>, which opts in to both restricted types, making <code>callable(): void</code> and <code>callable(): never</code> valid.</p>
 </div>
     </div>
 </div>
 <h3>Optional parameters and arity facets</h3>
-<p>Trailing parameters with default values expand into an <strong>intersection of arity siblings</strong> (not a subtype chain). The same model applies to <code>\Closure&lt;…&gt;</code> and will be reused by <code>new&lt;…&gt;</code> constructable facets (planned; Story 27).</p>
+<p>Trailing parameters with default values expand into an <strong>intersection of arity siblings</strong> (not a subtype chain). The same model applies to a Closure’s <code>__invoke</code> facet (<code>TCallableShape</code>), not to <code>\Closure</code>’s class type arguments.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Inferred type: callable&lt;string, int, void&gt; &amp; callable&lt;string, void&gt;
+// Inferred type: (callable(string, int): void) &amp; (callable(string): void)
 function greet(string $name, int $times = 1): void { ... }
 
-callable&lt;string, void&gt; $oneArg = greet(...);           // OK
-callable&lt;string, int, void&gt; $twoArg = greet(...);      // OK
+callable(string): void $oneArg = greet(...);           // OK
+callable(string, int): void $twoArg = greet(...);      // OK
 
 // Explicit intersection is also allowed (prefer a type alias so each callable&#039;s
 // generics close before `&amp;`):
-type Greeter = callable&lt;string, int, void&gt; &amp; callable&lt;string, void&gt;;
+type Greeter = (callable(string, int): void) &amp; (callable(string): void);
 Greeter $either;
 </code></pre></div>
-<p>Each facet is an independent arity: <code>callable&lt;string, int, void&gt;</code> does <strong>not</strong> imply <code>callable&lt;string, void&gt;</code> by itself — only the intersection (or a value inferred with defaults) is assignable to both.</p>
-<p>A trailing variadic never produces infinite facets. <code>function joinAll(string ...$parts): void</code> is typed <code>callable&lt;void&gt; &amp; callable&lt;string, void&gt;</code> — the prefix facets plus one that accepts a single variadic argument. Calls with more arguments than any facet are left unchecked rather than rejected.</p>
+<p>Each facet is an independent arity: <code>callable(string, int): void</code> does <strong>not</strong> imply <code>callable(string): void</code> by itself — only the intersection (or a value inferred with defaults) is assignable to both. A one-argument <code>callable(int): bool</code> is not assignable to the zero-argument facet <code>callable(): bool</code>. A function whose parameters all have defaults still assigns to <code>callable(): bool</code>, because inference includes a zero-argument arity sibling.</p>
+<p>A trailing variadic never produces infinite facets. <code>function joinAll(string ...$parts): void</code> is typed <code>(callable(): void) &amp; (callable(string): void)</code> — the prefix facets plus one that accepts a single variadic argument. Calls with more arguments than any facet are left unchecked rather than rejected.</p>
+<h3>Any-arity <code>callable(...): TReturn</code></h3>
+<p><code>callable(...): TReturn</code> pins the return type without pinning the parameter list. The ellipsis is the <strong>only</strong> thing in the parameter list — a wildcard arity, not a rest parameter.</p>
+<p>It is a generic bound, not a value type. Constrain a type parameter and take that parameter:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function pin&lt;TCallable extends callable(...): bool&gt;(TCallable $callback): void {}
+
+function demo(): void {
+    pin(fn(int $n): bool =&gt; true);
+    pin(fn(string $s, int $n): bool =&gt; true);
+}
+</code></pre></div>
+<p>Do not write <code>callable(...): bool $callback</code> as a parameter, property, or return type, and do not call a value of that type. A concrete <code>callable(int): bool</code> or <code>callable(string, int): bool</code> is assignable to the bound when the return type is assignable to <code>bool</code>. The any-arity bound is not assignable to a known-arity facet such as <code>callable(): bool</code> or <code>callable(int): bool</code>.</p>
+<p><code>callable(): bool</code> remains a zero-parameter callable that returns bool. <code>callable(...): bool</code> is a different type.</p>
+<h3>Parameter packs in callable shapes</h3>
+<p>A <strong>pack</strong> is an ordered list of types, not a union and not <code>array</code>. <code>__CallableParametersRest&lt;TCallable&gt;</code> is a pack of that callable’s parameters. Inside a callable-shape parameter list, a pack <strong>splices</strong> into ordinary parameters — no extra punctuation:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Pack = [int, string]
+callable(__CallableParametersRest&lt;callable(int, string): bool&gt; ...): mixed
+    // same shape as callable(int, string): mixed
+
+callable(string, __CallableParametersRest&lt;callable(int): bool&gt; ...): mixed
+    // callable(string, int): mixed
+
+callable(__Nullable&lt;__CallableParametersRest&lt;callable(int, string): mixed&gt;&gt; ...): mixed
+    // callable(?int, ?string): mixed
+</code></pre></div>
+<p><code>__Nullable&lt;int&gt;</code> stays <code>int|null</code>. <code>__Nullable</code> on a pack maps each member (<code>?P0, ?P1, …</code>). <code>__NonNullable</code> maps a pack by stripping <code>null</code> from each member.</p>
+<p>Value position is unchanged: <code>Rest&lt;T&gt; ...$args</code> unpacks at the call. <code>Rest&lt;T&gt; $x</code> (non-variadic) stays one wrapper.</p>
+<p>Postfix <code>...</code> on a pack is an error (<code>callable(Rest&lt;T&gt; ...): R</code>). Packs splice automatically. Prefix <code>...Pack</code> is also an error.</p>
+<h3>Trailing <code>T...</code> (PHP variadic)</h3>
+<p><code>callable(P1, …, Pk, T ...): R</code> is a trailing PHP variadic: prefix parameters, then <code>T ...$values</code>, then return. Homogeneous <code>T ...</code> is only valid as the <strong>last parameter</strong> on a callable shape.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// Exact: function (int $num, bool $flag, string ...$values): int
+callable(int, bool, string ...): int $join;
+
+$join(1, true, &#039;a&#039;, &#039;b&#039;);
+</code></pre></div>
+<p>Exact <code>callable(string ...): int</code> is a PHP variadic. A non-variadic <code>fn(string $a, string $b): int</code> is not that type.</p>
+<p>As an <strong><code>extends</code> bound</strong>, <code>TCallable extends callable(int ...): TReturn</code>:</p>
+<ul>
+<li>When this function does not feed Rest/Slice arguments into <code>TCallable</code>, the callback <strong>must</strong> be a PHP variadic whose last parameter accepts <code>int</code> (contravariance). Extra required parameters after the prefix are rejected.</li>
+<li>When Rest or Slice supplies a concrete argument list, <code>TCallable</code> must be invocable with that list (fixed arity matching N, trailing defaults, or a trailing variadic).</li>
+</ul>
+<p><code>callable(mixed ...): R</code> is not the any-arity wildcard: every used slot must accept <code>mixed</code>. Keep <code>callable(...): R</code> for unknown arity.</p>
+<p>Reject <code>callable(): int...</code> (missing return), <code>callable(string ..., int): bool</code> (<code>...</code> not last before return), and postfix <code>...</code> on <code>array&lt;&gt;</code>, <code>\Closure&lt;&gt;</code>, or user generics.</p>
+<h3><code>__CallableParametersSlice</code></h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">__CallableParametersSlice&lt;TCallable extends callable, TStart extends int = 0, TMin extends int = 0&gt;
+</code></pre></div>
+<p><code>TStart</code> / <code>TMin</code> are non-negative int literal types.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Use</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-variadic <code>Slice&lt;T, 0&gt; $x</code></td>
+<td>Exactly parameter <code>TStart</code>. <code>TMin</code> must not be written.</td>
+</tr>
+<tr>
+<td>Variadic <code>Slice&lt;T, 1&gt; ...$xs</code></td>
+<td>Parameters from <code>TStart</code>, length = number of arguments passed, <code>N ≥ TMin</code> (default <code>0</code>).</td>
+</tr>
+<tr>
+<td><code>array&lt;Slice&lt;T, 0&gt;&gt; $a</code></td>
+<td>An array of <code>P_0</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Rest is Slice-from-0 as a single <code>...$args</code> covering the remainder. Same-function slices of one <code>TCallable</code> must be disjoint, ordered by <code>TStart</code>, with at most one open rest and no holes in required parameters (<code>TYHP4189</code> overlap, <code>TYHP4190</code> hole, <code>TYHP4191</code> <code>TMin</code> on a fixed slice).</p>
+<p>Zip padding (<code>array_map</code> with two or more arrays) invents <code>null</code> at the call. Slice does not imply <code>?P_i</code>. The nullable callback view is a spliced pack:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function array_map&lt;TZip extends callable&gt;(
+    callable(__Nullable&lt;__CallableParametersRest&lt;TZip&gt;&gt; ...): __CallableReturnType&lt;TZip&gt; $callback,
+    array&lt;__CallableParametersSlice&lt;TZip, 0&gt;&gt; $array,
+    array&lt;__CallableParametersSlice&lt;TZip, 1, 1&gt;&gt; ...$arrays
+): array&lt;int, __CallableReturnType&lt;TZip&gt;&gt;;
+</code></pre></div>
+<p><code>TZip</code> is the non-null schema (array element types), not the callback’s type. <code>__Nullable&lt;Rest&lt;TZip&gt;&gt;</code> splices to <code>?P0, ?P1, …</code>. Extra arrays use <code>TMin = 1</code> so a one-array call stays on the key-preserving overload.</p>
 <h2>New Tyhp-Specific Types</h2>
 <h2>The <code>decimal</code> Type</h2>
 <p>Tyhp introduces a <code>decimal</code> type for precise arithmetic calculations. In the compiled PHP, a <code>decimal</code> value is an instance of the <code>\Tyhp\Decimal</code> wrapper class that handles all arithmetic operations using bcmath, gmp, or a pure-PHP fallback (configurable in <code>tyhp.json</code>). There is no <code>19.99d</code> suffix. Construct decimals with <code>\Tyhp\decimal('19.99')</code> or <code>new \Tyhp\Decimal(...)</code>.</p>
@@ -458,23 +714,40 @@ $b = \Tyhp\decimal(&#039;3.2&#039;);
 $result = \Tyhp\Decimal::__add($a, $b);
 </code></pre></div>
 <h2>The <code>struct</code> Base Type</h2>
-<p>The <code>struct</code> base type is the parent of all struct declarations. At the PHP level it compiles to an associative <code>array</code>, but Tyhp gives it typed properties, schema-based typing, and value-type semantics. See the Structs documentation page for full details on struct declarations, anonymous structs, and the <code>with</code> keyword.</p>
+<p>The <code>struct</code> base type is the parent of every struct shape: named aliases (<code>type Point = struct { … };</code>) and inline <code>struct { … }</code> in type position. At the PHP level a struct compiles to an associative <code>array</code>, with typed properties, schema-based typing, and value-type semantics. See the Structs documentation page for aliases, inline types, and the <code>with</code> keyword.</p>
 <h2>The <code>void</code> Type</h2>
 <p>The <code>void</code> type in Tyhp is treated as a first-class keyword with its own lexer token (<code>T_TYHP_VOID</code>). It can be used in more type expression contexts than in PHP, including in type alias definitions, generic type arguments (where the generic parameter opts in via its constraint), and as part of callable/closure return types.</p>
 <h2>The <code>never</code> Type</h2>
 <p>The <code>never</code> type from PHP is retained in Tyhp with the same semantics: it indicates that a function never returns (it always throws, calls <code>exit()</code>, or enters an infinite loop). Like <code>void</code>, it is a restricted type that can only appear as a generic type argument when the constraint explicitly allows it.</p>
 <h2>The <code>mixed</code> Type</h2>
-<p>The <code>mixed</code> type from PHP is available in Tyhp but is discouraged. Tyhp's strong type system should eliminate most needs for <code>mixed</code>. There is no compiler setting that disallows <code>mixed</code>; prefer specific types or union types instead. See the dedicated Mixed Type documentation page for more details.</p>
+<p>The <code>mixed</code> type from PHP is available in Tyhp but is discouraged. Prefer specific types or union types instead. There is no compiler setting that disallows <code>mixed</code>. See the dedicated Mixed Type documentation page for more details.</p>
 <h2>Template String Types</h2>
 <p>Tyhp supports template (encaps) string types in type position: a double-quoted pattern with <code>${T}</code> holes and optional quantifiers right after <code>}</code> (<code>?</code> = 0–1, <code>+</code> = 1+, <code>*</code> = 0+). Examples: <code>&quot;${string}*&quot;</code>, <code>&quot;api/${string}/items&quot;</code>. They erase to <code>string</code>. See Type Aliases for a short usage note.</p>
 <h2>The <code>self</code> / <code>static</code> / <code>parent</code> Relative Class Types</h2>
 <p>Tyhp supports relative class types with and without generic type arguments. The rules differ for<br />
 bare vs parameterized forms, and for instance vs static methods.</p>
 <h3>Bare <code>self</code> / bare <code>static</code> (no type-argument list)</h3>
-<p>| Context | Bare <code>self</code> | Bare <code>static</code> |<br />
-|--------|-------------|---------------|<br />
-| Instance method | Declaring class with <strong>this receiver’s</strong> type args | Late-bound class of <code>$this</code>, with <strong>that</strong> instance’s type args (polymorphic “same as <code>$this</code>”) |<br />
-| Static method | Declaring class — under-specified args follow the bare-class-name rule | Class of the <strong>call-site receiver</strong> (<code>Child</code> in <code>Child::foo()</code> / <code>Child&lt;string&gt;::foo()</code>), with that reference’s type args |</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Context</th>
+<th>Bare <code>self</code></th>
+<th>Bare <code>static</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instance method</td>
+<td>Declaring class with <strong>this receiver’s</strong> type args</td>
+<td>Late-bound class of <code>$this</code>, with <strong>that</strong> instance’s type args (polymorphic “same as <code>$this</code>”)</td>
+</tr>
+<tr>
+<td>Static method</td>
+<td>Declaring class — under-specified args follow the bare-class-name rule</td>
+<td>Class of the <strong>call-site receiver</strong> (<code>Child</code> in <code>Child::foo()</code> / <code>Child&lt;string&gt;::foo()</code>), with that reference’s type args</td>
+</tr>
+</tbody>
+</table></div>
 <p>Bare forms <strong>inherit</strong> receiver / call-site type arguments. They do <strong>not</strong> mean “fill class<br />
 defaults.” Defaults apply only when the class reference is under-specified the same way a bare<br />
 <code>Foo</code> / <code>Foo::</code> would elsewhere: if every omitted parameter has a default, apply them; otherwise<br />
@@ -508,7 +781,7 @@ not invent or rebind type arguments. Prefer bare <code>static</code>, or explici
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 final class Promise&lt;TReturn extends void|mixed = mixed&gt; {
-    public static function _async&lt;T extends void|mixed&gt;(callable&lt;T&gt; $fn): self&lt;T&gt; {
+    public static function _async&lt;T extends void|mixed&gt;(callable(): T $fn): self&lt;T&gt; {
         return new self&lt;T&gt;($fn);
     }
 }
@@ -562,7 +835,7 @@ async function fetchUser(int $id): User {
 Promise&lt;User&gt; $userPromise = fetchUser(42);
 User $user = await $userPromise;
 </code></pre></div>
-<p>Key <code>Promise</code> methods include static combinators (<code>all&lt;T&gt;</code>, <code>race&lt;T&gt;</code>, <code>resolved&lt;T&gt;</code>, <code>rejected&lt;T&gt;</code>, <code>delay</code>, <code>timeout&lt;T&gt;</code>, <code>batch&lt;TItem, TResult&gt;</code>, <code>run&lt;T&gt;</code>), instance methods (<code>then&lt;TResult&gt;</code>, <code>catch&lt;TResult&gt;</code>, <code>finally</code>), and the internal <code>_async</code>/<code>_await</code> methods that the <code>async</code>/<code>await</code> keywords desugar to. See the Async/Await documentation for full details.</p>
+<p>Key <code>Promise</code> methods include static combinators (<code>all&lt;T&gt;</code>, <code>race&lt;T&gt;</code>, <code>resolved&lt;T&gt;</code>, <code>rejected&lt;T&gt;</code>, <code>delay</code>, <code>timeout&lt;T&gt;</code>, <code>batch&lt;TItem, TResult&gt;</code>, <code>run&lt;T&gt;</code>), instance methods (<code>then&lt;TResult&gt;</code>, <code>catch&lt;TResult&gt;</code>, <code>finally</code>), and the internal <code>_async</code>/<code>_await</code> methods that the <code>async</code>/<code>await</code> keywords desugar to. <code>async { ... }</code> is a block expression that evaluates to <code>Promise&lt;T&gt;</code> (not a callable). See the Async/Await documentation for full details.</p>
 <h2>Internal Compiler Types</h2>
 <p>The following types are part of Tyhp's internal type system. They are used by the compiler for type checking and type manipulation. Most are prefixed with <code>__</code> to indicate they are internal.</p>
 <h2>The <code>__TyhpInternal&lt;TType&gt;</code> Type</h2>
@@ -577,7 +850,8 @@ User $user = await $userPromise;
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A <code>string</code> representing a class name in scope. Obtained via <code>\class_exists()</code> as a type guard.<br />
 Bare <code>__ClassName</code> is equivalent to <code>__ClassName&lt;object&gt;</code>; <code>\class_exists&lt;T&gt;($n)</code> narrows to <code>__ClassName&lt;T&gt;</code>.<br />
-Parametric <code>__ClassName&lt;T&gt;</code> is invariant in <code>T</code> (exact class name). For &quot;name of <code>T</code> or a descendant&quot;, use <code>__CompatibleTypeName&lt;T&gt;</code>.</p>
+Parametric <code>__ClassName&lt;T&gt;</code> is invariant in <code>T</code> when <code>T</code> is a nominal class (exact class name). When <code>T</code> is an object-shape alias, <code>__ClassName&lt;Shape&gt;</code> is a string naming some class whose instances match <code>Shape</code> (not an exact-name brand). <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> names a concrete, public-<code>new</code>-able class matching that shape; <code>new $cls(...)</code> is allowed with the shape’s constructor arguments. See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.<br />
+For &quot;name of <code>T</code> or a descendant&quot;, use <code>__CompatibleTypeName&lt;T&gt;</code>. For &quot;name of <code>T</code> or a parent&quot;, use <code>__SuperTypeName&lt;T&gt;</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__InterfaceName</code></h4><br/><p>A <code>string</code> representing an interface name in scope. Obtained via <code>\interface_exists()</code> as a type guard.<br />
 Bare form ≡ <code>__InterfaceName&lt;object&gt;</code>; parametric form mirrors <code>__ClassName&lt;T&gt;</code>.</p>
@@ -593,7 +867,13 @@ Bare form ≡ <code>__TraitName&lt;object&gt;</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__UsedTraitName&lt;T&gt;</code></h4><br/><p>A <code>__TraitName</code> that is specifically a trait used by the class or enum specified by <code>T</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__CompatibleTypeName&lt;T&gt;</code></h4><br/><p>A class, enum, or interface name that is compatible with (same as or descendant of) <code>T</code>. Used with the <code>is</code> / <code>instanceof</code> keyword and with <code>\is_subclass_of()</code>.<br />
-Accepts string literals naming a subtype of <code>T</code>, and branded <code>__ClassName&lt;S&gt;</code> / <code>__EnumName&lt;S&gt;</code> / <code>__InterfaceName&lt;S&gt;</code> / <code>__CompatibleTypeName&lt;S&gt;</code> when <code>S</code> is the same as or a subtype of <code>T</code>.</p>
+Accepts string literals naming a subtype of <code>T</code>, and branded <code>__ClassName&lt;S&gt;</code> / <code>__EnumName&lt;S&gt;</code> / <code>__InterfaceName&lt;S&gt;</code> / <code>__CompatibleTypeName&lt;S&gt;</code> when <code>S</code> is the same as or a subtype of <code>T</code>. The ancestor counterpart is <code>__SuperTypeName&lt;T&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__SuperType&lt;T&gt;</code></h4><br/><p>The object type <code>T</code> together with every parent class of <code>T</code>. Resolves to a union of those object types. When <code>T</code> is <code>object</code> or <code>null</code>, the result is <code>object</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__SuperTypeName&lt;T&gt;</code></h4><br/><p>Class-name strings of <code>T</code> and its parent classes, branded like <code>__ClassName</code>. Inverse of <code>__CompatibleTypeName&lt;T&gt;</code> (which names descendants). When <code>T</code> is <code>object</code> or <code>null</code>, the result is <code>__ClassName</code>. Erases to <code>string</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CurrentScope</code></h4><br/><p>The lexical enclosing class or enum at the use site. Inside an instance method and inside a static method this is that class or enum type. At top-level (no enclosing type) this is <code>null</code>. Erases to <code>?object</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__PropertyName&lt;T&gt;</code></h4><br/><p>A <code>string</code> representing a property name on the type <code>T</code>. Obtained via <code>\property_exists()</code> as a type guard.</p>
 </div>
@@ -633,21 +913,55 @@ Accepts string literals naming a subtype of <code>T</code>, and branded <code>__
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__StructKey&lt;TStructType&gt;</code></h4><br/><p>The key type (property name type) of a struct's records.</p>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>__IndexKeys&lt;T&gt;</code></h4><br/><p>Union of struct <code>T</code>'s PHP array keys as literal types: each property name and each <code>as</code> alias (quoted string or integer). Used as the key type of per-key maps over a struct. Erases to <code>string</code>, <code>int</code>, or <code>string | int</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__IndexValueType&lt;T, K&gt;</code></h4><br/><p>The field type of struct <code>T</code> at key <code>K</code>. Distributes over a union <code>K</code>, so <code>__IndexValueType&lt;T, 'a' | 'b'&gt;</code> is the union of those two field types. Erases to <code>mixed</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__IndexValueTypes&lt;T&gt;</code></h4><br/><p>Union of every field type of struct <code>T</code>. Used as the value envelope when indexing <code>T</code> without a specific key. Erases to <code>mixed</code>.</p>
+</div>
 <h2>Type Utility Types</h2>
 <p>These types provide compile-time type manipulation capabilities, similar to utility types in TypeScript.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>__Properties&lt;T&gt;</code></h4><br/><p>Returns the property names (for objects) or record keys (for structs) of a given type. Resolves to <code>__PropertyName&lt;T&gt; | __StructKey&lt;T&gt;</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__Partial&lt;T&gt;</code></h4><br/><p>Object/struct patch type: every property becomes optional and nullable. Distinct from <code>__StructPartial</code>, which selects keys of a struct.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__FunctionReturnType&lt;T&gt;</code></h4><br/><p>Extracts the return type of a function given its name string.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__Required&lt;T&gt;</code></h4><br/><p>Inverse of <code>__Partial&lt;T&gt;</code>: every property is required and non-nullable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Pick&lt;T, K&gt;</code></h4><br/><p>Keeps only the properties of <code>T</code> named in string-literal union <code>K</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Omit&lt;T, K&gt;</code></h4><br/><p>Drops the properties of <code>T</code> named in string-literal union <code>K</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Record&lt;K, V&gt;</code></h4><br/><p>Equivalent to <code>array&lt;K, V&gt;</code>. Distinct from <code>__StructRecord</code>, which is a struct-key carrier.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Exclude&lt;T, U&gt;</code></h4><br/><p>Removes members of union <code>T</code> that are assignable to <code>U</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Extract&lt;T, U&gt;</code></h4><br/><p>Keeps only members of union <code>T</code> that are assignable to <code>U</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Awaited&lt;T&gt;</code></h4><br/><p>Recursively unwraps <code>Promise&lt;T&gt;</code> (and nested promises) to the resolved type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__New&lt;T&gt;</code></h4><br/><p>Constructability constraint on an object-shape alias <code>T</code>. Values are instances that match <code>T</code> whose class is concrete and public-<code>new</code>-able as the shape’s <code>__construct</code> (or the PHP default zero-argument constructor when the shape has no <code>__construct</code>). <code>T</code> must be an object-shape alias. <code>new T(...)</code> is allowed when a type parameter is bounded by <code>__New&lt;Shape&gt;</code>. Erases like the shape (<code>object</code>, or nominal conjuncts from an intersection). See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__Properties&lt;T&gt;</code></h4><br/><p>A synthetic struct whose keys are the instance property names of object type <code>T</code>, or the record keys of struct type <code>T</code>, and whose values are those members’ types. Every member is optional (same as a struct field with a default), so <code>[]</code> is a valid value and a literal may supply any subset of keys. Extra keys and value-type mismatches are errors. <code>T</code> must be an object type (class, interface, struct, or a type parameter bounded by <code>object</code>). Erases to <code>array</code>. An unbound type parameter stays deferred until it is inferred at a call site (for example <code>clone($object, $withProperties)</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__FunctionReturnType&lt;T&gt;</code></h4><br/><p>Extracts the return type of a function given its name string. When harvest wrote a generated object-shape alias for a <code>return new class { … }</code> site, this utility recovers that shape.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__MethodReturnType&lt;T, M&gt;</code></h4><br/><p>Extracts the return type of a method given the owning type <code>T</code> and method name string <code>M</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__CallableReturnType&lt;TCallable&gt;</code></h4><br/><p>Extracts the return type of a callable type <code>TCallable</code> — a <code>callable&lt;…&gt;</code> / <code>\Closure&lt;…&gt;</code> facet, a first-class function or method, or a type parameter inferred from a callback argument. Complements <code>__FunctionReturnType</code> / <code>__MethodReturnType</code>, which key off name strings rather than the callable type. Erases to that return type, or to <code>mixed</code> while <code>TCallable</code> is still unbound.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableReturnType&lt;TCallable&gt;</code></h4><br/><p>Extracts the return type of a callable type <code>TCallable</code> — a <code>callable(...)</code> / <code>\Closure&lt;…&gt;</code> facet, a first-class function or method, or a type parameter inferred from a callback argument. Complements <code>__FunctionReturnType</code> / <code>__MethodReturnType</code>, which key off name strings rather than the callable type. Erases to that return type, or to <code>mixed</code> while <code>TCallable</code> is still unbound.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersStruct&lt;TCallable&gt;</code></h4><br/><p>Named-argument bag for a callable type <code>TCallable</code>. Resolves to a synthetic struct with one property per non-variadic named parameter (key <code>$name</code>, type = parameter type). Parameters with defaults are optional fields and may be omitted from a literal; required parameters must be present (TYHP4325). Facets without names (<code>callable&lt;string, int&gt;</code>) degrade to an empty struct. Variadic parameters are omitted (extra keys stay unknown-property errors). Erases to <code>array</code>. An unbound <code>TCallable</code> stays deferred until the callable is inferred at a call site.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersStruct&lt;TCallable&gt;</code></h4><br/><p>Named-argument bag for a callable type <code>TCallable</code>. Resolves to a synthetic struct with one property per non-variadic named parameter (key <code>$name</code>, type = parameter type). Parameters with defaults are optional fields and may be omitted from a literal; required parameters must be present (TYHP4325). Facets without names (<code>callable(string): int</code>) degrade to an empty struct. Variadic parameters are omitted (extra keys stay unknown-property errors). Erases to <code>array</code>. An unbound <code>TCallable</code> stays deferred until the callable is inferred at a call site.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersTuple&lt;TCallable&gt;</code></h4><br/><p>Positional-argument bag for a callable type <code>TCallable</code>. Resolves to a synthetic struct with int key aliases <code>0 as $_1</code>, <code>1 as $_2</code>, … matching the hand-written <code>CallableArgs*</code> convention. Unlike the named bag, parameter names are not required — a bare <code>callable&lt;string, int&gt;</code> facet still produces <code>$_1: string</code>. Defaulted trailing parameters are optional indexes and may be omitted from a list literal; required indexes must be present. Variadic parameters are omitted. Erases to <code>array</code>. An unbound <code>TCallable</code> stays deferred until the callable is inferred at a call site. List literals (<code>['Ada', 36]</code>) and explicit int keys (<code>[0 =&gt; 'Ada', 1 =&gt; 36]</code>) assign when types match.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersTuple&lt;TCallable&gt;</code></h4><br/><p>Positional-argument bag for a callable type <code>TCallable</code>. Resolves to a synthetic struct with int key aliases <code>0 as $_1</code>, <code>1 as $_2</code>, … matching the hand-written <code>CallableArgs*</code> convention. Unlike the named bag, parameter names are not required — a bare <code>callable(string): int</code> facet still produces <code>$_1: string</code>. Defaulted trailing parameters are optional indexes and may be omitted from a list literal; required indexes must be present. Variadic parameters are omitted. Erases to <code>array</code>. An unbound <code>TCallable</code> stays deferred until the callable is inferred at a call site. List literals (<code>['Ada', 36]</code>) and explicit int keys (<code>[0 =&gt; 'Ada', 1 =&gt; 36]</code>) assign when types match.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersRest&lt;TCallable&gt;</code></h4><br/><p>Rest-unpack of a callable type <code>TCallable</code>'s parameter list (TypeScript <code>...args: Parameters&lt;T&gt;</code>). Used as a trailing variadic: <code>function invoke&lt;TCallable extends callable&gt;(TCallable $cb, __CallableParametersRest&lt;TCallable&gt; ...$args): __CallableReturnType&lt;TCallable&gt;</code>. After <code>TCallable</code> is inferred from <code>$cb</code>, each remaining positional argument is checked 1:1 against the callable's parameters (TYHP4010 / TYHP4142 / TYHP4143). Defaulted parameters may be omitted; a trailing variadic on the callable accepts extra arguments at that element type. Bare opaque <code>callable</code> stays gradual (unknown arity). Unions of same-arity callables merge parameter types; mismatched arities stay gradual. A trailing spread (<code>...$packed</code>) or a named pack into the rest parameter is not treated as an empty argument list. Positionals after a rest-region spread are not typed as the first inner parameter. The wrapper is kept at check time (it does not collapse to a Tuple struct). Erases to <code>mixed</code> so PHP does not demand each unpacked argument be an array.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersRest&lt;TCallable&gt;</code></h4><br/><p>Rest-unpack of a callable type <code>TCallable</code>'s parameter list (TypeScript <code>...args: Parameters&lt;T&gt;</code>). Used as a trailing variadic: <code>function invoke&lt;TCallable extends callable&gt;(TCallable $cb, __CallableParametersRest&lt;TCallable&gt; ...$args): __CallableReturnType&lt;TCallable&gt;</code>. After <code>TCallable</code> is inferred from <code>$cb</code>, each remaining positional argument is checked 1:1 against the callable's parameters (TYHP4010 / TYHP4142 / TYHP4143). Defaulted parameters may be omitted; a trailing variadic on the callable accepts extra arguments at that element type. Bare opaque <code>callable</code> stays gradual (unknown arity). Unions of same-arity callables merge parameter types; mismatched arities stay gradual. A trailing spread (<code>...$packed</code>) or a named pack into the rest parameter is not treated as an empty argument list. Positionals after a rest-region spread are not typed as the first inner parameter. The wrapper is kept at check time (it does not collapse to a Tuple struct). It is a <strong>pack</strong>: inside a callable-shape parameter list it auto-splices into ordinary parameters. Erases to <code>mixed</code> so PHP does not demand each unpacked argument be an array.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableParametersSlice&lt;TCallable, TStart, TMin&gt;</code></h4><br/><p>Slice of a callable type <code>TCallable</code>'s parameter list. <code>TStart</code> / <code>TMin</code> are non-negative int literal types (defaults <code>0</code>). A non-variadic <code>Slice&lt;T, N&gt; $x</code> is exactly parameter N (<code>TMin</code> must not be written). A variadic <code>Slice&lt;T, N&gt; ...$xs</code> covers parameters from N for as many arguments as are passed (<code>N ≥ TMin</code>). <code>array&lt;Slice&lt;T, 0&gt;&gt;</code> is an array of <code>P_0</code>. Same-function slices of one <code>TCallable</code> must be disjoint, ordered by <code>TStart</code>, with at most one open rest and no holes (<code>TYHP4189</code>–<code>TYHP4191</code>). Erases like Rest (<code>mixed</code> when used as a rest unpack).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableThis&lt;TCallable&gt;</code></h4><br/><p>The <code>$this</code> bound on a callable type <code>TCallable</code>. For <code>\Closure&lt;C, TThis, TScope&gt;</code> this is <code>TThis</code>. An invokable object (<code>__invoke</code>) is that class. Bare <code>callable</code> is <code>object | null</code>. Distributes over unions and intersections. Erases to <code>?object</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__CallableScope&lt;TCallable&gt;</code></h4><br/><p>The visibility-scope class of a callable type <code>TCallable</code>. For <code>\Closure&lt;C, TThis, TScope&gt;</code> this is <code>TScope</code>. An invokable object is that class. Bare <code>callable</code> is <code>object | __ClassName | null</code>. Distributes over unions and intersections. Erases to <code>object|string|null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__ClosureThis</code></h4><br/><p>Overlay alias in <code>tyhpdef/php</code>: <code>object|null</code>. Default <code>TThis</code> on <code>\Closure</code> so static closures still match when <code>TThis</code> is omitted.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>__ClosureScope&lt;TThis&gt;</code></h4><br/><p>Overlay alias: <code>__SuperType&lt;TThis&gt; | __SuperTypeName&lt;TThis&gt; | null</code>. Default stored <code>TScope</code>. <code>'static'</code> is not part of this union.</p>
 </div>
 <p><code>\call_user_func</code> and <code>\call_user_func_array</code> in ExtStandard use these utilities:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function call_user_func&lt;TCallable extends callable&gt;(
@@ -669,9 +983,9 @@ function call_user_func_array&lt;TCallable extends callable&gt;(
 <p>Locked decisions: utilities are keyed by the callable type, not a name string; optional parameters are modeled as optional struct fields (required-key assignability), not a power-set of subset bags; positional bags are first-class via Tuple (int keys <code>0..n-1</code>, <code>$_N</code> aliases).</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__TypeDiff&lt;T, U&gt;</code></h4><br/><p>Type subtraction: produces <code>T</code> with <code>U</code> removed. If nothing remains, resolves to <code>void</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__AsNotNullable&lt;T&gt;</code></h4><br/><p>Strips <code>null</code> from a type. Returns <code>void</code> if the input was just <code>null</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__NonNullable&lt;T&gt;</code></h4><br/><p>Strips <code>null</code> from a type. Returns <code>void</code> if the input was just <code>null</code>. On a pack, maps each member.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__AsNullable&lt;T&gt;</code></h4><br/><p>Makes any type nullable by adding <code>| null</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__Nullable&lt;T&gt;</code></h4><br/><p>Makes a type nullable (<code>T|null</code>). On a pack, maps each member (<code>?P0, ?P1, …</code>) so the result splices inside a callable-shape parameter list.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__AsReadOnly&lt;T&gt;</code></h4><br/><p>Marks a type as readonly. The compiler errors if you try to modify a variable or property of this type.</p>
 </div>
@@ -724,7 +1038,7 @@ $cache = new \WeakMap();
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use <code>callable&lt;TArgs..., TReturn&gt;</code> to specify the signature of callable parameters. This gives you compile-time checking on both the arguments passed to the callable and its return type.</p>
+        <div class="callout-content"><p>Use <code>callable(TArgs …): TReturn</code> for “any invokable” parameters. Use <code>\Closure&lt;callable(TArgs …): TReturn&gt;</code> when you need a Closure object (<code>bind</code> / <code>bindTo</code> / <code>call</code> / <code>fromCallable</code>) or the class type. Do not put argument types as <code>\Closure</code>’s own type arguments.</p>
 </div>
     </div>
 </div>
@@ -801,10 +1115,58 @@ $cache = new \WeakMap();
 </div>
     </div>
 </div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't write <code>\Closure&lt;int, string&gt;</code> for “takes int, returns string”. Write <code>\Closure&lt;callable(int): string&gt;</code>. The same callable-shape spelling is the type argument of <code>Expression</code> / <code>PropertyPath</code> (<code>Expression&lt;callable(User $u): string&gt;</code>).</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't list <code>\Traversable</code> on a user class, enum, interface, or trait. Implement <code>\Iterator</code> or <code>\IteratorAggregate</code>. Don't treat <code>ArrayAccess&lt;SomeStruct&gt;</code> as a per-key map — that is <code>TKey</code> plus default <code>TValue</code>. Use <code>\Tyhp\Contracts\ArrayAccessShape&lt;SomeStruct&gt;</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't list <code>\UnitEnum</code> or <code>\BackedEnum</code> on a user class, interface, trait, or enum. Don't redeclare <code>cases</code>, <code>from</code>, or <code>tryFrom</code> on a user enum. Enumerations already are those engine interfaces.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't declare a generator as returning the body's <code>return</code> type (<code>function foo(): string { yield 1; return &quot;done&quot;; }</code>). The declared return is <code>\Generator</code> (or <code>\Generator&lt;K, V&gt;</code> / the four-arg form). <code>TReturn</code> is <code>$g-&gt;getReturn()</code>.</p>
+</div>
+    </div>
+</div>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0100_stronglyTyped.html">&larr; Strongly Typed</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="tyhp_0100_typesAndLocals.html">&larr; Types and Locals</a></div>
     <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp &rarr;</a></div>
 </nav>
 
@@ -812,6 +1174,7 @@ $cache = new \WeakMap();
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

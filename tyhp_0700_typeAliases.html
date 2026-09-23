@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -263,35 +279,98 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Type aliases in Tyhp let you create named shortcuts for complex or frequently used type expressions. They are completely erased during compilation — no PHP code is generated for a type alias declaration, and all usages are replaced with the underlying type in the PHP output. Type aliases can be declared at the root level (within a namespace) or inside a class body with visibility modifiers.</p>
-<div class="callout-block callout-block-info">
+    <p>Type aliases in Tyhp give a name to a type expression. Use the name in type position (hints, annotations, generic arguments). A source <code>.tyhp</code> alias also emits a PHP factory that returns <code>\Tyhp\Type</code> for that body, so PHP and Tyhp can name the alias at runtime. Type <strong>hints</strong> still expand to the underlying PHP type — the factory is never used as a PHP type hint.</p>
+<p>Type aliases can be declared at the root level (within a namespace) or inside a class body with visibility modifiers.</p>
+<h2>Type, <code>typeof</code>, and factory calls</h2>
+<p><code>&lt;&gt;</code> is type-position syntax. <code>typeof(...)</code> takes a type and produces a <code>\Tyhp\Type</code> value. Calling the alias by name is the same factory PHP will call: arguments are <code>\Tyhp\Type</code> values, not type arguments.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Intent</th>
+<th>Write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The type (hints, annotations)</td>
+<td><code>UserId</code>, <code>Optional&lt;int&gt;</code></td>
+</tr>
+<tr>
+<td>The Type value, from a type</td>
+<td><code>typeof(UserId)</code>, <code>typeof(Optional&lt;int&gt;)</code></td>
+</tr>
+<tr>
+<td>The Type value, by calling the factory</td>
+<td><code>UserId()</code>, <code>Optional()</code>, <code>Optional(typeof(int))</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>UserId()</code> in Tyhp is the same as <code>typeof(UserId)</code>: alias-name-as-call. The PHP function or static method exists for PHP interop. It is not autodetection of an existing method — <code>\Tyhp\Type::bool()</code> is an ordinary method; unqualified <code>bool</code> stays the builtin type.</p>
+<div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
             </span>
-            Note
+            Danger
         </h4>
-        <div class="callout-content"><p>Type aliases have zero runtime cost. They exist only at compile time for type checking and are fully erased from PHP output.</p>
+        <div class="callout-content"><p><code>Optional&lt;int&gt;()</code> is invalid. It mixes type-argument syntax into a value call. Write <code>typeof(Optional&lt;int&gt;)</code> or <code>Optional(typeof(int))</code> instead (<code>TYHP4186</code>).</p>
 </div>
     </div>
 </div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Types;
+
+type UserId = int;
+type Optional&lt;T = mixed&gt; = T|null;
+
+function findUser(UserId $id): ?User {
+    // ...
+}
+
+\Tyhp\Type $idType = typeof(UserId);
+\Tyhp\Type $optInt = typeof(Optional&lt;int&gt;);
+\Tyhp\Type $also = Optional(typeof(int));
+\Tyhp\Type $defaulted = Optional();
+</code></pre></div>
+<p>PHP writes the same factory with <code>\Tyhp\Type</code> arguments — not <code>&lt;int&gt;()</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+declare(strict_types=1);
+
+namespace App\Types;
+
+function UserId(): \Tyhp\Type
+{
+    return \Tyhp\Type::int();
+}
+
+function Optional(?\Tyhp\Type $T = null): \Tyhp\Type
+{
+    $T ??= \Tyhp\Type::mixed();
+    return \Tyhp\Type::nullable($T);
+}
+
+function findUser(int $id): ?User {
+    // ...
+}
+
+$idType = UserId();
+$optInt = Optional(\Tyhp\Type::int());
+$also = Optional(\Tyhp\Type::int());
+$defaulted = Optional();
+</code></pre></div>
+<p>The factory is always emitted from a <code>.tyhp</code> alias, even when that file never writes <code>typeof</code>. Nested source aliases call inner factories (<code>type UserIds = array&lt;UserId&gt;</code> → <code>UserIds()</code> uses <code>UserId()</code>). <code>UserId()</code> returns the same structure <code>typeof</code> would build for the body (<code>Type::int()</code>), not a distinct alias identity — <code>Type::is($n, UserId())</code> matches ints.</p>
 <h2>Root-Level Type Aliases</h2>
 <p>A root-level type alias is declared with the type keyword followed by a name, an equals sign, and a type expression. It can appear at the namespace level alongside class and function declarations.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 namespace App\Types;
 
-// Simple type alias
 type UserId = int;
-
-// Union type alias
 type StringOrNull = string|null;
+type Callback = callable(string, int): bool;
 
-// Complex type alias
-type Callback = callable&lt;string, int, bool&gt;;
-
-// Using type aliases
 function findUser(UserId $id): ?User {
     // ...
 }
@@ -300,12 +379,16 @@ function filter(array $items, Callback $predicate): array {
     return \array_filter($items, $predicate);
 }
 </code></pre></div>
+<p>Hints erase; the factory lives next to other namespace functions in <code>_functions.php</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — type alias declarations are erased,
-// usages are replaced with the underlying type
 declare(strict_types=1);
 
 namespace App\Types;
+
+function UserId(): \Tyhp\Type
+{
+    return \Tyhp\Type::int();
+}
 
 function findUser(int $id): ?User {
     // ...
@@ -315,39 +398,80 @@ function filter(array $items, callable $predicate): array {
     return \array_filter($items, $predicate);
 }
 </code></pre></div>
+<p>A file-level alias occupies the Tyhp function namespace as well as the type namespace. <code>type Foo</code> and <code>function Foo()</code> in the same namespace is an error (<code>TYHP3028</code>). Names that cannot be PHP functions (<code>echo</code>, <code>list</code>, <code>empty</code>, <code>int</code>, …) are an error at file level (<code>TYHP3030</code>). <code>type Foo</code> and <code>class Foo</code> still collide as class-likes.</p>
 <h2>Generic Type Aliases</h2>
 <p>Type aliases can have generic type parameters, making them reusable templates for type expressions. Generic type alias parameters support the same syntax as class generics — including constraints and defaults.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Generic type alias
 type Collection&lt;T&gt; = array&lt;T&gt;;
-
-// Generic alias with constraint
 type EntityList&lt;T extends Entity&gt; = array&lt;T&gt;;
-
-// Generic alias with default
 type Optional&lt;T = mixed&gt; = T|null;
-
-// Multi-parameter generic alias
 type Map&lt;TKey, TValue&gt; = array&lt;TKey, TValue&gt;;
 
-// Using generic type aliases
 Collection&lt;string&gt; $names = [&#039;Alice&#039;, &#039;Bob&#039;];
-Optional&lt;int&gt; $age = null;           // T = int
-Optional $unknown = null;            // T defaults to mixed (generic defaults are shipped)
+Optional&lt;int&gt; $age = null;
+Optional $unknown = null;
 Map&lt;string, User&gt; $users = [];
+
+\Tyhp\Type $t = typeof(Optional&lt;int&gt;);
+\Tyhp\Type $m = typeof(Map&lt;string, User&gt;);
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — generic type aliases are fully erased
 declare(strict_types=1);
 
 $names = [&#039;Alice&#039;, &#039;Bob&#039;];
 $age = null;
 $unknown = null;
 $users = [];
+
+$t = Optional(\Tyhp\Type::int());
+$m = Map(\Tyhp\Type::string(), \Tyhp\Type::fromClassName(User::class));
 </code></pre></div>
+<p>The PHP factory takes optional <code>?\Tyhp\Type</code> parameters named after the alias’s generic parameters. Defaults match the alias’s generic defaults (or <code>Type::mixed()</code>). Constraints are checked at Tyhp use sites; the PHP factory does not re-check them at runtime.</p>
+<h2>Object-shape aliases</h2>
+<p>A <code>type</code> alias whose right-hand side is <code>object { … }</code> is an <strong>object shape</strong>: a structural instance type. Use the alias name in every other type position (parameters, properties, returns, generic bounds, unions). See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type ClockShape = object {
+    public function now(): \DateTimeImmutable;
+};
+
+function formatNow(ClockShape $c): string {
+    return $c-&gt;now()-&gt;format(&#039;c&#039;);
+}
+</code></pre></div>
+<p>A source-alias factory for a shape returns <code>\Tyhp\Type::objectShape(...)</code>. Hints erase to <code>object</code>, or to a nominal conjunct from an intersection (<code>LoggerInterface &amp; object { … }</code> → <code>LoggerInterface</code>). Recursive shapes that mention their own name are allowed (<code>type Node = object { public function parent(): ?Node; }</code>).</p>
+<h2>Callable-shape aliases</h2>
+<p>A <code>type</code> alias whose right-hand side is <code>callable(…): R</code> names a callable shape. Use the alias in every type position. Values come from <code>fn</code>, <code>function</code>, first-class callables, or a matching <code>__invoke</code> object — <code>new Mapper</code> is illegal.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type Predicate&lt;T&gt; = callable(T $value): bool;
+type Mapper&lt;T, U&gt; = callable(T $in): U;
+
+function allMatch&lt;T&gt;(array&lt;T&gt; $items, Predicate&lt;T&gt; $p): bool {
+    foreach ($items as $item) {
+        if (!$p($item)) {
+            return false;
+        }
+    }
+    return true;
+}
+</code></pre></div>
+<p>Inline <code>callable(T $x): U</code> is also legal in every type position. Object shapes stay alias-only.</p>
+<h2>Struct-shape aliases</h2>
+<p>A <code>type</code> alias whose right-hand side is <code>struct { … }</code> is a named struct. <code>new Point() with […]</code> constructs the array. Inline <code>struct { … }</code> is legal in type position.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type Point = struct {
+    float $x;
+    float $y;
+};
+
+Point $p = new Point() with [x =&gt; 1.0, y =&gt; 2.0];
+</code></pre></div>
+<p>See <a href="tyhp_0400_structs.md">Structs</a> and <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
 <h2>Template String Types</h2>
-<p>Type aliases can name template (encaps) string types — double-quoted patterns in type position with <code>${T}</code> holes and quantifiers after <code>}</code> (<code>?</code>, <code>+</code>, <code>*</code>). They erase to <code>string</code>.</p>
+<p>Type aliases can name template (encaps) string types — double-quoted patterns in type position with <code>${T}</code> holes and quantifiers after <code>}</code> (<code>?</code>, <code>+</code>, <code>*</code>). They erase to <code>string</code>. The factory returns <code>\Tyhp\Type::string()</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 type AnyString = &quot;${string}*&quot;;
@@ -355,44 +479,68 @@ type ApiPath = &quot;api/${string}/items&quot;;
 type OptionalPrefix = &quot;${string}?id&quot;;
 </code></pre></div>
 <h2>Class-Level Type Aliases</h2>
-<p>Type aliases can be declared inside a class body. Class-level type aliases support visibility modifiers (public, protected, private), controlling whether the alias is accessible outside the class. They are useful for defining types that are conceptually owned by a class.</p>
+<p>Type aliases can be declared inside a class body. Class-level type aliases support visibility modifiers (public, protected, private), controlling whether the alias is accessible outside the class. The factory is a static method on the owning class with that visibility.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class UserService {
-    // Public — accessible from outside the class
     public type UserIdType = int;
-
-    // Protected — accessible from subclasses
     protected type UserData = array&lt;string, string&gt;;
-
-    // Private — only accessible within this class
     private type InternalState = array&lt;string, mixed&gt;;
 
     private InternalState $state;
 
     public function findUser(self\UserIdType $id): ?User {
-        // ...
+        return null;
+    }
+
+    public function idType(): \Tyhp\Type {
+        return self::UserIdType();
     }
 }
 
-// Prefer self\Alias inside the class (as above). ClassName\Alias from outside
-// (e.g. UserService\UserIdType) may not bind/check completely yet.
+\Tyhp\Type $t = typeof(UserService\UserIdType);
+\Tyhp\Type $also = UserService::UserIdType();
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — class-level type aliases are erased,
-// all usages replaced with underlying types
 declare(strict_types=1);
 
 class UserService {
     private array $state;
 
+    public static function UserIdType(): \Tyhp\Type
+    {
+        return \Tyhp\Type::int();
+    }
+
     public function findUser(int $id): ?User {
-        // ...
+        return null;
+    }
+
+    public function idType(): \Tyhp\Type {
+        return self::UserIdType();
     }
 }
+
+$t = \UserService::UserIdType();
+$also = \UserService::UserIdType();
 </code></pre></div>
+<p>Class-level aliases collide with methods of the same name — the static method <em>is</em> the factory. PHP has no <code>use function ClassName\method</code> for that; keep <code>use App\UserService;</code> as a class import when the class is referenced.</p>
+<h2>Imports</h2>
+<p>Import a type alias with a plain <code>use</code>, the same as a class:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use App\Types\UserId;
+use App\Types\Optional;
+
+function f(UserId $id): void { }
+
+\Tyhp\Type $t = typeof(UserId);
+Optional(typeof(int));
+</code></pre></div>
+<p>When emitted PHP references the factory by short name (<code>UserId()</code>, <code>typeof(UserId)</code>, <code>$x is UserId</code>, <code>default(UserId)</code>), that import becomes <code>use function App\Types\UserId;</code>. Hints-only usage still drops the import. A fully-qualified <code>\App\Types\UserId()</code> does not need <code>use</code>. Mixed groups split: <code>use App\Types\{ User, UserId }</code> emits <code>use App\Types\User;</code> plus <code>use function App\Types\UserId;</code> when the factory is used.</p>
+<p>Same-namespace aliases need no import. Tyhp does not require a second <code>use function</code> in source — the class-kind import already binds <code>UserId()</code> as the factory.</p>
 <h2>Self, Static, and Parent Scoping</h2>
-<p>Class-level type aliases can be referenced using self, static, and parent, just like class constants and methods. Prefer <code>self\Alias</code> (and <code>parent\Alias</code>) inside the class. Qualifying as <code>ClassName\Alias</code> from outside the class may not bind or check completely yet.</p>
+<p>Class-level type aliases can be referenced using <code>self</code>, <code>static</code>, and <code>parent</code>, just like class constants and methods. Prefer <code>self\Alias</code> (and <code>parent\Alias</code>) inside the class. From outside the class, <code>ClassName\Alias</code> is the type and <code>ClassName::Alias()</code> is the factory. PHP allows a class and a nested namespace to share a prefix (<code>class \App\Renderer</code> plus <code>\App\Renderer\AbstractRenderer</code>). In type position — including <code>is</code> / <code>instanceof</code> — <code>ClassName\Name</code> is the class-level alias when that member exists on the prefix class; otherwise it is the nested type. Inherited members still resolve from a parent declared under that shared prefix.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Base {
@@ -407,27 +555,34 @@ class Child extends Base {
     public type IdType = string;
 
     public function getParentIdType(): parent\IdType {
-        // parent\IdType is int (from Base)
         return 1;
     }
 
     public function getOwnIdType(): self\IdType {
-        // self\IdType is string (from Child)
         return &#039;abc&#039;;
     }
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — type aliases resolved and erased
 declare(strict_types=1);
 
 class Base {
+    public static function IdType(): \Tyhp\Type
+    {
+        return \Tyhp\Type::int();
+    }
+
     public function getId(): int {
         return 1;
     }
 }
 
 class Child extends Base {
+    public static function IdType(): \Tyhp\Type
+    {
+        return \Tyhp\Type::string();
+    }
+
     public function getParentIdType(): int {
         return 1;
     }
@@ -437,17 +592,26 @@ class Child extends Base {
     }
 }
 </code></pre></div>
+<p>A helper that aliases <code>self</code> / <code>?self</code> emits <code>Type::fromClassName(self::class)</code> / <code>Type::nullable(...)</code>. <code>typeof(self\NameType)</code> emits <code>self::NameType()</code>. <code>typeof(C\NameType)</code> emits <code>C::NameType()</code>.</p>
+<h2><code>is</code>, <code>instanceof</code>, and <code>default</code></h2>
+<p><code>$x is UserId</code> expands the alias, then follows NativeTypeTest: <code>type UserId = string</code> emits <code>\is_string($x)</code> when <code>is_string</code> is marked. An unmarked alias still lowers to <code>\Tyhp\Type::is($x, UserId())</code> (including an alias of a class — never native <code>instanceof</code> of the underlying class). <code>$x is User</code> when <code>User</code> is a real class stays native <code>instanceof</code>. <code>default(UserId)</code> emits <code>UserId()-&gt;defaultValue()</code>; generic: <code>Optional(\Tyhp\Type::int())-&gt;defaultValue()</code>.</p>
 <h2>Type Alias Expansion</h2>
-<p>The compiler resolves type aliases by recursively expanding them to their underlying types. Nested aliases (an alias that references another alias) are fully expanded. Circular aliases — where alias A references alias B which references alias A — are detected and produce a compile error.</p>
+<p>The compiler resolves type aliases by recursively expanding them to their underlying types. Nested aliases (an alias that references another alias) are fully expanded for checking and hints. Circular aliases — where alias A references alias B which references alias A — are detected on source <code>.tyhp</code> declarations and produce a compile error (<code>TYHP3029</code>), except when every participant in the cycle is an object-shape alias (directly, or via a rename / generic instantiation of a shape).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 type StringOrNull = string|null;
-type Name = StringOrNull;  // Expands to string|null
+type Name = StringOrNull;
 
 // Circular alias — compile error
 // type A = B;
 // type B = A;  // Error: circular type alias
+
+type Node = object {
+    public function parent(): ?Node;
+};
 </code></pre></div>
+<h2>Tyhpdef aliases</h2>
+<p>Aliases in <code>.tyhpdef</code> files are check-only unless they carry <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>. Overlay and harvested aliases inline in <code>typeof</code>. A compiled Tyhp library stamps <code>aliasFactory</code> when it emitted the factory; consumers then call <code>DecimalCoercible()</code> / <code>UserService::NameType()</code> rather than inlining. Hints still expand. Class and method <code>GenericRuntime</code> stamps are independent and do not require helpers.</p>
 <h2>Traits and Interfaces Cannot Have Type Aliases</h2>
 <p>Type aliases are only allowed in class and enum declarations. Traits and interfaces cannot define type aliases because they represent contracts and mixins, not concrete type definitions.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -490,7 +654,7 @@ enum Status {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use type aliases to give meaningful names to complex type expressions — this improves code readability. For example, type Callback = callable&lt;string, int, bool&gt; is clearer than repeating the callable signature everywhere.</p>
+        <div class="callout-content"><p>Use type aliases to give meaningful names to complex type expressions — this improves code readability. For example, type Callback = callable(string, int): bool is clearer than repeating the callable signature everywhere.</p>
 </div>
     </div>
 </div>
@@ -502,7 +666,7 @@ enum Status {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use generic type aliases to create reusable type templates. For example, type Optional&lt;T&gt; = T|null provides a concise nullable wrapper.</p>
+        <div class="callout-content"><p>Use generic type aliases to create reusable type templates. For example, type Optional&lt;T&gt; = T|null provides a concise nullable wrapper. Spell a Type value as <code>typeof(Optional&lt;int&gt;)</code> or <code>Optional(typeof(int))</code>.</p>
 </div>
     </div>
 </div>
@@ -514,7 +678,7 @@ enum Status {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use class-level type aliases with visibility modifiers to scope types to their owning class. This enables type abstraction — the internal type can change without affecting external consumers.</p>
+        <div class="callout-content"><p>Use class-level type aliases with visibility modifiers to scope types to their owning class. Call the factory as <code>self::NameType()</code> or <code>UserService::NameType()</code>.</p>
 </div>
     </div>
 </div>
@@ -526,7 +690,7 @@ enum Status {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use type aliases for domain-specific types (e.g., type UserId = int) to make code self-documenting. This communicates intent even though the underlying type is simple.</p>
+        <div class="callout-content"><p>Use type aliases for domain-specific types (e.g., type UserId = int) to make code self-documenting. PHP interop names the same alias as <code>UserId()</code>.</p>
 </div>
     </div>
 </div>
@@ -551,7 +715,7 @@ enum Status {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't create circular type aliases — the compiler detects and reports these as errors.</p>
+        <div class="callout-content"><p>Don't create circular type aliases of non-shape types — the compiler detects and reports those as errors on source <code>.tyhp</code> declarations. Recursive object-shape aliases that mention their own name are allowed.</p>
 </div>
     </div>
 </div>
@@ -563,7 +727,7 @@ enum Status {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't rely on type aliases existing at runtime — they are completely erased from PHP output. You cannot reference a type alias name in PHP interop code.</p>
+        <div class="callout-content"><p>Don't write <code>Optional&lt;int&gt;()</code>. Type arguments belong in type position and inside <code>typeof(...)</code>. The factory takes <code>\Tyhp\Type</code> values: <code>Optional(typeof(int))</code> or, in PHP, <code>Optional(\Tyhp\Type::int())</code>.</p>
 </div>
     </div>
 </div>
@@ -590,6 +754,7 @@ enum Status {
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">

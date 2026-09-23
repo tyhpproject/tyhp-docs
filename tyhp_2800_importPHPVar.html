@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tyhp builds upon the PHP programming language by providing some of the richer functionality of strongly-typed programming languages.">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
     <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
     <link rel="shortcut icon" href="favicon.ico"> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
@@ -96,7 +96,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_0100_stronglyTyped.html">Strongly Typed</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
 
@@ -107,6 +107,10 @@
 <li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
 
@@ -156,7 +160,7 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
 
-<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">The new&lt;TArgs...&gt; Constructable Object Type</a></li>
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
 
@@ -171,6 +175,10 @@
 <li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
 
@@ -187,6 +195,8 @@
 <li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
 
@@ -216,6 +226,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
@@ -225,6 +237,10 @@
 <li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 
@@ -267,10 +283,10 @@
 <h2>What Are Tyhpdef Files?</h2>
 <p>Tyhpdef files (.tyhpdef) are declaration files that tell the Tyhp compiler about the types of PHP symbols that exist outside of your Tyhp codebase. They are similar to TypeScript's .d.ts files — they contain only type signatures, no implementation. The compiler uses these declarations to type-check your code against PHP's standard library, extensions, and third-party packages.</p>
 <ul>
-<li>Composer packages with <code>package.tyhp.json</code> (<code>tyhp/php</code>, <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) provide types for PHP builtins and Tyhp runtime APIs</li>
+<li>Composer packages with <code>extra.tyhp.package</code> on <code>composer.json</code> (<code>tyhpdef/php</code>, <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) provide types for PHP builtins and Tyhp runtime APIs</li>
 <li>Built-in compiler registrations cover language types such as <code>decimal</code> aliases, compile-time constructs, and generic overlays the binder always knows</li>
 <li>User tyhpdef files declare types for your project's PHP dependencies and global variables</li>
-<li>Auto-generated tyhpdefs (<code>generate_tyhpdef</code>) are <strong>not</strong> in this alpha — write declarations by hand</li>
+<li>Auto-generated tyhpdefs (<code>tyhp generate_tyhpdef</code>) cover PHP extensions, Composer packages, and PHP sources — see <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a></li>
 </ul>
 <h2>Importing Constants</h2>
 <p>PHP constants (defined with define() or const) are imported into tyhpdef files using the const keyword with an explicit type annotation.</p>
@@ -388,8 +404,8 @@ interface JsonSerializable {
     public function jsonSerialize(): mixed;
 }
 </code></pre></div>
-<h2><code>??</code> on tyhpdef imports (not applied)</h2>
-<p>The grammar accepts <code>??</code> after a tyhpdef variable or constant (<code>int $dbPort ?? 5432</code>). This alpha does <strong>not</strong> bind that default or emit <code>defined()</code> / null-coalesce / <code>ErrorException</code> checks. Declare the type you actually use, and handle missing PHP globals in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types).</p>
+<h2><code>??</code> on tyhpdef imports</h2>
+<p>The grammar accepts <code>??</code> after a tyhpdef variable, constant, or class property (<code>int $dbPort ?? 5432</code>). That records the value PHP is <strong>expected</strong> to start with. The live value may differ; tyhpdef does not assign it or emit <code>defined()</code> / null-coalesce / <code>ErrorException</code> checks. Handle missing PHP globals in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types). Parameter defaults still use <code>=</code>.</p>
 <h2>Aliasing with as</h2>
 <p>The as keyword renames an imported symbol within Tyhp code. This is useful when PHP constants or variables have names that conflict with Tyhp reserved words, or when you want a more descriptive name. The alias is compile-time only — the generated PHP uses the original name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -442,10 +458,10 @@ deprecated const string LEGACY_API_URL;
 <p>Tyhpdef files are loaded from multiple sources in a specific priority order. Higher-priority sources take precedence when the same symbol is declared in multiple places.</p>
 <ol>
 <li>Built-in compiler registrations — language types always available (highest priority).</li>
-<li>Composer packages with <code>package.tyhp.json</code> — <code>tyhp/php</code> (PHP builtins; stubs cover 8.2+ APIs) plus <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>.</li>
-<li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus <code>include</code> entries that end in <code>.tyhpdef</code> or <code>package.tyhp.json</code>. Omitting <code>tyhpdefInclude</code> loads <strong>no</strong> project <code>.tyhpdef</code> files (<code>tyhp init</code> does not set the glob).</li>
+<li>Composer packages with <code>extra.tyhp.package</code> on <code>composer.json</code> — <code>tyhpdef/php</code> (PHP builtins; stubs cover 8.2+ APIs) plus <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>.</li>
+<li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus <code>include</code> entries that end in <code>.tyhpdef</code> or <code>composer.json</code> (with <code>extra.tyhp.package</code> present as an object). Omitting <code>tyhpdefInclude</code> loads <strong>no</strong> project <code>.tyhpdef</code> files. <code>tyhp init</code> sets <code>&quot;tyhpdefInclude&quot;: [&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;]</code> and <code>&quot;overlay&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]</code>.</li>
 </ol>
-<p>Auto-generated Composer package tyhpdefs are not produced in this alpha.</p>
+<p><code>tyhp generate_tyhpdef --vendor</code> writes generated Composer and extension stubs into <code>vendor-tyhpdef/</code>. Do not edit those files; put lasting changes in overlay tyhpdefs.</p>
 <h2>Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
@@ -467,7 +483,7 @@ deprecated const string LEGACY_API_URL;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Handle missing PHP globals at the use site (<code>isset</code>, <code>??</code> in Tyhp code, or nullable types). Tyhpdef <code>??</code> is parsed but not applied in this alpha.</p>
+        <div class="callout-content"><p>Handle missing PHP globals at the use site (<code>isset</code>, <code>??</code> in Tyhp code, or nullable types). Tyhpdef <code>??</code> documents PHP's expected start value; it does not assign.</p>
 </div>
     </div>
 </div>
@@ -540,7 +556,7 @@ deprecated const string LEGACY_API_URL;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Duplicating declarations that already exist in <code>tyhp/php</code>. Prefer that package for PHP standard library functions and classes instead of hand-writing overlapping tyhpdefs.</p>
+        <div class="callout-content"><p>Duplicating declarations that already exist in <code>tyhpdef/php</code>. Prefer that package for PHP standard library functions and classes instead of hand-writing overlapping tyhpdefs.</p>
 </div>
     </div>
 </div>
@@ -594,6 +610,7 @@ deprecated function old_func(): void;
 					<div class="container text-center py-5">
 						<h3 class="mb-2 text-white mb-3"></h3>
 						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
 					</div>
 				    <div class="container text-center py-5">
 				        <ul class="social-list list-unstyled pt-4 mb-0">
