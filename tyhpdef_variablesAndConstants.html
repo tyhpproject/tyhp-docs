@@ -316,6 +316,16 @@ const int MAX_CONNECTIONS;
 const float PI_PRECISE;
 const array&lt;string&gt; SUPPORTED_LOCALES;
 </code></pre></div>
+<h2>Fallback constants</h2>
+<p><code>fallback const</code> describes a PHP constant that is defined only when that name does not already exist (<code>if (!defined('NAME')) { define('NAME', …); }</code>). Constant names are case-sensitive. The winner rules match <a href="tyhpdef_functions.md#fallback-functions">fallback functions</a>: one package fills the name, several packages follow <code>vendor/composer/autoload_files.php</code> order, <code>tyhpdef/php</code> wins over every fallback, and a loaded package that requires <code>ext-*</code> wins over a fallback of the same name.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+declare(ext=&quot;!intl&quot;) {
+    fallback const int GRAPHEME_EXTR_COUNT ?? 0;
+}
+</code></pre></div>
+<p>A later fallback const with a different type or value warns (<code>TYHP8042</code>) and is ignored. Two fallback consts and no autoload file list is an error (<code>TYHP8041</code>). An ordinary const that Composer loads after a fallback const of the same name is an error (<code>TYHP8043</code>). A plain <code>const</code> in the same package replaces that package's fallback.</p>
+<p><code>declare(ext=&quot;intl&quot;)</code> keeps the block when a loaded tyhpdef package requires <code>ext-intl</code>. <code>declare(ext=&quot;!intl&quot;)</code> keeps it when none do. The directive is alone in that <code>declare</code> (<code>TYHP8039</code>). The value is the extension name, or <code>!</code> plus that name (<code>TYHP8040</code>). It composes with <code>declare(php=…)</code> by nesting. See <a href="tyhp_0320_phpVersionGating.md#extension-presence">PHP Version Gating</a>.</p>
 <h2>Constant Aliasing</h2>
 <p>Constants can be aliased using the fully-qualified PHP name with <code>as</code> to use a different name in Tyhp.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef

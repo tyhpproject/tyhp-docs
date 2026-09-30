@@ -549,7 +549,7 @@ function processConfig(): void {
 <li>Type guard return types ($param is Type) — compiled to bool return type in PHP output. The type narrowing information is used only by the checker.</li>
 <li>Function overload signatures — only the implementation body is emitted to PHP. Overload signatures are compile-time declarations for the checker.</li>
 <li>Trait extends/implements requirements — validated at compile time, stripped from PHP output. PHP traits cannot extend or implement.</li>
-<li>PHP version gates (<code>declare(php=…)</code> and <code>#[\Tyhp\Php]</code>) — compile-time only, never emitted, same treatment as <code>declare(output_file=…)</code>. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</li>
+<li>PHP version gates (<code>declare(php=…)</code> and <code>#[\Tyhp\Php]</code>) — never written to PHP, same treatment as <code>declare(output_file=…)</code>. A gate that holds for only some versions at or above <code>output.phpVersion</code> becomes a <code>\PHP_VERSION_ID</code> check in the output. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</li>
 <li>The is keyword (alias for instanceof) — compiled to standard PHP instanceof operator.</li>
 </ul>
 <h2>Best Practices</h2>

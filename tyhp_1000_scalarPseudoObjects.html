@@ -315,15 +315,15 @@ int $len = $name-&gt;length();
 </code></pre></div>
 <p>See <a href="tyhp_0350_useStatements.md#local-use-overlaying-global-use">Use Statements</a>.</p>
 <h2>How to Write an Extension</h2>
-<p>Declare an <code>extension</code> with methods whose first parameter is marked <code>extends Type $this</code> (the receiver). The method body is ordinary Tyhp; <code>$this</code> has the extended type. Same-file extensions are in scope without an import. Extensions from another file or namespace need <code>use extension</code> unless a loaded tyhpdef used <code>global use extension</code> for that name.</p>
+<p>Declare an <code>extension</code> with the target on the header (<code>extends string</code>) or in a nested <code>extends</code> group. <code>$this</code> is that target and is not a caller parameter. Same-file extensions are in scope without an import. Extensions from another file or namespace need <code>use extension</code> unless a loaded tyhpdef used <code>global use extension</code> for that name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension StringHelpers {
-    function toCamelCase(extends string $this): string {
+extension StringHelpers extends string {
+    function toCamelCase(): string {
         return $this;
     }
 
-    function trimLower(extends string $this): string {
+    function trimLower(): string {
         return \strtolower(\trim($this));
     }
 }
@@ -351,16 +351,16 @@ string $camel = $name-&gt;toCamelCase();
 <p>If your extensions return the extended type (or another type that also has extensions in scope), you can chain calls. Each call is rewritten independently.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension StringHelpers {
-    function trimmed(extends string $this): string {
+extension StringHelpers extends string {
+    function trimmed(): string {
         return \trim($this);
     }
 
-    function lower(extends string $this): string {
+    function lower(): string {
         return \strtolower($this);
     }
 
-    function dashed(extends string $this): string {
+    function dashed(): string {
         return \str_replace(&#039; &#039;, &#039;-&#039;, $this);
     }
 }
@@ -402,7 +402,7 @@ $parts = &quot;a,b,c&quot;-&gt;split(&quot;,&quot;);
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Keep the receiver as <code>extends string $this</code> (or <code>extends array $this</code>, …) so call sites read as instance methods while emit stays a static call or a spliced expression.</p>
+        <div class="callout-content"><p>Put the scalar on the extension (<code>extends string</code>, <code>extends array</code>, …) so call sites read as instance methods while emit stays a static call or a spliced expression.</p>
 </div>
     </div>
 </div>

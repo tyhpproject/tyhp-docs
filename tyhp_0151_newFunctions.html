@@ -526,11 +526,11 @@ if (\array_key_exists(&#039;count&#039;, \get_defined_vars())) {
     </div>
 </div>
 <h2>Extension Methods</h2>
-<p>Tyhp lets you declare <code>extension</code> types that add methods to existing types, including scalars. The receiver is a parameter marked <code>extends string $this</code> (or another type). User-defined extensions work in this alpha. See Scalar Pseudo-Objects and Extensions for the full syntax.</p>
+<p>Tyhp lets you declare <code>extension</code> types that add methods to existing types, including scalars. The target is on the extension (<code>extension StringHelpers extends string</code>), and <code>$this</code> inside the member is that target. See Scalar Pseudo-Objects and Extensions for the full syntax.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension StringHelpers {
-    function toCamelCase(extends string $this): string {
+extension StringHelpers extends string {
+    function toCamelCase(): string {
         return $this;
     }
 }

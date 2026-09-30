@@ -389,8 +389,21 @@ tyhpdef class means the PHP type already supports the operator. Call sites keep 
 they are <strong>not</strong> rewritten to <code>__add</code>. See <a href="tyhpdef_classes.md#operators">Tyhpdef classes — Operators</a>.<br />
 Mapped overloads use <code>extension operator</code> with a required <code>=&gt;</code> expression; see<br />
 <a href="tyhpdef_extensions.md#native-vs-mapped-operators">Extensions in Tyhpdef</a>.</p>
+<h2>Extension operators</h2>
+<p>An operator inside <code>extension Name { }</code> takes its target from the block. List every operand. <code>self</code> is that target, including a scalar. <code>int + Money</code> is <code>operator + (int $left, self $right)</code> on an extension whose target is <code>Money</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+extension MoneyOps extends \App\Money {
+    operator + (self $left, self $right): self {
+        return $left-&gt;plus($right);
+    }
+
+    operator + (int $left, self $right): self =&gt; $right;
+}
+</code></pre></div>
+<p>Class, enum, trait, and interface operators stay on that type: <code>self</code> is the enclosing type. Tyhpdef class-body <code>extension operator</code> is the same: <code>self</code> is the enclosing class. See <a href="tyhp_2100_extensions.md">Extensions</a>.</p>
 <h2>Hiding and preferring extension operators</h2>
-<p>When two in-scope extensions both declare the same operator (for example <code>operator *&lt;string&gt;</code>), that is a conflict — the same idea as conflicting extension methods. Resolve it on <code>use extension</code> with postfix <code>hide</code> or <code>insteadof</code>. <strong>Operators cannot be renamed with <code>as</code></strong> (<code>TYHP4170</code>).</p>
+<p>When two in-scope extensions both declare the same operator for a target that both can match, that is a conflict — the same idea as conflicting extension methods. Resolve it on <code>use extension</code> with postfix <code>hide</code> or <code>insteadof</code>. The adaptation names the target in angle brackets (<code>operator *&lt;string&gt;</code>). That qualifier is not part of the operator declaration. <strong>Operators cannot be renamed with <code>as</code></strong> (<code>TYHP4170</code>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 use extension StringOperators {

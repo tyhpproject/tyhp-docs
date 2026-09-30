@@ -288,7 +288,7 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>This page is about <strong>declaration gates</strong> — wrapping a class, function, interface, trait, or enum so it is only declared when it does not already exist. That is separate from using <code>\class_exists($name)</code> / <code>\function_exists($name)</code> as <strong>type guards</strong> on string variables (see Type Narrowing and Guards), and separate from <strong>PHP version gates</strong> (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) that keep or drop declarations according to <code>output.phpVersion</code> (see <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>).</p>
+        <div class="callout-content"><p>This page is about <strong>declaration gates</strong> in Tyhp source — wrapping a class, function, interface, trait, or enum so it is only declared when it does not already exist. That is separate from using <code>\class_exists($name)</code> / <code>\function_exists($name)</code> as <strong>type guards</strong> on string variables (see Type Narrowing and Guards), and separate from <strong>PHP version gates</strong> (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) and <strong>extension gates</strong> (<code>declare(ext=&quot;…&quot;)</code>) that keep or drop declarations while binding (see <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>). Package signatures for the same PHP pattern use <code>fallback function</code> and <code>fallback const</code> in <code>.tyhpdef</code> (see <a href="tyhpdef_functions.md#fallback-functions">Fallback functions</a>).</p>
 </div>
     </div>
 </div>
@@ -391,6 +391,38 @@ if (!\function_exists(__NAMESPACE__ . &#039;\formatMoney&#039;)) {
 </div>
     </div>
 </div>
+<h2>Fallback Declarations</h2>
+<p><code>fallback</code> in front of a <code>function</code>, <code>class</code>, <code>interface</code>, <code>trait</code>, <code>enum</code>, or <code>const</code> declaration is shorthand for the matching existence gate. The declaration is only declared when nothing has declared that name already:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Payments;
+
+fallback function formatMoney(int $cents): string {
+    return &#039;$&#039; . \number_format($cents / 100, 2);
+}
+</code></pre></div>
+<p>This emits the same code as the hand-written gate above:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">namespace App\Payments;
+
+if (!\function_exists(__NAMESPACE__ . &#039;\formatMoney&#039;)) {
+    function formatMoney(int $cents): string
+    {
+        return &#039;$&#039; . \number_format($cents / 100, 2);
+    }
+}
+</code></pre></div>
+<p><code>fallback</code> combines with <code>deprecated</code>, <code>obsolete</code>, and <code>async</code>. It does not combine with <code>partial</code>, <code>omit</code>, or <code>extern</code>. Because <code>fallback</code> is contextual, a function named <code>fallback</code> still works.</p>
+<p>A <code>fallback const</code> uses <code>\defined</code> and <code>\define</code>, because PHP has no conditional <code>const</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+fallback const int LIMIT = 13;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">if (!\defined(&#039;LIMIT&#039;)) {
+    \define(&#039;LIMIT&#039;, 13);
+}
+</code></pre></div>
+<p>In a namespace the name is written as <code>__NAMESPACE__ . '\LIMIT'</code>; in the global namespace it has no leading backslash, because <code>\define('\LIMIT', …)</code> would register a constant that plain <code>LIMIT</code> cannot find.</p>
+<p>A <code>fallback</code> declaration can sit inside <code>declare(php=…)</code> and <code>declare(ext=…)</code> blocks. The version and extension checks wrap the existence check. See <a href="tyhp_0320_phpVersionGating.md#extension-presence">PHP Version Gating</a>.</p>
 <h2>When the Gate Is Incorrect</h2>
 <p>If the shape looks like a declaration gate (negated <code>*_exists</code> wrapping a single declaration of the matching kind) but the argument does not name that declaration:</p>
 <ul>

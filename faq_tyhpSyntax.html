@@ -316,8 +316,8 @@ function greet(?string $name): string {
 <h2>How do extensions differ from traits?</h2>
 <p>Extensions and traits are both mechanisms for adding functionality to classes, but they work differently. Traits are a PHP feature where methods are copied into a class at the source level. Extensions are a Tyhp feature that lets you add methods to existing classes (even third-party classes) without modifying their source code. Extension methods are compiled to standalone functions that take the target object as the first parameter.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-extension StringExtensions {
-    function toTitleCase(extends string $this): string {
+extension StringExtensions extends string {
+    function toTitleCase(): string {
         return \ucwords(\strtolower($this));
     }
 }
@@ -329,7 +329,7 @@ string $title = &quot;hello world&quot;-&gt;toTitleCase();
 <p>No. Tyhp <code>global use</code> is like C# <code>global using</code>: it prefixes <code>use</code> / <code>use function</code> / <code>use const</code> / <code>use extension</code> and applies to the <strong>entire compilation</strong> that loaded that file. It is <strong>not</strong> PHP <code>global $var</code>.</p>
 <p>A local (non-<code>global</code>) <code>use</code> may re-import a globally included symbol to give that file an alias or adaptations (<code>hide</code>, <code>insteadof</code>, method <code>as</code>). A local <code>use</code> that does not mutate warns (<code>TYHP4169</code>, <code>CheckerRedundantGlobalImport</code>). See <a href="tyhp_0350_useStatements.md#global-use">Use statements</a>.</p>
 <h2>How do I write code that differs by PHP version?</h2>
-<p>Use compile-time gates against <code>output.phpVersion</code>: <code>declare(php=&quot;…&quot;)</code> (file- or block-level) and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> (positional or <code>version:</code>). Constraints are Composer syntax; <code>&quot;8.2&quot;</code> means the whole <code>8.2.*</code> minor. Gates are never emitted to PHP. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and <code>extension</code> (<strong>TYHP4304</strong>) — use <code>declare(php=…)</code> (file-level <code>;</code> for Tyhp extensions today). See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
+<p>Use gates against <code>output.phpVersion</code>, the oldest PHP the build runs on: <code>declare(php=&quot;…&quot;)</code> (file- or block-level) and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> (positional or <code>version:</code>). Constraints are Composer syntax; <code>&quot;8.2&quot;</code> means the whole <code>8.2.*</code> minor. The gates themselves are not written to PHP; a gate that holds for only some versions at or above <code>output.phpVersion</code> becomes a <code>\PHP_VERSION_ID</code> check. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and <code>extension</code> (<strong>TYHP4304</strong>), and in <code>.tyhp</code> on a property, class constant, enum case, or interface method (<strong>TYHP4371</strong>) — use <code>declare(php=…)</code> (file-level <code>;</code> for Tyhp extensions today). See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
 <h2>Why is there one <code>tyhpdef/php</code> stubs package instead of one per PHP minor?</h2>
 <p>Almost all of the <code>tyhpdef/php</code> builtin surface is the same on 8.2–8.5. The small differences are version-gated in that single package; the compiler keeps only the declarations that match your <code>output.phpVersion</code>. You do not install <code>tyhpdef/php-8.2</code> vs <code>tyhpdef/php-8.4</code>.</p>
 <h2>What are structs used for?</h2>

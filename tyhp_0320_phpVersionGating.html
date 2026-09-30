@@ -279,9 +279,9 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 2 · Story 20.5</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp can keep or drop declarations according to the project's target PHP version. Two compile-time gates exist: <code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code>. Both use Composer version-constraint strings. The compiler evaluates them against <code>output.phpVersion</code> while binding and checking; it never writes the gates into PHP.</p>
-<p>This is not an existence check such as <code>if (!\function_exists(…))</code>. Those declaration gates are covered on <a href="tyhp_0310_declarationGating.md">Declaration Gating</a>. It is also not the managed PHP runtime that <code>tyhp generate_tyhpdef</code> can download for reflection — that tool's <code>--php</code> / <code>--php-targets</code> path is separate from <code>output.phpVersion</code>. <code>#[\Tyhp\PhpType]</code> is a different attribute: it replaces an emitted PHP type hint. See <a href="tyhp_0150_newTypes.md#the-tyhpphptype-attribute">New and Changed Types</a>.</p>
-<p>Version gates are how one <code>tyhpdef/php</code> (and one <code>tyhpdef/php-ext-*</code> per optional extension) stubs package can describe APIs that differ across PHP 8.2–8.5. The compiler keeps only the declarations that match your target.</p>
+    <p>Tyhp can keep or drop declarations according to PHP version. Two gates exist: <code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code>. Both use Composer version-constraint strings. <code>output.phpVersion</code> is the <strong>oldest PHP the build runs on</strong>: the compiler binds and checks against it, and it writes a <code>\PHP_VERSION_ID</code> check into the PHP for a gate that holds on only some versions at or above it. See <a href="#what-is-emitted">What is emitted</a>.</p>
+<p>This is not an existence check such as <code>if (!\function_exists(…))</code>. Those declaration gates are covered on <a href="tyhp_0310_declarationGating.md">Declaration Gating</a>. Extension presence uses <code>declare(ext=&quot;name&quot;)</code> and <code>declare(ext=&quot;!name&quot;)</code>, evaluated from loaded tyhpdef packages that <code>require</code> <code>ext-name</code>. It is also not the managed PHP runtime that <code>tyhp generate_tyhpdef</code> can download for reflection — that tool's <code>--php</code> / <code>--php-targets</code> path is separate from <code>output.phpVersion</code>. <code>#[\Tyhp\PhpType]</code> is a different attribute: it replaces an emitted PHP type hint. See <a href="tyhp_0150_newTypes.md#the-tyhpphptype-attribute">New and Changed Types</a>.</p>
+<p>Version gates are how one <code>tyhpdef/php</code> (and one <code>tyhpdef/php-ext-*</code> per optional extension) stubs package can describe APIs that differ across PHP 8.2–8.5. In <code>.tyhpdef</code>, the compiler keeps only the declarations that match <code>output.phpVersion</code>.</p>
 <h2>8.2–8.5 matrix in <code>tyhpdef/php</code></h2>
 <p>The same <code>tyhpdef/php</code> tree is used for every supported minor. Change <code>output.phpVersion</code> and lint/build — you do not install four PHP runtimes to type-check the stubs.</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
@@ -317,15 +317,15 @@
 </table></div>
 <p>Scalar extension methods that differ by minor (for example <code>pad</code> / <code>ucFirst</code> on strings) use the same <code>declare(php=…)</code> blocks inside <code>tyhp/core</code> <code>_tyhpdef/extensions/</code>.</p>
 <p>PHP Core attribute <strong>classes</strong> are gated the same way (<code>\Override</code> at 8.3, <code>\Deprecated</code> at 8.4, <code>\NoDiscard</code> and <code>\DelayedTargetValidation</code> at 8.5). Some <strong>checks</strong> still run below those minors — see <a href="#engine-attributes-and-outputphpversion">Engine attributes and <code>output.phpVersion</code></a>.</p>
-<h2>The compile target</h2>
-<p>Set the target in <code>tyhp.json</code>:</p>
+<h2>The minimum PHP version</h2>
+<p>Set it in <code>tyhp.json</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;output&quot;: {
         &quot;phpVersion&quot;: &quot;8.4&quot;
     }
 }
 </code></pre></div>
-<p>Supported values are <code>&quot;8.0&quot;</code> through <code>&quot;8.5&quot;</code>. A target such as <code>&quot;8.2&quot;</code> is compared as PHP <code>8.2.0</code>. Gate constraints accept any PHP version string; the <code>tyhpdef/php</code> stubs package specifically covers 8.2–8.5, so <code>output.phpVersion</code> values of <code>&quot;8.0&quot;</code> or <code>&quot;8.1&quot;</code> see none of that package's version-gated declarations.</p>
+<p>Supported values are <code>&quot;8.0&quot;</code> through <code>&quot;8.5&quot;</code>. A value such as <code>&quot;8.2&quot;</code> is compared as PHP <code>8.2.0</code>. The whole emitted file uses syntax that parses on that version — a <code>declare(php=&quot;&gt;=8.5&quot;)</code> block in an <code>&quot;8.2&quot;</code> project still gets the 8.2 spelling of <code>|&gt;</code>, <code>(void)</code>, and <code>clone with</code>. Gate constraints accept any PHP version string; the <code>tyhpdef/php</code> stubs package specifically covers 8.2–8.5, so <code>output.phpVersion</code> values of <code>&quot;8.0&quot;</code> or <code>&quot;8.1&quot;</code> see none of that package's version-gated declarations.</p>
 <p>If <code>output.phpVersion</code> is omitted (and the legacy top-level <code>phpVersion</code> key is omitted too), the compiler uses <strong><code>8.2</code></strong> and emits warning <strong>TYHP4306</strong> once per compilation — not once per file:</p>
 <blockquote>
 <p><code>output.phpVersion</code> is unset; defaulting to <code>8.2</code></p>
@@ -384,7 +384,8 @@ function example(string $v, bool $strict = false): string {
     return $v;
 }
 </code></pre></div>
-<p>The attribute is legal on class, interface, enum, trait, their members, functions, and other ordinary attribute targets. It is <strong>illegal</strong> on <code>struct</code> and on Tyhp <strong>and</strong> tyhpdef <code>extension</code> declarations (<strong>TYHP4304</strong>). Wrap those with <code>declare(php=…)</code> instead — see <a href="#structs-and-extensions">Structs and extensions</a>.</p>
+<p>The attribute is legal on functions, classes, interfaces, traits, enums, and methods of classes, traits, and enums. It is <strong>illegal</strong> on <code>struct</code> and on Tyhp <strong>and</strong> tyhpdef <code>extension</code> declarations (<strong>TYHP4304</strong>). Wrap those with <code>declare(php=…)</code> instead — see <a href="#structs-and-extensions">Structs and extensions</a>.</p>
+<p>In <code>.tyhp</code> source it is also illegal on a property, a class constant, an enum case, and an interface method (<strong>TYHP4371</strong>), because PHP cannot declare those conditionally. When one of them differs between PHP versions, declare the whole class, interface, or enum once per version inside <code>declare(php=…)</code> blocks. <code>.tyhpdef</code> members may still carry the attribute.</p>
 <p>Missing or non-string <code>version</code> is <strong>TYHP4305</strong>. On a tyhpdef hooked property, put <code>#[\Tyhp\Php]</code> on the property, not on <code>get</code> or <code>set</code> (<strong>TYHP8016</strong>).</p>
 <p>If the constraint does not match the target, the compiler omits the symbol (as if it were not declared).</p>
 <h2>Constraint syntax</h2>
@@ -462,27 +463,81 @@ declare(php=&quot;&lt;8.4&quot;) {
 </code></pre></div>
 <p>An inactive <strong>file-level</strong> <code>declare(php=&quot;…&quot;);</code> is also not TYHP4302 — the file is skipped silently.</p>
 <h2>Same name, different versions</h2>
-<p>Two declarations of the same symbol are allowed when their <strong>effective</strong> constraints are pairwise <strong>disjoint</strong>. The compiler keeps the variant that matches <code>output.phpVersion</code>.</p>
+<p>Two declarations of the same symbol are allowed when their <strong>effective</strong> constraints are pairwise <strong>disjoint</strong>. The compiler keeps the variant that matches <code>output.phpVersion</code> and emits it without a version check.</p>
 <p>If the constraints <strong>overlap</strong> (both could match some PHP version, including the current target) <strong>and</strong> the declarations would also collide as ordinary overloads (same parameter-list shape), that is <strong>TYHP4303</strong>:</p>
 <blockquote>
 <p>Duplicate declaration of <code>{0}</code> with overlapping PHP version constraints</p>
 </blockquote>
 <p><code>#[\Tyhp\Php(&quot;&gt;=8.3&quot;)] function foo()</code> together with <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)] function foo()</code> overlaps on 8.4+ and is an error. <code>&quot;&gt;=8.4&quot;</code> together with <code>&quot;&lt;8.4&quot;</code> does not overlap. Distinct parameter lists under the same gate are overloads, not TYHP4303 — for example a no-argument <code>get_defined_functions()</code> beside a deprecated <code>get_defined_functions(bool $exclude_disabled)</code> in <code>declare(php=&quot;&gt;=8.5&quot;)</code>. A static method and an instance method still cannot share a name, even with different parameter lists: that pairing is TYHP4303 under overlapping gates.</p>
-<h2>Compile-time only — never emitted</h2>
-<p><code>declare(php=…)</code> and <code>#[\Tyhp\Php]</code> are Tyhp-only, in the same family as <code>declare(output_file=…)</code>. The emitter:</p>
-<ul>
-<li>does not write <code>declare(php=…)</code> (file or block)</li>
-<li>does not write <code>#[\Tyhp\Php(…)]</code> on emitted declarations (<code>\Tyhp\Php</code> is tagged <code>#[\Tyhp\NoEmit]</code>, which omits that class and any usage of a NoEmit-tagged type as an attribute)</li>
-<li>does not write the <code>\Tyhp\Php</code> class itself</li>
-<li>emits only the <strong>active</strong> body when a block gate was satisfied; inactive bodies emit nothing</li>
-</ul>
-<p>The compiled PHP contains the surviving declarations as ordinary PHP, with no version checks.</p>
+<h2>What is emitted</h2>
+<p><code>declare(php=…)</code> and <code>#[\Tyhp\Php]</code> are Tyhp-only, in the same family as <code>declare(output_file=…)</code>: the emitter never writes <code>declare(php=…)</code> (file or block), <code>#[\Tyhp\Php(…)]</code> (<code>\Tyhp\Php</code> is tagged <code>#[\Tyhp\NoEmit]</code>), or the <code>\Tyhp\Php</code> class itself. What replaces them depends on how the constraint relates to <code>output.phpVersion</code>, which is the oldest version the code runs on and has no upper limit:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>The constraint is true for…</th>
+<th>Emitted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no version at or above <code>output.phpVersion</code></td>
+<td>nothing — the body is dropped</td>
+</tr>
+<tr>
+<td>every version at or above <code>output.phpVersion</code></td>
+<td>the body, with no check</td>
+</tr>
+<tr>
+<td>only some of those versions</td>
+<td>the body inside an <code>if</code> over <code>\PHP_VERSION_ID</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>With <code>output.phpVersion</code> set to <code>&quot;8.2&quot;</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+declare(php=&quot;&lt;8.6&quot;) {
+    function legacy(): string { return &#039;legacy&#039;; }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">namespace App;
+
+if (\PHP_VERSION_ID &lt; 80600) {
+    function legacy(): string
+    {
+        return &#039;legacy&#039;;
+    }
+}
+</code></pre></div>
+<p>The check applies to functions, classes, interfaces, traits, enums, and file-level <code>const</code>. A class lands in its own file with its own copy of the check, and functions land in the namespace's <code>_functions.php</code> after the ungated declarations. A <code>const</code> behind a check is written as <code>\define()</code> inside it, because PHP has no conditional <code>const</code>. Nested gates produce nested <code>if</code> blocks, outermost first.</p>
+<p>A <code>declare(php=…)</code> or <code>declare(ext=…)</code> block inside a function body behaves the same way: its statements go inside an <code>if</code> when the gate needs a runtime check, and are emitted as plain statements when it does not.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function hasMbString(): bool {
+    bool $found = false;
+    declare(ext=&quot;mbstring&quot;) {
+        $found = true;
+    }
+    return $found;
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">function hasMbString(): bool
+{
+    $found = false;
+    if (\extension_loaded(&#039;mbstring&#039;)) {
+        $found = true;
+    }
+    return $found;
+}
+</code></pre></div>
+<p>When the same function or type name is also declared under another version gate that <code>output.phpVersion</code> does not satisfy, only the declaration that matches <code>output.phpVersion</code> is compiled, and it is emitted without a check.</p>
+<p><code>.tyhpdef</code> gates are never written into PHP. They select which signatures the checker sees.</p>
 <h2>Structs and extensions</h2>
 <p>Do not put <code>#[\Tyhp\Php]</code> on a <code>struct</code> or on a Tyhp or tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>). Gate those declarations with <code>declare(php=…)</code> instead.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 declare(php=&quot;&gt;=8.4&quot;) {
-    extension GatedStringOps {
-        function gated_tag(extends string $this): string {
+    extension GatedStringOps extends string {
+        function gated_tag(): string {
             return \strtoupper($this);
         }
     }
@@ -504,8 +559,8 @@ declare(php=&quot;&gt;=8.3&quot;) {
 }
 
 declare(php=&quot;&gt;=8.4&quot;) {
-    extension GatedStringOps {
-        fn gated_tag(extends string $this): string =&gt; \strtoupper($this);
+    extension GatedStringOps extends string {
+        fn gated_tag(): string =&gt; \strtoupper($this);
     }
 }
 </code></pre></div>
@@ -543,6 +598,88 @@ declare(php=&quot;&gt;=8.4&quot;) {
 </tbody>
 </table></div>
 <p>See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<h2>Extension presence</h2>
+<p><code>declare(ext=&quot;…&quot;)</code> keeps or drops a block according to whether an extension's tyhpdef package is loaded. The key must be alone in that <code>declare</code> (<code>TYHP8039</code>).</p>
+<p>A loaded tyhpdef package provides extension <code>intl</code> when its <code>require</code> or <code>require-dev</code> contains <code>ext-intl</code>. <code>declare(ext=&quot;intl&quot;)</code> type-checks the block when some loaded package provides it. <code>declare(ext=&quot;!intl&quot;)</code> type-checks the block when none do, except inside a function body (see <a href="#choosing-an-implementation-at-runtime">Choosing an implementation at runtime</a>). The value is the extension name, or <code>!</code> plus that name (<code>TYHP8040</code>). An <code>ext-intl</code> requirement on the application <code>composer.json</code> does not count unless that tyhpdef package is part of the compilation.</p>
+<p>In <code>.tyhpdef</code> the gate only selects signatures. In <code>.tyhp</code> the matching block is also emitted inside a runtime check, because the PHP that runs the code may or may not have the extension:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+declare(php=&quot;&lt;8.6&quot;) {
+    declare(ext=&quot;!intl&quot;) {
+        fallback function graphemeStrrev(string $string): string {
+            return \implode(&#039;&#039;, \array_reverse(\str_split($string)));
+        }
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">namespace App;
+
+if (\PHP_VERSION_ID &lt; 80600) {
+    if (!\extension_loaded(&#039;intl&#039;)) {
+        if (!\function_exists(__NAMESPACE__ . &#039;\graphemeStrrev&#039;)) {
+            function graphemeStrrev(string $string): string
+            {
+                return \implode(&#039;&#039;, \array_reverse(\str_split($string)));
+            }
+        }
+    }
+}
+</code></pre></div>
+<h3>Choosing an implementation at runtime</h3>
+<p>Inside a function body, <code>declare(ext=&quot;…&quot;)</code> is a runtime branch, so a chain of blocks can pick the best implementation the running PHP has. Here the negative gate <code>!name</code> always compiles, because a loaded tyhpdef package says nothing about the PHP that will run the code. A positive gate <code>name</code> still needs a loaded tyhpdef package for the extension, so its block can be type-checked.</p>
+<p><code>declare(ext=&quot;x&quot;) { … }</code> directly followed by <code>declare(ext=&quot;!x&quot;) { … }</code> is checked as <code>if … else …</code>: a variable that both blocks assign is definitely assigned afterwards.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">private static function resolveBackend(): DecimalBackend {
+    ?DecimalBackend $backend = null;
+    declare(ext=&quot;decimal&quot;) {
+        $backend = new PhpDecimalBackend();
+    }
+    declare(ext=&quot;!decimal&quot;) {
+        declare(ext=&quot;bcmath&quot;) {
+            $backend = new BcMathBackend();
+        }
+        declare(ext=&quot;!bcmath&quot;) {
+            $backend = new IntegerScaledBackend();
+        }
+    }
+    return $backend;
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">private static function resolveBackend(): DecimalBackend
+{
+    $backend = null;
+    if (\extension_loaded(&#039;decimal&#039;)) {
+        $backend = new PhpDecimalBackend();
+    } else {
+        if (\extension_loaded(&#039;bcmath&#039;)) {
+            $backend = new BcMathBackend();
+        } else {
+            $backend = new IntegerScaledBackend();
+        }
+    }
+    return $backend;
+}
+</code></pre></div>
+<p>Two adjacent blocks for opposite gates (<code>ext=&quot;x&quot;</code> and <code>ext=&quot;!x&quot;</code>, in either order) share one <code>if … else</code>. The blocks must be next to each other, and both must compile.</p>
+<p>If a positive gate's tyhpdef package is not loaded, that block is dropped and the checker reports a possibly unassigned variable, because no code handles that extension.</p>
+<p>Around declarations (functions, classes, constants) a <code>!name</code> gate follows the loaded packages instead: it is dropped when a loaded package provides the extension, so a fallback does not redeclare what the package already declares.</p>
+<p><code>fallback</code> in <code>.tyhp</code> marks a <code>function</code>, <code>class</code>, <code>interface</code>, <code>trait</code>, <code>enum</code>, or <code>const</code> declaration that is only declared when nothing has declared that name already. See <a href="tyhp_0310_declarationGating.md#fallback-declarations">Declaration Gating</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+declare(ext=&quot;intl&quot;) {
+    function grapheme_strlen(string $string): int|false|null;
+}
+
+declare(php=&quot;&lt;8.6&quot;) {
+    declare(ext=&quot;!intl&quot;) {
+        fallback function grapheme_strrev(string $string): string|false;
+        fallback const int GRAPHEME_EXTR_COUNT ?? 0;
+    }
+}
+</code></pre></div>
+<p><code>fallback function</code> and <code>fallback const</code> still apply inside the block: they fill the name only when nothing else has declared it. See <a href="tyhpdef_functions.md#fallback-functions">Fallback functions</a> and <a href="tyhpdef_variablesAndConstants.md#fallback-constants">Fallback constants</a>.</p>
+<p>File-level <code>declare(ext=&quot;!intl&quot;);</code> gates the rest of that file the same way a file-level <code>declare(php=…);</code> does. A block that does not match is skipped. Nesting with <code>declare(php=…)</code> keeps a declaration only when both gates match.</p>
 <h2>Diagnostics</h2>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
@@ -587,6 +724,11 @@ declare(php=&quot;&gt;=8.4&quot;) {
 <td>TYHP4306</td>
 <td>Warning</td>
 <td><code>output.phpVersion</code> unset; defaulted to <code>8.2</code> (once per compilation)</td>
+</tr>
+<tr>
+<td>TYHP4371</td>
+<td>Error</td>
+<td><code>#[\Tyhp\Php]</code> on a property, class constant, enum case, or interface method in <code>.tyhp</code> source</td>
 </tr>
 <tr>
 <td>TYHP8016</td>
@@ -641,7 +783,7 @@ declare(php=&quot;&gt;=8.4&quot;) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't expect version gates in the compiled PHP. They are stripped, like <code>declare(output_file=…)</code>.</p>
+        <div class="callout-content"><p>Don't expect <code>declare(php=…)</code> or <code>#[\Tyhp\Php]</code> to appear in the compiled PHP. They are replaced by a <code>\PHP_VERSION_ID</code> check, or by nothing, as described in <a href="#what-is-emitted">What is emitted</a>.</p>
 </div>
     </div>
 </div>

@@ -287,7 +287,7 @@ declare(output_file=&#039;public/index.php&#039;);
 $greeting = &#039;Hello, Tyhp!&#039;;
 </code></pre></div>
 <h2>PHP Version Gating</h2>
-<p><code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> filter declarations against <code>output.phpVersion</code> (Composer constraints; <code>&quot;8.2&quot;</code> means <code>8.2.*</code>). File-level inactive declare skips the file silently. Gates are compile-time only and never emitted. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> / <code>extension</code> (<strong>TYHP4304</strong>). Omit <code>output.phpVersion</code> → default <code>&quot;8.2&quot;</code> and one <strong>TYHP4306</strong> warning.</p>
+<p><code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> filter declarations against <code>output.phpVersion</code> (Composer constraints; <code>&quot;8.2&quot;</code> means <code>8.2.*</code>). File-level inactive declare skips the file silently. <code>output.phpVersion</code> is the oldest PHP the build runs on: a gate true for every later version emits nothing, and one true for only some emits a <code>\PHP_VERSION_ID</code> check. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> / <code>extension</code> (<strong>TYHP4304</strong>), and in <code>.tyhp</code> on a property, class constant, enum case, or interface method (<strong>TYHP4371</strong>). Omit <code>output.phpVersion</code> → default <code>&quot;8.2&quot;</code> and one <strong>TYHP4306</strong> warning.</p>
 <p><a href="tyhp_0320_phpVersionGating.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 #[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
@@ -439,8 +439,8 @@ $price-&gt;round(2);                      // \round($price, 2)
 <h2>Extensions</h2>
 <p>Add methods and operator overloads to existing types without modifying their source. A member's form decides what PHP keeps: short <code>fn … =&gt; expr;</code> is Tyhp-only (spliced, no PHP method); a single-<code>return</code> brace body is spliced in Tyhp <strong>and</strong> callable from PHP on the backer; a multi-statement body is a real PHP method that Tyhp calls. Imported via opt-in <code>use extension</code> (or <code>global use extension</code> in a loaded tyhpdef — <code>tyhp/core</code> scalars are already on). Generated library tyhpdef emits a backer class (<code>Name__tyhpExtensionBacker</code>) plus thin <code>extension { }</code> mappings. File-level <code>use</code> is not copied; in-package <code>global use extension</code> that the library authored is. Adaptations: method <code>as</code>, postfix <code>hide</code>, operator <code>insteadof</code> (<code>as</code> on operators is an error).</p>
 <p><a href="tyhp_2100_extensions.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">extension StringExtensions {
-    function toCamelCase(extends string $this): string { ... }
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">extension StringExtensions extends string {
+    function toCamelCase(): string { ... }
 }
 
 use extension App\Extensions\StringExtensions;

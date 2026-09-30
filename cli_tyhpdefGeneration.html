@@ -431,6 +431,43 @@ tyhp generate_tyhpdef --help
 <p>A PHP <code>return new class { … }</code> (and the same expression in Tyhp) is harvested as an object-shape alias, not as <code>object</code>. The generator invents a collision-safe name in the same namespace (<code>createClock_Return</code>, or <code>OwningType_method_Return</code>, with a numeric suffix on collision) and uses that alias as the function or method return type (or as a union arm). Public instance members and a <code>__construct</code> signature (when present) are copied; private members are omitted. If the anonymous class <code>extends</code> / <code>implements</code> real types, the alias right-hand side is those nominal types intersected with <code>object { … }</code>. The anonymous class itself is still skipped as a named PHP class (<code>anonClass@</code> is not written).</p>
 <p><code>__FunctionReturnType&lt;'createClock'&gt;</code> / <code>__MethodReturnType&lt;Plugin, 'parseConstraint'&gt;</code> recover that harvested shape when the author did not pick a nicer alias. Hand overlays may <code>omit</code> the generated alias and last-wins replace the callable return.</p>
 <p>See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+<h3>Conditional declarations</h3>
+<p>PHP-source harvest turns a few top-level conditions into tyhpdef gates. Other <code>if</code> bodies are skipped.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>PHP</th>
+<th>Emitted tyhpdef</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>if (!function_exists(name)) { function name … }</code></td>
+<td><code>fallback function</code></td>
+</tr>
+<tr>
+<td><code>if (!defined('NAME')) { define('NAME', …); }</code></td>
+<td><code>fallback const</code></td>
+</tr>
+<tr>
+<td><code>if (extension_loaded('intl')) return;</code></td>
+<td>Following declarations are wrapped in <code>declare(ext=&quot;!intl&quot;)</code></td>
+</tr>
+<tr>
+<td><code>if (!extension_loaded('intl')) return;</code></td>
+<td>Following declarations are omitted</td>
+</tr>
+<tr>
+<td><code>if (function_exists(…)) return;</code> or <code>if (defined(…)) return;</code></td>
+<td>Following declarations are <code>fallback</code></td>
+</tr>
+<tr>
+<td><code>if (PHP_VERSION_ID &gt;= 80300) return require 'other.php';</code></td>
+<td>This file's later declarations use <code>declare(php=&quot;&lt;8.3&quot;)</code>. <code>other.php</code> uses <code>declare(php=&quot;&gt;=8.3&quot;)</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>A declaration can carry more than one of these. <code>declare(php=…)</code> and <code>declare(ext=…)</code> nest. See <a href="tyhpdef_functions.md#fallback-functions">Fallback functions</a> and <a href="tyhp_0320_phpVersionGating.md#extension-presence">Extension presence</a>.</p>
 <h2><code>--vendor</code> (installed Composer packages)</h2>
 <p>Scan the project's installed Composer packages and root <code>ext-*</code> requirements, prefer published Tyhp companions, and otherwise generate stubs into <strong><code>vendor-tyhpdef/</code></strong>. <code>tyhp init</code> wires this as the second <code>post-autoload-dump</code> command. <code>tyhp composer require</code> / <code>install</code> / <code>update</code> (success, without <code>--no-tyhpdef</code>) runs the same mode.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp generate_tyhpdef --vendor

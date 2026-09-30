@@ -293,8 +293,8 @@
 <p>When the extension is active and the member has no <code>#[\Tyhp\GenericRuntime(binder: …)]</code>, the compiler replaces every call site with the member's <code>=&gt;</code> expression and substitutes the receiver and arguments into that expression. For example:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
-extension StringExtensions {
-    fn toUpper(extends string $this): string =&gt; \strtoupper($this);
+extension StringExtensions extends string {
+    fn toUpper(): string =&gt; \strtoupper($this);
 }
 </code></pre></div>
 <p>With <code>StringExtensions</code> in scope, this Tyhp call:</p>
@@ -312,12 +312,8 @@ string $upper = $name-&gt;toUpper();
 <li>Operators use <code>operator</code>, a required return type, and <code>=&gt; expression;</code>.</li>
 <li>Call-site splicing is intrinsic, so <code>#[\Tyhp\Optimize\Inline]</code> on an extension member is an error (<code>TYHP4176</code>).</li>
 </ul>
-<p>The extension header names the extension for imports; it does not select a receiver and therefore has no <code>extends</code> clause. Each member declares its own target:</p>
-<ul>
-<li>A function marks its first parameter with <code>extends</code>.</li>
-<li>An operator declares its target in <code>&lt;Type&gt;</code> and marks its first operand with <code>extends</code>.</li>
-<li><code>$this</code> and <code>self</code> inside the member refer to that target type, not to an extension or backer class.</li>
-</ul>
+<p>The header and nested groups are the same as in Tyhp. A header <code>extends Type</code> covers every member. Nested <code>extends Type { }</code> / <code>extends&lt;T&gt; Type { }</code> groups each name their own target, and the extension then has no header target. Members are short <code>fn</code> / <code>operator</code> with <code>=&gt;</code>. <code>$this</code> is the block target and is not a parameter. <code>&amp;$this</code> is the by-reference receiver annotation. <code>self</code> is that same target, including a scalar (<code>extends int</code> is <code>int</code>). Type parameters on <code>extension Name&lt;T&gt;</code> or <code>extends&lt;T&gt;</code> live on that symbol and are in scope for the block; they are not copied onto each method. A method lists only the type parameters written on it.</p>
+<p>Writing <code>extends Type $this</code> or <code>operator op&lt;Type&gt;</code> on a member is <code>TYHP4361</code>. <code>use extension</code> adaptations still qualify an operator with <code>operator +&lt;Money&gt;</code>.</p>
 <p>Mappings may delegate to declared PHP methods as well as builtins:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -325,8 +321,8 @@ class StringOperators as StringOperators__tyhpExtensionBacker {
     public static function __multiply&lt;T extends string|array&gt;(T $left, int $right): T;
 }
 
-extension StringOperators {
-    operator *&lt;string&gt;(extends self $left, int $right): string
+extension StringOperators extends string {
+    operator * (self $left, int $right): string
         =&gt; StringOperators__tyhpExtensionBacker::__multiply($left, $right);
 }
 </code></pre></div>
@@ -362,8 +358,7 @@ Money $total = $a + $b;
 string $label = $total-&gt;formatCurrency();
 </code></pre></div>
 <p>The compiler splices the mapping expressions into those sites. For example <code>$a + $b</code> becomes <code>($a-&gt;plus($b))</code>, and <code>$name-&gt;toUpper()</code> with <code>extension fn toUpper(): string =&gt; \strtoupper($this);</code> becomes <code>(\strtoupper($name))</code>.</p>
-<p><code>extension fn</code> does <strong>not</strong> use <code>extends</code> on the first parameter. The receiver is implicit <code>$this</code>. Do not write <code>extension fn format(extends Money $this)</code>.</p>
-<p><code>extension operator</code> does <strong>not</strong> use <code>&lt;Type&gt;</code> after the operator token. The target is the enclosing class. Do not write <code>extension operator +&lt;Money&gt;(…)</code>.</p>
+<p><code>$this</code> in an <code>extension fn</code> and <code>self</code> in an <code>extension operator</code> are the enclosing tyhpdef class. The member lists the parameters callers pass.</p>
 <p>The same by-reference rules as Tyhp <code>extension { }</code> apply: a parameter the expression writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.md#by-reference-parameters">By-reference parameters</a>.</p>
 <h2>Native vs Mapped Operators</h2>
 <p>Tyhpdef has two operator members. Mixing them up is a common source of <code>TYHP8013</code>.</p>
@@ -523,7 +518,7 @@ class Money {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T put <code>extends Type $this</code> on a class-body <code>extension fn</code>, and DON'T put <code>&lt;Type&gt;</code> on a class-body <code>extension operator</code>. Those forms belong to standalone <code>extension { }</code> blocks.</p>
+        <div class="callout-content"><p>DON'T put the target on a class-body <code>extension fn</code> or <code>extension operator</code>. Those members use the enclosing class. A standalone <code>extension Name { }</code> puts the target on the header or in a nested <code>extends</code> group.</p>
 </div>
     </div>
 </div>
@@ -535,7 +530,7 @@ class Money {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T put <code>extends</code> on the standalone <code>extension Name { }</code> header. Each member carries its own receiver.</p>
+        <div class="callout-content"><p>DON'T mix a header <code>extends</code> with nested <code>extends</code> groups (<code>TYHP4362</code>), and don't leave a member outside a group when the extension uses groups (<code>TYHP4363</code>). Writing <code>extends Type $this</code> or <code>operator op&lt;Type&gt;</code> on a member is <code>TYHP4361</code>.</p>
 </div>
     </div>
 </div>
@@ -621,7 +616,7 @@ class Money {
 </ul>
 <h2>Summary</h2>
 <ul>
-<li>Tyhpdef <strong>can</strong> declare standalone <code>extension Name { }</code> — no <code>extends</code> on the header; members are short <code>fn</code> / <code>operator</code> + <code>=&gt;</code>; return types required; empty <code>{}</code> is an error</li>
+<li>Tyhpdef <strong>can</strong> declare standalone <code>extension Name extends Type { }</code> or nested <code>extends Type { }</code> groups. Members are short <code>fn</code> / <code>operator</code> + <code>=&gt;</code>; <code>$this</code> is the block target; return types required; empty <code>{}</code> is an error</li>
 <li>Class-body members are <strong>thin mappings</strong> (<code>extension fn</code> / <code>extension operator</code> + <code>=&gt;</code>). They erase completely; PHP cannot call them. <code>$name-&gt;toUpper()</code> with <code>=&gt; \strtoupper($this)</code> emits <code>(\strtoupper($name))</code></li>
 <li><code>$this</code> / <code>self</code> in standalone members refer to the <strong>target</strong>; in class-body mappings they refer to the enclosing tyhpdef class</li>
 <li>Bodyless <code>operator …;</code> means native PHP passthrough; <code>extension operator</code> always needs a <code>=&gt;</code> expression</li>

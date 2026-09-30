@@ -480,6 +480,37 @@ partial function \strtoupper as str2UC;
 <p><code>partial function X as Y;</code> replaces Tyhp name <code>X</code> with <code>Y</code> (same PHP emit name) unless the same overlay file also has <code>partial function X;</code>. Match is the <strong>current Tyhp name</strong>. Overlay-only (<code>TYHP8032</code>); missing target warns (<code>TYHP8031</code>). Methods belong inside an overlay <code>partial</code> type (<code>TYHP8033</code>). Confirm live names with <code>tyhp symbol_tree --filter=&lt;name&gt;</code> (<a href="cli_symbolTree.md">CLI: Symbol Tree</a>).</p>
 <p>Include / baseline <code>partial</code> still applies only to <strong>types</strong> (<code>class</code> / <code>enum</code> / <code>interface</code> / <code>trait</code>): additive members, duplicate members error (<code>TYHP8002</code>), missing target error (<code>TYHP8014</code>). Overlay <code>omit</code> may hide a whole function (<code>omit function \array_map();</code>) or a member inside overlay <code>partial</code>.</p>
 <p>See <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a> and <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>. Overlay type headers (<code>partial class Foo&lt;T&gt;;</code>) are documented there as well.</p>
+<h2>Fallback functions</h2>
+<p><code>fallback function</code> describes a PHP function that is declared only when that name does not already exist:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">if (!function_exists(&#039;collect&#039;)) {
+    function collect($value = null) { /* ... */ }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+fallback function collect&lt;TKey extends int|string = int|string, TValue = mixed&gt;(
+    \Illuminate\Contracts\Support\Arrayable&lt;TKey, TValue&gt;|iterable&lt;TKey, TValue&gt;|null $value = []
+): \Illuminate\Support\Collection&lt;TKey, TValue&gt;;
+
+deprecated fallback function trigger_deprecation(
+    string $package,
+    string $version,
+    string $message,
+    mixed ...$args
+): void;
+</code></pre></div>
+<p>One package declaring the name makes the function available. When several packages declare it, the package whose file appears first in <code>vendor/composer/autoload_files.php</code> supplies the signature. <code>tyhpdef/php</code> wins over every fallback. A loaded tyhpdef package that <code>require</code>s or <code>require-dev</code>s <code>ext-intl</code> (or any <code>ext-*</code>) also wins over a fallback of the same name. Installing that package is what makes the extension present for type-checking. An <code>ext-intl</code> line on the application <code>composer.json</code>, without the tyhpdef package loaded, does not.</p>
+<p>A later fallback with a different signature warns (<code>TYHP8037</code>) and is ignored. Two fallbacks and no Composer autoload file list to order them is an error (<code>TYHP8036</code>). An ordinary function that Composer loads after a fallback of the same name is an error (<code>TYHP8038</code>). A function in Tyhp source next to a package fallback of the same name is a duplicate declaration. A plain <code>function</code> in the same package replaces that package's fallback.</p>
+<p><code>fallback</code> combines with <code>deprecated</code> or <code>obsolete</code>, and with <code>async</code> (<code>fallback async function …</code>). It does not combine with <code>partial</code>, <code>omit</code>, or <code>extern</code>.</p>
+<p>Wrap a fallback in <code>declare(ext=&quot;!intl&quot;)</code> when the function exists only if that extension's tyhpdef package is not loaded, and in <code>declare(php=&quot;…&quot;)</code> when it is also version-specific. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a> and <a href="tyhpdef_variablesAndConstants.md#fallback-constants">Fallback constants</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+
+declare(php=&quot;&lt;8.6&quot;) {
+    declare(ext=&quot;!intl&quot;) {
+        fallback function grapheme_strrev(string $string): string|false;
+    }
+}
+</code></pre></div>
 <h2>Summary</h2>
 <ul>
 <li>All parameters must be fully typed — no untyped parameters are allowed</li>
@@ -491,6 +522,7 @@ partial function \strtoupper as str2UC;
 <li>Async functions use the <code>async</code> keyword and represent the resolved return type</li>
 <li>Functions can be aliased using <code>as</code> to expose them under a different name in Tyhp. Overlay <code>partial function X as Y</code> renames without restating the signature.</li>
 <li>An imported function can be marked as <code>deprecated</code> or <code>obsolete</code></li>
+<li><code>fallback function</code> is a signature PHP defines only when the name is still empty. Composer <code>autoload.files</code> order picks the winning package. <code>declare(ext=&quot;!name&quot;)</code> hides it when that extension's tyhpdef package is loaded.</li>
 <li><code>#[\Tyhp\Php]</code> gates a function to a PHP version constraint; <code>declare(php=…)</code> also parses in <code>.tyhpdef</code></li>
 <li>Callable parameters use callable shapes: <code>callable(Params …): ReturnType</code>. <code>\Closure</code> takes that shape as <code>TCallableShape</code>.</li>
 <li>Top-level functions can use <code>extends</code> on the first parameter to import PHP functions as extension methods; standalone tyhpdef <code>extension Name { }</code> and class-body <code>extension fn</code> / <code>extension operator</code> are covered in <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a></li>

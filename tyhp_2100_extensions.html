@@ -281,20 +281,21 @@
 </p>
     <p>Extensions in Tyhp allow you to add new methods and operator overloads to existing types without modifying their source code. This is useful for adding functionality to classes you don't own, imported PHP types, or even scalar types like string, int, and array. The compiler always rewrites Tyhp call sites. A member's form decides whether PHP also keeps a method on the extension class.</p>
 <h2>Declaring an Extension</h2>
-<p>An extension is declared using the extension keyword with a name. Inside the extension body, functions use the extends keyword on the first parameter to indicate the type being extended. This first parameter becomes $this when calling the method. Member names follow PHP method naming, so names such as <code>match</code>, <code>and</code>, and <code>or</code> are allowed.</p>
+<p>The target is written once on the extension. <code>$this</code> inside each member is that target. Callers do not pass <code>$this</code>; call sites look like instance methods (<code>$text-&gt;toCamelCase()</code>). Member names follow PHP method naming, so names such as <code>match</code>, <code>and</code>, and <code>or</code> are allowed.</p>
+<p>A header target applies to every member:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension StringExtensions {
-    function toCamelCase(extends string $this): string {
+extension StringExtensions extends string {
+    function toCamelCase(): string {
         $parts = \explode(&#039;_&#039;, $this);
         return \lcfirst(\implode(&#039;&#039;, \array_map(&#039;\ucfirst&#039;, $parts)));
     }
 
-    function toSnakeCase(extends string $this): string {
+    function toSnakeCase(): string {
         return \strtolower(\preg_replace(&#039;/[A-Z]/&#039;, &#039;_$0&#039;, $this));
     }
 
-    function truncate(extends string $this, int $maxLength, string $suffix = &#039;...&#039;): string {
+    function truncate(int $maxLength, string $suffix = &#039;...&#039;): string {
         if (\strlen($this) &lt;= $maxLength) {
             return $this;
         }
@@ -307,6 +308,62 @@ string $text = &#039;hello_world&#039;;
 echo $text-&gt;toCamelCase();   // outputs: helloWorld
 echo $text-&gt;toSnakeCase();   // outputs: hello_world
 </code></pre></div>
+<p>A mixed extension omits the header target. Each nested group names its own type. Groups are one level: a group contains members, not further groups. A header <code>extends</code> together with a nested group is <code>TYHP4362</code>. A member beside those groups, outside any group, is <code>TYHP4363</code>. Members with no target at all are <code>TYHP4147</code>. An empty extension is <code>TYHP4172</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+extension NumericHelpers {
+    extends int {
+        fn abs(): int =&gt; \abs($this);
+    }
+
+    extends float {
+        fn abs(): float =&gt; \abs($this);
+    }
+
+    extends&lt;T&gt; \App\MyClass&lt;T&gt; {
+        function id(): T { return $this-&gt;id; }
+    }
+
+    extends&lt;TRight&gt; \App\Pair&lt;string, TRight&gt; {
+        function right(): TRight { return $this-&gt;right; }
+    }
+}
+</code></pre></div>
+<p>Generics on the extension name are the same kind of binder as <code>extends&lt;T&gt;</code> on a group:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+extension MyClassOps&lt;T&gt; extends \App\MyClass&lt;T&gt; {
+    function id(): T { return $this-&gt;id; }
+}
+
+extension Ops&lt;T extends int|string&gt; extends \App\MyClass&lt;T&gt; {
+    function id(): T { return $this-&gt;id; }
+}
+</code></pre></div>
+<p>The <code>extends</code> inside <code>&lt;T extends int|string&gt;</code> is the type-parameter constraint. The <code>extends</code> after the name, or the <code>extends</code> that opens a group, is the target.</p>
+<p>Those type parameters live on the extension symbol, or on the group for <code>extends&lt;T&gt;</code>. They are in scope for the target and for the members in that block. They are not copied onto each method. A method's type parameters are only the ones written on that method (<code>function mapTo&lt;R&gt;(callable(T): R $fn): array&lt;R&gt;</code>). Reusing an in-scope name on the method is <code>TYHP4366</code>. A type parameter that is never referenced is <code>TYHP4365</code>.</p>
+<p>Writing the target on the member (<code>extends Type $this</code>, or <code>&lt;Type&gt;</code> after the operator token) is <code>TYHP4361</code>. Adaptation clauses in <code>use extension</code> still qualify an operator by target: <code>E::operator +&lt;Money&gt; hide</code>.</p>
+<h2>The target</h2>
+<p>A target is one class, interface, enum, type alias, builtin, or generic application, including <code>object</code>, <code>callable</code>, and <code>struct</code>. <code>?T</code> applies to a receiver of type <code>T</code> and of type <code>?T</code>. Inside the member, <code>$this</code> is <code>?T</code>; a use as <code>T</code> needs a null check (<code>!== null</code> narrows it).</p>
+<p>A union is a legal target when every member of the union is itself a legal target. The member applies when every type the receiver might be is a member of that union. <code>$this</code> in the member is the whole union. <code>extends string|int</code> applies to <code>string</code>, to <code>int</code>, and to <code>string|int</code>. It does not apply to <code>string|int|bool</code> or to <code>?string</code>. A union that includes <code>null</code> applies to every non-empty combination of its members (so <code>extends null|string</code> applies to <code>string</code> and to <code>?string</code>) and does not apply to a receiver that is only <code>null</code>.</p>
+<p><code>TYHP4364</code> reports an intersection, <code>void</code>, <code>never</code>, <code>mixed</code>, a type parameter, an <code>object { … }</code> shape, <code>_</code>, or a union that contains one of those. An alias is read through to its body: an alias of a legal union is a legal target.</p>
+<p>Two groups in the same extension that can both apply to one receiver and declare the same method or the same operator are <code>TYHP4367</code>. <code>extends string</code> and <code>extends string|int</code> both apply to <code>string</code>, so the same member on both is an overlap. Different member names on overlapping targets are fine. Targets that do not overlap, such as <code>Money</code> and <code>\DateTime</code>, may share a method name. The same member on two separate extensions is an activation conflict (<code>hide</code> / <code>insteadof</code> on <code>use extension</code>), not <code>TYHP4367</code>.</p>
+<p>A target that does not resolve to a class or built-in is <code>TYHP3016</code>. When that block declares an operator and the target is <code>void</code>, <code>never</code>, <code>null</code>, <code>mixed</code>, <code>resource</code>, <code>true</code>, or <code>false</code>, the diagnostic is <code>TYHP3025</code>.</p>
+<h2><code>$this</code></h2>
+<p><code>$this</code> is the block target. It is not a source parameter and it is not a named argument. <code>&amp;$this</code>, with no type written on it, marks the member by-reference. Use it when the body writes <code>$this</code>: assignment, compound assignment, <code>++</code> / <code>--</code>, or passing <code>$this</code> to a by-reference parameter. Writing <code>$this</code> without <code>&amp;$this</code> is <code>TYHP4369</code>. Declaring <code>&amp;$this</code> when the body never writes <code>$this</code> is <code>TYHP4370</code>.</p>
+<p>Calling a method on an object <code>$this</code>, or assigning one of its properties (<code>$this-&gt;amount = 1</code>), does not write <code>$this</code>. The handle is shared, so the caller sees the mutation without <code>&amp;</code>. On a scalar, <code>array</code>, or struct target, assigning through <code>$this</code> does write it (<code>$this-&gt;field = …</code>, <code>$this[$k] = …</code>, <code>$this[] = …</code>), because those values are copied into the parameter.</p>
+<p>The PHP parameter is <code>$this_</code>. It is <code>&amp;$this_</code> only when the member is annotated <code>&amp;$this</code>. A by-value member emits <code>$this_</code> with no <code>&amp;</code>, including when the target is a class, interface, or enum. A by-reference call needs a referenceable receiver (<code>TYHP4180</code>); a literal such as <code>'hello'-&gt;sort()</code> is not one.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+extension IntOps extends int {
+    function label(): string { return (string)$this; }
+
+    function bump(&amp;$this): void { $this = $this + 1; }
+}
+</code></pre></div>
+<h2><code>self</code></h2>
+<p><code>self</code>, <code>new self()</code>, and <code>self::</code> inside a member are the block target, including a scalar. <code>extends int</code> emits <code>int</code> (for example <code>int::class</code> and a return type of <code>int</code>), not the extension class. Name the extension class by writing its name (<code>MoneyOps</code>). <code>static::</code> and <code>parent::</code> in an extension member are <code>TYHP4368</code>. An anonymous class nested in the member keeps its own <code>self</code> and <code>static</code>.</p>
+<p>Hover on the extension name shows <code>extension Name extends Target</code>, with generics on the name when they were written there (<code>extension StringOps&lt;T&gt; extends string</code>). A header with no target shows <code>extension Name</code>. Hover on a nested group shows <code>extends Target</code> or <code>extends&lt;T&gt; Target</code>. A method signature lists the parameters you wrote; <code>$this</code> is not one of them.</p>
 <h2>Member forms</h2>
 <p>A Tyhp <code>extension { }</code> member has three forms. The form is the contract for what PHP keeps:</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
@@ -363,9 +420,9 @@ echo $text-&gt;toSnakeCase();   // outputs: hello_world
 <p>Members may carry attributes, the same way class methods and tyhpdef extension members do:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension ArrayHelpers {
+extension ArrayHelpers extends array {
     #[\Tyhp\Optimize\Pure]
-    function sorted(extends array $this): array {
+    function sorted(): array {
         array $copy = \array_values($this);
         \sort($copy);
         return $copy;
@@ -377,15 +434,15 @@ extension ArrayHelpers {
 <p>Multi-statement members compile to static methods on the extension class. The object the method is called on becomes the first argument. Short <code>=&gt;</code> members are spliced into the call site and do not appear on the class. A single-<code>return</code> brace member is spliced in Tyhp and still emitted as a PHP method.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension StringHelpers {
-    function complexStringProcess(extends string $this): string {
+extension StringHelpers extends string {
+    function complexStringProcess(): string {
         string $finalString = \trim($this);
         return $finalString;
     }
 
-    fn shortProcess(extends string $this): string =&gt; &#039; &#039; . $this;
+    fn shortProcess(): string =&gt; &#039; &#039; . $this;
 
-    function simpleProcess(extends string $this): string {
+    function simpleProcess(): string {
         return $this . &#039; &#039;;
     }
 }
@@ -423,9 +480,9 @@ echo StringExtensions::toSnakeCase($text);
 </code></pre></div>
 <h2>By-reference parameters</h2>
 <p>A spliced member substitutes the caller's argument where the parameter stood, which behaves like passing by reference. Three rules keep that identical to a real call.</p>
-<p><strong>A written parameter must be declared <code>&amp;</code>, and only those parameters are.</strong> If the expression assigns to a parameter, compound-assigns, increments or decrements it in either position (<code>++$v</code> or <code>$v++</code>), or passes it to a callee's <code>&amp;</code> parameter, that parameter must be declared <code>&amp;</code>. Declaring <code>&amp;</code> on a parameter the expression never writes is equally an error (<code>TYHP4174</code>). The receiver is the same contract: <code>extends T &amp;$this</code> is a by-reference parameter, so <code>$a-&gt;sort()</code> can splice to <code>\sort($a, …)</code>. Writing a by-value <code>$this</code> is <code>TYHP4174</code>.</p>
+<p><strong>A written parameter must be declared <code>&amp;</code>, and only those parameters are.</strong> If the expression assigns to a parameter, compound-assigns, increments or decrements it in either position (<code>++$v</code> or <code>$v++</code>), or passes it to a callee's <code>&amp;</code> parameter, that parameter must be declared <code>&amp;</code>. Declaring <code>&amp;</code> on a parameter the expression never writes is equally an error (<code>TYHP4174</code>). The receiver uses the <code>&amp;$this</code> annotation from <a href="#this">Declaring an Extension</a>: <code>$a-&gt;sort()</code> with <code>function sort(&amp;$this)</code> can splice to <code>\sort($a, …)</code>. Writing <code>$this</code> without that annotation is <code>TYHP4369</code>.</p>
 <p><code>++</code> counts as a write in either position. A non-mutating increment is written <code>$v + 1</code>.</p>
-<p><strong>An argument for a <code>&amp;</code> parameter must be something PHP can reference</strong> (<code>TYHP4180</code>). The receiver of <code>extends T &amp;$this</code> is that argument. These shapes are not:</p>
+<p><strong>An argument for a <code>&amp;</code> parameter must be something PHP can reference</strong> (<code>TYHP4180</code>). The receiver of a member annotated <code>&amp;$this</code> is that argument. These shapes are not:</p>
 <ul>
 <li>literals</li>
 <li>constants</li>
@@ -437,21 +494,21 @@ echo StringExtensions::toSnakeCase($text);
 <p><strong>A parameter used more than once is evaluated once.</strong> The compiler introduces a local for the first evaluation and reuses it, so <code>$n-&gt;doubled()</code> with <code>fn doubled(): int =&gt; $this + $this</code> does not evaluate the receiver twice.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension Counters {
-    fn bump(extends int &amp;$this): int =&gt; ++$this;
+extension Counters extends int {
+    fn bump(&amp;$this): int =&gt; ++$this;
 }
 </code></pre></div>
 <h2>Extensions on Class Types</h2>
 <p>Extensions can add methods to any class type, including third-party classes you don't own.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension DateTimeExtensions {
-    function isWeekend(extends \DateTime $this): bool {
+extension DateTimeExtensions extends \DateTime {
+    function isWeekend(): bool {
         $day = (int)$this-&gt;format(&#039;N&#039;);
         return $day &gt;= 6;
     }
 
-    function isBusinessHours(extends \DateTime $this): bool {
+    function isBusinessHours(): bool {
         $hour = (int)$this-&gt;format(&#039;G&#039;);
         return $hour &gt;= 9 &amp;&amp; $hour &lt; 17 &amp;&amp; !$this-&gt;isWeekend();
     }
@@ -470,11 +527,11 @@ if (DateTimeExtensions::isBusinessHours($now)) {
 }
 </code></pre></div>
 <h2>Generic Extensions</h2>
-<p>Extension methods support generic type parameters, allowing you to write type-safe extension methods for generic types like array&lt;T&gt; or iterable&lt;T&gt;.</p>
+<p>Put the target's type parameters on the extension or on the group. Add further type parameters on the method when that method needs them. Header and group parameters stay on that symbol; the method lists only its own.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension IterableExtensions {
-    function firstOrNull&lt;T&gt;(extends iterable&lt;T&gt; $this, callable(T): bool $predicate): ?T {
+extension IterableExtensions&lt;T&gt; extends iterable&lt;T&gt; {
+    function firstOrNull(callable(T): bool $predicate): ?T {
         foreach ($this as $item) {
             if ($predicate($item)) {
                 return $item;
@@ -484,15 +541,15 @@ extension IterableExtensions {
     }
 }
 
-extension ArrayExtensions {
-    function max&lt;T extends int|float&gt;(extends array&lt;T&gt; $this): T {
+extension ArrayExtensions&lt;T extends int|float&gt; extends array&lt;T&gt; {
+    function max(): T {
         if (empty($this)) {
             throw new \RuntimeException(&#039;Array is empty&#039;);
         }
         return \max($this);
     }
 
-    function mapTo&lt;T, R&gt;(extends array&lt;T&gt; $this, callable(T): R $fn): array&lt;R&gt; {
+    function mapTo&lt;R&gt;(callable(T): R $fn): array&lt;R&gt; {
         return \array_map($fn, $this);
     }
 }
@@ -510,11 +567,11 @@ echo ArrayExtensions::max($numbers);
 $upper = ArrayExtensions::mapTo($numbers, fn(int $n): string =&gt; (string)$n);
 </code></pre></div>
 <h2>Extension Operator Overloads</h2>
-<p>Extension functions still use the extends keyword on the first parameter to name the type being extended. Extension operator overloads use an explicit target type in angle brackets right after the operator token, e.g. operator +&lt;MyType&gt;(...). The left operand type is typically self (the target type). abstract and final are not allowed on extension operators, nor on tyhpdef <code>extension fn</code> or <code>extension operator</code> members.</p>
+<p>Operators list every operand. <code>self</code> in the signature is the block target. <code>abstract</code> and <code>final</code> are not allowed on extension operators, nor on tyhpdef <code>extension fn</code> or <code>extension operator</code> members.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension StringOperators {
-    operator *&lt;string&gt;(self $left, int $right): string
+extension StringOperators extends string {
+    operator * (self $left, int $right): string
     {
         return \str_repeat($left, $right);
     }
@@ -523,15 +580,15 @@ extension StringOperators {
 string $line = &#039;-&#039; * 40;  // 40 dashes via StringOperators
 </code></pre></div>
 <h2>Extension Operators on Class Types</h2>
-<p>The type in angle brackets in operator +&lt;Money&gt;(...) is the class or named type the overload applies to. self in the parameter list refers to that target type.</p>
+<p><code>self</code> in the parameter list is the header or group target. An operand of another type is written as that type, so <code>int + Money</code> is <code>operator + (int $left, self $right)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-extension MoneyOperators {
-    operator +&lt;Money&gt;(self $left, self $right): self {
+extension MoneyOperators extends Money {
+    operator + (self $left, self $right): self {
         return $left-&gt;plus($right);
     }
 
-    operator ==&lt;Money&gt;(self $left, self $right): bool {
+    operator == (self $left, self $right): bool {
         return $left-&gt;isEqualTo($right);
     }
 }
@@ -547,7 +604,7 @@ extension MoneyOperators {
 <p><code>tyhp/core</code> uses the same pattern for multi-statement scalar methods: Tyhp bodies live in <code>tyhp_src/</code> (compiled as package source, not listed in <code>include</code>), and the tyhpdef declares <code>class StringExtensions as StringExtensions__tyhpExtensionBacker</code> plus thin <code>=&gt;</code> mappings. All-<code>=&gt;</code> catalogs (<code>IntExtensions</code>, <code>FloatExtensions</code>, <code>BoolExtensions</code>) have no backer class.</p>
 <p>Generated <code>package.tyhpdef</code> copies in-package <code>global use</code> / <code>global use extension</code> that the library authored. File-level <code>use extension</code> is not copied. Loading a package activates <code>extension { }</code> blocks for consumers only when that tyhpdef contains <code>global use extension</code>.</p>
 <p>Same-file Tyhp <code>extension { }</code> stays in scope in that file. Class-body tyhpdef <code>use extension</code> on a <strong>type</strong> still auto-activates that type’s attached surface for consumers, minus hidden members.</p>
-<p>See <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a> for the tyhpdef <code>extension Name { }</code> syntax (no <code>extends</code> on the header; <code>=&gt;</code> only; empty <code>{}</code> is an error).</p>
+<p>See <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a> for the tyhpdef <code>extension Name { }</code> syntax (the same header and nested groups; short <code>fn</code> / <code>operator</code> with <code>=&gt;</code> only; empty <code>{}</code> is an error).</p>
 <h2>Tyhpdef class-body mappings</h2>
 <p>For the full tyhpdef reference (standalone <code>extension Name { }</code>, thin class-body mappings, native vs mapped operators, and <code>use extension</code> on a class), see <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a>.</p>
 <p>Inside a tyhpdef class body you can declare <code>extension fn</code> and <code>extension operator</code> members as thin <code>=&gt;</code> mappings. The compiler treats them as a synthetic extension for that class: <code>$this</code> in an <code>extension fn</code> and <code>self</code> in an inline <code>extension operator</code> resolve to the enclosing tyhpdef class. These members cannot use <code>abstract</code> or <code>final</code>. Without <code>#[\Tyhp\GenericRuntime]</code> they splice (or erase) — PHP cannot call them. A compiled-library mapping that stamps <code>GenericRuntime</code> is not a splice candidate; foreign <code>$s-&gt;jsonDecodeAs&lt;User&gt;()</code> goes through <code>\Tyhp\Generic::bind</code> rather than baking the binder name.</p>
@@ -725,7 +782,7 @@ $result = StringExtensions::truncate(
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use generic type parameters on extension methods to preserve type safety through the call chain.</p>
+        <div class="callout-content"><p>Put the target's type parameters on the extension or group, and add method type parameters only when that method needs its own.</p>
 </div>
     </div>
 </div>
@@ -774,7 +831,7 @@ $result = StringExtensions::truncate(
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not omit the extends keyword on the first parameter — that is a compile error (TYHP4147, CheckerExtensionMissingExtends), not a silent regular static method. The extension declaration itself does not need <code>extends</code> (<code>extension StringExtensions {</code> is valid).</p>
+        <div class="callout-content"><p>Give every extension a header <code>extends Type</code> or nested <code>extends</code> groups. Members with no target are <code>TYHP4147</code>. A header target and nested groups in one extension are <code>TYHP4362</code>.</p>
 </div>
     </div>
 </div>
@@ -810,7 +867,7 @@ $result = StringExtensions::truncate(
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not write a parameter that a spliced member mutates without <code>&amp;</code>, and do not mark <code>&amp;</code> on a parameter the expression never writes (<code>TYHP4174</code>). Mutating the receiver requires <code>extends T &amp;$this</code>. A non-mutating increment is <code>$v + 1</code>, not <code>++$v</code>.</p>
+        <div class="callout-content"><p>Do not write a parameter that a spliced member mutates without <code>&amp;</code>, and do not mark <code>&amp;</code> on a parameter the expression never writes (<code>TYHP4174</code>). Writing <code>$this</code> requires <code>&amp;$this</code> (<code>TYHP4369</code>); <code>&amp;$this</code> with no write is <code>TYHP4370</code>. A non-mutating increment is <code>$v + 1</code>, not <code>++$v</code>.</p>
 </div>
     </div>
 </div>
@@ -828,24 +885,24 @@ $result = StringExtensions::truncate(
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR TYHP4147: first parameter lacks `extends`
+// ERROR TYHP4147: members and no target
 // extension Bad {
 //     function doSomething(string $value): string { /* ... */ }
 // }
 
 // ERROR: conflicting extension methods
-// extension StringHelpers1 {
-//     function clean(extends string $this): string { /* ... */ }
+// extension StringHelpers1 extends string {
+//     function clean(): string { /* ... */ }
 // }
-// extension StringHelpers2 {
-//     function clean(extends string $this): string { /* ... */ }
+// extension StringHelpers2 extends string {
+//     function clean(): string { /* ... */ }
 // }
 // use extension StringHelpers1;
 // use extension StringHelpers2;  // Error: conflicting &#039;clean&#039; method
 
 // ERROR: accessing private member
-// extension UserExtensions {
-//     function getPasswordHash(extends User $this): string {
+// extension UserExtensions extends User {
+//     function getPasswordHash(): string {
 //         return $this-&gt;passwordHash;  // Error: private property
 //     }
 // }
@@ -855,8 +912,8 @@ $result = StringExtensions::truncate(
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 declare(php=&quot;&gt;=8.4&quot;) {
-    extension GatedStringOps {
-        function gated_tag(extends string $this): string {
+    extension GatedStringOps extends string {
+        function gated_tag(): string {
             return \strtoupper($this);
         }
     }
@@ -865,8 +922,16 @@ declare(php=&quot;&gt;=8.4&quot;) {
 <p>See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
 <h2>Compiler Errors</h2>
 <ul>
-<li>Extension method without <code>extends</code> on the first parameter (TYHP4147). The extension <strong>declaration</strong> itself does not require <code>extends</code> (<code>extension StringExtensions {</code> is valid; there is no <code>extends</code> on the header).</li>
-<li>Extension operator overload without a <code>&lt;Type&gt;</code> target inside standalone extension bodies (e.g. <code>operator +&lt;Target&gt;(...)</code> is required inside <code>extension Name { ... }</code> blocks; tyhpdef <strong>class-body</strong> inline <code>extension operator</code> members do not use <code>&lt;Type&gt;</code> because the target is the enclosing class).</li>
+<li>An extension with members and no header <code>extends</code> or nested <code>extends</code> group (<code>TYHP4147</code>).</li>
+<li>A header <code>extends</code> and a nested group in one extension (<code>TYHP4362</code>), or a member outside a group when groups are present (<code>TYHP4363</code>).</li>
+<li>A target that is an intersection, <code>void</code>, <code>never</code>, <code>mixed</code>, a type parameter, an object shape, <code>_</code>, or a union containing one of those (<code>TYHP4364</code>).</li>
+<li>An unused extension or group type parameter (<code>TYHP4365</code>), or a method type parameter that reuses one of those names (<code>TYHP4366</code>).</li>
+<li>The same method or operator on two overlapping targets in one extension (<code>TYHP4367</code>).</li>
+<li><code>static::</code> or <code>parent::</code> in an extension member (<code>TYHP4368</code>).</li>
+<li>Writing <code>$this</code> without <code>&amp;$this</code> (<code>TYHP4369</code>), or <code>&amp;$this</code> when the body never writes <code>$this</code> (<code>TYHP4370</code>).</li>
+<li>The old member spelling <code>extends Type $this</code> or <code>operator op&lt;Type&gt;</code> (<code>TYHP4361</code>). Put the target on the block. <code>use extension</code> adaptations still write <code>operator +&lt;Money&gt;</code>.</li>
+<li>A block target that does not resolve to a class or built-in (<code>TYHP3016</code>). An operator whose target is <code>void</code>, <code>never</code>, <code>null</code>, <code>mixed</code>, <code>resource</code>, <code>true</code>, or <code>false</code> (<code>TYHP3025</code>).</li>
+<li>Tyhpdef <strong>class-body</strong> <code>extension fn</code> / <code>extension operator</code> take the enclosing type as the receiver. They do not use a header <code>extends</code>.</li>
 <li>Empty <code>extension Name {}</code> (<code>TYHP4172</code>).</li>
 <li><code>as</code> on an operator in a <code>use extension</code> adaptation (<code>TYHP4170</code>); use <code>hide</code> or <code>insteadof</code>.</li>
 <li><code>hide</code> of a member the extension does not declare (<code>TYHP4173</code>).</li>

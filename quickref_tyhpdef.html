@@ -296,7 +296,7 @@ const string APP_ENV;
 const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 </code></pre></div>
 <h2>Functions</h2>
-<p>Declare function signatures with typed parameters (including optional, reference, and variadic), generic type parameters, async functions, function aliases, and extension functions. Overlay <code>partial function</code> (optionally <code>as</code>) merges attributes or renames without restating the signature. Version-specific signatures use <code>#[\Tyhp\Php(&quot;…&quot;)]</code> or <code>declare(php=…)</code> in <code>.tyhpdef</code>.</p>
+<p>Declare function signatures with typed parameters (including optional, reference, and variadic), generic type parameters, async functions, function aliases, and extension functions. <code>fallback function</code> is a signature PHP defines only when that name is still empty; Composer <code>autoload.files</code> order chooses among packages. <code>declare(ext=&quot;name&quot;)</code> / <code>declare(ext=&quot;!name&quot;)</code> keeps a block when that extension's tyhpdef package is loaded or absent. Overlay <code>partial function</code> (optionally <code>as</code>) merges attributes or renames without restating the signature. Version-specific signatures use <code>#[\Tyhp\Php(&quot;…&quot;)]</code> or <code>declare(php=…)</code> in <code>.tyhpdef</code>.</p>
 <p><a href="tyhpdef_functions.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function \array_map&lt;T, U&gt;(callable(T): U $callback, array&lt;T&gt; $array): array&lt;U&gt;;
 async function fetchUserData(int $userId): UserData;
@@ -309,12 +309,12 @@ function example(string $v): mixed;
 function example(string $v, bool $strict = false): string;
 </code></pre></div>
 <h2>Extensions</h2>
-<p>Attach Tyhp extension methods and operator overloads to PHP types. <strong>Standalone</strong> <code>extension Name { }</code> (no <code>extends</code> on the header) uses short <code>fn</code> / <code>operator</code> + <code>=&gt;</code> members; return types required; empty <code>{}</code> is an error. Class-body <code>extension fn</code> / <code>extension operator</code> are <strong>thin mappings</strong> (<code>=&gt;</code> only, fully erased; PHP cannot call them). File-level <code>use extension</code> is opt-in unless <code>global use extension</code>. <code>tyhp/core</code> globally imports <code>\Tyhp\StringExtensions</code> and the other scalar catalogs. <code>use extension</code> on a tyhpdef class auto-activates that type’s attached surface. Bodyless <code>operator …;</code> is native PHP passthrough; bodyless <code>extension operator</code> is an error. <code>hide</code> / operator <code>insteadof</code> are allowed; <code>as</code> on operators is an error. <code>#[\Tyhp\Php]</code> is illegal on <code>extension { }</code> (<strong>TYHP4304</strong>); wrap with <code>declare(php=…)</code>. Multi-statement bodies live in <code>tyhp_src/</code> with <code>class PhpName as Name__tyhpExtensionBacker</code>.</p>
+<p>Attach Tyhp extension methods and operator overloads to PHP types. <strong>Standalone</strong> <code>extension Name extends Type { }</code> (or nested <code>extends Type { }</code> groups, with no header target) uses short <code>fn</code> / <code>operator</code> + <code>=&gt;</code> members; <code>$this</code> is the block target; return types required; empty <code>{}</code> is an error. Class-body <code>extension fn</code> / <code>extension operator</code> are <strong>thin mappings</strong> (<code>=&gt;</code> only, fully erased; PHP cannot call them; <code>$this</code> / <code>self</code> are the enclosing class). File-level <code>use extension</code> is opt-in unless <code>global use extension</code>. <code>tyhp/core</code> globally imports <code>\Tyhp\StringExtensions</code> and the other scalar catalogs. <code>use extension</code> on a tyhpdef class auto-activates that type’s attached surface. Bodyless <code>operator …;</code> is native PHP passthrough; bodyless <code>extension operator</code> is an error. <code>hide</code> / operator <code>insteadof</code> are allowed; <code>as</code> on operators is an error. <code>#[\Tyhp\Php]</code> is illegal on <code>extension { }</code> (<strong>TYHP4304</strong>); wrap with <code>declare(php=…)</code>. Multi-statement bodies live in <code>tyhp_src/</code> with <code>class PhpName as Name__tyhpExtensionBacker</code>.</p>
 <p><a href="tyhpdef_extensions.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">extension StringOperators {
-    fn toUpper(extends string $this): string
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">extension StringOperators extends string {
+    fn toUpper(): string
         =&gt; StringOperators__tyhpExtensionBacker::toUpper($this);
-    operator *&lt;string&gt;(extends self $left, int $right): string
+    operator * (self $left, int $right): string
         =&gt; StringOperators__tyhpExtensionBacker::__multiply($left, $right);
 }
 

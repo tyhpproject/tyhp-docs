@@ -625,7 +625,7 @@ interface Iterator&lt;TKey = mixed, TValue = mixed&gt; extends \Traversable&lt;T
 </table></div>
 <p>An <code>as</code> alias (<code>function call_user_func as call_user_func_unsafe</code>) <strong>adds</strong> a Tyhp name and leaves Layer 1 in place. The stamp still names the <strong>PHP original</strong> (<code>function call_user_func(...)</code>), and the compiler compares it to that Layer 1 signature — not to the alias name. Variadic <code>...</code> in the stamp is ignored when comparing, so <code>mixed ...$args</code> matches a Layer 1 compact stamp of <code>mixed $args</code>.</p>
 <p><code>@overlay-against:</code> does not apply to <code>extern</code> declarations (there is no Layer 1 member list). Stamping an <code>extern</code> is a no-op.</p>
-<p><code>tyhp overlay stamp</code> rewrites these comments from the current baseline on <strong>both</strong> stub overlays (<code>overlays/stubs/</code>) and hand overlays (<code>overlays/*.tyhpdef</code>). See <a href="cli_overlay.md">CLI: Overlay</a>.</p>
+<p><code>tyhp overlay stamp</code> rewrites these comments from the Layer 1 baseline on <strong>both</strong> stub overlays (<code>overlays/stubs/</code>) and hand overlays (<code>overlays/*.tyhpdef</code>), one pass per managed PHP version. A pass writes a stamp only onto declarations whose <code>declare(php=…)</code> / <code>#[\Tyhp\Php(…)]</code> gate that version satisfies. See <a href="cli_overlay.md">CLI: Overlay</a>.</p>
 <h2>Creating overlays</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp overlay create \Iterator
 tyhp overlay stamp
