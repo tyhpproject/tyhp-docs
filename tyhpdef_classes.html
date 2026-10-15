@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhpdef lets you describe existing PHP classes to the Tyhp compiler. When importing a class, you declare its properties, methods, constants, and relationships (extends, implements). You only need to declare the members you actually use in your Tyhp code — members already defined via an imported interface do not need to be re-declared.</p>
-<h2>Basic Class Declaration</h2>
+<h2 id="basic-class-declaration">Basic Class Declaration</h2>
 <p>Consider a PHP class you want to use from Tyhp:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -313,7 +332,7 @@ class Customer implements Person {
     // and do not need to be re-declared here.
 }
 </code></pre></div>
-<h2>Class Modifiers</h2>
+<h2 id="class-modifiers">Class Modifiers</h2>
 <p>Classes can be declared with <code>abstract</code> or <code>final</code> modifiers. These modifiers control how Tyhp sees the class at compile time. Make sure they match the actual PHP class — declaring a non-final PHP class as final in Tyhpdef will prevent valid subclassing in Tyhp.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -328,7 +347,7 @@ final class ImmutableConfig {
     public function has(string $key): bool;
 }
 </code></pre></div>
-<h2>Properties</h2>
+<h2 id="properties">Properties</h2>
 <p>Properties are declared with visibility modifiers and types. Only public and protected properties should be declared — private properties are not accessible from Tyhp code.</p>
 <p>Optional <code>?? &lt;value&gt;</code> after the name is the expected PHP start value (<code>protected ?\Psr\Log\LoggerInterface $logger ?? null;</code>, <code>private array $items ?? [];</code>). Tyhpdef does not assign the property; the live value may differ. Do not write <code>= &lt;value&gt;</code> on tyhpdef properties (or on tyhpdef consts). Parameter defaults still use <code>=</code>.</p>
 <p>When a PHP constructor promotes a parameter, declare the <strong>property</strong> with <code>??</code> and keep <code>=</code> on the <strong>parameter</strong>:</p>
@@ -355,7 +374,7 @@ class Holder {
     public string $displayName { get; private set; }
 }
 </code></pre></div>
-<h2>Methods</h2>
+<h2 id="methods">Methods</h2>
 <p>Method declarations include the full signature: visibility, optional modifiers (static, abstract, final), the function keyword, parameters with types, and return type. All methods end with a semicolon.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -367,8 +386,8 @@ class UserService {
     final public function delete(int $id): void;
 }
 </code></pre></div>
-<p><code>tyhp generate_tyhpdef</code> writes PHP <code>static</code> as <code>self</code> on parameters and properties (<code>@param</code>, <code>@var</code>, magic <code>@method</code> parameters, <code>@property</code>) and keeps <code>static</code> on return types (<code>: static</code>, magic <code>@method</code> returns, including generic arguments such as <code>Builder&lt;static&gt;</code>). Harvested method parameters keep optional <code>=</code> with a tyhpdef-safe literal, or <code>= null</code> when the PHP default is not representable — the same dummy used for harvested implicit-nullable PHP (<code>string $timezone = null</code>). The declared type is not widened. See <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>.</p>
-<h2>Constructors</h2>
+<p><code>tyhp generate_tyhpdef</code> writes PHP <code>static</code> as <code>self</code> on parameters and properties (<code>@param</code>, <code>@var</code>, magic <code>@method</code> parameters, <code>@property</code>) and keeps <code>static</code> on return types (<code>: static</code>, magic <code>@method</code> returns, including generic arguments such as <code>Builder&lt;static&gt;</code>). Harvested method parameters keep optional <code>=</code> with a tyhpdef-safe literal, or <code>= null</code> when the PHP default is not representable — the same dummy used for harvested implicit-nullable PHP (<code>string $timezone = null</code>). The declared type is not widened. See <a href="cli_tyhpdefGeneration.html#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>.</p>
+<h2 id="constructors">Constructors</h2>
 <p>Constructors are declared using <code>__construct</code> and can specify a return type of <code>: void</code>. Constructor parameter promotion (public/protected/private on parameters) is supported. Promoted parameters keep <code>=</code> for the parameter default; the cloned property uses <code>??</code> for PHP's expected start value (<code>public int $count ?? 0;</code> plus <code>function __construct(int $count = 0): void;</code>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -383,7 +402,7 @@ class DatabaseConnection {
     public function close(): void;
 }
 </code></pre></div>
-<h2>Constants</h2>
+<h2 id="constants">Constants</h2>
 <p>Class constants are declared with visibility, the const keyword, a type, and a name. Optional <code>?? &lt;value&gt;</code> is the expected PHP start value (same meaning as on properties). Do not write <code>= &lt;value&gt;</code> on a tyhpdef const.</p>
 <p>A child class that redeclares the same constant must keep that type. Omitting the type on the child infers it from the ancestor that first declared the constant. A different type is an error.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -395,7 +414,7 @@ class HttpStatus {
     public const string DEFAULT_CONTENT_TYPE;
 }
 </code></pre></div>
-<h2>Extends and Implements</h2>
+<h2 id="extends-and-implements">Extends and Implements</h2>
 <p>Classes can extend a parent class and implement one or more interfaces, mirroring PHP's inheritance model.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -405,7 +424,7 @@ class AdminUser extends \App\Models\User implements \Stringable, \JsonSerializab
     public function jsonSerialize(): mixed;
 }
 </code></pre></div>
-<h2>Generic Classes</h2>
+<h2 id="generic-classes">Generic Classes</h2>
 <p>Classes support generic type parameters with optional constraints. Generics enable type-safe descriptions of PHP classes that work with different types.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -425,8 +444,8 @@ class TypedRepository&lt;T extends Entity&gt; extends Repository&lt;T&gt; {
     async public function saveAsync(T $entity): T;
 }
 </code></pre></div>
-<p><code>tyhp generate_tyhpdef</code> writes PHPDoc <code>@template</code> tags as these headers. Unqualified class names in a bound (<code>@template T of Repository&lt;object&gt;</code>) become FQCNs using <code>use</code> imports, unique PHP / <code>\Psr\*</code> shorts, and types declared in the same package. Native <code>extends</code> / <code>implements</code> / trait <code>use</code> prefer a same-package declared type over a unique PHP / <code>\Psr\*</code> short of the same name. Template parameters (<code>T</code>) and builtins stay unqualified. A bound written without type arguments is completed from that type's own default, else its constraint, else <code>mixed</code>. See <a href="cli_tyhpdefGeneration.md#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>.</p>
-<h2>Trait Usage</h2>
+<p><code>tyhp generate_tyhpdef</code> writes PHPDoc <code>@template</code> tags as these headers. Unqualified class names in a bound (<code>@template T of Repository&lt;object&gt;</code>) become FQCNs using <code>use</code> imports, unique PHP / <code>\Psr\*</code> shorts, and types declared in the same package. Native <code>extends</code> / <code>implements</code> / trait <code>use</code> prefer a same-package declared type over a unique PHP / <code>\Psr\*</code> short of the same name. Template parameters (<code>T</code>) and builtins stay unqualified. A bound written without type arguments is completed from that type's own default, else its constraint, else <code>mixed</code>. See <a href="cli_tyhpdefGeneration.html#harvested-types-defaults-and-attributes">CLI: Tyhpdef Generation</a>.</p>
+<h2 id="trait-usage">Trait Usage</h2>
 <p>Classes in Tyhpdef can declare trait usage. Trait conflict resolution and aliasing syntax works the same as in PHP.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -439,7 +458,7 @@ class AuditableUser {
     public function getAuditLog(): array&lt;string&gt;;
 }
 </code></pre></div>
-<h2>Operators</h2>
+<h2 id="operators">Operators</h2>
 <p>When a PHP type already supports an operator at runtime (engine magic, a PECL extension, <code>DateTime</code> comparison, and similar), declare it as a bodyless <code>operator</code> member. Tyhp type-checks expressions such as <code>$a &lt; $b</code> against the signature. The emitter leaves the PHP operator in place — it does <strong>not</strong> rewrite the site to <code>__add</code> or any other method.</p>
 <p>The declaration is signature-only: <code>operator</code>, the token, typed parameters, a return type, and a semicolon. There is no body and no visibility modifier.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -461,8 +480,8 @@ class Decimal {
     operator convert(self $value): string;
 }
 </code></pre></div>
-<p><code>extension operator</code> is a different member: it maps Tyhp operator usage onto PHP methods and <strong>requires</strong> a thin <code>=&gt;</code> expression. Use it when the PHP type has methods such as <code>plus()</code> but does not implement the operator natively. See <a href="tyhpdef_extensions.md#native-vs-mapped-operators">Extensions in Tyhpdef</a>. A bodyless <code>extension operator +(…): T;</code> is an error (<code>TYHP8013</code>).</p>
-<h2>Partial types (base / include)</h2>
+<p><code>extension operator</code> is a different member: it maps Tyhp operator usage onto PHP methods and <strong>requires</strong> a thin <code>=&gt;</code> expression. Use it when the PHP type has methods such as <code>plus()</code> but does not implement the operator natively. See <a href="tyhpdef_extensions.html#native-vs-mapped-operators">Extensions in Tyhpdef</a>. A bodyless <code>extension operator +(…): T;</code> is an error (<code>TYHP8013</code>).</p>
+<h2 id="partial-types-base--include">Partial types (base / include)</h2>
 <p><code>partial</code> is legal on tyhpdef <code>class</code> / <code>enum</code> / <code>interface</code> / <code>trait</code> in base and <code>include</code> files. It <strong>adds</strong> members to a type that already exists in this compilation’s include set.</p>
 <ul>
 <li>Additive members only — it does not change generics, <code>extends</code>, <code>implements</code>, or flags.</li>
@@ -492,8 +511,8 @@ partial class Box {
 //     public function get(): int;
 // }
 </code></pre></div>
-<p>Do not use <code>partial</code> to attach standalone extensions. See <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a>. Overlay files also use brace <code>partial</code> (last-wins member replace, missing target = warning), header-only <code>partial class Foo&lt;T&gt; implements …;</code> (written header clauses replace; omitted clauses and members stay), overlay <code>partial function</code> (attribute merge / rename), and <code>omit</code>. Header <code>;</code> is overlay-only (<code>TYHP8034</code>). See <a href="tyhpdef_overlays.md#overlay-partial-header-form-partial-class-foo">Tyhpdef Overlays</a>.</p>
-<h2>PHP version gating</h2>
+<p>Do not use <code>partial</code> to attach standalone extensions. See <a href="tyhpdef_extensions.html">Extensions in Tyhpdef</a>. Overlay files also use brace <code>partial</code> (last-wins member replace, missing target = warning), header-only <code>partial class Foo&lt;T&gt; implements …;</code> (written header clauses replace; omitted clauses and members stay), overlay <code>partial function</code> (attribute merge / rename), and <code>omit</code>. Header <code>;</code> is overlay-only (<code>TYHP8034</code>). See <a href="tyhpdef_overlays.html#overlay-partial-header-form-partial-class-foo">Tyhpdef Overlays</a>.</p>
+<h2 id="php-version-gating">PHP version gating</h2>
 <p>On tyhpdef <strong>classes</strong> (and interfaces, enums, traits, and their members), use <code>#[\Tyhp\Php(&quot;…&quot;)]</code> (positional or <code>version:</code>). File-level <code>declare(php=&quot;…&quot;);</code> and brace <code>declare(php=&quot;…&quot;) { … }</code> also parse in <code>.tyhpdef</code>.</p>
 <p>On a hooked property, put <code>#[\Tyhp\Php]</code> on the <strong>property</strong>, not on <code>get</code> or <code>set</code> (<strong>TYHP8016</strong>):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -501,9 +520,9 @@ partial class Box {
 #[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
 public string $name { get; set; }
 </code></pre></div>
-<p><code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and on tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>). See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
-<p><code>tyhpdef/php</code> authors Closure, Fiber, Generator, and ArrayAccess generics in Layer 3 overlays (<code>_tyhpdef/overlays/Ext.Core.tyhpdef</code>). <code>\Closure</code> is <code>\Closure&lt;TCallableShape, TThis, TScope&gt;</code>; spell signatures as <code>\Closure&lt;callable(int): string&gt;</code>. <code>\Fiber</code> is <code>Fiber&lt;TResume, TCallableShape&gt;</code>. Generator functions declare <code>\Generator</code> / <code>\Generator&lt;K, V&gt;</code> / the four-arg form. See <a href="tyhp_0150_newTypes.md">New and Changed Types</a>.</p>
-<h2>Reserved-word type names</h2>
+<p><code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and on tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>). See <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>.</p>
+<p><code>tyhpdef/php</code> authors Closure, Fiber, Generator, and ArrayAccess generics in Layer 3 overlays (<code>_tyhpdef/overlays/Ext.Core.tyhpdef</code>). <code>\Closure</code> is <code>\Closure&lt;TCallableShape, TThis, TScope&gt;</code>; spell signatures as <code>\Closure&lt;callable(int): string&gt;</code>. <code>\Fiber</code> is <code>Fiber&lt;TResume, TCallableShape&gt;</code>. Generator functions declare <code>\Generator</code> / <code>\Generator&lt;K, V&gt;</code> / the four-arg form. See <a href="tyhp_0150_newTypes.html">New and Changed Types</a>.</p>
+<h2 id="reserved-word-type-names">Reserved-word type names</h2>
 <p>PHP allows a class, interface, trait, or enum whose short name is a reserved word (<code>is</code>, <code>isset</code>, and similar). In a <code>.tyhpdef</code>, write that declaration with a leading-backslash fully-qualified name so the parser treats it as a name rather than a keyword:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -514,7 +533,7 @@ namespace Hamcrest\Core {
 }
 </code></pre></div>
 <p><code>tyhp generate_tyhpdef</code> emits this form. Hand-written include and overlay files use the same spelling. Alias headers keep the PHP name fully qualified: <code>class \Hamcrest\Core\Is as IsMatcher { … }</code>. Inside a <code>namespace { }</code>, a harvested <code>extern function</code> whose short name is a reserved word is written the same way (<code>extern function \Some\Ns\isset;</code>).</p>
-<h2>Class Aliasing</h2>
+<h2 id="class-aliasing">Class Aliasing</h2>
 <p>When the PHP class name differs from what you want to use in Tyhp, you can alias it using the <code>as</code> keyword. The original fully-qualified PHP class name comes first, followed by <code>as</code> and the Tyhp alias. A reserved-word PHP name is fully qualified on the left of <code>as</code> as well (see <a href="#reserved-word-type-names">Reserved-word type names</a>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -522,7 +541,7 @@ class \Vendor\LongNamespace\SomeVeryLongClassName as ShortName {
     public function doWork(): void;
 }
 </code></pre></div>
-<h2>Deprecated and Obsolete</h2>
+<h2 id="deprecated-and-obsolete">Deprecated and Obsolete</h2>
 <p>The class itself can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Member-level markers parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -535,7 +554,7 @@ class Auth {
     public function loginWithToken(string $token): bool;
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -584,7 +603,7 @@ class Auth {
 in class declarations. Methods and storage properties end with a semicolon. Use <code>?? &lt;value&gt;</code> when you<br />
 need to record PHP's expected start value. Hooked properties use a<br />
 bodyless <code>{ get; set; }</code> list. Mapping Tyhp operators onto PHP methods uses <code>extension operator</code><br />
-with a required <code>=&gt;</code> expression; see <a href="tyhpdef_extensions.md#native-vs-mapped-operators">Extensions in Tyhpdef</a>.</p>
+with a required <code>=&gt;</code> expression; see <a href="tyhpdef_extensions.html#native-vs-mapped-operators">Extensions in Tyhpdef</a>.</p>
 </div>
     </div>
 </div>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link active" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -277,13 +296,13 @@
 				<section class="docs-section" id="FAQ_Other">
     <h2 class="section-heading">FAQ: Other</h2>
     
-    <h2>How can I contribute to Tyhp?</h2>
+    <h2 id="how-can-i-contribute-to-tyhp">How can I contribute to Tyhp?</h2>
 <p>Tyhp is an open-source project and welcomes contributions. See <a href="https://github.com/tyhpproject/tyhp/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> in the <a href="https://github.com/tyhpproject/tyhp">tyhpproject/tyhp</a> repository.</p>
-<h2>Where do I report bugs?</h2>
+<h2 id="where-do-i-report-bugs">Where do I report bugs?</h2>
 <p>Report bugs on the <a href="https://github.com/tyhpproject/tyhp/issues">GitHub issue tracker</a>. Include the Tyhp source code that triggers the issue, the expected behavior, the actual behavior (error message or incorrect output), your Tyhp compiler version (run <code>tyhp version</code>), and the target PHP version from your <code>tyhp.json</code>. Providing a minimal reproduction case helps resolve issues faster.</p>
-<h2>Is there a Tyhp community?</h2>
+<h2 id="is-there-a-tyhp-community">Is there a Tyhp community?</h2>
 <p>Yes. The Tyhp community is centered around the project's repository and issue tracker. This is where discussions about language design, new features, and implementation details take place. Feature requests and design proposals are welcome as issues.</p>
-<h2>What is on the roadmap?</h2>
+<h2 id="what-is-on-the-roadmap">What is on the roadmap?</h2>
 <p>The Tyhp roadmap includes ongoing work across several areas:</p>
 <ul>
 <li>Language features — continued expansion of the type system, pattern matching, and language ergonomics.</li>
@@ -292,13 +311,13 @@
 <li>Ecosystem — tyhpdef packages for popular PHP libraries and frameworks, and deeper Composer integration.</li>
 <li>Documentation — expanded guides, tutorials, and reference documentation.</li>
 </ul>
-<h2>How do I request a feature?</h2>
+<h2 id="how-do-i-request-a-feature">How do I request a feature?</h2>
 <p>Open an issue in the project's issue tracker with a clear description of the feature, the problem it solves, and ideally example Tyhp code showing how the feature would be used. Design proposals that consider both the Tyhp syntax and the compiled PHP output are especially helpful.</p>
-<h2>How does Tyhp compare to TypeScript?</h2>
+<h2 id="how-does-tyhp-compare-to-typescript">How does Tyhp compare to TypeScript?</h2>
 <p>The usual comparison is TypeScript’s relationship to JavaScript: both are typed supersets that compile to the original runtime’s language. Similarities include type erasure, gradual adoption, and using the existing ecosystem. Differences are the target runtime (PHP vs JavaScript) and the extra constructs Tyhp adds — structs, operator overloads, extension methods, and decimal types among them.</p>
-<h2>Can I gradually adopt Tyhp in an existing PHP project?</h2>
+<h2 id="can-i-gradually-adopt-tyhp-in-an-existing-php-project">Can I gradually adopt Tyhp in an existing PHP project?</h2>
 <p>Yes. You can add <code>.tyhp</code> files alongside existing PHP files in the same project. Start by writing tyhpdef files to describe your existing PHP code, then write new code in Tyhp. The emitted PHP is ordinary PHP, so it can sit next to code you already have. You do not need to convert an entire project at once.</p>
-<h2>What does 'Tyhp' stand for?</h2>
+<h2 id="what-does-tyhp-stand-for">What does 'Tyhp' stand for?</h2>
 <p>It is a name, not an acronym. The letters nod to PHP; that is etymology, not a claim that Tyhp is PHP. Tyhp is a typed superset of the PHP language.</p>
 
 </section>

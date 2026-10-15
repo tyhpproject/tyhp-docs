@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -279,9 +298,9 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 2</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>PHP Core attributes such as <code>#[\Deprecated]</code>, <code>#[\Override]</code>, <code>#[\NoDiscard]</code>, and <code>#[\DelayedTargetValidation]</code> emit as ordinary PHP attributes. Tyhp type-checks them at compile time. The attribute <strong>classes</strong> stay version-gated in <code>tyhpdef/php</code>; some <strong>checks</strong> still run when <code>output.phpVersion</code> is below the introducing minor. See <a href="tyhp_0320_phpVersionGating.md#engine-attributes-and-outputphpversion">PHP Version Gating</a>.</p>
+    <p>PHP Core attributes such as <code>#[\Deprecated]</code>, <code>#[\Override]</code>, <code>#[\NoDiscard]</code>, and <code>#[\DelayedTargetValidation]</code> emit as ordinary PHP attributes. Tyhp type-checks them at compile time. The attribute <strong>classes</strong> stay version-gated in <code>tyhpdef/php</code>; some <strong>checks</strong> still run when <code>output.phpVersion</code> is below the introducing minor. See <a href="tyhp_0320_phpVersionGating.html#engine-attributes-and-outputphpversion">PHP Version Gating</a>.</p>
 <p><code>tyhp --explain TYHP####</code> prints the long-form text for each code below.</p>
-<h2><code>#[\Deprecated]</code></h2>
+<h2 id="deprecated"><code>#[\Deprecated]</code></h2>
 <p><code>#[\Deprecated]</code> marks a declaration as deprecated. Using that symbol warns <strong>TYHP4500</strong>. The binder treats the attribute the same way as the tyhpdef <code>deprecated</code> keyword — both set deprecation on the symbol, and both produce this one warning.</p>
 <p>When <code>$message</code> is a string literal, it is appended to the diagnostic after a colon (<code>{0}</code> is the name, <code>{1}</code> is <code>: </code> plus the message). Omit <code>$message</code> and the warning stays the one-argument form <code>`{0}` is deprecated</code>. <code>$since</code> is not part of the short message.</p>
 <p>Tyhp warns even when <code>output.phpVersion</code> is below 8.4. PHP’s runtime <code>E_USER_DEPRECATED</code> is a no-op on older minors; the compile-time warning still fires.</p>
@@ -292,8 +311,8 @@ function foo(): void {}
 
 foo();  // WARNING TYHP4500: `foo` is deprecated: use bar()
 </code></pre></div>
-<p>On a tyhpdef, <code>deprecated function baz();</code> is the same warning without an attribute. See <a href="tyhpdef_deprecatedKeyword.md">The deprecated and obsolete Keywords</a>.</p>
-<h2><code>#[\Override]</code></h2>
+<p>On a tyhpdef, <code>deprecated function baz();</code> is the same warning without an attribute. See <a href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords</a>.</p>
+<h2 id="override"><code>#[\Override]</code></h2>
 <p><code>#[\Override]</code> marks a method — and, when <code>output.phpVersion</code> is <strong>8.5 or later</strong>, a property — as intended to replace a parent or interface member.</p>
 <ul>
 <li>If no same-name non-private ancestor or interface member exists, that is <strong>TYHP4129</strong>.</li>
@@ -327,7 +346,7 @@ class Child extends Base {
 }
 </code></pre></div>
 <p>A method or property that is marked but does not override uses TYHP4129, not TYHP4339.</p>
-<h2><code>#[\NoDiscard]</code></h2>
+<h2 id="nodiscard"><code>#[\NoDiscard]</code></h2>
 <p><code>#[\NoDiscard]</code> marks a function or method whose return value should be used. A discarded call (an expression statement, or a non-final <code>for</code> list item) warns <strong>TYHP4165</strong>. When <code>$message</code> is a string literal, it is appended after a colon, the same way as <code>#[\Deprecated]</code>.</p>
 <p>Use the return (assignment, argument, condition, and so on), or discard it on purpose with <code>(void)</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -351,7 +370,7 @@ function run(): void {
 <li>A <strong>trait-imported</strong> method keeps the attribute (PHP copies it onto the using class).</li>
 </ul>
 <p>Tyhp reports this even when <code>output.phpVersion</code> is below 8.5. <code>(void)</code> is native PHP on 8.5 or later; below 8.5 the emitter omits the cast and still treats it as an intentional discard.</p>
-<h2><code>#[\DelayedTargetValidation]</code></h2>
+<h2 id="delayedtargetvalidation"><code>#[\DelayedTargetValidation]</code></h2>
 <p>On PHP 8.5, <code>#[\DelayedTargetValidation]</code> on a declaration defers <strong>target</strong> (<code>TARGET_*</code>) errors for <strong>internal</strong> (Core) attributes on that same declaration until <code>ReflectionAttribute::newInstance()</code>. Tyhp’s compile-time analogue: when <code>output.phpVersion</code> is <strong>8.5 or later</strong> and this attribute is on the declaration, <strong>TYHP4127</strong> is skipped for Core attributes on that declaration.</p>
 <p>Functional checks still run. <code>#[\Override]</code> that does not override is still TYHP4129. Unused <code>#[\NoDiscard]</code> returns are still TYHP4165. <code>#[\Override]</code> on <code>__construct</code> is still TYHP4339.</p>
 <p>Below 8.5 the skip is ignored — target mismatches are still reported.</p>
@@ -378,9 +397,9 @@ class Orphan {
 }
 </code></pre></div>
 <p>Userland attributes are still target-checked. Only PHP Core engine attributes on that declaration skip TYHP4127.</p>
-<h2><code>#[\SensitiveParameter]</code></h2>
-<p><code>#[\SensitiveParameter]</code> on a parameter has no use-site diagnostic. In the debugger, marked arguments stay wrapped as <code>\SensitiveParameterValue</code>. See <a href="cli_xdebugProxy.md">CLI: Xdebug Proxy</a>.</p>
-<h2>Diagnostics</h2>
+<h2 id="sensitiveparameter"><code>#[\SensitiveParameter]</code></h2>
+<p><code>#[\SensitiveParameter]</code> on a parameter has no use-site diagnostic. In the debugger, marked arguments stay wrapped as <code>\SensitiveParameterValue</code>. See <a href="cli_xdebugProxy.html">CLI: Xdebug Proxy</a>.</p>
+<h2 id="diagnostics">Diagnostics</h2>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
 <tr>
@@ -417,8 +436,8 @@ class Orphan {
 </tr>
 </tbody>
 </table></div>
-<p>See the <a href="diagnostics_reference.md">Diagnostic Code Reference</a> for the compiler’s short messages.</p>
-<h2>Common mistakes</h2>
+<p>See the <a href="diagnostics_reference.html">Diagnostic Code Reference</a> for the compiler’s short messages.</p>
+<h2 id="common-mistakes">Common mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -463,7 +482,7 @@ class Orphan {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p><code>(void)expr</code> is the intentional discard for unused <code>#[\NoDiscard]</code> returns and for empty <code>catch</code> bodies (<code>(void)$e</code>). See <a href="tyhp_2900_lostFunctionality.md">Lost and Changed Functionality</a>.</p>
+        <div class="callout-content"><p><code>(void)expr</code> is the intentional discard for unused <code>#[\NoDiscard]</code> returns and for empty <code>catch</code> bodies (<code>(void)$e</code>). See <a href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality</a>.</p>
 </div>
     </div>
 </div>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -287,8 +306,8 @@
 <li><strong><code>use extension</code></strong> on a tyhpdef class — attach a standalone extension so callers of <strong>that type</strong> do not need their own import</li>
 </ol>
 <p><code>use extension</code> at file level is <strong>opt-in</strong>. Loading a package does <strong>not</strong> auto-activate its standalone <code>extension { }</code> blocks unless that tyhpdef contains <code>global use extension …</code>. <code>tyhp/core</code> does this for <code>\Tyhp\StringExtensions</code> and the other scalar catalogs, so those methods are compilation-wide. Class-body <code>use extension</code> on a type still auto-activates that type’s attached surface for consumers (minus hidden members).</p>
-<p>For the Tyhp-side <code>extension { }</code> syntax, <code>use extension</code> in <code>.tyhp</code> files, generated PHP backer classes, <code>hide</code> / <code>insteadof</code>, and emit details, see <a href="tyhp_2100_extensions.md">Extensions</a>.</p>
-<h2>Standalone <code>extension Name { }</code></h2>
+<p>For the Tyhp-side <code>extension { }</code> syntax, <code>use extension</code> in <code>.tyhp</code> files, generated PHP backer classes, <code>hide</code> / <code>insteadof</code>, and emit details, see <a href="tyhp_2100_extensions.html">Extensions</a>.</p>
+<h2 id="standalone-extension-name--">Standalone <code>extension Name { }</code></h2>
 <p>A standalone extension in a <code>.tyhpdef</code> file is a compile-time mapping from Tyhp method or operator syntax to a PHP expression. Without <code>#[\Tyhp\GenericRuntime]</code>, the compiler replaces every call site with the member's <code>=&gt;</code> expression. A compiled Tyhp library stamps <code>GenericRuntime</code> on emitted generic mappings (<code>binder</code> only when the companion exists). Foreign consumer sites use <code>\Tyhp\Generic::bind</code> instead of splicing a wrapper that drops the type argument.</p>
 <p>When the extension is active and the member has no <code>#[\Tyhp\GenericRuntime(binder: …)]</code>, the compiler replaces every call site with the member's <code>=&gt;</code> expression and substitutes the receiver and arguments into that expression. For example:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
@@ -327,10 +346,10 @@ extension StringOperators extends string {
 }
 </code></pre></div>
 <p>Here <code>StringOperators__tyhpExtensionBacker</code> is the Tyhp name for the declared PHP backer. The compiler rewrites it to <code>StringOperators</code> in emitted PHP while splicing the mapping expression into each operator call site.</p>
-<p>Package authors put multi-statement bodies in <code>tyhp_src/</code> and describe the emitted PHP class with <code>class PhpName as Name__tyhpExtensionBacker</code>. Short <code>=&gt;</code> members that map onto builtins need no backer. <code>tyhp/core</code> follows this split: <code>_tyhpdef/extensions/*.tyhpdef</code> holds the mappings plus <code>global use extension \Tyhp\StringExtensions;</code> (and the matching Array / Int / Float / Bool / Closure files); <code>tyhp_src/</code> holds brace-body helpers such as <code>StringExtensions::reverse</code>.</p>
+<p>Package authors put multi-statement bodies in <code>tyhp_src/</code> and describe the emitted PHP class with <code>class PhpName as Name__tyhpExtensionBacker</code>. Short <code>=&gt;</code> members that map onto builtins need no backer. <code>tyhp/core</code> follows this split: its scalar extensions are Tyhp source files in <code>tyhp_src/</code> (<code>StringExtensions.tyhp</code>, <code>ArrayExtensions.tyhp</code>, <code>IntExtensions.tyhp</code>, <code>FloatExtensions.tyhp</code>, <code>BoolExtensions.tyhp</code>, <code>ClosureExtensions.tyhp</code>), each declaring <code>global use extension</code>, and the generated <code>package.tyhpdef</code> publishes the mappings. Brace-body helpers such as <code>StringExtensions::reverse</code> stay as static calls into the compiled backer class.</p>
 <p>An extension must contain at least one member; an empty block reports <code>TYHP4172</code>. Declaring the same extension name more than once in the base and included tyhpdefs is also an error. <code>deprecated</code> and <code>obsolete</code> are allowed on the extension and its members.</p>
-<p>A parameter the mapping writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.md#by-reference-parameters">By-reference parameters</a> on the Tyhp extensions page.</p>
-<h2>Thin mappings on a tyhpdef class</h2>
+<p>A parameter the mapping writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.html#by-reference-parameters">By-reference parameters</a> on the Tyhp extensions page.</p>
+<h2 id="thin-mappings-on-a-tyhpdef-class">Thin mappings on a tyhpdef class</h2>
 <p>Inside a tyhpdef class body you can declare <code>extension fn</code> and <code>extension operator</code> members. Each is a <strong>thin mapping</strong>: a single <code>=&gt;</code> expression that the compiler splices into every Tyhp call site. The compiler treats them as a synthetic extension for that class. These members are <strong>auto-active</strong>: Tyhp code that uses the type does not need a separate <code>use extension</code> import.</p>
 <p><code>extension</code> replaces a visibility modifier — members are always public. <code>abstract</code> and <code>final</code> are not allowed. <code>$this</code> in an <code>extension fn</code> and <code>self</code> in an inline <code>extension operator</code> resolve to the enclosing tyhpdef class.</p>
 <p>A thin mapping is fully erased. The <code>.tyhpdef</code> file is never emitted as PHP, and the member does not become a PHP method. PHP cannot call it.</p>
@@ -359,8 +378,8 @@ string $label = $total-&gt;formatCurrency();
 </code></pre></div>
 <p>The compiler splices the mapping expressions into those sites. For example <code>$a + $b</code> becomes <code>($a-&gt;plus($b))</code>, and <code>$name-&gt;toUpper()</code> with <code>extension fn toUpper(): string =&gt; \strtoupper($this);</code> becomes <code>(\strtoupper($name))</code>.</p>
 <p><code>$this</code> in an <code>extension fn</code> and <code>self</code> in an <code>extension operator</code> are the enclosing tyhpdef class. The member lists the parameters callers pass.</p>
-<p>The same by-reference rules as Tyhp <code>extension { }</code> apply: a parameter the expression writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.md#by-reference-parameters">By-reference parameters</a>.</p>
-<h2>Native vs Mapped Operators</h2>
+<p>The same by-reference rules as Tyhp <code>extension { }</code> apply: a parameter the expression writes must be declared <code>&amp;</code>, and only those parameters are by reference. See <a href="tyhp_2100_extensions.html#by-reference-parameters">By-reference parameters</a>.</p>
+<h2 id="native-vs-mapped-operators">Native vs Mapped Operators</h2>
 <p>Tyhpdef has two operator members. Mixing them up is a common source of <code>TYHP8013</code>.</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
@@ -388,7 +407,7 @@ string $label = $total-&gt;formatCurrency();
 </tr>
 </tbody>
 </table></div>
-<p>Bare <code>operator</code> is documented in <a href="tyhpdef_classes.md#operators">Classes in Tyhpdef</a>. The rest of this section is the mapped form.</p>
+<p>Bare <code>operator</code> is documented in <a href="tyhpdef_classes.html#operators">Classes in Tyhpdef</a>. The rest of this section is the mapped form.</p>
 <p><code>DateTimeInterface</code> comparisons (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>) are native. <code>DateTime</code> and <code>DateTimeImmutable</code> <code>+</code> / <code>-</code> map onto <code>add</code> / <code>sub</code> / <code>diff</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -404,16 +423,16 @@ class Money {
 namespace Tyhp;
 
 final class Decimal {
-    extension operator +(self $value): int|float =&gt; \Tyhp\Decimal::__asNumeric($value);
+    extension operator +(self $value): float =&gt; \Tyhp\Decimal::__asNumeric($value);
 
     extension operator convert(int $value): self =&gt; \Tyhp\Decimal::__from($value);
 
     extension operator convert(self $value): string =&gt; $value-&gt;__toString();
 }
 </code></pre></div>
-<h2>use extension in Tyhpdef Class Bodies</h2>
+<h2 id="use-extension-in-tyhpdef-class-bodies">use extension in Tyhpdef Class Bodies</h2>
 <p><code>use extension</code> on a tyhpdef class is the extension analogue of <code>use SomeTrait;</code> in a Tyhp or PHP class: it attaches an existing standalone <code>extension { }</code> to this type. Matching methods become part of the type's surface. Callers that use the type do <strong>not</strong> need their own <code>use extension</code>.</p>
-<p>The import supports the same adaptation syntax as traits, plus postfix <code>hide</code> and operator <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_1600_operatorOverloads.md#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
+<p>The import supports the same adaptation syntax as traits, plus postfix <code>hide</code> and operator <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_1600_operatorOverloads.html#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 class Money {
@@ -429,14 +448,14 @@ class Money {
 <p>Only methods whose first parameter <code>extends</code> this class are attached. A method in the same extension that <code>extends</code> a different type is skipped for this class — it is not an error. If nothing in the extension targets the enclosing class, the <code>use</code> adds no methods (a no-op for this type, unless the name itself is missing).</p>
 <p>The referenced extension must resolve to a real <code>extension Name { … }</code> (Tyhp source or tyhpdef). If the name does not resolve to an extension, the compiler reports <code>TYHP8011</code>.</p>
 <p>File-level <code>use extension</code> is also valid in tyhpdef (same syntax as Tyhp) when the tyhpdef file needs the extension name in scope. That form is opt-in unless the file (or another loaded tyhpdef) uses <code>global use extension</code>.</p>
-<h2>PHP version gating</h2>
-<p><code>#[\Tyhp\Php]</code> is <strong>illegal</strong> on a standalone tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>), the same as on Tyhp <code>extension { }</code>. Wrap the extension in <code>declare(php=…)</code> instead — file-level <code>declare(php=&quot;…&quot;);</code> and brace <code>declare(php=&quot;…&quot;) { … }</code> both parse in <code>.tyhpdef</code>. See <a href="tyhp_0320_phpVersionGating.md#structs-and-extensions">PHP Version Gating</a>.</p>
+<h2 id="php-version-gating">PHP version gating</h2>
+<p><code>#[\Tyhp\Php]</code> is <strong>illegal</strong> on a standalone tyhpdef <code>extension { }</code> (<strong>TYHP4304</strong>), the same as on Tyhp <code>extension { }</code>. Wrap the extension in <code>declare(php=…)</code> instead — file-level <code>declare(php=&quot;…&quot;);</code> and brace <code>declare(php=&quot;…&quot;) { … }</code> both parse in <code>.tyhpdef</code>. See <a href="tyhp_0320_phpVersionGating.html#structs-and-extensions">PHP Version Gating</a>.</p>
 <p><code>extension fn</code> / <code>extension operator</code> members inside a tyhpdef <strong>class</strong> body are not affected by this restriction — <code>#[\Tyhp\Php]</code> on the enclosing class or on ordinary methods works normally; the restriction is on the <code>extension { }</code> declaration itself.</p>
-<h2>Access and Conflicts</h2>
+<h2 id="access-and-conflicts">Access and Conflicts</h2>
 <p>Thin mapping members can only use the <strong>public</strong> API of the enclosing type. They cannot access private or protected members — extensions are external to the class.</p>
 <p>An inline extension member must not collide with a member already declared on the same class (<code>TYHP8010</code>).</p>
 <p>A user type whose Tyhp name ends with <code>__tyhpExtensionBacker</code> collides with the reserved backer suffix (<code>TYHP4171</code>).</p>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -497,7 +516,7 @@ class Money {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -597,7 +616,7 @@ class Money {
     extension operator +(self $left, self $right): self =&gt; $left-&gt;plus($right);
 }
 </code></pre></div>
-<h2>Compiler Errors</h2>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <ul>
 <li><code>TYHP4170</code> — <code>as</code> on an operator in a <code>use extension</code> adaptation; use <code>hide</code> or <code>insteadof</code></li>
 <li><code>TYHP4171</code> — type name collides with the reserved <code>__tyhpExtensionBacker</code> suffix</li>
@@ -614,14 +633,14 @@ class Money {
 <li><code>TYHP8012</code> — a member marked <code>extension</code> is not a valid extension member (<code>fn</code> / <code>operator</code> only)</li>
 <li><code>TYHP8013</code> — <code>extension operator</code> is missing a thin <code>=&gt;</code> expression; use bodyless <code>operator</code> for native PHP operators</li>
 </ul>
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <ul>
 <li>Tyhpdef <strong>can</strong> declare standalone <code>extension Name extends Type { }</code> or nested <code>extends Type { }</code> groups. Members are short <code>fn</code> / <code>operator</code> + <code>=&gt;</code>; <code>$this</code> is the block target; return types required; empty <code>{}</code> is an error</li>
 <li>Class-body members are <strong>thin mappings</strong> (<code>extension fn</code> / <code>extension operator</code> + <code>=&gt;</code>). They erase completely; PHP cannot call them. <code>$name-&gt;toUpper()</code> with <code>=&gt; \strtoupper($this)</code> emits <code>(\strtoupper($name))</code></li>
 <li><code>$this</code> / <code>self</code> in standalone members refer to the <strong>target</strong>; in class-body mappings they refer to the enclosing tyhpdef class</li>
 <li>Bodyless <code>operator …;</code> means native PHP passthrough; <code>extension operator</code> always needs a <code>=&gt;</code> expression</li>
 <li>File-level <code>use extension</code> is opt-in unless <code>global use extension</code>; class-body <code>use extension</code> auto-activates that type’s attached surface (minus <code>hide</code>)</li>
-<li><code>tyhp/core</code> ships <code>_tyhpdef/extensions/*.tyhpdef</code> with <code>global use extension \Tyhp\&lt;ScalarType&gt;Extensions</code> and <code>tyhp_src/</code> backers (<code>class PhpName as Name__tyhpExtensionBacker</code>) for multi-statement bodies</li>
+<li><code>tyhp/core</code> declares its scalar extensions in <code>tyhp_src/&lt;ScalarType&gt;Extensions.tyhp</code> with <code>global use extension</code>, and its generated <code>package.tyhpdef</code> maps them to backer classes (<code>class PhpName as Name__tyhpExtensionBacker</code>) for multi-statement bodies</li>
 </ul>
 
 </section>

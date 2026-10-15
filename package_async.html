@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>The tyhp/async Package - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="The_tyhp_async_Package">
+    <h2 class="section-heading">The tyhp/async Package</h2>
+    
+    <p><code>tyhp/async</code> is the runtime behind Tyhp's <code>async</code> and <code>await</code> keywords. It provides <code>\Tyhp\Promise&lt;T&gt;</code>, the fiber-based event loop that runs promises (<code>\Tyhp\EventLoop</code>), cooperative cancellation (<code>CancellationTokenSource</code> and <code>CancellationToken</code>), timeouts, deferred promises, the async iteration and async disposal contracts, and the exceptions those features throw.</p>
+<p>This page is the API reference and runtime guide for the package. The language syntax — <code>async function</code>, <code>await</code>, async closures and blocks, and <code>foreach (await ...)</code> — is described in <a href="tyhp_2600_asyncAndAwait.html">Async and Await</a>. Read that page first if you have not written async Tyhp code before.</p>
+<h2 id="installing">Installing</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Composer name</td>
+<td><code>tyhp/async</code></td>
+</tr>
+<tr>
+<td>Requires</td>
+<td>PHP 8.2 or later, <code>tyhp/core</code></td>
+</tr>
+<tr>
+<td>Namespaces</td>
+<td><code>Tyhp</code>, <code>Tyhp\Contracts</code>, <code>Tyhp\Exceptions</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tyhp build</code> lists <code>tyhp/async</code> among the runtime packages your project needs as soon as your code uses <code>async</code>, <code>await</code>, or the <code>:=</code> operator. The package belongs in <code>require</code> (emitted PHP loads it at runtime). Version pins follow the same <code>80N.X.Y</code> scheme as the other compiled <code>tyhp/*</code> helpers; see <a href="project_composerPackages.html">Composer Runtime Packages</a>.</p>
+<p>The non-blocking HTTP, process, file, socket, Redis, and database clients in <a href="package_io.html"><code>tyhp/io</code></a>, and the worker pool in <a href="package_parallel.html"><code>tyhp/parallel</code></a>, run on this package's event loop and return its <code>Promise</code> type.</p>
+<h3 id="what-the-package-contains">What the package contains</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Area</th>
+<th>Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Promises</td>
+<td><a href="#the-promise-class"><code>Promise&lt;TReturn&gt;</code></a>, <a href="#promisestate"><code>PromiseState</code></a>, <a href="#promisesettledresult"><code>PromiseSettledResult&lt;T&gt;</code></a>, <a href="#deferred"><code>Deferred&lt;T&gt;</code></a></td>
+</tr>
+<tr>
+<td>Event loop</td>
+<td><a href="#the-event-loop"><code>EventLoop</code></a>, <a href="#queue-entry-classes"><code>EventLoopTimerItem</code>, <code>EventLoopFiberItem</code></a></td>
+</tr>
+<tr>
+<td>Cancellation</td>
+<td><a href="#cancellationtokensource"><code>CancellationTokenSource</code></a>, <a href="#cancellationtoken"><code>CancellationToken</code></a></td>
+</tr>
+<tr>
+<td>Async iteration</td>
+<td><a href="#async-iteration-contracts"><code>Contracts\AsyncIterable&lt;T&gt;</code>, <code>Contracts\AsyncIterator&lt;T&gt;</code>, <code>Contracts\AsyncKeyValueIterator&lt;TKey, TValue&gt;</code></a></td>
+</tr>
+<tr>
+<td>Async disposal</td>
+<td><a href="#async-disposal"><code>Contracts\AsyncIsDisposable</code>, <code>DisposableScope</code>, <code>DisposableHelper</code></a></td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td><a href="#exceptions"><code>Exceptions\TimeoutException</code>, <code>Exceptions\OperationCancelledException</code>, <code>Exceptions\InvalidPromiseStateException</code>, <code>Exceptions\AsyncContextException</code></a></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="getting-started">Getting started</h2>
+<p>The declared return type of an <code>async</code> function is the type you get when you <code>await</code> it. Calling the function schedules the work and returns a <code>Promise</code> of that type; <code>await</code> suspends the current async function until the promise settles and then gives you the value.</p>
+<p>In an application, the simplest way to run async code is top-level <code>await</code> in an entry-point file. The compiler wraps the file's top-level code in the event loop for you:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+async function loadGreeting(string $name): string {
+    await Promise::delay(100);
+    return &quot;Hello, {$name}!&quot;;
+}
+
+string $greeting = await loadGreeting(&#039;Ada&#039;);
+echo $greeting, &quot;\n&quot;; // Hello, Ada!
+</code></pre></div>
+<p>Promises start running as soon as they are created, so you get concurrency by starting several operations before you await any of them. <code>Promise::all()</code> then collects the results:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+async function fetchPrice(string $sku): int {
+    await Promise::delay(50); // stands in for a network call
+    return \strlen($sku) * 100;
+}
+
+async function totalFor(array&lt;string&gt; $skus): int {
+    array&lt;Promise&lt;int&gt;&gt; $pending = [];
+    foreach ($skus as $sku) {
+        $pending[] = fetchPrice($sku); // all requests start here
+    }
+
+    array&lt;int&gt; $prices = await Promise::all($pending);
+
+    int $total = 0;
+    foreach ($prices as $price) {
+        $total += $price;
+    }
+    return $total;
+}
+</code></pre></div>
+<p>The three <code>fetchPrice()</code> calls wait concurrently, so <code>totalFor(['A-1', 'B-22', 'C-333'])</code> takes about 50 ms rather than 150 ms.</p>
+<p>From an ordinary (non-async) function, hand the promise to the event loop and block until it settles:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\EventLoop;
+
+function printTotal(): void {
+    int $total = EventLoop::getInstance()-&gt;run(totalFor([&#039;A-1&#039;, &#039;B-22&#039;, &#039;C-333&#039;]));
+    echo &quot;Total: {$total}\n&quot;; // Total: 1200
+}
+</code></pre></div>
+<h2 id="how-the-runtime-works">How the runtime works</h2>
+<h3 id="promises-and-fibers">Promises and fibers</h3>
+<p>A <code>Promise&lt;T&gt;</code> represents work that finishes later with a value of type <code>T</code> (it <em>fulfills</em>) or with an exception (it <em>rejects</em>). <code>T</code> is always the <em>settled</em> type: a promise never holds another promise, so <code>Promise&lt;Promise&lt;int&gt;&gt;</code> is rejected by the compiler (see <a href="#settled-types">Settled types</a>). Once a promise leaves the pending state it never changes again. Its current state is a <a href="#promisestate"><code>PromiseState</code></a>.</p>
+<p>Each <code>async</code> function call, async closure call, and <code>async { ... }</code> block creates a promise backed by its own PHP <code>\Fiber</code>. <code>await</code> suspends that fiber until the awaited promise settles. All fibers run on a single thread and are scheduled cooperatively by the event loop: a fiber runs without interruption until it awaits a pending promise or returns.</p>
+<p>Two consequences follow from that model:</p>
+<ul>
+<li><strong>Code between two <code>await</code>s runs atomically.</strong> No other async code can observe or change shared state in the middle of it, so you do not need locks for in-process data.</li>
+<li><strong>Long synchronous work blocks everything.</strong> A CPU-heavy loop, or a blocking PHP call such as <code>\file_get_contents()</code>, <code>\sleep()</code>, PDO, or plain curl, stops every other fiber until it returns. Use the non-blocking clients in <a href="package_io.html"><code>tyhp/io</code></a>, or insert <a href="#timing-and-yielding"><code>Promise::yield()</code></a> into long loops.</li>
+</ul>
+<h3 id="when-async-code-starts-running">When async code starts running</h3>
+<p>Calling an async function does <strong>not</strong> run any of its body immediately. The call creates the promise, queues the fiber on the event loop, and returns. The body starts the next time the loop drains its queue — which happens when the calling fiber awaits something or finishes.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+async function inner(): int {
+    echo &quot;3. inner body\n&quot;;
+    return 1;
+}
+
+async function outer(): void {
+    echo &quot;1. outer start\n&quot;;
+    Promise&lt;int&gt; $p = inner();     // queued, not started
+    echo &quot;2. after calling inner\n&quot;;
+    int $v = await $p;             // outer suspends; inner runs now
+    echo &quot;4. after await, got {$v}\n&quot;;
+}
+</code></pre></div>
+<p>The lines print in the numbered order: the body of <code>inner()</code> runs only after <code>outer()</code> reaches <code>await</code>. Arguments, validation, and early token checks inside <code>async</code> methods therefore surface as a <strong>rejected promise</strong> when you await it, not as an exception at the call site. For example, <code>Promise::delay(-1)</code> returns a promise that rejects with <code>\InvalidArgumentException</code>.</p>
+<p><code>await</code> on a promise that is already settled returns (or throws) immediately without suspending. When an awaited promise settles later, the waiting fiber is queued to resume; it continues on the loop's next queue drain rather than inside the code that settled the promise.</p>
+<h3 id="the-event-loop-cycle">The event loop cycle</h3>
+<p>There is one event loop per PHP process, returned by <code>EventLoop::getInstance()</code>. While it runs, it repeats this cycle:</p>
+<ol>
+<li><strong>Fibers and microtasks.</strong> Start, resume, or throw into every queued fiber. Then run queued microtasks one at a time (<code>EventLoop::queueMicrotask()</code> / <code>defer()</code>), draining newly queued fibers after each one. Microtasks added during this phase run in the same phase.</li>
+<li><strong>Timers.</strong> Run every timer whose due time has passed (<code>EventLoop::delay()</code>, <code>interval()</code>, and everything built on them, such as <code>Promise::delay()</code>). Intervals are rescheduled after they fire.</li>
+<li><strong>I/O poll.</strong> Check registered read and write streams with a non-blocking <code>\stream_select()</code> and call the callbacks of streams that are ready.</li>
+<li><strong>Exit or wait.</strong> If the root promise has settled and nothing is immediately runnable, stop. Otherwise, if nothing is runnable yet, block until the next timer is due or a registered stream becomes ready (at most one second per wait), then repeat.</li>
+</ol>
+<p>Fibers and microtasks always run before timers, and timers before I/O callbacks:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\EventLoop;
+
+function showOrder(): void {
+    EventLoop $loop = EventLoop::getInstance();
+    $loop-&gt;delay(0, function (): void { echo &quot;timer\n&quot;; });
+    $loop-&gt;queueMicrotask(function (): void { echo &quot;microtask\n&quot;; });
+    $loop-&gt;defer(function (): void { echo &quot;deferred\n&quot;; });
+
+    while ($loop-&gt;tick()) {
+    }
+    // Prints: microtask, deferred, timer
+}
+</code></pre></div>
+<h3 id="when-the-loop-stops">When the loop stops</h3>
+<p><code>EventLoop::run()</code> (and the top-level <code>await</code> wrapper and <code>Promise::run()</code>, which use it) returns once the root promise has settled and no work is immediately runnable. <strong>Timers that are not yet due, intervals, and stream watchers do not keep it running.</strong> A promise you started but never awaited (fire-and-forget) is abandoned mid-flight if the root finishes first:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+async function sendAuditLog(string $message): void {
+    await Promise::delay(500);
+    echo &quot;audit: {$message}\n&quot;;
+}
+
+async function handle(): void {
+    sendAuditLog(&#039;user signed in&#039;); // not awaited
+    echo &quot;handled\n&quot;;
+}
+
+// await handle(); prints &quot;handled&quot; and returns at once — the audit line never prints.
+</code></pre></div>
+<p>Abandoned work stays queued on the process-wide loop and continues the next time the loop runs. Await everything whose completion matters, or collect it with <code>Promise::all()</code> / <code>Promise::allSettled()</code> before the root finishes.</p>
+<p>If the root promise can never settle — for example, it awaits a <a href="#deferred"><code>Deferred</code></a> that nothing resolves and no timer or stream can resolve it — the loop waits forever. Give such waits a timeout, or pass a <a href="#cancellationtoken"><code>CancellationToken</code></a> to <code>EventLoop::run()</code> / <code>Promise::run()</code>: cancelling it while the root is pending shuts the whole loop down and the run throws <code>OperationCancelledException</code> (see <a href="#eventloop-run"><code>EventLoop::run()</code></a>).</p>
+<h3 id="errors">Errors</h3>
+<ul>
+<li>An exception thrown inside an async function, async closure, async block, or <code>then()</code>/<code>catch()</code>/<code>finally()</code> handler rejects that promise. <code>await</code> rethrows the rejection reason at the await point, so ordinary <code>try</code>/<code>catch</code> works.</li>
+<li>A rejected promise that nobody awaits or handles is silently discarded. There is no global unhandled-rejection handler.</li>
+<li>An exception thrown from a callback the <strong>loop itself</strong> calls — a timer callback, interval, microtask, stream callback, or a raw fiber that is not owned by a promise — is not turned into a rejection. It propagates out of <code>EventLoop::run()</code>, <code>runUntilSettled()</code>, <code>tick()</code>, <code>Promise::wait()</code>, or <code>Promise::run()</code> and stops the loop. Catch exceptions inside such callbacks and reject a <a href="#deferred"><code>Deferred</code></a> instead.</li>
+</ul>
+<h2 id="running-async-code-from-synchronous-code">Running async code from synchronous code</h2>
+<p><code>await</code> is only legal inside async code. Ordinary functions, PHP scripts, and test methods need one of the following entry points. All of them start (or continue) the single process-wide loop.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Entry point</th>
+<th>Result</th>
+<th>Use it when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Top-level <code>await</code> in an application entry file</td>
+<td>—</td>
+<td>Scripts and CLI commands written in Tyhp</td>
+</tr>
+<tr>
+<td><code>EventLoop::getInstance()-&gt;run($promise, $token)</code></td>
+<td><code>T</code> (typed)</td>
+<td>A synchronous Tyhp function needs the value of a promise. The optional token ends the run when cancelled (see <a href="#eventloop-run">cancellation</a>)</td>
+</tr>
+<tr>
+<td><code>$promise-&gt;wait($timeoutMs)</code></td>
+<td><code>mixed</code></td>
+<td>You need an upper bound on how long to block, or you are calling from PHP</td>
+</tr>
+<tr>
+<td><code>EventLoop::getInstance()-&gt;runUntilSettled($promise, $timeoutMs)</code></td>
+<td><code>mixed</code></td>
+<td>Same as <code>wait()</code>; convenient in tests</td>
+</tr>
+<tr>
+<td><code>Promise::run($fn, $token)</code></td>
+<td>settled <code>T</code> (typed)</td>
+<td>Run a plain or <code>async</code> closure inside the loop and get its value; convenient from PHP. Takes the same optional token</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>EventLoop::run()</code> keeps running immediately runnable work after the promise settles and stops once the queues are empty. <code>wait()</code> and <code>runUntilSettled()</code> stop as soon as the promise settles and leave any remaining work queued. Only <code>run()</code> (and <code>Promise::run()</code>, which uses it) accepts a cancellation token.</p>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>None of these entry points may be called while the loop is already running — that is, from inside async code or from a timer, microtask, or stream callback. Doing so throws <code>\LogicException</code> (&quot;called re-entrantly&quot;). Inside async code, use <code>await</code> instead.</p>
+</div>
+    </div>
+</div>
+<h3 id="calling-async-tyhp-code-from-php">Calling async Tyhp code from PHP</h3>
+<p>Compiled async functions and methods return <code>\Tyhp\Promise</code> objects to PHP callers. Drive them with the same entry points:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+declare(strict_types=1);
+
+require __DIR__ . &#039;/vendor/autoload.php&#039;;
+
+use Tyhp\EventLoop;
+
+// Blocks until the promise settles, then returns its value or throws its rejection.
+$total = EventLoop::getInstance()-&gt;run(\App\totalFor([&#039;A-1&#039;, &#039;B-22&#039;]));
+
+// Same, but gives up after two seconds with \Tyhp\Exceptions\TimeoutException.
+$total = \App\totalFor([&#039;A-1&#039;, &#039;B-22&#039;])-&gt;wait(2000);
+</code></pre></div>
+<h2 id="the-promise-class">The Promise Class</h2>
+<p><code>final class Promise&lt;TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;&gt;</code> in namespace <code>Tyhp</code>.</p>
+<p>An unparameterized <code>Promise</code> means <code>Promise&lt;mixed&gt;</code>. <code>Promise&lt;void&gt;</code> is the type of async functions that return nothing.</p>
+<p>Members marked <code>async</code> below return <code>Promise&lt;__Awaited&lt;T&gt;&gt;</code> to the caller, where <code>T</code> is the declared return type, exactly like your own async functions: the declared type is what <code>await</code> gives you.</p>
+<h3 id="settled-types">Settled types</h3>
+<p><code>TReturn</code> is bounded by <code>__Awaited&lt;void|mixed&gt;</code>, which means a promise's type argument is always an <em>already-awaited</em> type. A promise never holds another promise:</p>
+<ul>
+<li><code>Promise&lt;Promise&lt;int&gt;&gt;</code> and <code>Promise&lt;int|Promise&lt;string&gt;&gt;</code> are rejected with TYHP4373, and so is <code>Promise&lt;T&gt;</code> for a type parameter <code>T</code> that is unconstrained (or bounded by <code>mixed</code>), because <code>T</code> could itself be a promise. <code>Promise&lt;mixed&gt;</code>, <code>Promise&lt;object&gt;</code>, and <code>Promise&lt;?int&gt;</code> are fine.</li>
+<li>Declare your own generic helpers with the same bound — <code>function collect&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(array&lt;Promise&lt;T&gt;&gt; $promises): …</code> — so <code>T</code> is known to be settled. See <a href="tyhp_0150_newTypes.html#type-utility-types"><code>__Awaited&lt;T&gt;</code></a>.</li>
+<li>The declared return type of an <code>async</code> function, method, or closure is read as <code>__Awaited&lt;R&gt;</code>, so <code>async function f(): Promise&lt;int&gt;</code> is the same as <code>async function f(): int</code>: awaiting it gives <code>int</code>.</li>
+<li>To pass a promise around as a value, put it inside an array, a class, or a struct, or use a <a href="#deferred"><code>Deferred</code></a>.</li>
+</ul>
+<p>Methods in this class that produce a promise from a type parameter, such as <code>resolved&lt;T&gt;()</code> and <code>timeout&lt;T&gt;()</code>, return <code>Promise&lt;__Awaited&lt;T&gt;&gt;</code>.</p>
+<h3 id="creating-promises">Creating promises</h3>
+<p>You rarely construct promises directly: async functions, async closures, and <code>async { ... }</code> blocks create them for you (see <a href="tyhp_2600_asyncAndAwait.html#async-blocks">Async Blocks</a> for returning a running promise from a method). Use the factories below for already-settled values and <a href="#deferred"><code>Deferred</code></a> for promises that an outside event settles. Pass the type argument explicitly to <code>resolve</code>, <code>resolved</code>, <code>reject</code>, and <code>rejected</code>, as in <code>Promise::resolved&lt;int&gt;(1)</code>; without it the result is not assignable to a <code>Promise&lt;int&gt;</code> variable.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(callable(): TReturn $executor, bool $immediateResolve = false)</code></h4><br/><p>Creates a promise that runs <code>$executor</code> in its own fiber. The fiber is queued on the event loop and starts on the next queue drain, not inside the constructor. The promise fulfills with the executor's return value or rejects with the exception it throws.</p>
+<p>When <code>$immediateResolve</code> is <code>true</code>, no fiber is created: the executor runs synchronously inside the constructor and the promise is fulfilled with its result before the constructor returns. An exception from the executor then propagates out of the constructor instead of rejecting the promise.</p>
+<p>The executor receives no arguments. To settle a promise from outside, use <a href="#deferred"><code>Deferred</code></a> or <a href="#promise-withresolvers"><code>Promise::withResolvers()</code></a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function resolve&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(?T $value = null): Promise&lt;T&gt;</code></h4><br/><p>Returns an already-fulfilled promise holding <code>$value</code>, without creating a fiber. If <code>$value</code> is itself a <code>Promise</code>, that same instance is returned unchanged — even if it is still pending. Because <code>T</code> must be a settled type, a typed promise argument such as a <code>Promise&lt;int&gt;</code> cannot be passed to <code>resolve()</code> directly; call <code>Promise::resolve&lt;mixed&gt;($value)</code> to accept a value that may or may not be a promise.</p>
+<p>When <code>$value</code> is omitted or <code>null</code>, the promise fulfills with <code>default(T)</code> if <code>T</code> is <code>void</code> or nullable; for any other <code>T</code> it throws <code>InvalidPromiseStateException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function resolved&lt;T extends void|mixed = void&gt;(?T $value = null): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Returns a new, already-fulfilled promise holding <code>$value</code>, without creating a fiber. When <code>$value</code> is omitted or <code>null</code>, the promise fulfills with <code>default(T)</code>. Unlike <code>resolve()</code>, it always returns a new promise object, even when <code>$value</code> is itself a promise; use <code>resolve()</code> when the argument might already be a promise and you want that same instance back.</p>
+<p>If <code>$value</code> is a promise, the new promise adopts it and settles when <code>$value</code> settles, so <code>Promise::resolved&lt;\Tyhp\Promise&lt;int&gt;&gt;($p)</code> is a <code>Promise&lt;int&gt;</code>.</p>
+<p>Specify the type argument explicitly, as in <code>Promise::resolved&lt;void&gt;()</code> or <code>Promise::resolved&lt;int&gt;($count)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function reject&lt;T extends __Awaited&lt;void|mixed&gt; = void&gt;(\Throwable $reason): Promise&lt;T&gt;</code></h4><br/><p>Returns an already-rejected promise with <code>$reason</code> as its rejection reason, without creating a fiber. Equivalent to <code>rejected()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function rejected&lt;T extends void|mixed = void&gt;(\Throwable $error): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Returns an already-rejected promise with <code>$error</code> as its rejection reason, without creating a fiber.</p>
+</div>
+<p><a id="promise-withresolvers"></a></p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function withResolvers&lt;T extends void|mixed&gt;(): Deferred&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Returns a new <a href="#deferred"><code>Deferred&lt;T&gt;</code></a>: a pending promise (<code>getPromise()</code>) together with the <code>resolve()</code> and <code>reject()</code> methods that settle it. Equivalent to <code>new Deferred&lt;T&gt;()</code> in Tyhp code.</p>
+<p>Plain PHP code cannot pass type arguments, so it should call <code>Promise::withResolvers()</code> to get a deferred promise that can be resolved with a value. A bare <code>new Deferred()</code> is a <code>Deferred&lt;void&gt;</code>, which can only be resolved without a value.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+function factories(): void {
+    Promise&lt;int&gt; $one = Promise::resolved&lt;int&gt;(1);
+    Promise&lt;string&gt; $two = Promise::resolve&lt;string&gt;(&#039;two&#039;);
+    Promise&lt;void&gt; $done = Promise::resolved&lt;void&gt;();
+    Promise&lt;int&gt; $failed = Promise::rejected&lt;int&gt;(new \RuntimeException(&#039;Not available&#039;));
+
+    echo $one-&gt;getResult(), &#039; &#039;, $two-&gt;getResult(), &quot;\n&quot;; // 1 two
+    echo $done-&gt;isFulfilled() ? &#039;done&#039; : &#039;pending&#039;, &quot;\n&quot;;  // done
+    echo $failed-&gt;getState()-&gt;value, &quot;\n&quot;;                 // rejected
+}
+</code></pre></div>
+<p>Already-settled promises are useful for satisfying a <code>Promise&lt;T&gt;</code> return type from a cache hit, in test doubles, and when implementing <a href="#async-iteration-contracts"><code>AsyncIterator::current()</code></a>.</p>
+<h3 id="chaining-handlers">Chaining handlers</h3>
+<p><code>await</code> is usually clearer than handler chains, but the chaining methods are useful for adapting a promise in an expression or from PHP. Every handler runs inside a new fiber after the source promise settles, and every method returns a new promise.</p>
+<p><code>then()</code> is declared as a set of three <a href="tyhp_1200_functionOverloads.html">source overloads</a>, and callers see only these signatures. The first signature that accepts the arguments is used:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+async public function then(null $onFulfilled = null, null $onRejected = null): TReturn;
+async public function then(null $onFulfilled, callable(\Throwable): TReturn $onRejected): TReturn;
+async public function then&lt;TThenReturn&gt;(callable(TReturn): TThenReturn $onFulfilled, ?callable(\Throwable): TThenReturn $onRejected = null): TThenReturn;
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>public async function then(...)</code></h4><br/><p>Waits for this promise to settle, then:</p>
+<ul>
+<li>if it fulfilled, calls <code>$onFulfilled</code> with the value and fulfills with the handler's return value (or passes the original value through when <code>$onFulfilled</code> is <code>null</code>);</li>
+<li>if it rejected, calls <code>$onRejected</code> with the reason and fulfills with the handler's return value (or passes the rejection through when <code>$onRejected</code> is <code>null</code>).</li>
+</ul>
+<p>An exception thrown by either handler rejects the returned promise. The three overloads give these results:</p>
+<ul>
+<li><code>then()</code> and <code>then(null, null)</code> return a <code>Promise&lt;TReturn&gt;</code> that settles like this promise.</li>
+<li><code>then(null, $onRejected)</code> takes a handler that returns <code>TReturn</code> and returns a <code>Promise&lt;TReturn&gt;</code>.</li>
+<li><code>then($onFulfilled, $onRejected = null)</code> takes a handler for the value; the result is a <code>Promise</code> of whatever the handler returns (<code>TThenReturn</code>, read as a settled type). A rejection handler passed with it must return the same type.</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function catch(callable(\Throwable): TReturn $onRejected): Promise&lt;TReturn&gt;</code></h4><br/><p>Shorthand for <code>then(null, $onRejected)</code>. If this promise rejects, the returned promise fulfills with the handler's result; if it fulfills, the original value passes through unchanged. The handler returns this promise's own value type, so the result keeps the type of the promise <code>catch()</code> was called on.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public async function finally(callable(): void|mixed $onFinally): TReturn</code></h4><br/><p>Calls <code>$onFinally</code> once this promise settles, whichever way, then settles the returned promise exactly like the original (same value or same rejection reason). The callback's return value is ignored and is not awaited. If <code>$onFinally</code> throws, that exception replaces the original outcome. Returns <code>Promise&lt;TReturn&gt;</code> to the caller.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public async function continueWith&lt;TContinueReturn&gt;(callable(?TReturn, ?\Throwable): TContinueReturn $continuation): TContinueReturn</code></h4><br/><p>Waits for this promise to settle, then calls <code>$continuation($value, null)</code> if it fulfilled or <code>$continuation(null, $error)</code> if it rejected, and fulfills with the continuation's return value. Use it when one function should handle both outcomes. An exception thrown by the continuation rejects the returned promise. Returns <code>Promise&lt;TContinueReturn&gt;</code> to the caller.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+async function priceLabel(string $sku): string {
+    string $label = await fetchPrice($sku)
+        -&gt;then(fn(int $cents): string =&gt; \number_format($cents / 100, 2))
+        -&gt;catch(fn(\Throwable $e): string =&gt; &#039;n/a&#039;)
+        -&gt;finally(function (): void { echo &quot;price lookup finished\n&quot;; });
+    return $label;
+}
+
+async function describeLookup(string $sku): string {
+    return await fetchPrice($sku)-&gt;continueWith(
+        fn(?int $cents, ?\Throwable $error): string =&gt; $error !== null
+            ? &#039;failed: &#039; . $error-&gt;getMessage()
+            : &#039;ok: &#039; . ($cents ?? 0)
+    );
+}
+</code></pre></div>
+<h3 id="inspecting-and-blocking">Inspecting and blocking</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public function wait(int $timeoutMs = -1): mixed</code></h4><br/><p>Runs the event loop until this promise settles, then returns its value or throws its rejection reason. Use it only from synchronous code. When <code>$timeoutMs</code> is greater than zero and the promise is still pending after that many milliseconds, throws <code>TimeoutException</code> and leaves the promise pending; zero or a negative value waits without a limit.</p>
+<p>Throws <code>\LogicException</code> if the loop is already running. Equivalent to <code>EventLoop::getInstance()-&gt;runUntilSettled($this, $timeoutMs)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getResult(): TReturn</code></h4><br/><p>Returns the fulfillment value without waiting. Throws the rejection reason if the promise rejected, and <code>InvalidPromiseStateException</code> if it is still pending.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getState(): PromiseState</code></h4><br/><p>Returns <code>PromiseState::Pending</code>, <code>PromiseState::Fulfilled</code>, or <code>PromiseState::Rejected</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isCompleted(): bool</code></h4><br/><p>Returns <code>true</code> once the promise has fulfilled or rejected.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isFulfilled(): bool</code></h4><br/><p>Returns <code>true</code> if the promise fulfilled.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isFaulted(): bool</code></h4><br/><p>Returns <code>true</code> if the promise rejected.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getError(): ?\Throwable</code></h4><br/><p>Returns the rejection reason, or <code>null</code> if the promise is pending or fulfilled.</p>
+</div>
+<h3 id="timing-and-yielding">Timing and yielding</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function delay(int $ms, ?CancellationToken $token = null): void</code></h4><br/><p>Returns a <code>Promise&lt;void&gt;</code> that fulfills after <code>$ms</code> milliseconds, using a timer on the event loop. Rejects with <code>\InvalidArgumentException</code> if <code>$ms</code> is negative.</p>
+<p>If <code>$token</code> is already cancelled, the promise rejects with <code>OperationCancelledException</code>. If the token is cancelled while the delay is pending, the timer is cancelled and the promise rejects with <code>OperationCancelledException</code> straight away.</p>
+<p><code>await Promise::delay(...)</code> is the non-blocking replacement for <code>\sleep()</code> and <code>\usleep()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function yield(): Promise&lt;void&gt;</code></h4><br/><p>Returns a promise that settles after other already-queued fibers have had a chance to run. <code>await Promise::yield();</code> lets sibling tasks make progress during a long CPU-bound loop. It does not wait for timers or I/O; use <code>yieldTick()</code> for that.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function yieldTick(): Promise&lt;void&gt;</code></h4><br/><p>Equivalent to <code>Promise::delay(0)</code>. Awaiting it lets queued fibers run <strong>and</strong> lets the loop process due timers and poll I/O before the current fiber resumes. Use it when a long-running task should also let timers and streams make progress.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+async function checksum(array&lt;int&gt; $values): int {
+    int $sum = 0;
+    foreach ($values as $i =&gt; $value) {
+        $sum = ($sum + $value * 31) % 1_000_003;
+        if ($i % 1000 === 0) {
+            await Promise::yield(); // let other tasks run every 1000 items
+        }
+    }
+    return $sum;
+}
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function timeout&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(Promise&lt;T&gt; $promise, int $ms, ?CancellationToken $token = null): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Returns a promise that settles like <code>$promise</code> if it settles within <code>$ms</code> milliseconds, and otherwise rejects with <code>TimeoutException</code> (message <code>Operation timed out</code>, <code>getTimeoutMs()</code> returning <code>$ms</code>).</p>
+<p>A timeout does not stop the underlying operation; it keeps running and its outcome is ignored. Pass a <a href="#cancellation"><code>CancellationToken</code></a> to the operation itself when it should stop. If <code>$token</code> is cancelled first, the returned promise rejects with <code>OperationCancelledException</code>. The internal timer stays scheduled until <code>$ms</code> elapses even when <code>$promise</code> wins; it has no further effect.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Promise;
+
+async function priceOrNull(string $sku): ?int {
+    try {
+        return await Promise::timeout(fetchPrice($sku), 500);
+    } catch (TimeoutException $e) {
+        echo &#039;Price lookup timed out after &#039;, $e-&gt;getTimeoutMs(), &quot; ms\n&quot;;
+        return null;
+    }
+}
+</code></pre></div>
+<h3 id="combining-promises">Combining promises</h3>
+<p>The combinators wait on promises that are <strong>already running</strong>. Passing promises to <code>all()</code> or <code>race()</code> does not start them or make them concurrent — creating them did that. The combinators only decide how to collect the outcomes.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Combinator</th>
+<th>Fulfills when</th>
+<th>Rejects when</th>
+<th>Token</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>all()</code> / <code>whenAll()</code></td>
+<td>every input fulfilled</td>
+<td>an input rejects</td>
+<td><code>all()</code> only</td>
+</tr>
+<tr>
+<td><code>allSettled()</code></td>
+<td>every input settled</td>
+<td>never</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>race()</code> / <code>whenAny()</code></td>
+<td>the first input to settle fulfilled</td>
+<td>the first input to settle rejected</td>
+<td><code>race()</code> only</td>
+</tr>
+<tr>
+<td><code>any()</code></td>
+<td>the first input fulfills</td>
+<td>every input rejected</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>batch()</code></td>
+<td>every item processed</td>
+<td>an item's promise rejects</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function all&lt;T extends __Awaited&lt;void|mixed&gt; = mixed&gt;(array&lt;Promise&lt;T&gt;&gt; $promises, ?CancellationToken $token = null): array&lt;T&gt;</code></h4><br/><p>Waits for every promise and fulfills with an array of their values. <strong>Keys are preserved</strong>, so a list gives a list in the same order and a string-keyed array gives the same string keys. An empty array fulfills with <code>[]</code>.</p>
+<p><code>all()</code> awaits the inputs one at a time in key order. If an input rejects, <code>all()</code> rejects with that reason when it reaches that input, which means it first waits for every input before it. The other inputs keep running.</p>
+<p>The token is checked before each input is awaited; cancellation is noticed between inputs, not while <code>all()</code> is waiting on one. Cancellation rejects with <code>OperationCancelledException</code>. Returns <code>Promise&lt;array&lt;T&gt;&gt;</code>; the static key type is <code>int|string</code> even when you pass a string-keyed array, so assign the result to <code>array&lt;T&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function whenAll&lt;T extends __Awaited&lt;void|mixed&gt; = mixed&gt;(Promise&lt;T&gt; ...$promises): Promise&lt;array&lt;int|string, T&gt;&gt;</code></h4><br/><p>Variadic form of <code>all()</code> without a token: <code>Promise::whenAll($a, $b, $c)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function allSettled&lt;T extends __Awaited&lt;void|mixed&gt; = mixed, TKey extends int|string = int|string&gt;(array&lt;TKey, Promise&lt;T&gt;&gt; $promises): array&lt;TKey, PromiseSettledResult&lt;T&gt;&gt;</code></h4><br/><p>Waits for every promise to settle and fulfills with one <a href="#promisesettledresult"><code>PromiseSettledResult&lt;T&gt;</code></a> per input, under the same key. It never rejects. Use it when partial success is acceptable and you want to report each failure.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+use Tyhp\PromiseSettledResult;
+
+async function stockReport(): void {
+    array&lt;string, Promise&lt;int&gt;&gt; $requests = [
+        &#039;A-1&#039; =&gt; fetchStock(&#039;A-1&#039;),
+        &#039;B-2&#039; =&gt; fetchStock(&#039;B-2&#039;),
+    ];
+
+    array&lt;string, PromiseSettledResult&lt;int&gt;&gt; $outcomes = await Promise::allSettled($requests);
+
+    foreach ($outcomes as $sku =&gt; $outcome) {
+        if ($outcome-&gt;status === &#039;fulfilled&#039;) {
+            echo &quot;{$sku}: &quot;, $outcome-&gt;value ?? 0, &quot; in stock\n&quot;;
+        } else {
+            echo &quot;{$sku} failed: &quot;, $outcome-&gt;reason?-&gt;getMessage() ?? &#039;unknown error&#039;, &quot;\n&quot;;
+        }
+    }
+}
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function race&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(array&lt;Promise&lt;T&gt;&gt; $promises, ?CancellationToken $token = null): __Awaited&lt;T&gt;</code></h4><br/><p>Settles the same way as the first input to settle: fulfills with its value or rejects with its reason. The remaining inputs keep running, and their outcomes are ignored.</p>
+<p>Rejects with <code>\InvalidArgumentException</code> for an empty array (such a race could never settle). If <code>$token</code> is cancelled before any input settles, rejects with <code>OperationCancelledException</code> immediately. Returns <code>Promise&lt;T&gt;</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function whenAny&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(Promise&lt;T&gt; ...$promises): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Variadic form of <code>race()</code> without a token: <code>Promise::whenAny($primary, $fallback)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function any&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(array&lt;Promise&lt;T&gt;&gt; $promises, ?CancellationToken $token = null): __Awaited&lt;T&gt;</code></h4><br/><p>Fulfills with the value of the first input to <strong>fulfill</strong>, ignoring rejections as long as another input can still succeed. If every input rejects, rejects with <code>\Tyhp\Exceptions\AggregateException</code> (message <code>All promises were rejected</code>) whose <code>getInnerExceptions()</code> holds each reason under its input's key. An empty array rejects with an <code>AggregateException</code> that has no inner exceptions.</p>
+<p>If <code>$token</code> is cancelled before an input fulfills, rejects with <code>OperationCancelledException</code> immediately. Returns <code>Promise&lt;T&gt;</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Exceptions\AggregateException;
+use Tyhp\Promise;
+
+async function fastestMirror(): string {
+    string $winner = await Promise::race([
+        Promise::delay(200)-&gt;then(fn(): string =&gt; &#039;eu-west&#039;),
+        Promise::delay(10)-&gt;then(fn(): string =&gt; &#039;us-east&#039;),
+    ]);
+    return $winner; // &#039;us-east&#039;
+}
+
+async function firstAvailableStock(): int {
+    try {
+        return await Promise::any([fetchStock(&#039;warehouse-1&#039;), fetchStock(&#039;warehouse-2&#039;)]);
+    } catch (AggregateException $e) {
+        foreach ($e-&gt;getInnerExceptions() as $reason) {
+            echo $reason-&gt;getMessage(), &quot;\n&quot;;
+        }
+        return 0;
+    }
+}
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function batch&lt;TItem, TBatchReturn extends __Awaited&lt;void|mixed&gt;&gt;(array&lt;TItem&gt; $items, callable(TItem): Promise&lt;TBatchReturn&gt; $processor, int $concurrency = 5, ?CancellationToken $token = null): array&lt;int, TBatchReturn&gt;</code></h4><br/><p>Calls <code>$processor</code> for each item and fulfills with the results, indexed <code>0, 1, 2, …</code> in input order (input keys are not kept). Use it to process a large collection without starting every operation at once.</p>
+<p>Items are processed in <strong>waves</strong> of up to <code>$concurrency</code>: <code>batch()</code> starts that many processors, waits until every promise in the wave has settled, then starts the next wave. One slow item therefore holds up the start of the next wave. <code>$concurrency</code> must be at least 1; with a smaller value no item ever starts and the call never completes (it also never yields to other tasks). An empty <code>$items</code> array fulfills with <code>[]</code>.</p>
+<p>If a promise in a wave rejects, <code>batch()</code> rejects with that reason (the lowest-index failure in the wave) after the wave settles, and later items are never started. If <code>$processor</code> returns something other than a <code>Promise</code>, <code>batch()</code> rejects with <code>\InvalidArgumentException</code>. The token is checked before each wave; cancellation rejects with <code>OperationCancelledException</code>. Returns <code>Promise&lt;array&lt;int, TBatchReturn&gt;&gt;</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+async function stockLevels(array&lt;string&gt; $skus): array&lt;int, int&gt; {
+    // At most three lookups in flight at a time.
+    return await Promise::batch(
+        $skus,
+        fn(string $sku): Promise&lt;int&gt; =&gt; fetchStock($sku),
+        concurrency: 3
+    );
+}
+</code></pre></div>
+<h3 id="adapting-generators">Adapting generators</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function fromGenerator(\Generator $generator): mixed</code></h4><br/><p>Runs a coroutine-style generator to completion. Each time the generator yields a <code>Promise</code>, <code>fromGenerator()</code> awaits it and sends the value back into the generator as the result of the <code>yield</code> expression; if the promise rejects, the reason is thrown into the generator at that <code>yield</code>. Values that are not promises are sent straight back. Fulfills with the generator's return value. Returns <code>Promise&lt;mixed&gt;</code>.</p>
+<p>Use it to run existing generator-based code (as written for older PHP coroutine libraries) on the Tyhp event loop. New code should use <code>async</code> functions.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+function legacyStockCheck(): \Generator {
+    int $first = yield fetchStock(&#039;A-1&#039;);
+    int $second = yield fetchStock(&#039;B-2&#039;);
+    return $first + $second;
+}
+
+async function runLegacy(): mixed {
+    return await Promise::fromGenerator(legacyStockCheck());
+}
+</code></pre></div>
+<h3 id="running-from-synchronous-code">Running from synchronous code</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function run&lt;T extends void|mixed&gt;(callable(): T $fn, ?CancellationToken $token = null): __Awaited&lt;T&gt;</code></h4><br/><p>Creates a promise that runs <code>$fn</code> in a fiber, runs the event loop until it settles (see <a href="#eventloop-run"><code>EventLoop::run()</code></a>), and returns its settled value or throws its rejection reason. <code>$fn</code> may be a plain closure, an <code>async</code> closure or arrow function, or any callable that returns a <code>Promise</code>; a returned promise is awaited, so the result is its value, not the promise. An exception thrown by <code>$fn</code>, or the rejection reason of the promise it returns, is rethrown from <code>run()</code>.</p>
+<p>If <code>$token</code> is already cancelled, throws <code>OperationCancelledException</code> before <code>$fn</code> is called. Otherwise the loop watches the token: cancelling it while the work is still pending shuts the whole event loop down and <code>run()</code> throws <code>OperationCancelledException</code> (see <a href="#eventloop-run"><code>EventLoop::run()</code></a> for exactly what is cancelled). Work that has already settled keeps its own result or error. Throws <code>\LogicException</code> when called while the loop is running.</p>
+<p><code>$fn</code> runs inside a fiber, so PHP code inside it can await with <code>\Tyhp\Promise::_await()</code>; this is the form the compiler generates for top-level <code>await</code>.</p>
+</div>
+<p>The result is typed as the settled value, so it can be assigned to a plain <code>T</code> variable or returned as <code>T</code> whether <code>$fn</code> is a plain closure or an <code>async</code> one. The type argument is inferred from the closure; <code>Promise::run&lt;int&gt;(…)</code> is accepted when you want to state it.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+function answer(): int {
+    return Promise::run(async function(): int {
+        await Promise::delay(10);
+        return 42;
+    });
+}
+</code></pre></div>
+<h3 id="compiler-entry-points">Compiler entry points</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function _async&lt;T extends void|mixed&gt;(callable(): T $fn): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>The target the compiler lowers <code>async</code> functions, closures, and blocks to. Equivalent to <code>new Promise&lt;__Awaited&lt;T&gt;&gt;($fn)</code>. Do not call it from Tyhp code; write <code>async</code> instead.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function _await&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(Promise&lt;T&gt; $promise): __Awaited&lt;T&gt;</code></h4><br/><p>The target the compiler lowers <code>await</code> to. Returns the value of a fulfilled promise or throws the reason of a rejected one immediately. For a pending promise it suspends the current fiber until the promise settles; outside a fiber it throws <code>AsyncContextException</code>. Do not call it from Tyhp code; write <code>await</code> instead.</p>
+</div>
+<h2 id="promisestate">PromiseState</h2>
+<p><code>enum PromiseState: string</code> in namespace <code>Tyhp</code>. Returned by <code>Promise::getState()</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Case</th>
+<th>Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PromiseState::Pending</code></td>
+<td><code>'pending'</code></td>
+<td>Not settled yet</td>
+</tr>
+<tr>
+<td><code>PromiseState::Fulfilled</code></td>
+<td><code>'fulfilled'</code></td>
+<td>Completed with a value</td>
+</tr>
+<tr>
+<td><code>PromiseState::Rejected</code></td>
+<td><code>'rejected'</code></td>
+<td>Completed with an exception</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="promisesettledresult">PromiseSettledResult</h2>
+<p><code>final class PromiseSettledResult&lt;T extends void|mixed = mixed&gt;</code> in namespace <code>Tyhp</code>. One outcome from <code>Promise::allSettled()</code>, shaped like the result objects of JavaScript's <code>Promise.allSettled</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public string $status</code></h4><br/><p><code>'fulfilled'</code> or <code>'rejected'</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public ?T $value</code></h4><br/><p>The fulfillment value when <code>$status</code> is <code>'fulfilled'</code>; otherwise <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public ?\Throwable $reason</code></h4><br/><p>The rejection reason when <code>$status</code> is <code>'rejected'</code>; otherwise <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $status, ?T $value = null, ?\Throwable $reason = null)</code></h4><br/><p>Creates an outcome. <code>allSettled()</code> creates these for you; construct them yourself only in test doubles.</p>
+</div>
+<h2 id="deferred">Deferred</h2>
+<p><code>final class Deferred&lt;T extends __Awaited&lt;void|mixed&gt; = void&gt;</code> in namespace <code>Tyhp</code>.</p>
+<p>A <code>Deferred</code> pairs a pending promise with the methods that settle it. It is the bridge from callback-style code — timers, stream callbacks, event emitters, message handlers — to promises that async code can <code>await</code>. Hand out <code>getPromise()</code>, keep the <code>Deferred</code>, and call <code>resolve()</code> or <code>reject()</code> when the outcome is known.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct()</code></h4><br/><p>Creates a <code>Deferred</code> whose promise stays pending until <code>resolve()</code> or <code>reject()</code> is called.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getPromise(): Promise&lt;T&gt;</code></h4><br/><p>Returns the promise. Every call returns the same instance.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function resolve(?T $value = null): void</code></h4><br/><p>Fulfills the promise with <code>$value</code>. Omit the value only when <code>T</code> is <code>void</code> or nullable. Fibers awaiting the promise are queued to resume on the loop's next queue drain. Throws <code>InvalidPromiseStateException</code> if the <code>Deferred</code> has already been resolved or rejected.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function reject(\Throwable $reason): void</code></h4><br/><p>Rejects the promise with <code>$reason</code>. Throws <code>InvalidPromiseStateException</code> if the <code>Deferred</code> has already been resolved or rejected.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Deferred;
+use Tyhp\EventLoop;
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Promise;
+
+interface MessageSubscriber {
+    public function onMessage(string $channel, callable(string): void $handler): void;
+    public function off(string $channel): void;
+}
+
+/**
+ * Resolves with the next message published on $channel.
+ */
+function nextMessage(MessageSubscriber $bus, string $channel, int $timeoutMs): Promise&lt;string&gt; {
+    Deferred&lt;string&gt; $deferred = new Deferred&lt;string&gt;();
+    EventLoop $loop = EventLoop::getInstance();
+
+    string $timerId = $loop-&gt;delay($timeoutMs, function () use ($deferred, $bus, $channel, $timeoutMs): void {
+        $bus-&gt;off($channel);
+        $deferred-&gt;reject(new TimeoutException(&quot;No message on {$channel}&quot;, $timeoutMs));
+    });
+
+    $bus-&gt;onMessage($channel, function (string $payload) use ($deferred, $bus, $channel, $loop, $timerId): void {
+        $loop-&gt;cancelTimer($timerId);
+        $bus-&gt;off($channel);
+        $deferred-&gt;resolve($payload);
+    });
+
+    return $deferred-&gt;getPromise();
+}
+</code></pre></div>
+<p>Settle each <code>Deferred</code> exactly once, and make sure some path always settles it: a promise that nobody settles keeps any code awaiting it suspended forever. Pairing the success path with a timeout timer, as above, guarantees that.</p>
+<h2 id="cancellation">Cancellation</h2>
+<p>Cancellation in Tyhp is cooperative. A <code>CancellationTokenSource</code> owns the decision to cancel; the <code>CancellationToken</code> it hands out is passed down to the code that does the work, which checks it or registers a callback on it. Nothing is ever stopped forcibly: an operation stops only if it observes the token.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\OperationCancelledException;
+use Tyhp\Promise;
+
+async function fetchStock(string $sku, ?CancellationToken $token = null): int {
+    await Promise::delay(30, $token); // stands in for a cancellable request
+    return \strlen($sku);
+}
+
+async function stockWithin(string $sku, int $deadlineMs): ?int {
+    $cts := new CancellationTokenSource($deadlineMs); // cancels itself after the deadline
+    try {
+        return await fetchStock($sku, $cts-&gt;getToken());
+    } catch (OperationCancelledException $e) {
+        return null;
+    }
+}
+</code></pre></div>
+<p><code>CancellationTokenSource</code> implements <code>\Tyhp\Contracts\IsDisposable</code>, so <code>:=</code> disposes it — and stops its auto-cancel timer — when the scope ends. See <a href="tyhp_2300_disposables.html">Disposables and the := Operator</a>.</p>
+<h3 id="how-package-apis-observe-a-token">How package APIs observe a token</h3>
+<p>Every member of this package that accepts a token rejects with (or, for <code>run()</code>, throws) <code>OperationCancelledException</code> when it sees cancellation. They differ in <em>when</em> they look:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>API</th>
+<th>Checks before starting</th>
+<th>Reacts while waiting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Promise::delay()</code></td>
+<td>yes</td>
+<td>yes — cancels its timer and rejects immediately</td>
+</tr>
+<tr>
+<td><code>Promise::race()</code>, <code>Promise::any()</code></td>
+<td>yes</td>
+<td>yes — rejects immediately; the inputs keep running</td>
+</tr>
+<tr>
+<td><code>Promise::timeout()</code></td>
+<td>yes</td>
+<td>yes (passes the token to its delay and race)</td>
+</tr>
+<tr>
+<td><code>Promise::all()</code></td>
+<td>before each input</td>
+<td>no — noticed only between inputs</td>
+</tr>
+<tr>
+<td><code>Promise::batch()</code></td>
+<td>before each wave</td>
+<td>no — noticed only between waves</td>
+</tr>
+<tr>
+<td><code>Promise::run()</code></td>
+<td>yes (throws synchronously, before <code>$fn</code> is called)</td>
+<td>yes — shuts the whole event loop down and throws</td>
+</tr>
+<tr>
+<td><code>EventLoop::run()</code></td>
+<td>no — first checked at the end of the first loop pass</td>
+<td>yes — same shutdown, then throws</td>
+</tr>
+<tr>
+<td><code>Promise::allSettled()</code></td>
+<td>takes no token</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>The I/O methods in <a href="package_io.html"><code>tyhp/io</code></a> and the worker calls in <a href="package_parallel.html"><code>tyhp/parallel</code></a> accept the same token and abort the underlying work when it is cancelled.</p>
+<h3 id="cancellationtokensource">CancellationTokenSource</h3>
+<p><code>final class CancellationTokenSource implements \Tyhp\Contracts\IsDisposable</code> in namespace <code>Tyhp</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(?int $cancelAfterMs = null)</code></h4><br/><p>Creates a source with a fresh token. When <code>$cancelAfterMs</code> is given, schedules automatic cancellation after that many milliseconds (see <code>cancelAfter()</code>). Throws <code>\InvalidArgumentException</code> if <code>$cancelAfterMs</code> is negative.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getToken(): CancellationToken</code></h4><br/><p>Returns the source's token. Every call returns the same instance.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function cancel(): void</code></h4><br/><p>Cancels the token and cancels any pending auto-cancel timer. Registered callbacks run synchronously, before <code>cancel()</code> returns (see <code>CancellationToken::register()</code>). Calling it again, or after <code>dispose()</code>, has no effect.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function cancelAfter(int $ms): void</code></h4><br/><p>Schedules <code>cancel()</code> to run after <code>$ms</code> milliseconds, replacing any previously scheduled auto-cancel. The timer lives on the event loop, so it fires only while the loop is running. Throws <code>\InvalidArgumentException</code> if <code>$ms</code> is negative. Has no effect after <code>dispose()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isCancellationRequested(): bool</code></h4><br/><p>Returns <code>true</code> once the token has been cancelled.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function dispose(): void</code></h4><br/><p>Cancels the pending auto-cancel timer, if any, without cancelling the token. Afterwards <code>cancel()</code> and <code>cancelAfter()</code> do nothing. Safe to call more than once.</p>
+</div>
+<h3 id="cancellationtoken">CancellationToken</h3>
+<p><code>final class CancellationToken</code> in namespace <code>Tyhp</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isCancellationRequested(): bool</code></h4><br/><p>Returns <code>true</code> once the token has been cancelled. Poll it in loops when you want to stop gracefully rather than throw.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function throwIfCancellationRequested(): void</code></h4><br/><p>Throws <code>OperationCancelledException</code> (whose <code>getToken()</code> returns this token) if the token has been cancelled; otherwise does nothing.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function register(callable(): void $callback): \Closure</code></h4><br/><p>Registers <code>$callback</code> to run when the token is cancelled and returns a closure that unregisters it. If the token is already cancelled, <code>$callback</code> runs immediately, before <code>register()</code> returns, and the returned closure does nothing.</p>
+<p>Callbacks run synchronously inside the <code>cancel()</code> call, in registration order. If callbacks throw, the remaining callbacks still run, and then the first exception is rethrown from <code>cancel()</code>. Callbacks run outside any fiber, so they cannot <code>await</code>; typical callbacks cancel a timer, remove a stream watcher, or reject a <code>Deferred</code>.</p>
+<p>Always call the returned closure when the operation finishes, so a long-lived token does not accumulate callbacks for work that is already done.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function none(): CancellationToken</code></h4><br/><p>Returns a shared token that is never cancelled. Use it where an API requires a token but the caller has none.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct()</code></h4><br/><p>Creates a token that is not cancelled. A token created this way has no source, so nothing can cancel it; obtain tokens from a <code>CancellationTokenSource</code> instead.</p>
+</div>
+<h3 id="writing-cancellable-code">Writing cancellable code</h3>
+<p>Accept an optional <code>?CancellationToken $token = null</code> as the last parameter, pass it to every awaited call that accepts one, and check it between steps of your own work:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\Promise;
+
+async function importAll(array&lt;string&gt; $rows, CancellationToken $token): int {
+    int $imported = 0;
+    foreach ($rows as $row) {
+        $token-&gt;throwIfCancellationRequested(); // stop between rows
+        await Promise::delay(\strlen($row), $token); // stands in for a cancellable write
+        $imported++;
+    }
+    return $imported;
+}
+</code></pre></div>
+<p>To combine a caller's token with your own deadline, create a source for the deadline and cancel it from a callback on the caller's token. Unregister the callback when you are done. <code>OperationCancelledException::getToken()</code> and <code>isCancellationRequested()</code> tell you which side cancelled:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\OperationCancelledException;
+use Tyhp\Promise;
+
+async function syncInventory(CancellationToken $token): int {
+    await Promise::delay(500, $token);
+    return 42;
+}
+
+/**
+ * Returns null when our own deadline expires; rethrows when the caller cancelled.
+ */
+async function syncWithDeadline(CancellationToken $callerToken, int $deadlineMs): ?int {
+    $deadline := new CancellationTokenSource($deadlineMs);
+    \Closure $unlink = $callerToken-&gt;register(function () use ($deadline): void {
+        $deadline-&gt;cancel();
+    });
+    try {
+        return await syncInventory($deadline-&gt;getToken());
+    } catch (OperationCancelledException $e) {
+        if ($callerToken-&gt;isCancellationRequested()) {
+            throw $e;
+        }
+        return null;
+    } finally {
+        $unlink();
+    }
+}
+</code></pre></div>
+<h2 id="timeouts">Timeouts</h2>
+<p>There are three ways to bound how long something may take. All of them report expiry with <a href="#exceptions"><code>TimeoutException</code></a> or <code>OperationCancelledException</code>:</p>
+<ul>
+<li><strong><code>Promise::timeout($promise, $ms)</code></strong> stops <em>waiting</em> after <code>$ms</code> and rejects with <code>TimeoutException</code>, but the operation itself continues in the background.</li>
+<li><strong><code>new CancellationTokenSource($ms)</code></strong> cancels a token after <code>$ms</code>. Operations that observe the token stop their work and reject with <code>OperationCancelledException</code>. Prefer this when the work should actually stop.</li>
+<li><strong><code>$promise-&gt;wait($ms)</code></strong> and <strong><code>EventLoop::runUntilSettled($promise, $ms)</code></strong> bound how long <em>synchronous</em> code blocks, throwing <code>TimeoutException</code> with a message such as <code>Promise did not settle within 100ms timeout</code>. The promise stays pending and its work stays queued.</li>
+</ul>
+<h2 id="the-event-loop">The Event Loop</h2>
+<p><code>final class EventLoop</code> in namespace <code>Tyhp</code>.</p>
+<p>Most applications never call the event loop directly: <code>await</code>, <code>Promise</code>, and <code>tyhp/io</code> use it for you. Use it to run async code from synchronous code, to schedule timers and microtasks, to watch your own streams, and in tests.</p>
+<h3 id="lifecycle">Lifecycle</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function getInstance(): EventLoop</code></h4><br/><p>Returns the process-wide loop, creating it on first use. Every promise, timer, and stream watcher in the process uses this instance.</p>
+</div>
+<p><a id="eventloop-run"></a></p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function run&lt;T extends __Awaited&lt;void|mixed&gt; = mixed&gt;(Promise&lt;T&gt; $rootPromise, ?CancellationToken $token = null): T</code></h4><br/><p>Runs the loop until <code>$rootPromise</code> has settled and no work is immediately runnable, then returns the root's value or throws its rejection reason. Timers that are not yet due, intervals, and stream watchers do not keep it running after the root has settled; they stay registered for the next time the loop runs.</p>
+<p>Throws <code>\LogicException</code> when the loop is already running. Exceptions thrown by timer, microtask, and stream callbacks propagate out of <code>run()</code>. If <code>stop()</code> ends the loop while the root is still pending, <code>run()</code> throws <code>InvalidPromiseStateException</code>.</p>
+<p>When <code>$token</code> is given, it is checked once per loop iteration, after the microtask, timer, and I/O phases. If it is cancelled while the root promise is still pending, <code>run()</code> shuts the whole loop down and throws <code>OperationCancelledException</code>; if the root settled in that same iteration, its own result or error wins and nothing is shut down. Shutting down:</p>
+<ul>
+<li>drops queued microtasks and fiber starts; the promise of a fiber that never started is rejected with <code>OperationCancelledException</code>;</li>
+<li>cancels every timer and interval and removes every stream watcher (the streams are not closed);</li>
+<li>unwinds every fiber that is suspended on a pending promise by throwing <code>OperationCancelledException</code> into it, so its <code>finally</code> blocks run and its own promise rejects with that exception. A fiber that catches the exception and waits again is rejected and abandoned. Nothing the loop gave up on is started or resumed again, even if the promise it was waiting on settles later;</li>
+<li>attaches an exception thrown by that cleanup code as the <code>previous</code> exception of the one <code>run()</code> throws.</li>
+</ul>
+<p>The loop can be used again afterwards.</p>
+<p>What the shutdown rejects and what it leaves alone:</p>
+<ul>
+<li><strong>Rejected with <code>OperationCancelledException</code>:</strong> every promise that was still pending and is backed by a fiber the loop knows about. That covers async functions, closures, and blocks, <code>Promise::delay()</code>, and a <a href="#deferred"><code>Deferred</code></a>'s promise, because a pending <code>Deferred</code> is itself a suspended fiber. Code awaiting a <code>Deferred</code> is unwound the same way. A later <code>resolve()</code> or <code>reject()</code> on such a <code>Deferred</code> does not throw and changes nothing, because its promise is already rejected.</li>
+<li><strong>Left unchanged:</strong> a promise that had already settled keeps its result or error, and the root promise keeps its own outcome when it settles in the same iteration as the cancellation.</li>
+<li><strong>Not interrupted:</strong> a callback that never returns control to the loop (cancellation is noticed at the next iteration), and any stream the loop was watching, which is unregistered but not closed.</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function runUntilSettled(Promise $promise, int $timeoutMs = -1): mixed</code></h4><br/><p>Runs the loop until <code>$promise</code> settles, then immediately returns its value or throws its rejection reason, leaving any other queued work in place. When <code>$timeoutMs</code> is greater than zero, throws <code>TimeoutException</code> if the promise is still pending after that many milliseconds; otherwise waits without a limit. Throws <code>\LogicException</code> when the loop is already running. <code>Promise::wait()</code> calls this method.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function tick(): bool</code></h4><br/><p>Runs one pass of the cycle — fibers and microtasks, due timers, and a non-blocking I/O poll — and returns <code>true</code> if any work is still pending (queued fibers or microtasks, active timers, or registered streams). <code>tick()</code> never sleeps, so a <code>while ($loop-&gt;tick())</code> loop spins until pending timers come due. Use it in tests or when embedding the loop in another scheduler.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function stop(): void</code></h4><br/><p>Asks a running <code>run()</code> or <code>runUntilSettled()</code> to return at the end of the current pass. Pending work stays queued.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isRunning(): bool</code></h4><br/><p>Returns <code>true</code> while <code>run()</code> or <code>runUntilSettled()</code> is executing. Check it before choosing between <code>await</code> and a blocking entry point in code that can be called from both places.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function resetInstance(): void</code></h4><br/><p>Discards the process-wide loop so the next <code>getInstance()</code> call creates a fresh one, abandoning all queued fibers, timers, microtasks, and stream watchers. Intended for test teardown only.</p>
+</div>
+<h3 id="timers">Timers</h3>
+<p>Timer callbacks run on the loop, outside any fiber: they cannot <code>await</code>, and an exception they throw stops the loop (see <a href="#errors">Errors</a>). Timers use PHP's monotonic <code>\hrtime()</code> clock.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function delay(int $ms, callable(): void $callback): string</code></h4><br/><p>Schedules <code>$callback</code> to run once, <code>$ms</code> milliseconds from now, and returns a timer ID for <code>cancelTimer()</code>. In async code, prefer <code>await Promise::delay($ms)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function interval(int $ms, callable(): void $callback): string</code></h4><br/><p>Schedules <code>$callback</code> to run every <code>$ms</code> milliseconds until cancelled and returns a timer ID. Each next run is scheduled <code>$ms</code> after the previous callback finishes.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function cancelTimer(string $id): void</code></h4><br/><p>Cancels a timer or interval. Cancelling a timer that has already fired, or an unknown ID, does nothing.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\Deferred;
+use Tyhp\EventLoop;
+use Tyhp\Promise;
+
+/**
+ * Prints a heartbeat every second until $token is cancelled.
+ */
+function heartbeat(CancellationToken $token): Promise&lt;void&gt; {
+    Deferred&lt;void&gt; $stopped = new Deferred&lt;void&gt;();
+    EventLoop $loop = EventLoop::getInstance();
+
+    string $intervalId = $loop-&gt;interval(1000, function (): void {
+        echo &#039;tick &#039;, \date(&#039;H:i:s&#039;), &quot;\n&quot;;
+    });
+
+    $token-&gt;register(function () use ($loop, $intervalId, $stopped): void {
+        $loop-&gt;cancelTimer($intervalId);
+        $stopped-&gt;resolve();
+    });
+
+    return $stopped-&gt;getPromise();
+}
+</code></pre></div>
+<h3 id="microtasks">Microtasks</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public function queueMicrotask(callable(): void $callback): void</code></h4><br/><p>Queues <code>$callback</code> to run in the fibers-and-microtasks phase, before timers and I/O. The loop drains the whole queue — including microtasks queued while it is draining — before moving on, so a microtask that keeps queuing microtasks starves timers and I/O.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function defer(callable(): void $callback): void</code></h4><br/><p>Queues <code>$callback</code> on the same microtask queue as <code>queueMicrotask()</code>; the two methods behave identically.</p>
+</div>
+<h3 id="stream-watchers">Stream watchers</h3>
+<p>The loop can watch PHP stream resources (sockets, pipes, process streams) and call you back when they are ready, using <code>\stream_select()</code>. Put the streams in non-blocking mode with <code>\stream_set_blocking($stream, false)</code> so a read or write inside the callback cannot stall the loop. For HTTP, sockets, processes, and databases, the ready-made clients in <a href="package_io.html"><code>tyhp/io</code></a> are usually the better choice.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function addReadStream(mixed $stream, callable(resource): void $callback): void</code></h4><br/><p>Calls <code>$callback($stream)</code> on every loop pass in which <code>$stream</code> has data to read (or has reached end-of-file), until <code>removeReadStream()</code> is called. A stream has one read callback; adding another replaces it. Throws <code>\InvalidArgumentException</code> if <code>$stream</code> is not a stream resource. If the callback throws, the watcher is removed and the exception propagates out of the loop.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function addWriteStream(mixed $stream, callable(resource): void $callback): void</code></h4><br/><p>Calls <code>$callback($stream)</code> on every loop pass in which <code>$stream</code> can accept writes, until <code>removeWriteStream()</code> is called. A stream has one write callback; adding another replaces it. Throws <code>\InvalidArgumentException</code> if <code>$stream</code> is not a stream resource. If the callback throws, the watcher is removed and the exception propagates out of the loop.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function removeReadStream(mixed $stream): void</code></h4><br/><p>Stops watching <code>$stream</code> for reads. Remove a watcher before closing its stream.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function removeWriteStream(mixed $stream): void</code></h4><br/><p>Stops watching <code>$stream</code> for writes. Remove a watcher before closing its stream.</p>
+</div>
+<p>The pattern for turning a stream into a promise is a <code>Deferred</code>, a watcher that settles it, and a timer that guarantees it settles:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Deferred;
+use Tyhp\EventLoop;
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Promise;
+
+/**
+ * Resolves with the next line read from a non-blocking stream.
+ */
+function readLineAsync(resource $stream, int $timeoutMs = 5000): Promise&lt;string&gt; {
+    Deferred&lt;string&gt; $deferred = new Deferred&lt;string&gt;();
+    EventLoop $loop = EventLoop::getInstance();
+    string $buffer = &#039;&#039;;
+    ?string $timerId = null;
+
+    $loop-&gt;addReadStream($stream, function (resource $ready) use ($deferred, $loop, &amp;$buffer, &amp;$timerId): void {
+        string|false $chunk = \fread($ready, 8192);
+        if ($chunk === false || $chunk === &#039;&#039;) {
+            $loop-&gt;removeReadStream($ready);
+            if ($timerId !== null) {
+                $loop-&gt;cancelTimer($timerId);
+            }
+            $deferred-&gt;reject(new \RuntimeException(&#039;Stream closed before a full line arrived&#039;));
+            return;
+        }
+        $buffer .= $chunk;
+        int|false $newline = \strpos($buffer, &quot;\n&quot;);
+        if ($newline !== false) {
+            $loop-&gt;removeReadStream($ready);
+            if ($timerId !== null) {
+                $loop-&gt;cancelTimer($timerId);
+            }
+            $deferred-&gt;resolve(\substr($buffer, 0, $newline));
+        }
+    });
+
+    $timerId = $loop-&gt;delay($timeoutMs, function () use ($deferred, $loop, $stream, $timeoutMs): void {
+        $loop-&gt;removeReadStream($stream);
+        $deferred-&gt;reject(new TimeoutException(&#039;No line within &#039; . $timeoutMs . &#039;ms&#039;, $timeoutMs));
+    });
+
+    return $deferred-&gt;getPromise();
+}
+</code></pre></div>
+<p>Async code can then write <code>string $line = await readLineAsync($socket);</code>.</p>
+<h3 id="fiber-scheduling">Fiber scheduling</h3>
+<p>These methods queue raw <code>\Fiber</code> operations for the loop's next fibers-and-microtasks phase. Promises use them internally. Application code should use <code>async</code> and <code>await</code> instead; managing fibers by hand alongside the loop is error-prone. An exception thrown by a fiber that does not belong to a promise propagates out of the loop.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function scheduleFiber(\Fiber&lt;mixed, callable(): void&gt; $fiber): void</code></h4><br/><p>Queues <code>$fiber</code> to be started.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function scheduleFiberResume(\Fiber&lt;mixed, callable&gt; $fiber, mixed $value = null): void</code></h4><br/><p>Queues a suspended <code>$fiber</code> to be resumed with <code>$value</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function scheduleFiberThrow(\Fiber&lt;mixed, callable&gt; $fiber, \Throwable $error): void</code></h4><br/><p>Queues a suspended <code>$fiber</code> to be resumed by throwing <code>$error</code> into it.</p>
+</div>
+<h3 id="queue-entry-classes">Queue entry classes</h3>
+<p><code>EventLoopTimerItem</code> and <code>EventLoopFiberItem</code> are the loop's internal queue entries. They are public classes only so the loop's queues can be typed; applications do not create or receive them.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>final class EventLoopTimerItem</code></h4><br/><p>A scheduled timer: <code>public string $id</code>, <code>public callable(): void $callback</code>, <code>public int $interval</code> (0 for one-shot timers), and <code>public int $fireAt</code> (due time in <code>\hrtime()</code> nanoseconds). Constructor: <code>__construct(string $id, callable(): void $callback, int $interval, int $fireAt)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>final class EventLoopFiberItem</code></h4><br/><p>A queued fiber operation: <code>public \Fiber&lt;mixed, callable(): void&gt;|\Fiber&lt;mixed, callable&gt; $fiber</code>, <code>public string $action</code> (<code>'start'</code>, <code>'resume'</code>, or <code>'throw'</code>), <code>public mixed $value</code>, and <code>public ?\Throwable $error</code>. Constructor: <code>__construct(\Fiber&lt;mixed, callable(): void&gt;|\Fiber&lt;mixed, callable&gt; $fiber, string $action, mixed $value = null, ?\Throwable $error = null)</code>.</p>
+</div>
+<h2 id="async-iteration-contracts">Async Iteration Contracts</h2>
+<p>These interfaces in namespace <code>Tyhp\Contracts</code> back <code>foreach (await $source as ...)</code>, described in <a href="tyhp_2600_asyncAndAwait.html#async-iteration">Async Iteration</a>. Implement them to expose a sequence whose items arrive over time — lines of a large file, pages of an API, rows of a query.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>interface AsyncIterable&lt;T extends __Awaited&lt;void|mixed&gt;&gt;</code></h4><br/><p><code>public function getAsyncIterator(): AsyncIterator&lt;T&gt;</code> — returns a fresh iterator positioned before the first item. <code>foreach (await $source as $item)</code> calls it once per loop.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>interface AsyncIterator&lt;T extends __Awaited&lt;void|mixed&gt;&gt;</code></h4><br/><p><code>public function next(): Promise&lt;bool&gt;</code> — advances to the next item and fulfills with <code>true</code> if there is one, or <code>false</code> when the sequence is finished.</p>
+<p><code>public function current(): Promise&lt;T&gt;</code> — returns the item <code>next()</code> moved to.</p>
+<p>The compiled loop calls <code>next()</code> first and <code>current()</code> only after <code>next()</code> fulfilled with <code>true</code>, so <code>current()</code> is never called before the first <code>next()</code>. Rejecting either promise ends the loop by throwing the reason at the <code>foreach</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>interface AsyncKeyValueIterator&lt;TKey extends __Awaited&lt;void|mixed&gt;, TValue extends __Awaited&lt;void|mixed&gt;&gt; extends AsyncIterator&lt;TValue&gt;</code></h4><br/><p><code>public function currentKey(): Promise&lt;TKey&gt;</code> and <code>public function currentValue(): Promise&lt;TValue&gt;</code> — the key and value of the current item. The key-value form <code>foreach (await $source as $key =&gt; $value)</code> calls these instead of <code>current()</code>, so the iterator returned by <code>getAsyncIterator()</code> must implement this interface. Declare <code>getAsyncIterator()</code> as returning <code>AsyncKeyValueIterator&lt;TKey, TValue&gt;</code> and iterate a value whose static type is your class, so the loop knows the key type.</p>
+</div>
+<p>A countdown that produces one number every 100 ms:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Contracts\AsyncIterable;
+use Tyhp\Contracts\AsyncIterator;
+use Tyhp\Promise;
+
+final class Countdown implements AsyncIterable&lt;int&gt; {
+    public function __construct(private readonly int $from) {}
+
+    public function getAsyncIterator(): AsyncIterator&lt;int&gt; {
+        return new CountdownIterator($this-&gt;from);
+    }
+}
+
+final class CountdownIterator implements AsyncIterator&lt;int&gt; {
+    private int $current;
+
+    public function __construct(int $from) {
+        $this-&gt;current = $from + 1; // positioned before the first item
+    }
+
+    public function next(): Promise&lt;bool&gt; {
+        return async {
+            if ($this-&gt;current &lt;= 1) {
+                return false;
+            }
+            await Promise::delay(100);
+            $this-&gt;current--;
+            return true;
+        };
+    }
+
+    public function current(): Promise&lt;int&gt; {
+        return Promise::resolved&lt;int&gt;($this-&gt;current);
+    }
+}
+
+function countdown(int $from): AsyncIterable&lt;int&gt; {
+    return new Countdown($from);
+}
+
+async function launch(): void {
+    foreach (await countdown(3) as int $n) {
+        echo $n, &quot;...\n&quot;; // 3...  2...  1...
+    }
+    echo &quot;Liftoff!\n&quot;;
+}
+</code></pre></div>
+<p><code>next()</code> does the asynchronous work and <code>current()</code> returns an already-settled promise; that split keeps the iterator simple and is the shape <code>tyhp/io</code>'s line reader uses. Returning the iterable from a function typed <code>AsyncIterable&lt;int&gt;</code>, as <code>countdown()</code> does, gives <code>foreach (await ...)</code> the element type.</p>
+<p>A key-value iterator implements <code>AsyncKeyValueIterator</code> and the iterable declares it as the return type of <code>getAsyncIterator()</code>. Because the loop takes its key type from that declaration, <code>inventory()</code> returns the <code>Inventory</code> class rather than <code>AsyncIterable&lt;int&gt;</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Contracts\AsyncIterable;
+use Tyhp\Contracts\AsyncKeyValueIterator;
+use Tyhp\Promise;
+
+final class InventoryIterator implements AsyncKeyValueIterator&lt;string, int&gt; {
+    private int $position = -1;
+
+    public function __construct(private readonly array&lt;int, string&gt; $skus) {}
+
+    public function next(): Promise&lt;bool&gt; {
+        return async {
+            await Promise::delay(10); // stands in for fetching the next record
+            $this-&gt;position++;
+            return $this-&gt;position &lt; \count($this-&gt;skus);
+        };
+    }
+
+    public function current(): Promise&lt;int&gt; {
+        return $this-&gt;currentValue();
+    }
+
+    public function currentKey(): Promise&lt;string&gt; {
+        return Promise::resolved&lt;string&gt;($this-&gt;skus[$this-&gt;position]);
+    }
+
+    public function currentValue(): Promise&lt;int&gt; {
+        return Promise::resolved&lt;int&gt;(\strlen($this-&gt;skus[$this-&gt;position]));
+    }
+}
+
+final class Inventory implements AsyncIterable&lt;int&gt; {
+    public function __construct(private readonly array&lt;int, string&gt; $skus) {}
+
+    public function getAsyncIterator(): AsyncKeyValueIterator&lt;string, int&gt; {
+        return new InventoryIterator($this-&gt;skus);
+    }
+}
+
+function inventory(array&lt;int, string&gt; $skus): Inventory {
+    return new Inventory($skus);
+}
+
+async function printInventory(): void {
+    foreach (await inventory([&#039;A-1&#039;, &#039;B-22&#039;]) as string $sku =&gt; int $stock) {
+        echo &quot;{$sku}: {$stock}\n&quot;; // A-1: 3, then B-22: 4
+    }
+}
+</code></pre></div>
+<h2 id="async-disposal">Async Disposal</h2>
+<p><code>tyhp/async</code> provides the async half of Tyhp's disposal support and the runtime behind the <code>:=</code> operator. The language features — <code>:=</code>, <code>using</code> blocks, and the synchronous <code>\Tyhp\Contracts\IsDisposable</code> interface from <code>tyhp/core</code> — are described in <a href="tyhp_2300_disposables.html">Disposables and the := Operator</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>interface AsyncIsDisposable</code></h4><br/><p><code>public function disposeAsync(): Promise&lt;void&gt;</code> — releases the resource asynchronously, for example by sending a close command and waiting for the acknowledgement. Declared in namespace <code>Tyhp\Contracts</code>. Implementations usually declare it as <code>public async function disposeAsync(): void</code>.</p>
+</div>
+<h3 id="disposablehelper">DisposableHelper</h3>
+<p><code>final class DisposableHelper</code> in namespace <code>Tyhp</code>. It cannot be instantiated.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static async function dispose(IsDisposable|AsyncIsDisposable ...$disposables): void</code></h4><br/><p>Disposes the given resources in reverse order (last argument first). Calls <code>dispose()</code> on <code>IsDisposable</code> resources and awaits <code>disposeAsync()</code> on <code>AsyncIsDisposable</code> resources. Every resource is attempted even if an earlier one fails. Each failure raises an <code>E_USER_WARNING</code>; then the returned promise rejects with the single failure, or with <code>\Tyhp\Exceptions\AggregateException</code> (message <code>One or more errors during disposal</code>) when several failed. Returns <code>Promise&lt;void&gt;</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Contracts\AsyncIsDisposable;
+use Tyhp\DisposableHelper;
+use Tyhp\Promise;
+
+final class RemoteSession implements AsyncIsDisposable {
+    public function __construct(private readonly string $id) {}
+
+    public async function disposeAsync(): void {
+        await Promise::delay(20); // stands in for a close handshake
+        echo &quot;closed {$this-&gt;id}\n&quot;;
+    }
+}
+
+async function closeSessions(): void {
+    RemoteSession $a = new RemoteSession(&#039;a&#039;);
+    RemoteSession $b = new RemoteSession(&#039;b&#039;);
+    await DisposableHelper::dispose($a, $b); // prints &quot;closed b&quot;, then &quot;closed a&quot;
+}
+</code></pre></div>
+<h3 id="disposablescope">DisposableScope</h3>
+<p><code>final class DisposableScope implements \Tyhp\Contracts\IsDisposable</code> in namespace <code>Tyhp</code>.</p>
+<p>The compiler lowers <code>:=</code> variables to a <code>DisposableScope</code>: <code>$x := new R()</code> becomes <code>$x = $__scope_0-&gt;using(new R())</code>, and the scope disposes its resources when PHP destroys the scope object, which happens when the function returns. You normally interact with it only through <code>:=</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function create(): DisposableScope</code></h4><br/><p>Creates an empty scope. The constructor is private.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function using(IsDisposable|AsyncIsDisposable $resource): mixed</code></h4><br/><p>Registers <code>$resource</code> for disposal and returns it unchanged.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function dispose(): void</code></h4><br/><p>Disposes every registered resource that has not been released, in reverse registration order. Calls <code>dispose()</code> on <code>IsDisposable</code> resources and waits for <code>disposeAsync()</code> on <code>AsyncIsDisposable</code> resources (see below). Every resource is attempted even if an earlier one fails; each failure raises an <code>E_USER_WARNING</code>, and then <code>dispose()</code> throws the single failure or an <code>AggregateException</code> (message <code>One or more errors during disposal</code>). Calling it again does nothing.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function release(IsDisposable|AsyncIsDisposable $resource): void</code></h4><br/><p>Excludes <code>$resource</code> from disposal, for example after you have disposed it yourself, so it is not disposed twice.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __destruct()</code></h4><br/><p>Runs <code>dispose()</code> if it has not run yet. A failure during destruction is reported as an <code>E_USER_WARNING</code> and is not rethrown — use a <code>using</code> block when disposal errors must propagate.</p>
+</div>
+<p>When a scope disposes an <code>AsyncIsDisposable</code> resource, it waits for <code>disposeAsync()</code> as follows:</p>
+<ul>
+<li>If the returned promise has already settled, its outcome is used immediately.</li>
+<li>Inside a fiber (that is, in async code), the scope awaits the promise, so the loop keeps running other work meanwhile.</li>
+<li>Outside a fiber with the loop idle, the scope blocks with <code>Promise::wait()</code>.</li>
+<li>Outside a fiber while the loop is running (for example in a timer or stream callback), a pending promise cannot be waited for, and the scope throws <code>AsyncContextException</code>. Dispose such resources from async code instead.</li>
+</ul>
+<h2 id="exceptions">Exceptions</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Exception</th>
+<th>Extends</th>
+<th>Thrown by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tyhp\Exceptions\TimeoutException</code></td>
+<td><code>\RuntimeException</code></td>
+<td><code>Promise::timeout()</code>, <code>Promise::wait()</code> and <code>EventLoop::runUntilSettled()</code> with a timeout, <code>tyhp/io</code> timeouts</td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\OperationCancelledException</code></td>
+<td><code>\RuntimeException</code></td>
+<td>Any API that observes a cancelled <code>CancellationToken</code></td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\InvalidPromiseStateException</code></td>
+<td><code>\LogicException</code></td>
+<td>Reading a pending promise, settling a <code>Deferred</code> twice, a missing value for a non-nullable type</td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\AsyncContextException</code></td>
+<td><code>\RuntimeException</code></td>
+<td>Awaiting a pending promise outside a fiber; async disposal from a loop callback</td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\AggregateException</code> (from <code>tyhp/core</code>)</td>
+<td><code>\RuntimeException</code></td>
+<td><code>Promise::any()</code> when every input rejects; disposal with several failures</td>
+</tr>
+</tbody>
+</table></div>
+<p>Errors in how the API is called use standard PHP exceptions: <code>\InvalidArgumentException</code> for negative delays, an empty <code>race()</code>, a <code>batch()</code> processor that does not return a promise, or a non-stream passed to a stream watcher; <code>\LogicException</code> for re-entrant loop entry points and for resolving a promise with itself.</p>
+<h3 id="timeoutexception">TimeoutException</h3>
+<p><code>final class TimeoutException extends \RuntimeException</code>. You can throw it from your own code to report a deadline.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $message = &#039;The operation timed out&#039;, int $timeoutMs = 0, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception with the timeout that expired, in milliseconds.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getTimeoutMs(): int</code></h4><br/><p>Returns the timeout that expired, in milliseconds.</p>
+</div>
+<h3 id="operationcancelledexception">OperationCancelledException</h3>
+<p><code>final class OperationCancelledException extends \RuntimeException</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(CancellationToken $token, string $message = &#039;The operation was cancelled&#039;, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception for the token that was cancelled. Throw it from your own cancellable code, or call <code>$token-&gt;throwIfCancellationRequested()</code>, which does this for you.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getToken(): CancellationToken</code></h4><br/><p>Returns the token whose cancellation caused the exception. Compare it with the tokens you hold to tell your own deadline apart from a caller's cancellation.</p>
+</div>
+<h3 id="invalidpromisestateexception">InvalidPromiseStateException</h3>
+<p><code>final class InvalidPromiseStateException extends \LogicException</code>. Signals a programming error in how a promise or <code>Deferred</code> is used: calling <code>getResult()</code> on a pending promise, resolving or rejecting a <code>Deferred</code> a second time, or resolving without a value when the promise's type is neither <code>void</code> nor nullable.</p>
+<h3 id="asynccontextexception">AsyncContextException</h3>
+<p><code>final class AsyncContextException extends \RuntimeException</code>. Thrown when code tries to wait for a pending promise where no fiber can be suspended: <code>\Tyhp\Promise::_await()</code> called from plain PHP or from a timer, microtask, or stream callback, and the <code>DisposableScope</code> case described in <a href="#async-disposal">Async Disposal</a>.</p>
+<h2 id="testing-async-code">Testing Async Code</h2>
+<p>Tyhp code is tested through its emitted PHP, for example with PHPUnit. Drive async functions with <code>EventLoop::getInstance()-&gt;run(...)</code> or <code>runUntilSettled(...)</code>, and reset the process-wide loop after each test so leftover timers and abandoned work from one test cannot leak into the next:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Tests;
+
+use PHPUnit\Framework\TestCase;
+use Tyhp\Deferred;
+use Tyhp\EventLoop;
+use Tyhp\Exceptions\TimeoutException;
+
+final class PriceServiceTest extends TestCase
+{
+    protected function tearDown(): void
+    {
+        EventLoop::resetInstance();
+    }
+
+    public function testTotalAddsEveryPrice(): void
+    {
+        $total = EventLoop::getInstance()-&gt;run(\App\totalFor([&#039;A-1&#039;, &#039;B-22&#039;]));
+
+        self::assertSame(700, $total);
+    }
+
+    public function testUnresolvedPromiseTimesOut(): void
+    {
+        $this-&gt;expectException(TimeoutException::class);
+
+        $never = (new Deferred())-&gt;getPromise();
+        EventLoop::getInstance()-&gt;runUntilSettled($never, 100);
+    }
+}
+</code></pre></div>
+<p>Tips:</p>
+<ul>
+<li>Give every wait in a test an upper bound (<code>runUntilSettled($promise, $ms)</code> or <code>wait($ms)</code>), so a promise that never settles fails the test instead of hanging the suite.</li>
+<li>Keep delays in tests short; <code>Promise::delay()</code> really waits.</li>
+<li>To test loop-level behaviour step by step, call <code>tick()</code> and assert between passes. <code>tick()</code> does not sleep.</li>
+<li>Rejections surface as exceptions from <code>run()</code>, <code>runUntilSettled()</code>, and <code>wait()</code>, so <code>expectException()</code> works directly.</li>
+</ul>
+<h2 id="worked-examples">Worked Examples</h2>
+<h3 id="retrying-with-exponential-backoff">Retrying with exponential backoff</h3>
+<p>A generic helper that retries an operation on transient failures, waiting 200 ms, 400 ms, 800 ms, … between attempts, and that stops promptly when cancelled:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\Promise;
+
+final class TransientException extends \RuntimeException {}
+
+/**
+ * Runs $operation until it succeeds, waiting longer after each TransientException.
+ * The last attempt&#039;s exception propagates unchanged.
+ */
+async function retry&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(
+    callable(): Promise&lt;T&gt; $operation,
+    int $maxAttempts = 4,
+    int $baseDelayMs = 200,
+    ?CancellationToken $token = null
+): T {
+    for (int $attempt = 1; $attempt &lt; $maxAttempts; $attempt++) {
+        $token?-&gt;throwIfCancellationRequested();
+        try {
+            return await $operation();
+        } catch (TransientException $e) {
+            int $backoffMs = $baseDelayMs * (2 ** ($attempt - 1));
+            await Promise::delay($backoffMs, $token);
+        }
+    }
+    $token?-&gt;throwIfCancellationRequested();
+    return await $operation();
+}
+
+final class QuoteClient {
+    private int $calls = 0;
+
+    public async function fetch(string $symbol): float {
+        await Promise::delay(20);
+        $this-&gt;calls++;
+        if ($this-&gt;calls &lt; 3) {
+            throw new TransientException(&quot;Upstream busy ({$this-&gt;calls})&quot;);
+        }
+        return 101.25;
+    }
+}
+
+async function currentQuote(): float {
+    QuoteClient $client = new QuoteClient();
+    return await retry&lt;float&gt;(
+        fn(): Promise&lt;float&gt; =&gt; $client-&gt;fetch(&#039;ACME&#039;),
+        maxAttempts: 5,
+        baseDelayMs: 50
+    );
+}
+</code></pre></div>
+<p><code>retry()</code> takes a callable that <em>creates</em> the promise rather than a promise, because each attempt needs a fresh operation — a settled promise cannot be run again. <code>T</code> is bounded by <code>__Awaited&lt;void|mixed&gt;</code> because it appears inside <code>Promise&lt;T&gt;</code>; see <a href="#settled-types">Settled types</a>.</p>
+<h3 id="fan-out-with-a-shared-deadline-and-partial-results">Fan-out with a shared deadline and partial results</h3>
+<p>Start every request at once, give the whole group one deadline, and report which requests succeeded, failed, or ran out of time:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\OperationCancelledException;
+use Tyhp\Promise;
+
+final class Report {
+    public function __construct(
+        public readonly array&lt;string, int&gt; $sizes,
+        public readonly array&lt;string, string&gt; $failures,
+    ) {}
+}
+
+async function measure(string $url, CancellationToken $token): int {
+    await Promise::delay(\strlen($url) * 10, $token); // stands in for a cancellable download
+    if (\str_contains($url, &#039;broken&#039;)) {
+        throw new \RuntimeException(&quot;Could not fetch {$url}&quot;);
+    }
+    return \strlen($url) * 1024;
+}
+
+async function buildReport(array&lt;string&gt; $urls, int $deadlineMs): Report {
+    $cts := new CancellationTokenSource($deadlineMs);
+    CancellationToken $token = $cts-&gt;getToken();
+
+    array&lt;string, Promise&lt;int&gt;&gt; $pending = [];
+    foreach ($urls as $url) {
+        $pending[$url] = measure($url, $token);
+    }
+
+    array&lt;string, int&gt; $sizes = [];
+    array&lt;string, string&gt; $failures = [];
+    foreach (await Promise::allSettled($pending) as $url =&gt; $outcome) {
+        if ($outcome-&gt;status === &#039;fulfilled&#039;) {
+            $sizes[$url] = $outcome-&gt;value ?? 0;
+        } else if ($outcome-&gt;reason instanceof OperationCancelledException) {
+            $failures[$url] = &#039;deadline exceeded&#039;;
+        } else {
+            $failures[$url] = $outcome-&gt;reason?-&gt;getMessage() ?? &#039;unknown error&#039;;
+        }
+    }
+    return new Report($sizes, $failures);
+}
+</code></pre></div>
+<p>With a 300 ms deadline, a short URL succeeds, a URL containing <code>broken</code> fails with its own message, and a long URL whose simulated download takes more than 300 ms is reported as <code>deadline exceeded</code>. Because the token is passed into each request, the slow request actually stops at the deadline instead of running on in the background.</p>
+<h3 id="bounded-parallel-processing">Bounded parallel processing</h3>
+<p>Process a large list with at most a few operations in flight, stopping between waves if the caller cancels:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\Promise;
+
+async function resizeImage(string $path, CancellationToken $token): int {
+    await Promise::delay(25, $token); // stands in for a call to an image service
+    return \strlen($path);
+}
+
+async function resizeAll(array&lt;string&gt; $paths, CancellationToken $token): array&lt;int, int&gt; {
+    return await Promise::batch(
+        $paths,
+        fn(string $path): Promise&lt;int&gt; =&gt; resizeImage($path, $token),
+        concurrency: 4,
+        token: $token
+    );
+}
+</code></pre></div>
+<p><code>resizeAll()</code> returns the results in the same order as <code>$paths</code>. Because <code>batch()</code> works in waves, keep the processor's running times similar, or split very slow items into their own call.</p>
+<h2 id="gotchas">Gotchas</h2>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>An async call does not start until the caller yields.</strong> Validation errors, early token checks, and the first lines of an async function's body run only when the caller awaits something or returns control to the loop. Expect such errors when you <code>await</code>, not when you call.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>Blocking calls freeze every task.</strong> <code>\sleep()</code>, <code>\file_get_contents()</code> on a URL, PDO, synchronous curl, and long CPU loops stop the whole loop. Use <code>Promise::delay()</code>, the <code>tyhp/io</code> clients, or <code>Promise::yield()</code> in long loops.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>Fire-and-forget work is cut short.</strong> <code>EventLoop::run()</code> returns once the root promise settles, without waiting for promises nobody awaited, pending timers, or stream watchers. Await everything that must finish.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>Unobserved rejections disappear.</strong> A promise that rejects while nobody awaits it, and without a <code>catch()</code> handler, loses its exception silently.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>Never enter the loop from inside the loop.</strong> <code>EventLoop::run()</code>, <code>runUntilSettled()</code>, <code>Promise::wait()</code>, and <code>Promise::run()</code> throw <code>\LogicException</code> when called from async code or from a loop callback. Use <code>await</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>Loop callbacks are not async.</strong> Timer, interval, microtask, stream, and cancellation callbacks run outside any fiber. They cannot <code>await</code>, and an exception they throw stops the loop. Settle a <code>Deferred</code> from them instead.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>A promise nobody settles hangs its awaiters.</strong> Every <code>Deferred</code> needs a path that always settles it, typically paired with a timeout timer. Bound synchronous waits with <code>wait($ms)</code> or <code>runUntilSettled($promise, $ms)</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong>Timeouts and races do not stop the losers.</strong> <code>Promise::timeout()</code>, <code>race()</code>, and <code>any()</code> stop waiting, but the other operations keep running. Pass a <code>CancellationToken</code> into the work when it should stop.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong><code>all()</code> reports rejections in key order.</strong> If an earlier input is still pending, <code>all()</code> waits for it before reporting a later input's rejection. Use a token, <code>race()</code>, or <code>allSettled()</code> when you need to react to the first failure immediately.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><strong><code>batch()</code> runs in waves.</strong> The next group starts only when every promise in the current group has settled, and <code>$concurrency</code> must be at least 1.</p>
+</div>
+    </div>
+</div>
+<h2 id="related-pages">Related Pages</h2>
+<ul>
+<li><a href="tyhp_2600_asyncAndAwait.html">Async and Await</a> — <code>async</code> functions, <code>await</code>, async closures and blocks, and <code>foreach (await ...)</code>.</li>
+<li><a href="tyhp_2300_disposables.html">Disposables and the := Operator</a> — <code>IsDisposable</code>, <code>AsyncIsDisposable</code>, <code>:=</code>, and <code>using</code>.</li>
+<li><a href="package_io.html">The tyhp/io Package</a> — non-blocking HTTP, processes, files, sockets, Redis, and databases on this event loop.</li>
+<li><a href="package_parallel.html">The tyhp/parallel Package</a> — CPU-bound work in worker processes, awaited as promises.</li>
+<li><a href="package_core.html">The tyhp/core Package</a> — <code>IsDisposable</code>, <code>AggregateException</code>, and the runtime type system.</li>
+<li><a href="package_intro.html">Runtime Packages Overview</a> — all runtime packages at a glance.</li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> — installing and pinning <code>tyhp/*</code> packages.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_core.html">&larr; The tyhp/core Package</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_decimal.html">The tyhp/decimal Package &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

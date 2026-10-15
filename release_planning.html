@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -278,7 +297,7 @@
     <h2 class="section-heading">Release Planning</h2>
     
     <p>Tyhp <strong>805.1.0-beta.1</strong> is a public beta. This page describes versioning, what “beta” means, and how later releases are expected to work.</p>
-<h2>Current status</h2>
+<h2 id="current-status">Current status</h2>
 <ul>
 <li>Compiler version: <strong>805.1.0-beta.1</strong> (MAJOR <code>805</code> = highest supported PHP is 8.5)</li>
 <li>PHP floor: <strong>8.2</strong> (not 8.1)</li>
@@ -286,7 +305,7 @@
 <li>Semver compatibility guarantees apply from the first <strong>stable</strong> 805.x release, not from beta.</li>
 </ul>
 <p>A prerelease suffix (<code>-alpha.N</code>, <code>-beta.N</code>, <code>-rc.N</code>) is allowed before stable <code>805.N.N</code>. Beta may still break source compatibility. See <code>VERSIONING.md</code> in the compiler repository.</p>
-<h2>Versioning Strategy</h2>
+<h2 id="versioning-strategy">Versioning Strategy</h2>
 <p>Tyhp uses semantic versioning (MAJOR.MINOR.PATCH). The compiler MAJOR encodes the highest PHP version the release explicitly supports, written as the PHP major digit followed by the two-digit PHP minor. For example, compiler version 805.0.0 means &quot;PHP 8.5 and below&quot; — the compiler still emits for 8.2–8.4 when <code>output.phpVersion</code> is set.</p>
 <p>Published runtime packages version independently of the compiler. Compiled <code>tyhp/*</code> helpers (<code>core</code>, <code>async</code>, <code>decimal</code>, <code>lambda</code>) each have their own <code>X.Y</code>; Packagist MAJOR is the PHP target (<code>804.1.4</code> means PHP 8.4 + core <code>1.4</code>). A PHP 8.3 app requires <code>803.{X.Y}</code> for that helper; a library that supports 8.3+ can require <code>803.X.* || 804.X.* || 805.X.*</code> using <strong>that package's</strong> X. <code>tyhpdef/*</code> packages publish the version in that package’s <code>composer.json</code> (not <code>80N.X.Y</code>). See the Composer Runtime Packages page.</p>
 <ul>
@@ -295,7 +314,7 @@
 <li>PATCH — Bug fixes and non-breaking tweaks (including opt-in flags that keep current defaults). Resets to 0 on a new MINOR.</li>
 </ul>
 <p>This encoding means a Tyhp MAJOR bump only happens alongside a PHP minor version change (e.g., PHP 8.3 to 8.4). Tyhp syntax deprecation and removal happen on MINOR, even when they are not caused by a new PHP version. When PHP 9.0 is targeted, the corresponding Tyhp MAJOR would be 900.</p>
-<h2>Release Process</h2>
+<h2 id="release-process">Release Process</h2>
 <p>After alpha, releases are expected to follow:</p>
 <ol>
 <li>Development — New features and fixes land on the default branch.</li>
@@ -304,18 +323,18 @@
 <li>Stable Release — Tagged; semantic versioning guarantees apply from this point.</li>
 <li>Patch Releases — Bug fixes as patch versions on the current stable MAJOR.</li>
 </ol>
-<h2>Backward Compatibility</h2>
+<h2 id="backward-compatibility">Backward Compatibility</h2>
 <p>Within a stable major version, Tyhp aims to maintain backward compatibility for compiled output. Alpha and beta do <strong>not</strong> make that promise. When breaking changes to Tyhp syntax are necessary after stable, they follow a deprecation cycle:</p>
 <ol>
 <li>The existing syntax is deprecated with a compiler warning in version N.</li>
 <li>The deprecated syntax continues to work for at least one minor version.</li>
 <li>The syntax is removed or changed in version N+1 or later.</li>
 </ol>
-<h2>PHP Syntax Conflict Resolution</h2>
+<h2 id="php-syntax-conflict-resolution">PHP Syntax Conflict Resolution</h2>
 <p>Because Tyhp is a superset of PHP, new PHP versions may occasionally introduce syntax that conflicts with Tyhp-specific syntax. When this occurs, Tyhp works through the steps in <code>VERSIONING.md</code> <strong>in order</strong>: first <strong>integrate-and-detect</strong> (keep both syntaxes if they can be distinguished at compile time); then deprecate Tyhp’s form with compile-time options; then remove the old syntax in a later <strong>MINOR</strong>. Do not wait for the next PHP ceiling / MAJOR.</p>
-<h2>Tracking Changes</h2>
+<h2 id="tracking-changes">Tracking Changes</h2>
 <ul>
-<li>The <a href="release_roadmap.md">roadmap</a> page</li>
+<li>The <a href="release_roadmap.html">roadmap</a> page</li>
 <li>The <a href="https://github.com/tyhpproject/tyhp/issues">GitHub issue tracker</a></li>
 <li>GitHub Release notes</li>
 </ul>

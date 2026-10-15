@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Runtime Packages Overview - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Runtime_Packages_Overview">
+    <h2 class="section-heading">Runtime Packages Overview</h2>
+    
+    <p>Tyhp compiles to plain PHP. Some language features need a small amount of runtime code to work in that PHP: generics, <code>async</code>/<code>await</code>, decimals, and parsable lambdas. That code ships as Composer packages under the <code>tyhp/</code> vendor name. Other <code>tyhp/*</code> packages are ordinary libraries written in Tyhp, for example non-blocking I/O and a process pool. You install those when you want them.</p>
+<p>Each package has its own page with a full API reference, explanations, and worked examples.</p>
+<h2 id="the-packages">The packages</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Package</th>
+<th>Namespace</th>
+<th>What it gives you</th>
+<th>How it gets into <code>composer.json</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="package_core.html"><code>tyhp/core</code></a></td>
+<td><code>Tyhp\</code></td>
+<td>Runtime types, contracts, attributes, and the scalar extension methods (<code>$s-&gt;length()</code>, <code>$items-&gt;mapped(...)</code>). Compiled code loads it when it uses those features, and the other <code>tyhp/*</code> packages depend on it.</td>
+<td>By <code>tyhp init</code>; also reported by <code>tyhp build</code> when compiled code needs it</td>
+</tr>
+<tr>
+<td><a href="package_async.html"><code>tyhp/async</code></a></td>
+<td><code>Tyhp\</code></td>
+<td><code>Promise&lt;T&gt;</code>, the event loop, cancellation, and async iteration. It is the runtime behind <code>async</code> and <code>await</code>.</td>
+<td>Reported by <code>tyhp build</code> when compiled code uses async features</td>
+</tr>
+<tr>
+<td><a href="package_decimal.html"><code>tyhp/decimal</code></a></td>
+<td><code>Tyhp\</code></td>
+<td>The arbitrary-precision <code>\Tyhp\Decimal</code> number.</td>
+<td>Reported by <code>tyhp build</code> when compiled code uses decimals</td>
+</tr>
+<tr>
+<td><a href="package_lambda.html"><code>tyhp/lambda</code></a></td>
+<td><code>Tyhp\</code></td>
+<td>Expression trees and <code>PropertyPath</code> for parsable lambdas.</td>
+<td>Reported by <code>tyhp build</code> when compiled code uses parsable lambdas</td>
+</tr>
+<tr>
+<td><a href="package_io.html"><code>tyhp/io</code></a></td>
+<td><code>Tyhp\Io\</code></td>
+<td>Non-blocking HTTP, processes, files, sockets, Redis, PostgreSQL, MySQL, and PDO on the <code>tyhp/async</code> event loop.</td>
+<td>By you</td>
+</tr>
+<tr>
+<td><a href="package_parallel.html"><code>tyhp/parallel</code></a></td>
+<td><code>Tyhp\</code></td>
+<td>A process pool that runs CPU-heavy or blocking tasks in worker processes, from the CLI or from php-fpm.</td>
+<td>By you</td>
+</tr>
+<tr>
+<td><a href="package_compiler.html"><code>tyhp/compiler</code></a></td>
+<td>—</td>
+<td><code>vendor/bin/tyhp</code>, which installs and runs the native Tyhp compiler for your project.</td>
+<td>In <code>require-dev</code>: by <code>tyhp init</code> and <code>tyhp composer sync</code> (an exact version) and by the <code>tyhp/core</code> Composer plugin (<code>@dev</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <code>tyhpdef/*</code> packages (<code>tyhpdef/php</code>, <code>tyhpdef/php-ext-*</code>, and the wrappers for popular Composer libraries) are a different kind of package: compile-time type definitions with no runtime code. They are covered in <a href="project_composerPackages.html">Composer Runtime Packages</a>.</p>
+<h2 id="how-the-packages-depend-on-each-other">How the packages depend on each other</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp/core
+├── tyhp/async
+│   ├── tyhp/io        (optionally uses tyhp/parallel)
+│   └── tyhp/parallel
+├── tyhp/decimal
+├── tyhp/lambda
+└── tyhp/compiler      (require-dev)
+</code></pre></div>
+<p>Requiring a package pulls in the packages above it. For example, <code>composer require tyhp/io</code> also installs <code>tyhp/async</code> and <code>tyhp/core</code>. <code>tyhp/io</code> works without <code>tyhp/parallel</code>. When <code>tyhp/parallel</code> is installed and a pool is available, io moves its blocking work into worker processes: PDO queries, DNS lookups, and <code>Offload</code> jobs. See <a href="package_io.html#offloading-blocking-work-tyhpio">Offloading blocking work</a>.</p>
+<h2 id="php-extensions">PHP extensions</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Package</th>
+<th>Requires</th>
+<th>Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tyhp/core</code></td>
+<td>—</td>
+<td><code>ext-mbstring</code> for Unicode-aware string methods. Without it, the string methods work on bytes.</td>
+</tr>
+<tr>
+<td><code>tyhp/async</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>tyhp/decimal</code></td>
+<td>—</td>
+<td><code>ext-decimal</code> (preferred), <code>ext-bcmath</code>, or <code>ext-gmp</code> as the arithmetic backend</td>
+</tr>
+<tr>
+<td><code>tyhp/lambda</code></td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>tyhp/io</code></td>
+<td>—</td>
+<td><code>ext-curl</code> for <code>HttpClient</code>, <code>ext-pgsql</code> for <code>PostgresConnection</code>, <code>ext-mysqli</code> for <code>MySqlConnection</code>, <code>ext-pdo</code> for <code>PdoConnection</code></td>
+</tr>
+<tr>
+<td><code>tyhp/parallel</code></td>
+<td><code>ext-pcntl</code>, <code>ext-posix</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>tyhp/compiler</code></td>
+<td><code>ext-curl</code></td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tyhp/io</code> checks for an extension only when you use the class that needs it. A missing extension throws <code>\Tyhp\Io\Exceptions\IoUnavailableException</code> with the extension's name.</p>
+<h2 id="installing">Installing</h2>
+<p>Compiled <code>tyhp/*</code> packages are versioned once per PHP target. The version starts with <code>80N</code>, the PHP version the artifact was built for (<code>802</code> for PHP 8.2 through <code>805</code> for PHP 8.5), followed by the package's own version. Pick the prefix that matches <code>output.phpVersion</code> in your <code>tyhp.json</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require tyhp/io:804.0.*
+composer require tyhp/parallel:804.0.*
+</code></pre></div>
+<p><code>tyhp init</code> adds <code>tyhp/core</code> and <code>tyhp/compiler</code>, plus <code>tyhpdef/php</code> in <code>require-dev</code>. After each build, <code>tyhp build</code> prints the runtime packages your compiled code needs (<code>tyhp/core</code>, <code>tyhp/async</code>, <code>tyhp/decimal</code>, <code>tyhp/lambda</code>, and <code>tyhpdef/php</code>). When <a href="project_optionsList.html"><code>build.updateComposer</code></a> is <code>true</code>, it also writes them into the <code>composer.json</code> in <code>output.publishPath</code> and runs <code>composer install</code> there; otherwise require them yourself. <code>tyhp/io</code> and <code>tyhp/parallel</code> are never added for you. Libraries that support several PHP versions OR the prefixes together. <a href="project_composerPackages.html">Composer Runtime Packages</a> explains the version scheme in full.</p>
+<h2 id="async-method-names">Async method names</h2>
+<p>In <code>tyhp/io</code> and <code>tyhp/parallel</code>, every public method that returns a <code>Promise</code> (or is declared <code>async</code>) has a name ending in <code>Async</code>: <code>HttpClient::getAsync()</code>, <code>File::readAsync()</code>, <code>DbConnection::queryAsync()</code>, <code>Parallel::runAsync()</code>. If the name ends in <code>Async</code>, <code>await</code> the result. Methods that implement an interface keep the interface's name, for example <code>OffloadJob::run()</code> and <code>ParallelTask::run()</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Io\File\File;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+
+async function backup(string $url, string $path): void {
+    HttpResponse $response = await HttpClient::shared()-&gt;getAsync($url);
+    await File::writeAsync($path, $response-&gt;ensureSuccess()-&gt;body);
+}
+</code></pre></div>
+<h2 id="choosing-between-async-io-and-parallel">Choosing between async, io, and parallel</h2>
+<ul>
+<li><strong>Waiting on I/O</strong> (HTTP calls, database queries, sockets, child processes): use <a href="package_io.html"><code>tyhp/io</code></a>. It runs many operations at once in one process, using <code>async</code>/<code>await</code> from <a href="package_async.html"><code>tyhp/async</code></a>.</li>
+<li><strong>CPU-heavy work, or a blocking library with no async API</strong>: use <a href="package_parallel.html"><code>tyhp/parallel</code></a>. Each task runs in its own worker process, so it doesn't stall the event loop or the request.</li>
+<li><strong>Your own async building blocks</strong> (timers, combinators, cancellation, custom stream watchers): use <a href="package_async.html"><code>tyhp/async</code></a> directly.</li>
+</ul>
+<h2 id="related-pages">Related pages</h2>
+<ul>
+<li><a href="tyhp_2600_asyncAndAwait.html">Async and Await</a> — the language feature that <code>tyhp/async</code> implements.</li>
+<li><a href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a> — the method syntax on scalars and arrays that <code>tyhp/core</code> provides.</li>
+<li><a href="tyhp_3000_parsableLambdas.html">Parsable Lambdas</a> — the language feature that <code>tyhp/lambda</code> implements.</li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> — versioning, ambient tyhpdefs, and the <code>tyhp/core</code> Composer plugin.</li>
+<li><a href="cli_composer.html">CLI: Composer</a> — <code>tyhp composer</code> and <code>tyhp composer sync</code>.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="project_optionsList.html">&larr; Project Options List</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_core.html">The tyhp/core Package &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -282,7 +301,7 @@
     <p>Composer libraries often type-hint classes they do not <code>require</code>. Monolog is the usual example: <code>ElasticaHandler</code> lives in <code>monolog/monolog</code>, but <code>\Elastica\Client</code> lives in <code>ruflin/elastica</code>, which is only <code>suggest</code> / <code>require-dev</code>. The PHP package is right to keep those peers out of <code>require</code>. The tyhpdef wrapper must not pull Elastica (or AWS, Gelf, Predis, optional extensions, and similar) into every consumer's <code>vendor/</code>.</p>
 <p>Without a placeholder, those names are unresolved (<code>TYHP3019</code> / <code>TYHP3020</code>) and the <strong>wrapper tyhpdef cannot load</strong>, even when the consuming project never touches those handlers.</p>
 <p><code>extern</code> is a tyhpdef-only, name-only declaration for a type, function, or const this package mentions but does not own. The name is legal in <strong>tyhpdef signatures</strong>. It is <strong>not</strong> usable in <code>.tyhp</code>. A later real declaration of the same Tyhp name and kind silently replaces a compatible placeholder.</p>
-<h2>Syntax</h2>
+<h2 id="syntax">Syntax</h2>
 <p><code>extern</code> is a contextual keyword in <code>.tyhpdef</code>. It may stand immediately before <code>class</code>, <code>interface</code>, <code>enum</code>, <code>function</code>, or <code>const</code>, or immediately before a type name with no kind word. The form is name-only: a semicolon, no body, no members, no signature, no value, no generics, no <code>extends</code> / <code>implements</code>, no <code>abstract</code> / <code>final</code> / <code>readonly</code>, no <code>as</code> alias, and no backing type on <code>enum</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -301,7 +320,7 @@ extern function \bcadd;
 extern const \GMP_ROUND_PLUSINF;
 </code></pre></div>
 <p>The bare form (<code>extern \Name;</code>) is a kind-unspecified placeholder: it may be replaced by a later real <code>class</code>, <code>interface</code>, or <code>enum</code> of the same fully-qualified name. Use <code>extern class</code> / <code>interface</code> / <code>enum</code> when you know the kind — and that kind must match the originating declaration. Use <code>extern function</code> / <code>extern const</code> for those PHP name spaces (they coexist with a type of the same name). Combining <code>extern</code> with <code>partial</code>, <code>omit</code>, <code>deprecated</code>, or <code>obsolete</code> on the <strong>same</strong> declaration is <code>TYHP8018</code>. An illegal body, parameter list, return type, or other extra syntax is <code>TYHP8028</code>.</p>
-<h2>Matching kind</h2>
+<h2 id="matching-kind">Matching kind</h2>
 <p>When a tyhpdef package names a type owned by another package, a specified-kind <code>extern</code> must use the <strong>same kind</strong> as that originating declaration:</p>
 <ul>
 <li>originating <code>interface</code> → <code>extern interface</code></li>
@@ -310,14 +329,14 @@ extern const \GMP_ROUND_PLUSINF;
 </ul>
 <p>A mismatch — for example <code>extern class</code> for a name declared as <code>interface</code> — is <code>TYHP8029</code>. Change the placeholder kind to match; do not invent a different PHP type.</p>
 <p>The generator copies the catalog kind onto proven optional peers. Hand-written specified kinds follow the same rule. Use the bare form (<code>extern \Name;</code>) when you have not looked up the kind.</p>
-<h2><code>@provided-by</code></h2>
+<h2 id="provided-by"><code>@provided-by</code></h2>
 <p><code>// @provided-by:</code> names the <strong>Tyhp wrapper</strong> that really declares the type — <code>tyhpdef/ruflin-elastica</code>, <code>tyhpdef/php-ext-curl</code> — not the PHP package (<code>ruflin/elastica</code>) and not <code>ext-curl</code>.</p>
 <p>Generator-owned <code>extern</code> always has this comment (the catalog knows the wrapper). Hand-written <code>extern</code> may omit it. Diagnostics cite the name as-is: include that <code>tyhpdef/*</code> package so a real declaration replaces the placeholder.</p>
-<h2>Real wins</h2>
+<h2 id="real-wins">Real wins</h2>
 <p>When the providing wrapper is included, a real <code>class</code> / <code>interface</code> / <code>enum</code> / function / const of the <strong>same fully-qualified name</strong> silently replaces the placeholder when the kinds are compatible. <code>TYHP8002</code> and <code>TYHP8025</code> do not fire. Order does not matter: loading the real tyhpdef before or after the <code>extern</code> yields the real declaration.</p>
 <p>A kind-unspecified <code>extern \Name;</code> is compatible with a later real class, interface, or enum. An <code>extern class</code> (or <code>interface</code> / <code>enum</code>) that arrives after a real type of the same name and kind is a no-op (the real type stays). Two <code>extern</code> declarations of the same kind merge; a specific kind claim wins over a later unspecified one. A specified kind that does not match the originating declaration (<code>extern class</code> vs real <code>interface</code>, or two externs of different specified kinds) is <code>TYHP8029</code> — see <a href="#matching-kind">Matching kind</a>. Functions, constants, and types occupy separate PHP name spaces, so <code>extern function Foo</code> may coexist with <code>class Foo</code>.</p>
-<p>Overlay last-wins of a full real type onto <code>extern</code> is the same upgrade. Overlay <code>extern</code> onto a real type is a no-op. See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
-<h2>Using an <code>extern</code> name from <code>.tyhp</code></h2>
+<p>Overlay last-wins of a full real type onto <code>extern</code> is the same upgrade. Overlay <code>extern</code> onto a real type is a no-op. See <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a>.</p>
+<h2 id="using-an-extern-name-from-tyhp">Using an <code>extern</code> name from <code>.tyhp</code></h2>
 <p>Using an <code>extern</code> type, function, or const in a <code>.tyhp</code> file is <strong>TYHP4307</strong>. The primary span is the use; a secondary span labeled &quot;declared here&quot; points at the <code>extern</code> declaration. When <code>@provided-by</code> is present, help cites that wrapper name.</p>
 <p><strong>A use (TYHP4307):</strong></p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
@@ -378,10 +397,10 @@ extern const \GMP_ROUND_PLUSINF;
 <li>Tyhpdef signatures and mapping bodies that name an extern function or const.</li>
 <li><code>extends</code> / <code>implements</code> of an extern type. That is bind <strong>TYHP3026</strong> / <strong>TYHP3027</strong>, not 4307. A real tyhpdef type must not extend or implement an extern type.</li>
 </ul>
-<h2>Do not overlay a hollow class</h2>
+<h2 id="do-not-overlay-a-hollow-class">Do not overlay a hollow class</h2>
 <p>A hollow <code>class \Foreign\Type {}</code> overlay is a complete empty type, not a placeholder. User code would type-check without the real package, emit could mention a class that autoload-fails, and a later real wrapper would hit <code>TYHP8002</code> / <code>TYHP8025</code> instead of upgrading.</p>
 <p>Use <code>extern</code> for optional peers. Extra names the generator could not prove belong in a hand include file regen does not overwrite, not in a fake empty class.</p>
-<h2>Generator: <code>_tyhpdef/externs.tyhpdef</code></h2>
+<h2 id="generator-tyhpdefexternstyhpdef">Generator: <code>_tyhpdef/externs.tyhpdef</code></h2>
 <p><code>tyhp generate_tyhpdef --package-path</code> (and package-shaped <code>--source</code>) classifies foreign signature types against a catalog of existing <code>tyhpdef/*</code> packages:</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
@@ -413,16 +432,16 @@ extern const \GMP_ROUND_PLUSINF;
 </tr>
 </tbody>
 </table></div>
-<p>PHP-source harvest also omits <code>@internal</code> types when <code>--include-internal</code> is off. After either seed, omit cascades through <code>extends</code> / <code>implements</code>, then strips members that actually name an omitted FQCN (<code>use</code> imports and already-qualified names). A bare PHPDoc name with no import, left as written, is not treated as a type in another namespace just because the last segment matches; unqualified omit matching is the current namespace only. Intra-package unique-short qualification runs after omit. <code>--include-internal</code> keeps <code>@internal</code> types and their references. Details: <a href="cli_tyhpdefGeneration.md#omitted-types">CLI: Tyhpdef Generation</a>.</p>
+<p>PHP-source harvest also omits <code>@internal</code> types when <code>--include-internal</code> is off. After either seed, omit cascades through <code>extends</code> / <code>implements</code>, then strips members that actually name an omitted FQCN (<code>use</code> imports and already-qualified names). A bare PHPDoc name with no import, left as written, is not treated as a type in another namespace just because the last segment matches; unqualified omit matching is the current namespace only. Intra-package unique-short qualification runs after omit. <code>--include-internal</code> keeps <code>@internal</code> types and their references. Details: <a href="cli_tyhpdefGeneration.html#omitted-types">CLI: Tyhpdef Generation</a>.</p>
 <p>The catalog indexes <strong>real</strong> <code>class</code> / <code>interface</code> / <code>enum</code> declarations only. Another package's <code>extern</code> does not count as providing the type. Catalog hits emit <code>extern</code> with that catalog kind so the placeholder matches the originating declaration. When indexing those files, <code>{</code> and <code>}</code> inside <code>/** */</code>, <code>/* */</code>, <code>//</code>, and quoted strings are not namespace delimiters. Unique harvest shorts for unqualified PHPDoc / hint names come from <code>php</code> / <code>ext-*</code> wrappers plus unique <code>\Psr\*</code> types, not from Composer-library class names. Native <code>extends</code> / <code>implements</code> / trait <code>use</code> still qualify an unqualified or single-segment <code>\Short</code> name to a same-package declared FQCN when that type exists in the harvest, even if the short is a unique PHP / <code>\Psr\*</code> global; a true global the package does not declare stays global. That rewrite also walks names inside <code>@template</code> bounds and other generic, union, and intersection PHPDoc strings (same-package declared types qualify too); remaining unqualified names are still never auto-<code>extern</code>. <code>@provided-by</code> is always a catalog <code>tyhpdef/*</code> name.</p>
-<p>A harvested <code>extern function</code> whose short name is a PHP or tyhpdef reserved word is written with the enclosing-namespace prefix (<code>namespace Some\Ns { extern function \Some\Ns\isset; }</code>). Hand <code>extern function</code> uses the same fully-qualified form. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
+<p>A harvested <code>extern function</code> whose short name is a PHP or tyhpdef reserved word is written with the enclosing-namespace prefix (<code>namespace Some\Ns { extern function \Some\Ns\isset; }</code>). Hand <code>extern function</code> uses the same fully-qualified form. See <a href="tyhpdef_classes.html#reserved-word-type-names">Reserved-word type names</a>.</p>
 <p>Proven optional-peer <code>extern</code> declarations are written to <strong><code>_tyhpdef/externs.tyhpdef</code></strong> (<code>AUTO-GENERATED</code>). Regen <strong>overwrites this file only</strong> (or deletes it when the run classified and produced none). <code>extra.tyhp.package</code> <code>&quot;include&quot;</code> glob <code>./_tyhpdef/*.tyhpdef</code> already loads it.</p>
 <p>Hand <code>extern</code> for unknown-origin types lives in a <strong>different</strong> include file (for example <code>_tyhpdef/backers.extern.tyhpdef</code>) or in overlay. Regen must not touch those. Prefer the bare form (<code>extern \Name;</code>) when you have not looked up the kind. When you do specify a kind, it must match the originating declaration. Two <code>extern</code> of the same kind merge; a specific kind wins over unspecified.</p>
-<p><code>tyhp build</code> writes name-only <code>extern</code> (including <code>extern function</code> / <code>extern const</code>) into this package's <code>package.tyhpdef</code> when a public API name is owned by a package listed in this library's <code>require-dev</code> but not in <code>require</code> and not in <code>extra.tyhp.require</code>. Those placeholders include <code>// @provided-by: &lt;owning package&gt;</code>. Names owned by a runtime <code>require</code> (for example <code>tyhp/core</code>) or by an <code>extra.tyhp.require</code> entry stay real FQNs — they are not copied and not externed. Unknown origin is left as written. Regen overwrites <code>package.tyhpdef</code>. <code>--package-path</code> / <code>--source</code> still use <code>_tyhpdef/externs.tyhpdef</code> as above. Library authors fill <code>extra.tyhp.require</code> with what consumers must install; see <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a> and <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a>.</p>
+<p><code>tyhp build</code> writes name-only <code>extern</code> (including <code>extern function</code> / <code>extern const</code>) into this package's <code>package.tyhpdef</code> when a public API name is owned by a package listed in this library's <code>require-dev</code> but not in <code>require</code> and not in <code>extra.tyhp.require</code>. Those placeholders include <code>// @provided-by: &lt;owning package&gt;</code>. Names owned by a runtime <code>require</code> (for example <code>tyhp/core</code>) or by an <code>extra.tyhp.require</code> entry stay real FQNs — they are not copied and not externed. Unknown origin is left as written. Regen overwrites <code>package.tyhpdef</code>. <code>--package-path</code> / <code>--source</code> still use <code>_tyhpdef/externs.tyhpdef</code> as above. Library authors fill <code>extra.tyhp.require</code> with what consumers must install; see <a href="project_composerPackages.html#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a> and <a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a>.</p>
 <p>Not every optional peer has a <code>tyhpdef/*</code> wrapper yet. Catalog-miss names stay unresolved until that wrapper exists (then regen) or until you add a hand <code>extern</code>.</p>
-<h2>Overlay and <code>overlay create</code></h2>
-<p>Overlay merge of <code>extern</code> — last-wins full replace, <code>partial</code> cannot target (<code>TYHP8030</code>), <code>omit</code> may, stamp is a no-op — is documented in <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>. <code>tyhp overlay create</code> refuses an <code>extern</code> type (<code>TYHP7904</code>); <code>tyhp overlay stamp</code> on <code>extern</code> is a no-op. See <a href="cli_overlay.md">CLI: Overlay</a>.</p>
-<h2>Best Practices</h2>
+<h2 id="overlay-and-overlay-create">Overlay and <code>overlay create</code></h2>
+<p>Overlay merge of <code>extern</code> — last-wins full replace, <code>partial</code> cannot target (<code>TYHP8030</code>), <code>omit</code> may, stamp is a no-op — is documented in <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a>. <code>tyhp overlay create</code> refuses an <code>extern</code> type (<code>TYHP7904</code>); <code>tyhp overlay stamp</code> on <code>extern</code> is a no-op. See <a href="cli_overlay.html">CLI: Overlay</a>.</p>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -431,7 +450,7 @@ extern const \GMP_ROUND_PLUSINF;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>DO list consumer-needed tyhpdefs in <code>extra.tyhp.require</code> (and duplicate them in <code>require-dev</code>). Leave author-only wrappers in <code>require-dev</code> only. See <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+        <div class="callout-content"><p>DO list consumer-needed tyhpdefs in <code>extra.tyhp.require</code> (and duplicate them in <code>require-dev</code>). Leave author-only wrappers in <code>require-dev</code> only. See <a href="project_composerPackages.html#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
 </div>
     </div>
 </div>
@@ -483,13 +502,13 @@ extern const \GMP_ROUND_PLUSINF;
 </div>
     </div>
 </div>
-<h2>Related</h2>
+<h2 id="related">Related</h2>
 <ul>
-<li><a href="tyhpdef_overlays.md">Tyhpdef Overlays</a> — last-wins, <code>partial</code> / <code>omit</code> targeting <code>extern</code>, stamps</li>
-<li><a href="cli_overlay.md">CLI: Overlay</a> — <code>overlay create</code> refuses <code>extern</code> (<code>TYHP7904</code>); stamp is a no-op</li>
-<li><a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a> — <code>--package-path</code> / <code>--source</code> catalog and <code>externs.tyhpdef</code>; omitted types; <code>tyhp build</code> <code>package.tyhpdef</code></li>
-<li><a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a> — <code>extra.tyhp.require</code> vs author-only <code>require-dev</code></li>
-<li><a href="diagnostics_reference.md">Diagnostic Code Reference</a> — <code>TYHP4307</code>, <code>TYHP3026</code>, <code>TYHP3027</code>, <code>TYHP7904</code>, <code>TYHP8028</code>–<code>TYHP8030</code></li>
+<li><a href="tyhpdef_overlays.html">Tyhpdef Overlays</a> — last-wins, <code>partial</code> / <code>omit</code> targeting <code>extern</code>, stamps</li>
+<li><a href="cli_overlay.html">CLI: Overlay</a> — <code>overlay create</code> refuses <code>extern</code> (<code>TYHP7904</code>); stamp is a no-op</li>
+<li><a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a> — <code>--package-path</code> / <code>--source</code> catalog and <code>externs.tyhpdef</code>; omitted types; <code>tyhp build</code> <code>package.tyhpdef</code></li>
+<li><a href="project_composerPackages.html#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a> — <code>extra.tyhp.require</code> vs author-only <code>require-dev</code></li>
+<li><a href="diagnostics_reference.html">Diagnostic Code Reference</a> — <code>TYHP4307</code>, <code>TYHP3026</code>, <code>TYHP3027</code>, <code>TYHP7904</code>, <code>TYHP8028</code>–<code>TYHP8030</code></li>
 </ul>
 
 </section>

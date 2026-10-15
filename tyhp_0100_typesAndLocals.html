@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp requires types throughout <code>&lt;?tyhp</code> source. PHP’s type declarations are optional; in Tyhp they are required or inferred. Locals use <code>$var = …</code> as the primary form — the type is inferred from the first assignment. Write <code>int $x = …</code> when inference is not enough. Parameters, properties, and return types still need a type. These are not optional “type hints” — they are enforced. Types are also non-nullable by default: <code>string $x</code> means <code>$x</code> can only hold a <code>string</code>, never <code>null</code>. To allow null, declare the type as nullable: <code>?string $x</code> or <code>string|null $x</code>.</p>
-<h2>Where Types Are Required</h2>
+<h2 id="where-types-are-required">Where Types Are Required</h2>
 <p>The places in PHP that already support optional type hints are required to be typed in Tyhp:</p>
 <ul>
 <li>Class, interface, and trait properties</li>
@@ -294,11 +313,11 @@
 <li>Closure / arrow function parameters and return types — required unless the type is inferable from an expected callable type</li>
 <li>Catch block exception types</li>
 </ul>
-<p>File-level <code>const NAME = value;</code> is untyped (PHP has no typed file-level constants). Write the type on a class constant, or describe an existing PHP constant in <code>.tyhpdef</code> as <code>const int NAME;</code>.</p>
+<p>File-level <code>const NAME = value;</code> is untyped (PHP has no typed file-level constants); a type annotation on it is an error. Reads of the constant take the widened type of its literal initializer: <code>const LIMIT = 5;</code> is <code>int</code>, <code>const NAME = 'tyhp';</code> is <code>string</code>, and <code>const A = 1, B = 'two';</code> gives each constant its own type. Write the type on a class constant, or describe an existing PHP constant in <code>.tyhpdef</code> as <code>const int NAME;</code>.</p>
 <p><code>foreach</code> bindings may be typed (<code>foreach ($xs as int $k =&gt; string $v)</code> or value-only <code>foreach ($xs as string $v)</code>). The iterable’s key and value types must be assignable to those annotations; the loop variables then have the <strong>declared</strong> types and are not narrowed further. Omitting the types infers key and value from the iterable.</p>
-<h2>Variable Type Declarations</h2>
+<h2 id="variable-type-declarations">Variable Type Declarations</h2>
 <p>The primary form for locals is inference from the first assignment. An explicit <code>Type $var</code> declaration is legal when inference is not enough.</p>
-<h2>1. Type Inference from First Assignment</h2>
+<h2 id="1-type-inference-from-first-assignment">1. Type Inference from First Assignment</h2>
 <p>When you assign a value to a variable without an explicit type declaration, Tyhp infers the type from the right-hand side. The inferred type is locked in at the first assignment and cannot change. The inference uses the narrowest possible type based on the expression. No <code>var</code> or <code>auto</code> keyword is needed — the absence of a type annotation combined with an assignment is sufficient.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -321,7 +340,7 @@ $items = [1, 2, 3];       // Inferred as `array&lt;int&gt;` (list shorthand for 
 </div>
     </div>
 </div>
-<h2>2. Explicit Type Declaration</h2>
+<h2 id="2-explicit-type-declaration">2. Explicit Type Declaration</h2>
 <p>Write a type before the variable name when there is no initializer, or when you need a wider type than inference would give. This is similar to typed properties in PHP classes, but extended to all variables in any scope.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -346,7 +365,7 @@ $myKey = 35;
 ?string $maybeName = null;
 string|null $alsoMaybeName = null;
 </code></pre></div>
-<h2>Parenthesized Type Declarations</h2>
+<h2 id="parenthesized-type-declarations">Parenthesized Type Declarations</h2>
 <p>Tyhp also supports parenthesized type declarations, where the type is wrapped in parentheses before the variable name. This is equivalent to the standard form and is purely a stylistic choice. It can help visually distinguish complex union or intersection types from the variable name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -360,7 +379,7 @@ string $myStr2 = &quot;hello&quot;;
 int|float $number2 = 3.14;
 decimal $price2 = \Tyhp\decimal(&#039;19.99&#039;);
 </code></pre></div>
-<h2>Non-Nullable by Default</h2>
+<h2 id="non-nullable-by-default">Non-Nullable by Default</h2>
 <p>All types in Tyhp are non-nullable by default. A variable declared as <code>string $x</code> cannot hold <code>null</code> -- it must be explicitly declared as <code>?string $x</code> (or <code>string|null $x</code>) to allow null. This is a fundamental difference from PHP, where any typed variable can silently receive <code>null</code> at runtime.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -371,7 +390,7 @@ string $name = &quot;Alice&quot;;
 ?string $maybeName = null;  // OK
 string|null $alsoNullable = null;  // Also OK
 </code></pre></div>
-<h2>Closure and Arrow Parameter Inference</h2>
+<h2 id="closure-and-arrow-parameter-inference">Closure and Arrow Parameter Inference</h2>
 <p>Named function and method parameters always need an explicit type. Closure and arrow-function parameters also need a type, unless the expected callable type supplies it. If there is no expected callable type (or the parameter cannot be inferred), the compiler requires an annotation.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -384,7 +403,7 @@ callable(User): bool $isAdult = fn ($u) =&gt; $u-&gt;age &gt; 18;
 // No expected type — annotate the parameter
 $double = fn (int $n): int =&gt; $n * 2;
 </code></pre></div>
-<h2>Type Immutability</h2>
+<h2 id="type-immutability">Type Immutability</h2>
 <p>Once a variable is typed -- whether explicitly declared or inferred -- its type is immutable. You cannot assign a value of an incompatible type, and you cannot re-declare a variable with a different type in the same scope. <code>unset($x)</code> does not let you redeclare <code>$x</code> with a new type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -396,7 +415,7 @@ string $myStr = &quot;hello&quot;;
 // ERROR: Cannot re-declare type for an already typed variable
 // int $myStr = 42;
 </code></pre></div>
-<h2>Array and Generic Types</h2>
+<h2 id="array-and-generic-types">Array and Generic Types</h2>
 <p>Tyhp extends PHP's <code>array</code> type with generic parameters for type-safe collections. See the New Types page for the full list of generic types.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -408,7 +427,7 @@ array&lt;string, int&gt; $ages = [&quot;Alice&quot; =&gt; 30, &quot;Bob&quot; =&
 $names[] = &quot;Charlie&quot;;  // OK: string
 // $names[] = 42;      // ERROR: int is not assignable to array&lt;string&gt;
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Tyhp's variable type declarations are a compile-time concept. In the compiled PHP output, variable type annotations are stripped because PHP does not support typed local variables. However, function/method parameter types, return types, and property types are preserved in the PHP output since PHP supports those natively. Generic type parameters are also erased.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -435,7 +454,7 @@ function greet(string $name): string {
 }
 </code></pre></div>
 <p>Note how <code>string $name</code> and <code>int $age</code> at the local variable level are stripped to just <code>$name</code> and <code>$age</code>, while the function parameter <code>string $name</code> and return type <code>: string</code> are preserved because PHP supports those natively. The generic <code>array&lt;string&gt;</code> becomes just <code>array</code> in the output.</p>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -496,7 +515,7 @@ function greet(string $name): string {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -557,7 +576,7 @@ function greet(string $name): string {
 </div>
     </div>
 </div>
-<h2>Compiler Error Examples</h2>
+<h2 id="compiler-error-examples">Compiler Error Examples</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR: CheckerTypeMismatch -- Cannot assign int to string

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhpdef provides two keywords for marking imported declarations as outdated: deprecated and obsolete. These keywords control how the Tyhp compiler responds when code references marked items. The deprecated keyword generates compiler warnings, encouraging migration away from the item while still allowing its use. The obsolete keyword generates compiler errors, hard-blocking usage entirely. Both keywords can be applied to nearly any <strong>top-level</strong> declaration — functions, classes, interfaces, traits, enums, constants, and variables. Member-level <code>deprecated</code> / <code>obsolete</code> (methods, properties, enum cases) parse in this alpha but are <strong>not</strong> copied onto symbols, so they do not warn or error.</p>
-<h2>The deprecated Keyword</h2>
+<h2 id="the-deprecated-keyword">The deprecated Keyword</h2>
 <p>When an item is marked as deprecated, any reference to it in Tyhp code produces a compiler warning. The code still compiles and runs, but the warning signals that the item should be replaced with a newer alternative.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -301,9 +320,9 @@ deprecated class LegacyLogger {
     public function log(string $message): void;
 }
 </code></pre></div>
-<h2><code>#[\Deprecated]</code></h2>
+<h2 id="deprecated"><code>#[\Deprecated]</code></h2>
 <p><code>#[\Deprecated]</code> on a <code>.tyhp</code> or <code>.tyhpdef</code> declaration is the PHP attribute form of the same warning. The binder sets deprecation on the symbol; use sites warn <strong>TYHP4500</strong>. A string-literal <code>$message</code> is appended after a colon. <code>$since</code> is not part of the short message. Marking both the keyword and the attribute on one symbol still produces one warning.</p>
-<p>Tyhp warns even when <code>output.phpVersion</code> is below 8.4. See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<p>Tyhp warns even when <code>output.phpVersion</code> is below 8.4. See <a href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 #[\Deprecated(&#039;use findById()&#039;)]
@@ -311,7 +330,7 @@ function getUser(int $id): ?User {
     return null;
 }
 </code></pre></div>
-<h2>The obsolete Keyword</h2>
+<h2 id="the-obsolete-keyword">The obsolete Keyword</h2>
 <p>When an item is marked as obsolete, any reference to it in Tyhp code produces a compiler error. The code will not compile. Use obsolete for items that must never be used — such as functions with known security vulnerabilities or interfaces that have been completely replaced.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -327,8 +346,8 @@ obsolete class UnsafeSerializer {
     public function unserialize(string $data): mixed;
 }
 </code></pre></div>
-<h2>Keyword Placement</h2>
-<p>Both keywords must appear before all other modifiers on a declaration. For class members, the grammar allows it before visibility, but this alpha only <strong>enforces</strong> the keywords on top-level symbols. <code>partial</code>, <code>omit</code>, <code>deprecated</code>, <code>obsolete</code>, and <code>extern</code> cannot be combined on the <strong>same</strong> declaration (<code>TYHP8018</code>). Overlay <code>omit</code> is a hide, not a deprecation — see <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
+<h2 id="keyword-placement">Keyword Placement</h2>
+<p>Both keywords must appear before all other modifiers on a declaration. For class members, the grammar allows it before visibility, but this alpha only <strong>enforces</strong> the keywords on top-level symbols. <code>partial</code>, <code>omit</code>, <code>deprecated</code>, <code>obsolete</code>, and <code>extern</code> cannot be combined on the <strong>same</strong> declaration (<code>TYHP8018</code>). Overlay <code>omit</code> is a hide, not a deprecation — see <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated class LegacyLogger {
@@ -341,7 +360,7 @@ class UserService {
     public function findById(int $id): ?User;
 }
 </code></pre></div>
-<h2>Applying to Different Declaration Types</h2>
+<h2 id="applying-to-different-declaration-types">Applying to Different Declaration Types</h2>
 <p>Both keywords can be applied to any of the following declaration types:</p>
 <ul>
 <li>Functions (global and namespaced)</li>
@@ -370,7 +389,7 @@ deprecated interface Cacheable {
     public function getCacheTtl(): int;
 }
 </code></pre></div>
-<h2>Deprecating Specific Overloads</h2>
+<h2 id="deprecating-specific-overloads">Deprecating Specific Overloads</h2>
 <p>When a function has multiple <strong>top-level</strong> overloads, you can deprecate individual overloads without affecting the others. Member-level overload markers are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -378,7 +397,7 @@ deprecated interface Cacheable {
 deprecated function \connectDb(string $connectionString): DbConnection;
 function \connectDb(DbConfig $config): DbConnection;
 </code></pre></div>
-<h2>Class-Level vs. Member-Level Deprecation</h2>
+<h2 id="class-level-vs-member-level-deprecation">Class-Level vs. Member-Level Deprecation</h2>
 <p>When a class itself is marked as deprecated, using the class in any way (instantiation, type hints, extends, implements) triggers a warning. Member-level <code>deprecated</code> on methods inside the class is parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -387,7 +406,7 @@ deprecated class LegacyCache {
     public function getMultiple(array&lt;string&gt; $keys): array&lt;mixed&gt;;
 }
 </code></pre></div>
-<h2>Effect in Tyhp Code</h2>
+<h2 id="effect-in-tyhp-code">Effect in Tyhp Code</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Warning: LegacyLogger is deprecated
@@ -448,7 +467,7 @@ UserService $svc = new UserService();
 </div>
     </div>
 </div>
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <ul>
 <li><code>deprecated</code> generates a compiler warning each time the item is referenced (<strong>TYHP4500</strong>, the same code as <code>#[\Deprecated]</code>)</li>
 <li><code>obsolete</code> generates a compiler error, preventing compilation entirely</li>

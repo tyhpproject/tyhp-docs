@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,11 +299,11 @@
     <span class="badge bg-primary me-1">Tier 1 · Story 12</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The lint action checks your Tyhp project for errors and warnings without generating any output files. It runs the compilation pipeline through parse, bind, and check — but skips the emitter and file writing. This makes it faster than a full build and ideal for development feedback and CI/CD integration.</p>
-<p>Before parse, lint applies the same local <code>extra.tyhp.require</code> check as <code>tyhp build</code> (explain missing extras; do <strong>not</strong> write <code>composer.json</code>). Use <code>tyhp composer sync</code> or <code>tyhp build --fix</code> to recover. <code>tyhp lint --fix</code> is the experimental source auto-fixer, not extras sync. See <a href="cli_composer.md">CLI: Composer</a>.</p>
-<h2>Usage</h2>
+<p>Before parse, lint applies the same local <code>extra.tyhp.require</code> check as <code>tyhp build</code> (explain missing extras; do <strong>not</strong> write <code>composer.json</code>). Use <code>tyhp composer sync</code> or <code>tyhp build --fix</code> to recover. <code>tyhp lint --fix</code> is the experimental source auto-fixer, not extras sync. See <a href="cli_composer.html">CLI: Composer</a>.</p>
+<h2 id="usage">Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp lint [options] [files...]
 </code></pre></div>
-<h2>Options</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li>--tyhp-project=<path> — Path to the tyhp.json project file.</li>
 <li>--format=<format> — Output format: text (default), json, or sarif.</li>
@@ -299,16 +318,16 @@
 <li>--include=<glob> — Include additional source paths.</li>
 <li>--exclude=<glob> — Exclude source paths.</li>
 </ul>
-<h2>Output Formats</h2>
+<h2 id="output-formats">Output Formats</h2>
 <p>The --format flag controls how diagnostics are presented. Three formats are supported:</p>
-<h2>Text Format (Default)</h2>
+<h2 id="text-format-default">Text Format (Default)</h2>
 <p>Human-readable output to the console, showing each diagnostic with file path, line, column, severity, code, and message:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">src/Models/User.tyhp(42,8): error TYHP4002: Multiple visibility modifiers specified
 src/Services/Auth.tyhp(15,10): warning TYHP3003: Symbol &#039;LegacyUser&#039; is deprecated
 
 Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, check: 0.2s)
 </code></pre></div>
-<h2>JSON Format</h2>
+<h2 id="json-format">JSON Format</h2>
 <p>Machine-readable JSON output to stdout, suitable for IDE and CI/CD tool consumption. When using --format=json, only the JSON document is written to stdout — all progress and informational messages are suppressed or sent to stderr. Range coordinates are 0-based for both line and column (internal 1-based lines are converted by subtracting 1).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;version&quot;: &quot;1.0&quot;,
@@ -339,7 +358,7 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
     }
 }
 </code></pre></div>
-<h2>SARIF Format</h2>
+<h2 id="sarif-format">SARIF Format</h2>
 <p>SARIF (Static Analysis Results Interchange Format) v2.1.0 output for integration with GitHub Code Scanning, Azure DevOps, and other CI platforms that consume SARIF. When using --format=sarif, only the SARIF document is written to stdout — all progress and informational messages are suppressed. Region coordinates are 1-based for both line and column (internal 0-based columns are converted by adding 1). File URIs are relative to the project root.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;$schema&quot;: &quot;https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json&quot;,
@@ -386,7 +405,7 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp lint --format=sarif &gt; results.sarif
 </code></pre></div>
-<h2>Single-File Mode</h2>
+<h2 id="single-file-mode">Single-File Mode</h2>
 <p>Use the --file flag to lint a single file instead of the entire project. This provides faster feedback during development. The compiler still loads tyhpdef files and built-in types so that cross-file type references can be resolved. The text summary and JSON summary.file field include the target path.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp lint --file=src/Models/User.tyhp
 </code></pre></div>
@@ -402,7 +421,7 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
 </div>
     </div>
 </div>
-<h2>Auto-Fix (Experimental)</h2>
+<h2 id="auto-fix-experimental">Auto-Fix (Experimental)</h2>
 <p>The --fix flag enables auto-fixable issue resolution. When specified, the lint action attempts to automatically fix common issues such as:</p>
 <ul>
 <li>Adding missing type annotations (when types can be inferred)</li>
@@ -423,14 +442,14 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
 </div>
     </div>
 </div>
-<h2>Exit Codes</h2>
+<h2 id="exit-codes">Exit Codes</h2>
 <ul>
 <li>0 (Success) — No errors or warnings found.</li>
 <li>1 (GenericError) — Lint was cancelled (e.g., Ctrl+C).</li>
 <li>4 (CompileError) — One or more errors found.</li>
 <li>5 (CompileWarning) — Warnings found but no errors.</li>
 </ul>
-<h2>PHP version matrix (8.2–8.5)</h2>
+<h2 id="php-version-matrix-8285">PHP version matrix (8.2–8.5)</h2>
 <p><code>output.phpVersion</code> selects which version-gated declarations from <code>tyhpdef/php</code> and <code>tyhpdef/php-ext-*</code> are visible. Lint or build the same project four times (or change the key between runs) to confirm a gated API:</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
@@ -458,9 +477,9 @@ Lint complete: 42 files checked, 1 error, 1 warning (parse: 0.4s, bind: 0.3s, ch
 </tr>
 </tbody>
 </table></div>
-<p>You do not install four PHP runtimes for this check. Gates are compile-time against the configured target. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>. Engine attribute <strong>classes</strong> follow that matrix; some <strong>checks</strong> (<code>#[\Deprecated]</code>, <code>#[\NoDiscard]</code>) still run on lower targets — see <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<p>You do not install four PHP runtimes for this check. Gates are compile-time against the configured target. See <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>. Engine attribute <strong>classes</strong> follow that matrix; some <strong>checks</strong> (<code>#[\Deprecated]</code>, <code>#[\NoDiscard]</code>) still run on lower targets — see <a href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a>.</p>
 <p><code>--strict</code> treats overlay stamp-mismatch warnings (<code>TYHP8021</code>) as errors.</p>
-<h2>CI/CD Integration</h2>
+<h2 id="cicd-integration">CI/CD Integration</h2>
 <p>The lint command is designed for CI/CD pipeline integration. Use the JSON or SARIF output formats for machine-readable results, and check the exit code to determine pass/fail status:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs"># GitHub Actions example
 - name: Lint Tyhp

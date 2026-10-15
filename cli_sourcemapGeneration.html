@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 2 · Story 17</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Source maps provide a bidirectional mapping between positions in the compiled PHP output and their originating positions in the original Tyhp source files. They let <code>tyhp xdebug_proxy</code> translate breakpoints and stack frames so you can debug <code>.tyhp</code> files while PHP executes the compiled output.</p>
-<h2>Source Map Format</h2>
+<h2 id="source-map-format">Source Map Format</h2>
 <p>When <code>build.generateSourcemap</code> is true, each <code>.php</code> output file gets a sibling <code>.php.map</code> file (Source Map v3 JSON):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;version&quot;: 3,
@@ -292,7 +311,7 @@
 }
 </code></pre></div>
 <p><code>sourceRoot</code> is the directory prefix of the registered Tyhp path (for example <code>src/Models/</code> for <code>src/Models/User.tyhp</code>), not a <code>../</code> path from the output directory. <code>sourcesContent</code> is omitted unless <code>build.sourcemapIncludeContent</code> is true. The <code>mappings</code> field is VLQ Base64-encoded position data.</p>
-<h2>Enabling Source Map Generation</h2>
+<h2 id="enabling-source-map-generation">Enabling Source Map Generation</h2>
 <p>Enable source maps in <code>tyhp.json</code> and run <code>tyhp build</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;build&quot;: {
@@ -311,12 +330,12 @@
       Auth.php.map
 </code></pre></div>
 <p><code>--clean</code> deletes <code>.php</code> and <code>.php.map</code> files from the output directory before building. <code>--dry-run</code> does not write maps.</p>
-<h2>Configuration Options</h2>
+<h2 id="configuration-options">Configuration Options</h2>
 <ul>
 <li><code>build.generateSourcemap</code> — Master switch (default: <code>false</code>). When true, the emitter records mappings, the writer emits <code>.php.map</code> files, and a <code>sourceMappingURL</code> comment is appended to each PHP file.</li>
 <li><code>build.sourcemapIncludeContent</code> — When true, embeds the original <code>.tyhp</code> source in the map's <code>sourcesContent</code> array. This makes maps self-contained but larger (default: <code>false</code>).</li>
 </ul>
-<h2>Source Mapping URL</h2>
+<h2 id="source-mapping-url">Source Mapping URL</h2>
 <p>When source maps are generated, the compiler appends a <code>sourceMappingURL</code> comment to the end of each compiled PHP file:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
@@ -329,9 +348,9 @@ class User {
 
 //# sourceMappingURL=User.php.map
 </code></pre></div>
-<h2>How Source Maps Are Used</h2>
-<p><code>tyhp xdebug_proxy</code> loads <code>.php.map</code> files (from <code>output.path</code>, or <code>--sourcemap-dir</code>) to translate breakpoints and stack traces between <code>.tyhp</code> and <code>.php</code>. If no maps are found, the proxy still starts and warns you to rebuild with <code>build.generateSourcemap</code> enabled. See <a href="cli_xdebugProxy.md">CLI: XDebug Proxy</a>.</p>
-<h2>Validation and diagnostics</h2>
+<h2 id="how-source-maps-are-used">How Source Maps Are Used</h2>
+<p><code>tyhp xdebug_proxy</code> loads <code>.php.map</code> files (from <code>output.path</code>, or <code>--sourcemap-dir</code>) to translate breakpoints and stack traces between <code>.tyhp</code> and <code>.php</code>. If no maps are found, the proxy still starts and warns you to rebuild with <code>build.generateSourcemap</code> enabled. See <a href="cli_xdebugProxy.html">CLI: XDebug Proxy</a>.</p>
+<h2 id="validation-and-diagnostics">Validation and diagnostics</h2>
 <p>When sourcemaps are on, the compiler validates each map against the generated PHP (VLQ integrity, mapping coverage, source index bounds, line counts). Failures are non-fatal warnings; the <code>.php</code> file is still written:</p>
 <ul>
 <li><code>TYHP5020</code> — source map JSON could not be generated</li>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -281,7 +300,7 @@
 </p>
     <p><code>internal</code> is a Tyhp visibility keyword. Mark implementation details that belong in this project but must not appear in the published <code>package.tyhpdef</code>. Consumers of the compiled library type-check against that file, so they never see those symbols.</p>
 <p><code>internal</code> has no PHP equivalent. The compiler strips it on emit: class members become <code>public</code>; top-level classes, functions, and constants are unprefixed (PHP’s default). Same-project <code>.tyhp</code> can still use the symbols.</p>
-<h2>Syntax</h2>
+<h2 id="syntax">Syntax</h2>
 <p>Apply <code>internal</code> to a top-level class, interface, trait, enum, function, constant, type alias, or extension, and to members (methods, properties, constants, enum cases).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -308,7 +327,7 @@ public class Decimal {
 }
 </code></pre></div>
 <p>Do not combine <code>internal</code> with <code>public</code>, <code>protected</code>, or <code>private</code> on the same declaration (<code>TYHP4002</code>). <code>internal static</code>, <code>internal readonly</code>, <code>internal abstract</code>, and <code>internal final</code> are allowed.</p>
-<h2>Published tyhpdef</h2>
+<h2 id="published-tyhpdef">Published tyhpdef</h2>
 <p><code>tyhp build</code> for a library always writes <code>package.tyhpdef</code>. Symbols marked <code>internal</code> are omitted, the same way <code>private</code> members are omitted. A public type’s internal members are left out of that file.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 class Decimal {
@@ -316,8 +335,8 @@ class Decimal {
 }
 </code></pre></div>
 <p><code>GmpBackend</code>, <code>formatScale</code>, <code>BACKEND_ID</code>, and <code>Decimal::addWith</code> do not appear. Consumers cannot name them through the published tyhpdef.</p>
-<p>Use <code>internal</code> for backends, helpers, and other author-only code that must compile in this package but must not become part of the consumer API. Put author-only <strong>tyhpdef packages</strong> in <code>require-dev</code> and leave them out of <code>extra.tyhp.require</code> — see <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
-<h2>Compiled PHP</h2>
+<p>Use <code>internal</code> for backends, helpers, and other author-only code that must compile in this package but must not become part of the consumer API. Put author-only <strong>tyhpdef packages</strong> in <code>require-dev</code> and leave them out of <code>extra.tyhp.require</code> — see <a href="project_composerPackages.html#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+<h2 id="compiled-php">Compiled PHP</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 class GmpBackend {
@@ -343,7 +362,7 @@ class Decimal {
 }
 </code></pre></div>
 <p>PHP does not enforce the project boundary. The published tyhpdef is what hides the names from Tyhp consumers.</p>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -368,11 +387,11 @@ class Decimal {
 </div>
     </div>
 </div>
-<h2>Related</h2>
+<h2 id="related">Related</h2>
 <ul>
-<li><a href="cli_tyhpdefGeneration.md#auto-generation-during-build">CLI: Tyhpdef Generation</a> — <code>package.tyhpdef</code> omit</li>
-<li><a href="project_composerPackages.md">Composer Runtime Packages</a> — ambient vs author-only tyhpdefs</li>
-<li><a href="diagnostics_reference.md">Diagnostic Code Reference</a> — <code>TYHP4002</code></li>
+<li><a href="cli_tyhpdefGeneration.html#auto-generation-during-build">CLI: Tyhpdef Generation</a> — <code>package.tyhpdef</code> omit</li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> — ambient vs author-only tyhpdefs</li>
+<li><a href="diagnostics_reference.html">Diagnostic Code Reference</a> — <code>TYHP4002</code></li>
 </ul>
 
 </section>

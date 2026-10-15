@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -279,134 +298,182 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp supports function and method overloading, allowing you to declare multiple signatures for the same function or method with different parameter types and specialized return types. Overload signatures are compile-time declarations that describe how the function behaves for specific input types. The final declaration must include a body (the implementation) that covers all overloaded variants. At compile time, the compiler selects the most specific overload based on argument types. In the PHP output, all overload signatures are stripped and only the single implementation remains — overloading does NOT create multiple PHP functions.</p>
-<h2>Basic Function Overloads</h2>
-<p>Overload signatures are declarations that end with a semicolon (no body). The final declaration of the function must have a body that handles all possible parameter combinations. The compiler uses the overload signatures to determine the precise return type at each call site.</p>
+    <p>Tyhp lets you declare several signatures for one function or method, so the type checker can give each call the return type that matches its arguments. A signature without a body is an <strong>overload signature</strong>; the declaration with a body that follows the signatures is the <strong>implementation</strong>. Callers see only the overload signatures. In the PHP output the overload signatures are removed and the single implementation remains, so overloading creates no extra PHP functions and has no runtime cost.</p>
+<h2 id="basic-function-overloads">Basic Function Overloads</h2>
+<p>An overload signature is a <code>function</code> declaration that ends with a semicolon instead of a body. Write the signatures one after another, then the implementation directly after them. The implementation must accept every call the signatures describe.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Overload: when $convertToInt is true, returns int
-function convertNumber(string|int|float $value, true $convertToInt): int;
+namespace App;
 
-// Overload: when $convertToInt is false, returns float
-function convertNumber(string|int|float $value, false $convertToInt): float;
+// Overload: when $asInt is true, returns int
+function convertNumber(string|int|float $value, true $asInt): int;
 
-// Implementation: covers all scenarios
-function convertNumber(string|int|float $value, bool $convertToInt = false): int|float
+// Overload: when $asInt is false, returns float
+function convertNumber(string|int|float $value, false $asInt): float;
+
+// Implementation
+function convertNumber(string|int|float $value, bool $asInt = false): int|float
 {
-    return $convertToInt ? \intval($value) : \floatval($value);
+    return $asInt ? \intval($value) : \floatval($value);
 }
 
-// The compiler knows the precise return type at each call site:
-int $asInt = convertNumber(&quot;42&quot;, true);      // Compiler knows: returns int
-float $asFloat = convertNumber(&quot;42&quot;, false);  // Compiler knows: returns float
-int|float $maybe = convertNumber(&quot;42&quot;);        // Uses default: returns float
+int $asInt = convertNumber(&quot;42&quot;, true);      // int
+float $asFloat = convertNumber(&quot;42&quot;, false); // float
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
-<p>Overload signatures are completely stripped from the PHP output. Only the final implementation with the body is emitted. This means overloading is purely a compile-time feature with zero runtime cost.</p>
+<p>The implementation's own signature is not callable. <code>convertNumber(&quot;42&quot;)</code> and <code>convertNumber(&quot;42&quot;, $flag)</code> with a <code>bool</code> variable <code>$flag</code> match neither overload, so they report TYHP4374 even though the implementation accepts them. Add an overload for them if callers need them:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function convertNumber(string|int|float $value, bool $asInt = false): int|float;
+</code></pre></div>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
+<p>Only the implementation is emitted:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-function convertNumber(string|int|float $value, bool $convertToInt = false): int|float
+declare(strict_types=1);
+
+namespace App;
+
+function convertNumber(string|int|float $value, bool $asInt = false): int|float
 {
-    return $convertToInt ? \intval($value) : \floatval($value);
+    return $asInt ? \intval($value) : \floatval($value);
 }
 </code></pre></div>
-<h2>Static Value Type Overloads</h2>
-<p>Overloads are especially powerful when combined with static value types. A static value type constrains a parameter to a specific literal value (true, false, 0, 1, a specific string, etc.). This allows the compiler to narrow the return type based on the exact value passed.</p>
+<h2 id="static-value-type-overloads">Static Value Type Overloads</h2>
+<p>A <a href="tyhp_0800_staticValueTypes.html">static value type</a> constrains a parameter to a specific literal value (<code>true</code>, <code>false</code>, an integer, a string). Combined with overloads it lets the return type depend on the exact value passed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function parseValue(string $input, &#039;json&#039; $format): array;
-function parseValue(string $input, &#039;csv&#039; $format): array&lt;string&gt;;
-function parseValue(string $input, &#039;raw&#039; $format): string;
-function parseValue(string $input, string $format): array|string
+namespace App;
+
+function transform(string $input, &#039;list&#039; $mode): array&lt;int, string&gt;;
+function transform(string $input, &#039;upper&#039; $mode): string;
+function transform(string $input, &#039;raw&#039; $mode): string;
+function transform(string $input, string $mode): array&lt;int, string&gt;|string
 {
-    return match($format) {
-        &#039;json&#039; =&gt; \json_decode($input, true),
-        &#039;csv&#039; =&gt; \str_getcsv($input),
+    return match ($mode) {
+        &#039;list&#039; =&gt; \explode(&#039;,&#039;, $input),
+        &#039;upper&#039; =&gt; \strtoupper($input),
         default =&gt; $input,
     };
 }
 
-// Compiler knows exact return types:
-array $json = parseValue($data, &#039;json&#039;);
-string $raw = parseValue($data, &#039;raw&#039;);
+string $upper = transform(&#039;a,b&#039;, &#039;upper&#039;);
+array&lt;int, string&gt; $items = transform(&#039;a,b&#039;, &#039;list&#039;);
 </code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-function parseValue(string $input, string $format): array|string
-{
-    return match($format) {
-        &#039;json&#039; =&gt; \json_decode($input, true),
-        &#039;csv&#039; =&gt; \str_getcsv($input),
-        default =&gt; $input,
-    };
-}
-</code></pre></div>
-<h2>Method Overloads</h2>
-<p>Method overloads work identically to function overloads but are declared inside a class. All overload signatures for a method must have the same modifiers (visibility, static, final, etc.).</p>
+<h2 id="method-overloads">Method Overloads</h2>
+<p>Method overloads work like function overloads. Every signature and the implementation must use the same modifiers (visibility, <code>static</code>, <code>final</code>, <code>async</code>, <code>abstract</code>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-class Repository
+namespace App;
+
+final class Repository
 {
-    // Overload: find by ID returns exact type
-    public function find(int $id): User;
-
-    // Overload: find by email might not exist
-    public function find(string $email): ?User;
-
-    // Implementation with body
-    public function find(int|string $criteria): ?User
+    public function find(int $id): string;
+    public function find(string $email): ?string;
+    public function find(int|string $criteria): ?string
     {
-        if (\is_int($criteria)) {
-            return $this-&gt;findById($criteria);
-        }
-        return $this-&gt;findByEmail($criteria);
+        return null;
     }
+
+    public static function create(int $id): self;
+    public static function create(string $name): self;
+    public static function create(int|string $arg): self
+    {
+        return new self();
+    }
+}
+
+function lookup(Repository $repository): void
+{
+    string $byId = $repository-&gt;find(1);
+    ?string $byEmail = $repository-&gt;find(&#039;ann@example.com&#039;);
+    Repository $created = Repository::create(&#039;ann&#039;);
 }
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-class Repository
+declare(strict_types=1);
+
+namespace App;
+
+final class Repository
 {
-    public function find(int|string $criteria): ?User
+    public function find(int|string $criteria): ?string
     {
-        if (\is_int($criteria)) {
-            return $this-&gt;findById($criteria);
-        }
-        return $this-&gt;findByEmail($criteria);
+        return null;
+    }
+
+    public static function create(int|string $arg): self
+    {
+        return new self();
     }
 }
 </code></pre></div>
-<h2>Async Method Overloads</h2>
-<p>Async methods can also have overloads. All overload signatures and the implementation must be marked with async. The compiler ensures type-safe resolution for both sync and async overloads.</p>
+<p>Constructors and destructors cannot be overloaded (TYHP3036). Declare factory methods, or optional parameters, instead.</p>
+<h2 id="interface-and-abstract-method-overloads">Interface and Abstract Method Overloads</h2>
+<p>An interface method or an <code>abstract</code> method has no body, so a run of signatures for the same name forms the whole set. Callers of the interface or abstract class can use every signature; an implementing class provides one method that accepts them all. An override of an <code>abstract</code> set is checked against every signature, so its parameter types must accept each signature's parameters and its return type must be assignable to each signature's return type (TYHP4118).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-class ApiClient
+namespace App;
+
+interface Store
 {
-    async public function fetch(int $id): Response;
-    async public function fetch(string $url): Response;
-    async public function fetch(int|string $target): Response
+    public function get(int $id): string;
+    public function get(string $name): ?string;
+}
+
+final class MemoryStore implements Store
+{
+    public function get(int|string $key): ?string
     {
-        $url = \is_int($target) ? &quot;/api/items/{$target}&quot; : $target;
-        return await $this-&gt;httpClient-&gt;get($url);
+        return null;
     }
 }
+
+function load(Store $store): void
+{
+    string $a = $store-&gt;get(1);
+    ?string $b = $store-&gt;get(&#039;config&#039;);
+}
 </code></pre></div>
+<p>PHP receives one method per set: the last signature. That is the signature PHP checks the implementing method against.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-class ApiClient
+declare(strict_types=1);
+
+namespace App;
+
+interface Store
 {
-    public function fetch(int|string $target): \Tyhp\Promise
-    {
-        return \Tyhp\Promise::_async(function () use ($target) {
-            $url = \is_int($target) ? &quot;/api/items/{$target}&quot; : $target;
-            return \Tyhp\Promise::_await($this-&gt;httpClient-&gt;get($url));
-        });
-    }
+    public function get(string $name): ?string;
 }
 </code></pre></div>
-<h2>Overloads with Short Function Syntax</h2>
-<p>The final implementation can use the short fn syntax if the body is a single expression. The overload signatures remain semicolon-terminated as usual.</p>
+<h2 id="async-overloads">Async Overloads</h2>
+<p>Async functions and methods can be overloaded. Every signature and the implementation must be marked <code>async</code>. As for any <code>async</code> declaration, each signature's return type <code>R</code> is read as the settled type <code>__Awaited&lt;R&gt;</code>, so a call returns <code>Promise&lt;R&gt;</code> and <code>await</code> produces <code>R</code> (see <a href="tyhp_2600_asyncAndAwait.html">Async and Await</a>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+final class ApiClient
+{
+    async public function fetch(int $id): string;
+    async public function fetch(string $url): string;
+    async public function fetch(int|string $target): string
+    {
+        await Promise::delay(1);
+        return \is_int($target) ? &quot;/items/{$target}&quot; : $target;
+    }
+}
+
+async function show(ApiClient $client): string
+{
+    return await $client-&gt;fetch(1);
+}
+</code></pre></div>
+<h2 id="overloads-with-short-function-syntax">Overloads with Short Function Syntax</h2>
+<p>The implementation can use <a href="tyhp_1100_shortFunctionSyntax.html">short function syntax</a>. The overload signatures stay <code>function</code> declarations that end with <code>;</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
 
 function negate(int $value): int;
 function negate(float $value): float;
@@ -414,181 +481,241 @@ fn negate(int|float $value): int|float =&gt; -$value;
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
+declare(strict_types=1);
+
+namespace App;
+
 function negate(int|float $value): int|float
 {
     return -$value;
 }
 </code></pre></div>
-<h2>Overload Resolution Rules</h2>
-<p>The compiler selects the most specific matching overload at compile time using these rules:</p>
+<h2 id="how-a-call-picks-an-overload">How a Call Picks an Overload</h2>
+<p>The checker tries the declared signatures <strong>in declaration order</strong> and uses the <strong>first</strong> one that accepts the call as written, so declare narrower signatures before broader ones.</p>
 <ol>
-<li>The compiler examines all overload signatures and the implementation signature for the given function or method.</li>
-<li>For each call site, it compares the argument types against each overload signature's parameter types.</li>
-<li>The most specific matching signature is selected — a signature with narrower parameter types beats one with broader types.</li>
-<li>Static value types (true, false, string literals, integer literals) are the most specific matchers.</li>
-<li>If no specific overload matches, the implementation's broader types are used as the fallback.</li>
-<li>If the argument types are ambiguous (multiple overloads match equally), the compiler reports an error.</li>
+<li>A signature accepts a call when the arguments (positional, named, spread, and variadic) cover its required parameters and each argument is assignable to its parameter type as written.</li>
+<li>Generic signatures infer their type arguments per signature.</li>
+<li>An inline closure is checked against a <code>callable</code> parameter by parameter count and by any explicit parameter and return type annotations; an unannotated closure is checked against the selected signature. A closure also matches an <code>Expression&lt;callable(…)&gt;</code> or <code>PropertyPath&lt;…&gt;</code> parameter by its callable shape.</li>
+<li>If no signature accepts the call as written, the signatures are tried again allowing the implicit conversions an ordinary call applies (see <a href="#overloads-and-implicit-conversions">Overloads and Implicit Conversions</a>).</li>
+<li>If no signature accepts the call even with conversions, the checker reports TYHP4374 and lists the candidates.</li>
 </ol>
-<h2>Rules</h2>
-<ol>
-<li>The final declaration in the overload set must have a body (block or =&gt; expr). All preceding declarations must be signature-only (ending with ;).</li>
-<li>The implementation's parameter types must be a superset of all overload signatures' parameter types. It must accept every valid call described by the overloads.</li>
-<li>The implementation's return type must be a superset of all overload signatures' return types.</li>
-<li>For method overloads, all signatures must share the same modifiers (public, static, final, async, etc.).</li>
-<li>Static value types (true, false, integer literals, string literals) can be used in overload signatures to narrow types based on specific argument values.</li>
-<li>Overloads do not create multiple PHP functions — only the implementation body is emitted.</li>
-</ol>
-<h2>Best Practices</h2>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use overloads for type-safe polymorphic APIs where the return type depends on the input type.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Combine overloads with static value types for maximum type narrowing — the compiler can determine exact return types at each call site.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Keep overload signatures compatible with the implementation — the implementation must be able to handle every call described by the overloads.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Keep method modifiers consistent across all overloads and the implementation.</p>
-</div>
-    </div>
-</div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// DO: ensure the implementation covers all overloads
-function stringify(int $value): string;
-function stringify(float $value): string;
-function stringify(bool $value): string;
-function stringify(int|float|bool $value): string
+namespace App;
+
+function describe(int $x): string;
+function describe(mixed $x): int;
+function describe(mixed $x): string|int
 {
-    return (string)$value;
+    return 1;
 }
 
-// DO: use static value types for precise return types
-function getConfig(true $asArray): array;
-function getConfig(false $asArray): object;
-function getConfig(bool $asArray = false): array|object
+string $a = describe(1);   // first signature accepts an int
+int $b = describe(&#039;a&#039;);    // only the second accepts a string
+</code></pre></div>
+<p>Reversing the two signatures would make <code>describe(1)</code> return <code>int</code>, because <code>mixed</code> would then accept the call first.</p>
+<p>In the editor, hover and signature help list the declared signatures. Completion shows the first signature and the number of further overloads.</p>
+<h2 id="overloads-and-implicit-conversions">Overloads and Implicit Conversions</h2>
+<p>An ordinary call to a function accepts an argument that reaches the parameter through an implicit <a href="tyhp_1600_operatorOverloads.html"><code>operator convert</code></a>. A call to an overloaded function does too, but only after no signature accepts the call as written, so a signature that needs a conversion never beats one that accepts the arguments directly, even when it is declared first.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+final class Money
 {
-    $data = \file_get_contents(&#039;config.json&#039;);
-    return \json_decode($data, $asArray);
+    public function __construct(public int $cents) {}
+
+    operator convert(int $value)
+    {
+        return new self($value);
+    }
 }
 
-// DO: keep method modifiers consistent across overloads
-class Service {
-    public static function create(int $id): self;
-    public static function create(string $name): self;
-    public static function create(int|string $arg): self { /* ... */ }
+function takeMoney(Money $amount): string;
+function takeMoney(string $label, int $cents): string;
+function takeMoney(Money|string $first, int $cents = 0): string
+{
+    return $first instanceof Money ? &quot;money:{$first-&gt;cents}&quot; : &quot;label:{$first}:{$cents}&quot;;
+}
+
+function run(): void
+{
+    echo takeMoney(new Money(5)), &quot;\n&quot;;   // accepted as written
+    echo takeMoney(5), &quot;\n&quot;;              // only the first signature accepts it, through the conversion
+    echo takeMoney(&#039;tip&#039;, 3), &quot;\n&quot;;       // accepted as written
 }
 </code></pre></div>
-<h2>Common Mistakes</h2>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Do not declare overloads without a final implementation body. Every overload set must end with a declaration that has a body.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Do not use different modifiers across overloads. All method overloads must share the same visibility and modifiers.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Do not make the implementation narrower than the overloads. The implementation must accept all argument combinations described by the overload signatures.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Do not create overloads with incompatible parameter counts unless the extra parameters have default values in the implementation.</p>
-</div>
-    </div>
-</div>
+<p>The compiled call applies the conversion, and PHP still receives the one <code>takeMoney</code> function:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">echo takeMoney(\App\Money::__from(5)), &quot;\n&quot;;
+</code></pre></div>
+<p>The conversions considered are the ones an ordinary call applies: conversions declared on a class or in an extension, and conversion of an object to a scalar parameter (for example passing a <code>Celsius</code> object to an <code>int</code> parameter when <code>Celsius</code> declares <code>operator convert(self $value): int</code>). A conversion removed with <code>operator convert hide</code> is not considered.</p>
+<p>When several signatures accept the call only through conversions, the compiler chooses between them:</p>
+<ol>
+<li>A signature that converts only some of the arguments another signature converts, and converts those to the same types, is preferred.</li>
+<li>If the remaining signatures convert the arguments to the same types, the first declared is used.</li>
+<li>If they convert the arguments to different types, the call is ambiguous and reports TYHP4375. Convert an argument yourself (for example <code>new Money(5)</code>) so that one signature accepts the call as written.</li>
+</ol>
+<p>A first-class callable of an overload set (<code>$fn = takeMoney(...)</code>) applies the same conversions when it is called, so <code>$fn(5)</code> works and <code>\array_map($fn, [5, 6])</code> works. See <a href="#overloaded-functions-as-values">Overloaded Functions as Values</a>. A call through <code>__invoke</code> (<code>$object-&gt;__invoke(5)</code> or <code>$object(5)</code>) is an ordinary method call and follows the rules above.</p>
+<h2 id="overloaded-functions-as-values">Overloaded Functions as Values</h2>
+<p>A reference to an overload set, such as <code>describe(...)</code>, <code>$object-&gt;find(...)</code>, <code>Repository::create(...)</code>, or an object whose <code>__invoke</code> is overloaded, is a callable value that carries one callable form per declared signature, in declaration order. The implementation signature is not part of it.</p>
+<ul>
+<li>Calling the value uses the first form that accepts the arguments, and reports TYHP4374 when none does.</li>
+<li>The value also accepts every type that converts implicitly to a signature's parameter (see below), so <code>$describe(5)</code> works when <code>Money</code> has <code>operator convert(int $value)</code>.</li>
+<li>Assigning the value to a <code>callable(…)</code> type succeeds when at least one declared signature satisfies that type. A variable declared with a <code>callable(…)</code> type keeps exactly that type, so it does not accept the converting types.</li>
+</ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR: missing implementation with body
+namespace App;
+
+function run(): void
+{
+    $describe = describe(...);
+    int $n = $describe(&#039;a&#039;);                          // picks the second signature
+    callable(int): string $asString = describe(...);  // the first signature satisfies it
+}
+</code></pre></div>
+<h3 id="implicit-conversions-on-the-value">Implicit conversions on the value</h3>
+<p>When a signature has a parameter that other types convert to through <a href="tyhp_1600_operatorOverloads.html"><code>operator convert</code></a>, the first-class callable is compiled to a small wrapper closure that accepts those types too and applies the conversion before it calls the function. The value is typed with the widened parameters, so it works with the <code>takeMoney</code> set above:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+function run(): void
+{
+    $fn = takeMoney(...);
+    echo $fn(5), &quot;\n&quot;;             // money:5, converted to a Money
+    echo $fn(&#039;tip&#039;, 3), &quot;\n&quot;;      // label:tip:3
+    echo $fn(new Money(6)), &quot;\n&quot;;  // money:6
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$fn = (static fn(\App\Money|string|int $first, int $cents = 0): string =&gt; takeMoney((\is_int($first) ? \App\Money::__from($first) : $first), $cents));
+</code></pre></div>
+<p>With several signatures, conversion is decided one parameter position at a time:</p>
+<ol>
+<li>A type that some signature accepts as written at that position is never converted. With <code>pick(Money $m)</code> and <code>pick(int $n)</code>, an <code>int</code> argument goes to <code>pick(int $n)</code>.</li>
+<li>Any other type that converts to a signature's parameter at that position is converted to it, and the value accepts that type.</li>
+<li>A type that would convert to different types in different signatures is ambiguous. The compiler reports TYHP4376 at the <code>(...)</code>, and that position keeps its declared types. If <code>Money</code> and <code>Meters</code> both declare <code>operator convert(int $value)</code>, <code>measure(Money $m)</code> and <code>measure(Meters $m)</code> give <code>$fn = measure(...)</code> an <code>int</code> position that cannot be resolved. Call <code>measure(...)</code> directly, or give the signatures the same type at that position.</li>
+</ol>
+<p>Only a first-class callable value is widened. A variable declared <code>callable(Money): string</code> and a closure written with <code>fn</code> or <code>function</code> keep exactly the types they declare, so <code>$fn(5)</code> on either reports TYHP4010. By-reference, variadic, and generic-typed parameters are not widened. When no parameter of the function has a conversion, <code>f(...)</code> is the plain native first-class callable.</p>
+<p>The wrapper costs one extra call frame and appears as an anonymous closure in reflection and stack traces. It keeps the function's return type. The conversion test runs when the value is called: an argument that matches none of the convertible types is passed on unchanged, and PHP reports a <code>\TypeError</code> if the function does not accept it.</p>
+<h2 id="rules">Rules</h2>
+<ol>
+<li>Write the overload signatures first and the implementation directly after them; nothing else may be declared between them (TYHP3032). The implementation has a body. A set without one reports TYHP3031, except in an interface or an <code>abstract</code> method, where the signatures are the whole set.</li>
+<li>Declare at least two overload signatures. A single one reports warning TYHP3033; use the implementation's own signature instead.</li>
+<li>Two signatures with the same parameters and return type report TYHP3034.</li>
+<li>All signatures and the implementation share the same modifiers: <code>static</code>, visibility, <code>async</code>, <code>abstract</code>, <code>final</code> (TYHP3035).</li>
+<li>The implementation must be compatible with every signature (TYHP4118): each signature's parameter types must be assignable to the implementation's, and the return types must be assignable in at least one direction. The implementation's return type may be narrower or broader than a signature's, but not unrelated to it.</li>
+<li>Constructors and destructors cannot have overloads (TYHP3036).</li>
+<li>Only the implementation is emitted to PHP (for an interface or an <code>abstract</code> set, the last signature).</li>
+</ol>
+<h2 id="compiler-errors">Compiler Errors</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TYHP3031</td>
+<td>An overload signature has no implementation.</td>
+</tr>
+<tr>
+<td>TYHP3032</td>
+<td>An overload signature is not directly before its implementation.</td>
+</tr>
+<tr>
+<td>TYHP3033</td>
+<td>Warning: only one overload signature was declared.</td>
+</tr>
+<tr>
+<td>TYHP3034</td>
+<td>A signature repeats the parameters and return type of an earlier one.</td>
+</tr>
+<tr>
+<td>TYHP3035</td>
+<td>Signatures in a set use different modifiers.</td>
+</tr>
+<tr>
+<td>TYHP3036</td>
+<td>Constructors and destructors cannot be overloaded.</td>
+</tr>
+<tr>
+<td>TYHP4118</td>
+<td>An overload signature is not compatible with the implementation.</td>
+</tr>
+<tr>
+<td>TYHP4374</td>
+<td>No overload accepts the call, even with implicit conversions.</td>
+</tr>
+<tr>
+<td>TYHP4375</td>
+<td>The call needs implicit conversions to different types in more than one overload, so the choice is ambiguous.</td>
+</tr>
+<tr>
+<td>TYHP4376</td>
+<td>A first-class callable of an overload set cannot convert an argument at one position, because the overloads convert it to different types.</td>
+</tr>
+</tbody>
+</table></div>
+<p>See the <a href="diagnostics_reference.html">diagnostics reference</a> for the full messages.</p>
+<h2 id="best-practices">Best Practices</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use overloads when the return type depends on the argument types. A union return type plus a type guard at the call site is often enough when it does not.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Combine overloads with static value types to give each literal value its own precise return type.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Put the narrowest signature first and the catch-all last; the first signature that accepts the call as written wins.</p>
+</div>
+    </div>
+</div>
+<h2 id="common-mistakes">Common Mistakes</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+// ERROR (TYHP3031): signatures without an implementation
 // function doSomething(int $a): void;
 // function doSomething(string $a): void;
 
-// ERROR: modifier mismatch across overloads
+// ERROR (TYHP3035): different visibility across the set
 // class BadService {
 //     public function process(int $id): void;
 //     private function process(string $name): void;
 //     public function process(int|string $arg): void { /* ... */ }
 // }
 
-// ERROR: implementation doesn&#039;t cover string overload
+// ERROR (TYHP4118): the implementation does not accept the string signature
 // function narrow(int $a): int;
 // function narrow(string $a): string;
 // function narrow(int $a): int { return $a; }
 </code></pre></div>
-<h2>Compiler Errors</h2>
-<ul>
-<li>Missing implementation body: All overload sets must end with a declaration that has a body.</li>
-<li>Modifier mismatch: All method overloads must share the same visibility and modifiers.</li>
-<li>Incomplete coverage: The implementation's parameter types must accept all argument combinations from the overloads.</li>
-<li>Return type mismatch: The implementation's return type must be a superset of all overload return types.</li>
-<li>Incompatible parameter count: If overloads have different parameter counts, the implementation must have defaults for the extra parameters.</li>
-</ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">

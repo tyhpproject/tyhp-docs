@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,9 +299,9 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 10</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp is a typed superset of the PHP language. Some PHP features are disabled or restricted in <code>&lt;?tyhp</code> so the compiler can type-check; <code>.php</code> files and <code>&lt;?php</code> blocks are passed through. This page documents disabled features, restricted features, and preserved PHP features — along with the Tyhp alternatives for each restriction.</p>
-<h2>Disabled Features</h2>
+<h2 id="disabled-features">Disabled Features</h2>
 <p>The following PHP features are disabled or strongly discouraged in Tyhp. Using them produces a compiler diagnostic as noted. For each, a Tyhp alternative is provided.</p>
-<h2>eval() — Informational (TYHP4800)</h2>
+<h2 id="eval--informational-tyhp4800">eval() — Informational (TYHP4800)</h2>
 <p>The eval() function is discouraged in Tyhp. It is a security risk (arbitrary code execution) and makes static analysis impossible — the compiler cannot type-check dynamically generated code. Using eval() produces <strong>informational</strong> diagnostic TYHP4800 (<code>CheckerEvalUsage</code>), not an error. Set <code>build.allowEval: true</code> in <code>tyhp.json</code> to suppress it.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -294,7 +313,7 @@
 // Or use closures/callables for dynamic behavior
 </code></pre></div>
 <p>If you absolutely need eval-like functionality, write that code in a plain PHP file and declare it into your Tyhp project via a tyhpdef file. This keeps the security boundary clear and the eval usage isolated from type-checked code. <code>build.allowEval</code> only suppresses the informational diagnostic; it does not change how eval behaves at runtime.</p>
-<h2>Short Open Tags — Disabled</h2>
+<h2 id="short-open-tags--disabled">Short Open Tags — Disabled</h2>
 <p>Short open tags (&lt;?) and echo short tags (&lt;?=) are not supported in Tyhp. Tyhp files must use the &lt;?tyhp opening tag. PHP files in the same project can still use &lt;?php.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">// ERROR: Short open tags are not valid in Tyhp
 // &lt;? echo &#039;hello&#039;; ?&gt;
@@ -305,7 +324,7 @@
 echo &#039;hello&#039;;
 echo $variable;
 </code></pre></div>
-<h2>Dynamic Properties — Restricted</h2>
+<h2 id="dynamic-properties--restricted">Dynamic Properties — Restricted</h2>
 <p>Undeclared property <strong>writes</strong> (<code>$obj-&gt;newProp = value</code> where <code>newProp</code> is not declared) are legal only when the receiver’s type is exactly the global engine class <code>\stdClass</code>. Other classes — including subclasses such as <code>class Bag extends \stdClass</code> — must declare the property or implement <code>__set</code> (TYHP4134). <code>#[\AllowDynamicProperties]</code> is not an opt-in (TYHP4126, and writes still TYHP4134).</p>
 <p>Undeclared <strong>reads</strong> still require a declared property or <code>__get</code>; otherwise the access is unresolved.</p>
 <p>The <code>(object)</code> cast follows PHP: if the operand is already an object (a concrete class, the builtin <code>object</code> type, or a union of only object types), the cast is identity — the value keeps its type and is not re-wrapped as <code>\stdClass</code>. That does not allow undeclared writes on those other types. If the operand is an array, scalar, <code>null</code>, or <code>mixed</code> (not already an object), the result type is <code>\stdClass</code>, so <code>(object)[]</code> accepts undeclared writes. The emitted PHP is still <code>(object)</code>.</p>
@@ -355,7 +374,7 @@ Bag $subclass = new Bag();
 // $user = (object)$user;
 // $user-&gt;email = &#039;alice@example.com&#039;;
 </code></pre></div>
-<h2>Nested Named Functions — Disabled</h2>
+<h2 id="nested-named-functions--disabled">Nested Named Functions — Disabled</h2>
 <p>PHP allows a named <code>function</code> (or, in Tyhp, a named method) to be declared inside the body of<br />
 another function or method. PHP hoists the nested declaration to the <em>global</em> scope the first time<br />
 the enclosing callable runs — it does not close over the enclosing scope like a closure — which<br />
@@ -393,9 +412,9 @@ function alsoBetter(): void {
 <p>A named function declared at file/namespace scope inside an <code>if (!\function_exists(...))</code> guard is<br />
 unaffected by this restriction — that pattern does not nest the declaration inside another named<br />
 function or method.</p>
-<h2>Catch Types</h2>
+<h2 id="catch-types">Catch Types</h2>
 <p>PHP 8 requires every <code>catch</code> clause to name an exception type — untyped <code>catch ($e)</code> is not a PHP feature. Tyhp's checker validates the types that are present: they must be <code>\Throwable</code> (or a subtype), not scalars, and not intersection types.</p>
-<p>An empty <code>catch</code> body (no statements) is <strong>TYHP4121</strong>. A comment-only body is still empty. When swallowing is intentional, name the exception and discard it with <code>(void)$e</code> — the same <code>(void)</code> discard used for unused <code>#[\NoDiscard]</code> returns. See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<p>An empty <code>catch</code> body (no statements) is <strong>TYHP4121</strong>. A comment-only body is still empty. When swallowing is intentional, name the exception and discard it with <code>(void)$e</code> — the same <code>(void)</code> discard used for unused <code>#[\NoDiscard]</code> returns. See <a href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 try {
@@ -418,7 +437,7 @@ try {
     (void)$e;
 }
 </code></pre></div>
-<h2>Variable Variables ($$var) — Disabled</h2>
+<h2 id="variable-variables-var--disabled">Variable Variables ($$var) — Disabled</h2>
 <p>Variable variables are prohibited (TYHP4133). There is no <code>__VarName</code> exception. Use <code>variable_exists($name)</code> on a simple variable when you need an existence check.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -433,9 +452,9 @@ if (variable_exists($greeting)) {
     echo $greeting;
 }
 </code></pre></div>
-<h2>Restricted Features (Require Type Narrowing)</h2>
+<h2 id="restricted-features-require-type-narrowing">Restricted Features (Require Type Narrowing)</h2>
 <p>The following PHP dynamic features are still available in Tyhp but require type narrowing through type guard functions or the special __ types before use. This ensures the compiler can verify the referenced symbols exist. See the Dynamic Language Features page for full details.</p>
-<h2>Variable Functions ($fn()) — Restricted</h2>
+<h2 id="variable-functions-fn--restricted">Variable Functions ($fn()) — Restricted</h2>
 <p>Calling a function through a variable requires __FunctionName type or a \function_exists() guard.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -453,7 +472,7 @@ if (\function_exists($callback)) {
     echo $callback(&#039;hello&#039;);  // OK
 }
 </code></pre></div>
-<h2>Dynamic Property/Method Access — Restricted</h2>
+<h2 id="dynamic-propertymethod-access--restricted">Dynamic Property/Method Access — Restricted</h2>
 <p>Dynamic property access ($obj-&gt;$prop) and dynamic method calls ($obj-&gt;$method()) require the variable to be narrowed to __PropertyName&lt;T&gt; or __MethodName, or to pass \property_exists() or \method_exists() guards.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -477,7 +496,7 @@ if (\property_exists($user, $prop)) {
 __PropertyName&lt;User&gt; $field = &#039;name&#039;;
 echo $user-&gt;$field;  // OK
 </code></pre></div>
-<h2>Dynamic Class Instantiation (new $class()) — Restricted</h2>
+<h2 id="dynamic-class-instantiation-new-class--restricted">Dynamic Class Instantiation (new $class()) — Restricted</h2>
 <p>Creating an object from a variable class name requires __ClassName type or a \class_exists() guard.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -494,7 +513,7 @@ if (\class_exists($cls)) {
 __ClassName $cls = &#039;App\\Models\\User&#039;;
 $obj = new $cls();  // OK
 </code></pre></div>
-<h2>include/require — Disabled</h2>
+<h2 id="includerequire--disabled">include/require — Disabled</h2>
 <p><code>include</code> / <code>include_once</code> / <code>require</code> / <code>require_once</code> <strong>always</strong> produce compiler error TYHP4801 (<code>CheckerIncludeNotAllowed</code>). There is no static-path exception. The emitter injects <code>vendor/autoload.php</code> itself; a user-written <code>require_once __DIR__ . '/vendor/autoload.php'</code> still fails 4801. There is no <code>import</code> keyword — use <code>use</code> plus Composer autoloading.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -510,7 +529,7 @@ use App\Models\User;
 use App\Services\UserService;
 use App\Services\OrderService;
 </code></pre></div>
-<h2>extract() and compact() — Disabled</h2>
+<h2 id="extract-and-compact--disabled">extract() and compact() — Disabled</h2>
 <p>The extract() and compact() functions dynamically create or collect variables, which completely bypasses static analysis. The compiler reports <strong>errors</strong> TYHP4136 (<code>CheckerExtractProhibited</code>) and TYHP4135 (<code>CheckerCompactProhibited</code>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -527,9 +546,9 @@ int $age = $data[&#039;age&#039;];
 // ALTERNATIVE: Build the array explicitly
 array $result = [&#039;name&#039; =&gt; $name, &#039;age&#039; =&gt; $age];
 </code></pre></div>
-<h2>global $var — Warning (TYHP4137)</h2>
+<h2 id="global-var--warning-tyhp4137">global $var — Warning (TYHP4137)</h2>
 <p>The <code>global</code> keyword is not unrestricted. Using <code>global $var</code> produces warning TYHP4137 (<code>CheckerGlobalVariableWarning</code>). Prefer importing PHP globals through tyhpdef (see Importing PHP Variables and Constants) or passing values as parameters.</p>
-<h2>Required Typing</h2>
+<h2 id="required-typing">Required Typing</h2>
 <p>Unlike PHP where type declarations are optional, Tyhp requires types everywhere. All variables, parameters, return types, and properties must have explicit type annotations or be typed by inference from the first assignment.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -557,7 +576,7 @@ class User {
     // public $email;          // ERROR: missing type
 }
 </code></pre></div>
-<h2>Non-Nullable by Default</h2>
+<h2 id="non-nullable-by-default">Non-Nullable by Default</h2>
 <p>All types in Tyhp are non-nullable by default. A variable declared as string $x cannot hold null — it must be explicitly declared as ?string $x (or string|null $x) to allow null. This is a fundamental difference from PHP.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -574,7 +593,7 @@ $nickname = null;   // OK: nullable
 // OK: Union with null
 string|null $title = null;
 </code></pre></div>
-<h2>Preserved Features</h2>
+<h2 id="preserved-features">Preserved Features</h2>
 <p>The following PHP features work the same in Tyhp, with no extra restrictions.</p>
 <ul>
 <li>All PHP operators and control structures (if/else, for, foreach, while, do-while, switch, match)</li>
@@ -602,7 +621,7 @@ string|null $title = null;
 <li>Constants (const and define())</li>
 <li>Namespaces</li>
 </ul>
-<h2>Summary Table</h2>
+<h2 id="summary-table">Summary Table</h2>
 <p>The following table summarizes the status of each changed feature, why it is restricted, and the Tyhp alternative.</p>
 <ul>
 <li>eval() — INFO 4800 — Security risk, impossible to type-check — suppressed by <code>build.allowEval</code>; alternative: write PHP and declare via tyhpdef</li>
@@ -619,7 +638,7 @@ string|null $title = null;
 <li><code>global $var</code> — WARNING TYHP4137 (<code>CheckerGlobalVariableWarning</code>) — not unrestricted</li>
 <li>Catch types — checker validates present catch types (must be <code>\Throwable</code>); untyped <code>catch ($e)</code> is not a PHP 8 feature</li>
 </ul>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -656,7 +675,7 @@ string|null $title = null;
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

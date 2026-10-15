@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -278,16 +297,16 @@
     <h2 class="section-heading">ReactPHP</h2>
     
     <p>ReactPHP is an event-driven, non-blocking I/O library for PHP. It is sometimes mentioned alongside Tyhp because both deal with asynchronous programming in PHP, but they operate at entirely different levels and solve different problems.</p>
-<h2>What ReactPHP Is</h2>
+<h2 id="what-reactphp-is">What ReactPHP Is</h2>
 <p>ReactPHP provides an event loop and asynchronous I/O primitives for PHP. It enables non-blocking network operations, timers, streams, HTTP servers, and more — all within standard PHP. ReactPHP is a runtime library distributed as a collection of Composer packages, not a language or compiler. It uses callbacks, Promises, and (in newer versions) integration with PHP Fibers to handle asynchronous operations.</p>
-<h2>How They Differ</h2>
+<h2 id="how-they-differ">How They Differ</h2>
 <p>Tyhp and ReactPHP solve async programming at different layers:</p>
 <ul>
 <li>Tyhp is a language and compiler. Its async/await syntax compiles to PHP that uses the <strong><code>tyhp/async</code></strong> runtime (Fibers and a <code>stream_select</code> event loop inspired by libraries like ReactPHP).</li>
 <li>ReactPHP is a runtime library. It provides an event loop, I/O drivers, and networking for plain PHP.</li>
 <li>You can still call ReactPHP from Tyhp if you describe it in tyhpdef files. Tyhp’s compiled <code>async</code>/<code>await</code> does <strong>not</strong> require ReactPHP and does not emit ReactPHP loop calls by default.</li>
 </ul>
-<h2>Using Them Together</h2>
+<h2 id="using-them-together">Using Them Together</h2>
 <p>Tyhp and ReactPHP are complementary rather than competing technologies:</p>
 <ul>
 <li>Describe ReactPHP's classes and interfaces in tyhpdef files to get type checking when you call ReactPHP from Tyhp.</li>

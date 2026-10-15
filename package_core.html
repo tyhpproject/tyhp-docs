@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>The tyhp/core Package - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="The_tyhp_core_Package">
+    <h2 class="section-heading">The tyhp/core Package</h2>
+    
+    <p><code>tyhp/core</code> is the runtime that every compiled Tyhp program loads. It contains three kinds of things:</p>
+<ul>
+<li><strong>APIs you call from your own code.</strong> The scalar method catalog (<code>$name-&gt;length()</code>, <code>$orders-&gt;mapped(...)</code>, <code>$total-&gt;round(2)</code>), runtime type objects (<code>\Tyhp\Type</code>), typed JSON decoding (<code>\Tyhp\Json</code>), the generics bridge for hand-written PHP (<code>\Tyhp\Generic</code>), contracts such as <code>\Tyhp\Contracts\IsDisposable</code>, attributes such as <code>#[\Tyhp\Php]</code>, and the exceptions the runtime throws.</li>
+<li><strong>Plumbing that the compiler's emitted PHP calls.</strong> Property-hook polyfills, per-instance generic bookkeeping, and the traits that host them. You see these names in generated PHP and stack traces, but you do not call them yourself.</li>
+<li><strong>A Composer plugin.</strong> It keeps your root <code>require-dev</code> in sync with the type-definition packages that your dependencies declare in <code>extra.tyhp.require</code>.</li>
+</ul>
+<p>This page is the API reference for the package. The language features that sit on top of it have their own pages: <a href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a>, <a href="tyhp_2100_extensions.html">Extensions</a>, <a href="tyhp_0500_generics.html">Generics</a>, <a href="tyhp_0150_newTypes.html">New and Changed Types</a>, <a href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards</a>, <a href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a>, <a href="tyhp_2300_disposables.html">Disposables</a>, <a href="tyhp_1600_operatorOverloads.html">Operator Overloads</a>, and <a href="project_composerPackages.html">Composer Runtime Packages</a>. For the other runtime packages, see the <a href="package_intro.html">package overview</a>.</p>
+<h2 id="installing">Installing</h2>
+<p><code>tyhp init</code> already adds <code>tyhp/core</code> to a new project. In an existing project, add it to <code>require</code> (not <code>require-dev</code>), because the emitted PHP loads it at runtime, and allow its Composer plugin:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;require&quot;: {
+        &quot;php&quot;: &quot;&gt;=8.2&quot;,
+        &quot;tyhp/core&quot;: &quot;@dev&quot;
+    },
+    &quot;require-dev&quot;: {
+        &quot;tyhpdef/php&quot;: &quot;@dev&quot;,
+        &quot;tyhp/compiler&quot;: &quot;@dev&quot;
+    },
+    &quot;config&quot;: {
+        &quot;allow-plugins&quot;: {
+            &quot;tyhp/core&quot;: true
+        }
+    }
+}
+</code></pre></div>
+<p>Published versions follow the <code>80N.X.Y</code> scheme, where <code>80N</code> is the PHP version that artifact was compiled for (<code>804</code> is PHP 8.4) and <code>X.Y</code> is the version of <code>tyhp/core</code> itself. An application pins the major that matches its <code>output.phpVersion</code>; a library ORs the majors it supports. See <a href="project_composerPackages.html">Composer Runtime Packages</a> for the full version map and pinning rules.</p>
+<p>The package requires PHP 8.2 or later and Composer's plugin API 2.3 or later. The <code>ext-mbstring</code> extension is optional but recommended: with it, string methods count and slice characters; without it, they fall back to byte-oriented PHP functions (see <a href="#unicode-and-ext-mbstring">Unicode and <code>ext-mbstring</code></a>).</p>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>The first <code>composer require tyhp/core</code> often does not install the ambient type definitions (<code>tyhpdef/php</code> and friends) in that same Composer run. Run <code>composer update</code> or <code>tyhp composer sync</code> afterwards. See <a href="cli_composer.html">CLI: Composer</a>.</p>
+</div>
+    </div>
+</div>
+<h2 id="package-contents-at-a-glance">Package contents at a glance</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Area</th>
+<th>Names</th>
+<th>Who uses it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scalar method catalog</td>
+<td><code>StringExtensions</code>, <code>StringExtensionsVersioned</code>, <code>ArrayExtensions</code>, <code>ArrayExtensionsVersioned</code>, <code>IntExtensions</code>, <code>FloatExtensions</code>, <code>BoolExtensions</code>, <code>ClosureExtensions</code></td>
+<td>You, as <code>$value-&gt;method()</code></td>
+</tr>
+<tr>
+<td>String helper</td>
+<td><code>\Tyhp\StringHelper</code></td>
+<td>Compiled code; also callable from PHP</td>
+</tr>
+<tr>
+<td>Runtime types</td>
+<td><code>\Tyhp\Type</code>, <code>\Tyhp\NamedType</code></td>
+<td>You and compiled code (<code>typeof</code>, <code>is</code>, <code>default</code>)</td>
+</tr>
+<tr>
+<td>Typed JSON</td>
+<td><code>\Tyhp\Json</code></td>
+<td>You</td>
+</tr>
+<tr>
+<td>Generics bridge</td>
+<td><code>\Tyhp\Generic</code></td>
+<td>Hand-written PHP and compiled code that calls another library's generics</td>
+</tr>
+<tr>
+<td>Object <code>with</code> helper</td>
+<td><code>\Tyhp\ObjectHelper</code></td>
+<td>Compiled <code>with</code> expressions; also callable directly</td>
+</tr>
+<tr>
+<td>Contracts</td>
+<td><code>\Tyhp\Contracts\IsDisposable</code>, <code>Convertible</code>, <code>IntConvertible</code>, <code>FloatConvertible</code>, <code>BoolConvertible</code>, <code>StringConvertible</code>, <code>ArrayAccessShape&lt;TStruct&gt;</code></td>
+<td>You implement them</td>
+</tr>
+<tr>
+<td>Attributes</td>
+<td><code>#[\Tyhp\Php]</code>, <code>#[\Tyhp\PhpType]</code>, <code>#[\Tyhp\NativeTypeTest]</code>, <code>#[\Tyhp\EraseGeneric]</code>, <code>#[\Tyhp\AllowUnset]</code>, <code>#[\Tyhp\GenericRuntime]</code>, <code>#[\Tyhp\NoEmit]</code>, <code>#[\Tyhp\Optimize\Pure]</code>, <code>#[\Tyhp\Optimize\Inline]</code></td>
+<td>You write most of them; the compiler writes <code>GenericRuntime</code></td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td><code>\Tyhp\Exceptions\IncompatibleTypeException</code>, <code>InvalidTypeException</code>, <code>AggregateException</code>, <code>PropertyNotFoundException</code>, <code>InvalidParametersForOperatorOverloadException</code></td>
+<td>Thrown by the runtime and by compiled code</td>
+</tr>
+<tr>
+<td>Compiled-code plumbing</td>
+<td><code>PropertyAccessor</code>, <code>PropertyAccessorObject</code>, <code>PropertyBackingCell</code>, <code>GenericObject</code>, <code>\Tyhp\Concerns\*</code> traits</td>
+<td>Compiled code only</td>
+</tr>
+<tr>
+<td>Composer plugin</td>
+<td><code>Tyhp\Composer\Plugin</code></td>
+<td>Composer</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="scalar-extension-methods">Scalar extension methods</h2>
+<p><code>tyhp/core</code> attaches methods to <code>string</code>, <code>array</code>, <code>int</code>, <code>float</code>, <code>bool</code>, and <code>\Closure</code>. Its type definition issues <code>global use extension</code> for every catalog, so the methods are available in every file of every project that depends on <code>tyhp/core</code>. You do not write <code>use extension</code> for them. A file-level <code>use extension \Tyhp\StringExtensions;</code> with no adaptations is redundant and warns (<code>TYHP4169</code>); use a local <code>use extension</code> only to hide or rename members in that file. The language rules (how the receiver works, chaining, literals, adaptations) are on <a href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a> and <a href="tyhp_2100_extensions.html">Extensions</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function slugify(string $title): string {
+    string $lower = $title-&gt;trim()-&gt;toLower();
+    ?string $slug = $lower-&gt;regexReplace(&#039;/[^a-z0-9]+/&#039;, &#039;-&#039;);
+    return $slug === null ? &#039;&#039; : $slug-&gt;trim(&#039;-&#039;);
+}
+
+function percent(int $part, int $whole): string {
+    float $ratio = (float) $part / (float) $whole * 100.0;
+    return $ratio-&gt;round(1)-&gt;format(1) . &#039;%&#039;;
+}
+
+// slugify(&#039;  Hello, World! 2026 &#039;) === &#039;hello-world-2026&#039;
+// percent(1, 3) === &#039;33.3%&#039;
+</code></pre></div>
+<h3 id="how-to-read-the-signatures">How to read the signatures</h3>
+<p>Each entry below shows the receiver as <code>$s</code> (string), <code>$a</code> (array), <code>$i</code> (int), <code>$f</code> (float), <code>$b</code> (bool), or <code>$fn</code> (<code>\Closure</code>). The receiver is not a parameter: <code>$s-&gt;contains('x')</code> passes one argument. Each entry also says what the call <strong>emits</strong>. Most methods are spliced: the call is replaced by the PHP expression shown, so there is no wrapper object and no extra function call. A few methods need a real PHP body; those emit a static call on the catalog class (for example <code>\Tyhp\ArrayExtensions::sorted($a, $flags)</code>), and hand-written PHP can call them the same way.</p>
+<p>Array methods are generic over the receiver's key and value types. In the array section, <code>TKey</code> and <code>TValue</code> are the key and value types of the array you call the method on, so <code>array&lt;string, int&gt;</code> gives <code>TKey = string</code> and <code>TValue = int</code>.</p>
+<h3 id="unicode-and-ext-mbstring">Unicode and <code>ext-mbstring</code></h3>
+<p>Methods that count, slice, search, or change the case of characters go through <a href="#string-helper-tyhpstringhelper"><code>\Tyhp\StringHelper</code></a>. When <code>ext-mbstring</code> is loaded, those calls use the <code>\mb_*</code> functions and work in characters; otherwise they use the byte functions (<code>\strlen</code>, <code>\substr</code>, <code>\strtoupper</code>, …). Offsets returned by <code>indexOf()</code> and friends are therefore character offsets with mbstring and byte offsets without it. Methods with a <code>byte</code> prefix (<code>byteLength()</code>, <code>byteReverse()</code>) always work in bytes.</p>
+<p><code>trim()</code>, <code>trimLeft()</code>, and <code>trimRight()</code> use PHP's byte-based <code>\trim</code> family in both cases.</p>
+<h3 id="php-version-dependent-methods">PHP-version-dependent methods</h3>
+<p>A few members differ by <code>output.phpVersion</code>. The signature and the result are the same on every target; only the implementation changes:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Method</th>
+<th>PHP 8.2</th>
+<th>PHP 8.3</th>
+<th>PHP 8.4</th>
+<th>PHP 8.5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$s-&gt;pad()</code>, <code>padLeft()</code>, <code>padRight()</code></td>
+<td><code>\str_pad</code> (bytes)</td>
+<td><code>\mb_str_pad</code> when mbstring is loaded</td>
+<td>same as 8.3</td>
+<td>same as 8.3</td>
+</tr>
+<tr>
+<td><code>$s-&gt;ucFirst()</code>, <code>lcFirst()</code></td>
+<td>first character via <code>StringHelper</code></td>
+<td>same as 8.2</td>
+<td><code>\mb_ucfirst</code> / <code>\mb_lcfirst</code> when mbstring is loaded</td>
+<td>same as 8.4</td>
+</tr>
+<tr>
+<td><code>$a-&gt;find()</code>, <code>findKey()</code>, <code>any()</code>, <code>all()</code></td>
+<td>polyfill loop</td>
+<td>polyfill loop</td>
+<td><code>\array_find</code> / <code>\array_find_key</code> / <code>\array_any</code> / <code>\array_all</code></td>
+<td>same as 8.4</td>
+</tr>
+<tr>
+<td><code>$a-&gt;first()</code>, <code>last()</code></td>
+<td>polyfill via <code>\array_key_first</code> / <code>\array_key_last</code></td>
+<td>same as 8.2</td>
+<td>same as 8.2</td>
+<td><code>\array_first</code> / <code>\array_last</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The polyfilled array methods emit a static call on <code>\Tyhp\ArrayExtensionsVersioned</code>; the native ones splice the PHP function. On PHP 8.2 the <code>pad</code> family pads by bytes, so multibyte padding strings can produce a different visible width than on 8.3+.</p>
+<h3 id="chaining-and-receivers">Chaining and receivers</h3>
+<p>Calls chain: <code>$title-&gt;trim()-&gt;toLower()</code>. Integer and float literals need parentheses: <code>(255)-&gt;toHex()</code>.</p>
+<p>A few string methods splice the receiver into a later argument position of the PHP function: <code>split()</code> (<code>\explode($delimiter, $s)</code>), <code>replace()</code>, <code>replaceIgnoreCase()</code>, <code>regexReplace()</code>, <code>regexSplit()</code>, <code>matches()</code>, and <code>hash()</code>. A call can be the receiver of one of those (<code>$s-&gt;toLower()-&gt;split(' ')</code>) as long as the other arguments are literals, constants, or variables. When the receiver and an earlier argument are both calls (<code>$s-&gt;trim()-&gt;split(sep())</code>), the compiler cannot keep PHP's evaluation order and reports <code>TYHP4181</code>. Assign one of the values to a variable first, as <code>slugify()</code> does above.</p>
+<p>Methods that modify the array in place (<code>sort()</code>, <code>push()</code>, <code>pop()</code>, …) take the receiver by reference, so the receiver must be a variable, property, or array element, not a call result.</p>
+<h3 id="string-methods">String methods</h3>
+<h4 id="length-and-emptiness">Length and emptiness</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;length(): int</code></h4><br/><p>Number of characters (with mbstring) or bytes (without). Emits <code>\Tyhp\StringHelper::strlen($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;byteLength(): int</code></h4><br/><p>Number of bytes, regardless of mbstring. Emits <code>\strlen($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;isEmpty(): bool</code></h4><br/><p><code>true</code> when the string is exactly <code>''</code>. <code>'0'</code> and <code>' '</code> are not empty. Emits <code>$s === ''</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;isNotEmpty(): bool</code></h4><br/><p><code>true</code> when the string is not <code>''</code>. Emits <code>$s !== ''</code>.</p>
+</div>
+<h4 id="searching">Searching</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;contains(string $needle): bool</code></h4><br/><p>Case-sensitive substring test. An empty needle always matches. Emits <code>\str_contains($s, $needle)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;containsIgnoreCase(string $needle): bool</code></h4><br/><p>Case-insensitive substring test, Unicode-aware with mbstring. Emits <code>\Tyhp\StringHelper::stripos($s, $needle) !== false</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;startsWith(string $prefix): bool</code></h4><br/><p>Emits <code>\str_starts_with($s, $prefix)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;endsWith(string $suffix): bool</code></h4><br/><p>Emits <code>\str_ends_with($s, $suffix)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;indexOf(string $needle, int $offset = 0): int|false</code></h4><br/><p>Position of the first occurrence at or after <code>$offset</code>, or <code>false</code> when not found. Compare the result with <code>=== false</code>; <code>0</code> is a valid position. Emits <code>\Tyhp\StringHelper::strpos($s, $needle, $offset)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;lastIndexOf(string $needle, int $offset = 0): int|false</code></h4><br/><p>Position of the last occurrence, or <code>false</code>. A negative <code>$offset</code> limits the search as in <code>\strrpos</code>. Emits <code>\Tyhp\StringHelper::strrpos($s, $needle, $offset)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;indexOfIgnoreCase(string $needle, int $offset = 0): int|false</code></h4><br/><p>Case-insensitive <code>indexOf()</code>. Emits <code>\Tyhp\StringHelper::stripos($s, $needle, $offset)</code>.</p>
+</div>
+<h4 id="extracting">Extracting</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;substring(int $start, ?int $length = null): string</code></h4><br/><p>Characters from <code>$start</code> (negative counts from the end) for <code>$length</code> characters, or to the end when <code>$length</code> is <code>null</code>. Emits <code>\Tyhp\StringHelper::substr($s, $start, $length)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;charAt(int $index): string</code></h4><br/><p>The single character at <code>$index</code>, or <code>''</code> when out of range. Emits <code>\Tyhp\StringHelper::substr($s, $index, 1)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;first(int $length = 1): string</code></h4><br/><p>The first <code>$length</code> characters. Emits <code>\Tyhp\StringHelper::substr($s, 0, $length)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;last(int $length = 1): string</code></h4><br/><p>The last <code>$length</code> characters. Emits <code>\Tyhp\StringHelper::substr($s, -$length)</code>. Because <code>-0</code> is <code>0</code>, <code>last(0)</code> returns the whole string, not <code>''</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;chunk(int $length = 1): array&lt;int, string&gt;</code></h4><br/><p>Splits the string into pieces of <code>$length</code> characters (the last piece may be shorter). Emits <code>\Tyhp\StringHelper::strSplit($s, $length)</code>.</p>
+</div>
+<h4 id="case">Case</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;toLower(): string</code></h4><br/><p>Emits <code>\Tyhp\StringHelper::strtolower($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;toUpper(): string</code></h4><br/><p>Emits <code>\Tyhp\StringHelper::strtoupper($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;ucWords(): string</code></h4><br/><p>Capitalizes each word. With mbstring this is <code>\mb_convert_case($s, MB_CASE_TITLE)</code>, which also lowercases the rest of each word (<code>'hELLO wORLD'</code> becomes <code>'Hello World'</code>); without mbstring it is <code>\ucwords</code>, which leaves the rest unchanged. Emits <code>\Tyhp\StringHelper::ucWords($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;ucFirst(): string</code></h4><br/><p>Uppercases the first character (<code>'élan'</code> becomes <code>'Élan'</code> with mbstring). Implementation depends on the PHP target; see <a href="#php-version-dependent-methods">PHP-version-dependent methods</a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;lcFirst(): string</code></h4><br/><p>Lowercases the first character. Implementation depends on the PHP target.</p>
+</div>
+<h4 id="trimming-and-padding">Trimming and padding</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;trim(string $characters = &quot; \t\n\r\0\x0B&quot;): string</code></h4><br/><p>Removes the listed bytes from both ends. Pass a character list (ranges like <code>'a..z'</code> work as in PHP) to trim something else, for example <code>$slug-&gt;trim('-')</code>. Emits <code>\trim($s, $characters)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;trimLeft(string $characters = &quot; \t\n\r\0\x0B&quot;): string</code></h4><br/><p>Emits <code>\ltrim($s, $characters)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;trimRight(string $characters = &quot; \t\n\r\0\x0B&quot;): string</code></h4><br/><p>Emits <code>\rtrim($s, $characters)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;pad(int $length, string $padString = &#039; &#039;, int $padType = \STR_PAD_RIGHT): string</code></h4><br/><p>Pads to <code>$length</code> with <code>$padString</code>. <code>$padType</code> is <code>\STR_PAD_RIGHT</code>, <code>\STR_PAD_LEFT</code>, or <code>\STR_PAD_BOTH</code>. A string already at least <code>$length</code> long is returned unchanged.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;padLeft(int $length, string $padString = &#039; &#039;): string</code></h4><br/><p>Pads on the left. <code>'42'-&gt;padLeft(8, '0')</code> is <code>'00000042'</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;padRight(int $length, string $padString = &#039; &#039;): string</code></h4><br/><p>Pads on the right.</p>
+</div>
+<h4 id="replacing-splitting-and-joining">Replacing, splitting, and joining</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;replace(string|array&lt;int|string, string&gt; $search, string|array&lt;int|string, string&gt; $replace): string</code></h4><br/><p>Case-sensitive replacement of every occurrence. Arrays replace pairwise, as in <code>\str_replace</code>. Emits <code>\str_replace($search, $replace, $s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;replaceIgnoreCase(string|array&lt;int|string, string&gt; $search, string|array&lt;int|string, string&gt; $replace): string</code></h4><br/><p>Emits <code>\str_ireplace($search, $replace, $s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;split(string $delimiter, int $limit = \PHP_INT_MAX): array&lt;int, string&gt;</code></h4><br/><p>Splits on <code>$delimiter</code>. A positive <code>$limit</code> caps the number of pieces (the last piece holds the rest); a negative one drops that many pieces from the end. An empty delimiter throws <code>\ValueError</code>. Emits <code>\explode($delimiter, $s, $limit)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;repeat(int $times): string</code></h4><br/><p>Emits <code>\str_repeat($s, $times)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;reverse(): string</code></h4><br/><p>Reverses the characters (multibyte-safe with mbstring: <code>'añb'</code> becomes <code>'bña'</code>). Emits <code>\implode('', \array_reverse(\Tyhp\StringHelper::strSplit($s)))</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;byteReverse(): string</code></h4><br/><p>Reverses the bytes. This corrupts multibyte characters; use <code>reverse()</code> for text. Emits <code>\strrev($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;wordWrap(int $width = 75, string $break = &quot;\n&quot;, bool $cutLongWords = false): string</code></h4><br/><p>Emits <code>\wordwrap($s, $width, $break, $cutLongWords)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;wordCount(int $format = 0, ?string $characters = null): array&lt;int, string&gt;|int</code></h4><br/><p>With <code>$format</code> <code>0</code>, the number of words (<code>int</code>). With <code>1</code>, a list of the words; with <code>2</code>, the words keyed by their byte offset (both <code>array&lt;int, string&gt;</code>). A literal <code>$format</code> selects the matching return type; with a non-literal <code>$format</code> the result is the union, so narrow it (<code>\is_int($count)</code>) before use. Emits <code>\str_word_count($s, $format, $characters)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;format(mixed ...$args): string</code></h4><br/><p>Uses the string as a <code>\sprintf</code> format: <code>'%d items'-&gt;format($count)</code>. Emits <code>\sprintf($s, ...$args)</code>.</p>
+</div>
+<h4 id="regular-expressions">Regular expressions</h4>
+<p>All patterns are PCRE patterns with delimiters, exactly as for PHP's <code>preg_*</code> functions.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;matches(string $pattern): bool</code></h4><br/><p><code>true</code> when the pattern matches somewhere in the string. Emits <code>\preg_match($pattern, $s) === 1</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;match(string $pattern, int $flags = 0, int $offset = 0): \PregMatchSetNullable|\PregMatchSetOffset|\PregMatchSetOffsetNullable|null</code></h4><br/><p>The first match as <code>\preg_match</code> fills it (index <code>0</code> is the whole match, then the groups), or <code>null</code> when there is no match. <code>$flags</code> takes <code>\PREG_OFFSET_CAPTURE</code> and <code>\PREG_UNMATCHED_AS_NULL</code>. When <code>$flags</code> is a literal or constant, the result type follows it:</p>
+<ul>
+<li><code>0</code> (the default): <code>\PregMatchSet</code>, an array of strings.</li>
+<li><code>\PREG_OFFSET_CAPTURE</code>: <code>\PregMatchSetOffset</code>, whose entries are <code>[string, offset]</code> pairs.</li>
+<li><code>\PREG_UNMATCHED_AS_NULL</code>: <code>\PregMatchSetNullable</code>, where unmatched groups are <code>null</code>.</li>
+<li>Both flags: <code>\PregMatchSetOffsetNullable</code>.</li>
+</ul>
+<p>Any other <code>$flags</code> expression gives the union of those types. Emits <code>\Tyhp\StringExtensions::match($s, $pattern, $flags, $offset)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;matchAll(string $pattern, int $flags = 0, int $offset = 0): array&lt;int|string, mixed&gt;|false</code></h4><br/><p>Every match as <code>\preg_match_all</code> fills it (default ordering <code>\PREG_PATTERN_ORDER</code>), or <code>false</code> on a PCRE error. Returns an empty-group structure, not <code>false</code>, when nothing matches. When <code>$flags</code> is a literal or constant, the result type follows it: pattern order (<code>0</code>, <code>\PREG_PATTERN_ORDER</code>) gives <code>\PregMatchAllSet</code>, <code>\PREG_SET_ORDER</code> gives <code>\PregMatchAllList</code>, and <code>\PREG_OFFSET_CAPTURE</code> and <code>\PREG_UNMATCHED_AS_NULL</code> select the offset-capture and nullable variants. Any other <code>$flags</code> expression gives <code>array&lt;int|string, mixed&gt;|false</code>. Emits <code>\Tyhp\StringExtensions::matchAll($s, $pattern, $flags, $offset)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;regexReplace(string $pattern, string $replacement): string|null</code></h4><br/><p>Replaces every match; <code>$replacement</code> may use <code>$1</code> back-references. Returns <code>null</code> on a PCRE error. Emits <code>\preg_replace($pattern, $replacement, $s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;regexSplit(string $pattern, int $limit = -1, int $flags = 0): array&lt;int, string&gt;|array&lt;int, \PregOffsetCapture&gt;|false</code></h4><br/><p>Splits on the pattern. With <code>\PREG_SPLIT_OFFSET_CAPTURE</code> in <code>$flags</code>, each piece is a <code>[string, offset]</code> pair. Returns <code>false</code> on a PCRE error. When <code>$flags</code> is a literal or constant, the result is <code>array&lt;int, string&gt;|false</code> without <code>\PREG_SPLIT_OFFSET_CAPTURE</code> and <code>array&lt;int, \PregOffsetCapture&gt;|false</code> with it; any other <code>$flags</code> expression gives the union. Emits <code>\preg_split($pattern, $s, $limit, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;regexQuote(string $delimiter = &#039;/&#039;): string</code></h4><br/><p>Escapes regex metacharacters (and <code>$delimiter</code>) so the string can be embedded in a pattern. Emits <code>\preg_quote($s, $delimiter)</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function parseVersion(string $tag): ?string {
+    $m = $tag-&gt;match(&#039;/^v(\d+)\.(\d+)\.(\d+)$/&#039;);
+    if ($m === null) {
+        return null;
+    }
+    mixed $major = $m[1];
+    mixed $minor = $m[2];
+    if (!\is_string($major) || !\is_string($minor)) {
+        return null;
+    }
+    return $major . &#039;.&#039; . $minor;
+}
+
+// parseVersion(&#039;v8.4.12&#039;) === &#039;8.4&#039;
+</code></pre></div>
+<h4 id="encoding-and-escaping">Encoding and escaping</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;htmlEncode(int $flags = \ENT_QUOTES | \ENT_SUBSTITUTE | \ENT_HTML401, bool $doubleEncode = true): string</code></h4><br/><p>Escapes <code>&amp;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&quot;</code>, and <code>'</code> for HTML output. Use it for every untrusted value you place in HTML. Emits <code>\htmlspecialchars($s, $flags, null, $doubleEncode)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;htmlDecode(int $flags = \ENT_QUOTES | \ENT_SUBSTITUTE | \ENT_HTML401): string</code></h4><br/><p>Reverses <code>htmlEncode()</code>. Emits <code>\htmlspecialchars_decode($s, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;htmlEntities(int $flags = \ENT_QUOTES | \ENT_SUBSTITUTE | \ENT_HTML401, bool $doubleEncode = true): string</code></h4><br/><p>Converts every character that has a named HTML entity. Emits <code>\htmlentities($s, $flags, null, $doubleEncode)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;nl2Br(bool $useXhtml = true): string</code></h4><br/><p>Inserts <code>&lt;br /&gt;</code> (or <code>&lt;br&gt;</code> when <code>$useXhtml</code> is <code>false</code>) before each newline. It does not escape HTML; call <code>htmlEncode()</code> first. Emits <code>\nl2br($s, $useXhtml)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;stripTags(array&lt;int|string, string&gt;|string|null $allowedTags = null): string</code></h4><br/><p>Removes HTML and PHP tags. This is not an HTML sanitizer; use <code>htmlEncode()</code> to make text safe. Emits <code>\strip_tags($s, $allowedTags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;urlEncode(): string</code></h4><br/><p>Form encoding (spaces become <code>+</code>). Emits <code>\urlencode($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;urlDecode(): string</code></h4><br/><p>Emits <code>\urldecode($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;rawUrlEncode(): string</code></h4><br/><p>RFC 3986 encoding (spaces become <code>%20</code>); use it for path segments. Emits <code>\rawurlencode($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;rawUrlDecode(): string</code></h4><br/><p>Emits <code>\rawurldecode($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;base64Encode(): string</code></h4><br/><p>Emits <code>\base64_encode($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;base64Decode(bool $strict = false): string|false</code></h4><br/><p>Returns <code>false</code> when <code>$strict</code> is <code>true</code> and the input contains characters outside the Base64 alphabet. Emits <code>\base64_decode($s, $strict)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;convertEncoding(string $toEncoding, array|string|null $fromEncoding = null): string|false</code></h4><br/><p>Converts between character encodings. Returns <code>false</code> when mbstring is not loaded. Emits <code>\Tyhp\StringHelper::convertEncoding($s, $toEncoding, $fromEncoding)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;detectEncoding(): string|false</code></h4><br/><p>Detects the encoding with <code>\mb_detect_encoding</code>. Returns <code>false</code> when it cannot decide or when mbstring is not loaded. Emits <code>\Tyhp\StringHelper::detectEncoding($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;ord(): int|false</code></h4><br/><p>Code point of the first character (with mbstring) or value of the first byte (without). Emits <code>\Tyhp\StringHelper::ord($s)</code>.</p>
+</div>
+<h4 id="hashing">Hashing</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;md5(bool $binary = false): string</code></h4><br/><p>Emits <code>\md5($s, $binary)</code>. Do not use it for passwords.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;sha1(bool $binary = false): string</code></h4><br/><p>Emits <code>\sha1($s, $binary)</code>. Do not use it for passwords.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;hash(string $algorithm, bool $binary = false): string</code></h4><br/><p>Any algorithm from <code>\hash_algos()</code>, for example <code>'sha256'</code>. An unknown algorithm throws <code>\ValueError</code>. Emits <code>\hash($algorithm, $s, $binary)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;crc32(): int</code></h4><br/><p>Emits <code>\crc32($s)</code>.</p>
+</div>
+<h4 id="json">JSON</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;jsonDecode(bool $associative = true, int $depth = 512, int $flags = 0): \JsonAssoc|\JsonObject|null</code></h4><br/><p>Untyped decode. Unlike <code>\json_decode</code>, objects become associative arrays by default. Returns <code>null</code> for invalid JSON unless <code>\JSON_THROW_ON_ERROR</code> is in <code>$flags</code>. Prefer <code>jsonDecodeAs&lt;T&gt;()</code> when you know the shape. Emits <code>\json_decode($s, $associative, $depth, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;jsonDecodeAs&lt;T extends struct&gt;(int $depth = 512, int $flags = 0): T</code></h4><br/><p>Typed decode; the same as <a href="#typed-json-tyhpjson"><code>\Tyhp\Json::decode&lt;T&gt;($s)</code></a>. Throws <code>\JsonException</code> for invalid JSON and <code>IncompatibleTypeException</code> when the value does not match <code>T</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;jsonTryDecodeAs&lt;T extends struct&gt;(T &amp;$out, int $depth = 512, int $flags = 0): bool</code></h4><br/><p>Typed decode that does not throw; the same as <code>\Tyhp\Json::tryDecode&lt;T&gt;($s, $out)</code>.</p>
+</div>
+<h4 id="conversion">Conversion</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;isNumeric(): bool</code></h4><br/><p>Emits <code>\is_numeric($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;__toInt(): int</code></h4><br/><p>Emits <code>\intval($s)</code>. Non-numeric strings give <code>0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;__toFloat(): float</code></h4><br/><p>Emits <code>\floatval($s)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$s-&gt;__toBool(): bool</code></h4><br/><p>Emits <code>(bool) $s</code>. <code>''</code> and <code>'0'</code> are <code>false</code>.</p>
+</div>
+<h3 id="array-methods">Array methods</h3>
+<p>Methods ending in <code>-ed</code> (<code>sorted</code>, <code>filtered</code>, <code>mapped</code>, <code>reversed</code>, …) return a new array and leave the receiver alone. The bare verbs (<code>sort</code>, <code>push</code>, <code>shift</code>, …) modify the receiver in place and return what the PHP function returns.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type Order = struct {
+    int $id = 0;
+    string $customer = &#039;&#039;;
+    float $total = 0.0;
+    string $status = &#039;open&#039;;
+};
+
+function topCustomers(array&lt;int, Order&gt; $orders): array&lt;int, string&gt; {
+    array&lt;int, Order&gt; $open = $orders-&gt;filtered(fn(Order $o): bool =&gt; $o-&gt;status === &#039;open&#039;);
+    array&lt;int, Order&gt; $byTotal = $open-&gt;sortedBy(fn(Order $a, Order $b): int =&gt; $b-&gt;total &lt;=&gt; $a-&gt;total);
+    array&lt;int, string&gt; $names = $byTotal-&gt;mapped(fn(Order $o): string =&gt; $o-&gt;customer);
+    return $names-&gt;unique()-&gt;values()-&gt;sliced(0, 3);
+}
+
+function revenue(array&lt;int, Order&gt; $orders): float {
+    return $orders-&gt;reduce(fn(float $sum, Order $o): float =&gt; $sum + $o-&gt;total, 0.0);
+}
+
+function firstLarge(array&lt;int, Order&gt; $orders): ?Order {
+    return $orders-&gt;find(fn(Order $o, int $i): bool =&gt; $o-&gt;total &gt; 1000.0);
+}
+</code></pre></div>
+<h4 id="size-and-membership">Size and membership</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;count(): int</code></h4><br/><p>Emits <code>\count($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;isEmpty(): bool</code></h4><br/><p>Emits <code>\count($a) === 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;isNotEmpty(): bool</code></h4><br/><p>Emits <code>\count($a) &gt; 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;keyExists(TKey $key): bool</code></h4><br/><p><code>true</code> when the key is present, even if its value is <code>null</code>. Emits <code>\array_key_exists($key, $a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;contains(TValue $value, bool $strict = false): bool</code></h4><br/><p>Searches the values. The comparison is loose (<code>==</code>) unless <code>$strict</code> is <code>true</code>; pass <code>true</code> for strings that might look numeric and for mixed types. Emits <code>\in_array($value, $a, $strict)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;search(TValue $value, bool $strict = false): TKey|false</code></h4><br/><p>Key of the first matching value, or <code>false</code>. Loose by default, like <code>contains()</code>. Compare with <code>=== false</code>, since <code>0</code> is a valid key. Emits <code>\array_search($value, $a, $strict)</code>.</p>
+</div>
+<h4 id="keys-and-values">Keys and values</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;keys(): array&lt;int, TKey&gt;</code></h4><br/><p>Emits <code>\array_keys($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;values(): array&lt;int, TValue&gt;</code></h4><br/><p>The values re-indexed from <code>0</code>. Use it after <code>filtered()</code> or <code>unique()</code> when you need a list. Emits <code>\array_values($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;first(): ?TValue</code></h4><br/><p>The first value in iteration order, or <code>null</code> for an empty array. A stored <code>null</code> is indistinguishable from &quot;empty&quot;; check <code>isEmpty()</code> when that matters. Implementation depends on the PHP target.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;last(): ?TValue</code></h4><br/><p>The last value, or <code>null</code> for an empty array. Implementation depends on the PHP target.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;flipped(): array&lt;TValue, TKey&gt;</code></h4><br/><p>Swaps keys and values. Available when <code>TValue</code> is <code>int</code> or <code>string</code>. Later duplicates win. Emits <code>\array_flip($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;countValues(): array&lt;TValue, int&gt;</code></h4><br/><p>How many times each value occurs. Available when both <code>TKey</code> and <code>TValue</code> are <code>int</code> or <code>string</code>. Emits <code>\array_count_values($a)</code>.</p>
+</div>
+<h4 id="searching-with-a-predicate">Searching with a predicate</h4>
+<p>These take a callback that receives the value and then the key.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;find(callable(TValue, TKey): bool $callback): ?TValue</code></h4><br/><p>The first value for which the callback returns <code>true</code>, or <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;findKey(callable(TValue, TKey): bool $callback): ?TKey</code></h4><br/><p>The key of the first value for which the callback returns <code>true</code>, or <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;any(callable(TValue, TKey): bool $callback): bool</code></h4><br/><p><code>true</code> as soon as one element satisfies the callback; <code>false</code> for an empty array.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;all(callable(TValue, TKey): bool $callback): bool</code></h4><br/><p><code>true</code> when every element satisfies the callback; <code>true</code> for an empty array.</p>
+</div>
+<h4 id="transforming">Transforming</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;filtered(?callable $callback = null, int $mode = 0): array&lt;TKey, TValue&gt;</code></h4><br/><p>Keeps the elements for which the callback returns <code>true</code>. Keys are preserved, so a filtered list can have gaps; call <code>values()</code> to re-index. Without a callback, removes every falsy element. <code>$mode</code> is <code>\ARRAY_FILTER_USE_KEY</code> or <code>\ARRAY_FILTER_USE_BOTH</code>. Emits <code>\array_filter($a, $callback, $mode)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;mapped&lt;TResult&gt;(callable(TValue): TResult $callback): array&lt;TKey, TResult&gt;</code></h4><br/><p>Applies the callback to every value and keeps the keys. <code>TResult</code> is inferred from the callback's return type. Emits <code>\array_map($callback, $a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;reduce&lt;TResult&gt;(callable(TResult, TValue): TResult $callback, TResult $initial): TResult</code></h4><br/><p>Folds the values into one result, starting from <code>$initial</code>. Emits <code>\array_reduce($a, $callback, $initial)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;walk(callable(TValue, TKey): void $callback): bool</code></h4><br/><p>Calls the callback for every element with the value and the key, and returns <code>true</code>. Emits <code>\array_walk($a, $callback)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;unique(int $flags = \SORT_STRING): array&lt;TKey, TValue&gt;</code></h4><br/><p>Removes duplicate values, keeping the first key of each. Values are compared as strings by default. Emits <code>\array_unique($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;reversed(bool $preserveKeys = false): array&lt;TKey, TValue&gt;</code></h4><br/><p>Reverses the order. Integer keys are renumbered unless <code>$preserveKeys</code> is <code>true</code>; string keys are always kept. Emits <code>\array_reverse($a, $preserveKeys)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;flatten(): array</code></h4><br/><p>Collects every leaf value of a nested array into one list, depth-first. Keys are discarded. The result is an untyped <code>array</code>, so annotate the variable you assign it to. Calls <code>\Tyhp\ArrayExtensions::flatten($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;join(string $separator = &#039;&#039;): string</code></h4><br/><p>Joins the values into a string. Emits <code>\implode($separator, $a)</code>.</p>
+</div>
+<h4 id="slicing-and-combining">Slicing and combining</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sliced(int $offset, ?int $length = null, bool $preserveKeys = false): array&lt;TKey, TValue&gt;</code></h4><br/><p>A portion of the array, by position. Integer keys are renumbered unless <code>$preserveKeys</code> is <code>true</code>. Emits <code>\array_slice($a, $offset, $length, $preserveKeys)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;chunked(int $length, bool $preserveKeys = false): array&lt;int, array&lt;TKey, TValue&gt;&gt;</code></h4><br/><p>Splits into arrays of <code>$length</code> elements (the last may be shorter). Emits <code>\array_chunk($a, $length, $preserveKeys)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;padded(int $length, TValue $value): array&lt;TKey, TValue&gt;</code></h4><br/><p>Pads to <code>$length</code> elements with <code>$value</code> (a negative <code>$length</code> pads at the front). Emits <code>\array_pad($a, $length, $value)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;merged(array&lt;TKey, TValue&gt; ...$arrays): array&lt;TKey, TValue&gt;</code></h4><br/><p>Appends the other arrays. String keys from later arrays overwrite earlier ones; integer keys are renumbered. Emits <code>\array_merge($a, ...$arrays)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;diffed(array&lt;TKey, TValue&gt; ...$arrays): array&lt;TKey, TValue&gt;</code></h4><br/><p>Values of the receiver that appear in none of the other arrays (compared as strings). Emits <code>\array_diff($a, ...$arrays)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;diffedByKey(array&lt;TKey, TValue&gt; ...$arrays): array&lt;TKey, TValue&gt;</code></h4><br/><p>Elements whose keys appear in none of the other arrays. Emits <code>\array_diff_key($a, ...$arrays)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;intersected(array&lt;TKey, TValue&gt; ...$arrays): array&lt;TKey, TValue&gt;</code></h4><br/><p>Values of the receiver that appear in every other array. Emits <code>\array_intersect($a, ...$arrays)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;intersectedByKey(array&lt;TKey, TValue&gt; ...$arrays): array&lt;TKey, TValue&gt;</code></h4><br/><p>Elements whose keys appear in every other array. Emits <code>\array_intersect_key($a, ...$arrays)</code>.</p>
+</div>
+<h4 id="sorting-into-a-new-array">Sorting into a new array</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sorted(int $flags = \SORT_REGULAR): array&lt;int, TValue&gt;</code></h4><br/><p>The values in ascending order, as a new list (keys are discarded). Calls <code>\Tyhp\ArrayExtensions::sorted($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;reverseSorted(int $flags = \SORT_REGULAR): array&lt;int, TValue&gt;</code></h4><br/><p>The values in descending order, as a new list. Calls <code>\Tyhp\ArrayExtensions::reverseSorted($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sortedBy(callable(TValue, TValue): int $callback): array&lt;int, TValue&gt;</code></h4><br/><p>The values ordered by a comparison callback that returns a negative number, zero, or a positive number (the <code>&lt;=&gt;</code> operator is the usual body). Keys are discarded. Calls <code>\Tyhp\ArrayExtensions::sortedBy($a, $callback)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sortedByKey(int $flags = \SORT_REGULAR): array&lt;TKey, TValue&gt;</code></h4><br/><p>A copy ordered by key, ascending, with keys kept. Calls <code>\Tyhp\ArrayExtensions::sortedByKey($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;reverseSortedByKey(int $flags = \SORT_REGULAR): array&lt;TKey, TValue&gt;</code></h4><br/><p>A copy ordered by key, descending, with keys kept. Calls <code>\Tyhp\ArrayExtensions::reverseSortedByKey($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sortedByKeyWith(callable(TKey, TKey): int $callback): array&lt;TKey, TValue&gt;</code></h4><br/><p>A copy ordered by a key comparison callback, with keys kept. Calls <code>\Tyhp\ArrayExtensions::sortedByKeyWith($a, $callback)</code>.</p>
+</div>
+<h4 id="modifying-in-place">Modifying in place</h4>
+<p>These require a variable (or property, or element) as the receiver.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sort(int $flags = \SORT_REGULAR): bool</code></h4><br/><p>Sorts the values ascending and re-indexes. Emits <code>\sort($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;reverseSort(int $flags = \SORT_REGULAR): bool</code></h4><br/><p>Emits <code>\rsort($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sortBy(callable(TValue, TValue): int $callback): bool</code></h4><br/><p>Sorts with a comparison callback and re-indexes. Emits <code>\usort($a, $callback)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sortByKey(int $flags = \SORT_REGULAR): bool</code></h4><br/><p>Emits <code>\ksort($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;reverseSortByKey(int $flags = \SORT_REGULAR): bool</code></h4><br/><p>Emits <code>\krsort($a, $flags)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sortByKeyWith(callable(TKey, TKey): int $callback): bool</code></h4><br/><p>Emits <code>\uksort($a, $callback)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;shuffle(): bool</code></h4><br/><p>Randomizes the order and re-indexes. Not cryptographically secure. Emits <code>\shuffle($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;push(TValue ...$values): int</code></h4><br/><p>Appends values; returns the new element count. Emits <code>\array_push($a, ...$values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;pop(): ?TValue</code></h4><br/><p>Removes and returns the last value, or <code>null</code> when the array is empty. Emits <code>\array_pop($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;shift(): ?TValue</code></h4><br/><p>Removes and returns the first value, or <code>null</code>; integer keys are renumbered. Emits <code>\array_shift($a)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;unshift(TValue ...$values): int</code></h4><br/><p>Prepends values; returns the new element count. Emits <code>\array_unshift($a, ...$values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;splice(int $offset, ?int $length = null, array $replacement = []): array&lt;TKey, TValue&gt;</code></h4><br/><p>Removes <code>$length</code> elements starting at <code>$offset</code> (to the end when <code>null</code>), inserts <code>$replacement</code> in their place, and returns the removed elements. Emits <code>\array_splice($a, $offset, $length, $replacement)</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function queue(): array&lt;int, string&gt; {
+    array&lt;int, string&gt; $jobs = [&#039;email&#039;, &#039;resize&#039;];
+    int $n = $jobs-&gt;push(&#039;cleanup&#039;, &#039;report&#039;);   // 4
+    ?string $next = $jobs-&gt;shift();              // &#039;email&#039;
+    $jobs-&gt;sort();                               // [&#039;cleanup&#039;, &#039;report&#039;, &#039;resize&#039;]
+    return $n &gt; 0 &amp;&amp; $next !== null ? $jobs : [];
+}
+</code></pre></div>
+<h4 id="numeric-arrays">Numeric arrays</h4>
+<p>Available when the value type is <code>int</code> or <code>float</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;sum(): int|float</code></h4><br/><p>Emits <code>\array_sum($a)</code>. <code>0</code> for an empty array.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;product(): int|float</code></h4><br/><p>Emits <code>\array_product($a)</code>. <code>1</code> for an empty array.</p>
+</div>
+<h4 id="untyped-helpers">Untyped helpers</h4>
+<p>These are declared on plain <code>array</code> because their result shape depends on the arguments. Annotate the variable you assign the result to.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;column(string|int|null $columnKey, string|int|null $indexKey = null): array</code></h4><br/><p>One field from each row of a list of rows (arrays or objects), optionally keyed by another field. A <code>null</code> <code>$columnKey</code> returns whole rows. Emits <code>\array_column($a, $columnKey, $indexKey)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;combined(array $values): array</code></h4><br/><p>Uses the receiver's values as keys for <code>$values</code>. Both arrays must have the same number of elements, or PHP throws <code>\ValueError</code>. Emits <code>\array_combine($a, $values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;zipped(array ...$arrays): array</code></h4><br/><p>Pairs up elements by position: when <code>$ids</code> is <code>[1, 2]</code>, <code>$ids-&gt;zipped(['a', 'b'])</code> is <code>[[1, 'a'], [2, 'b']]</code>. Shorter arrays are padded with <code>null</code>. Emits <code>\array_map(null, $a, ...$arrays)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$a-&gt;toJson(int $flags = 0, int $depth = 512): string|false</code></h4><br/><p>Encodes the array as JSON; returns <code>false</code> on failure unless <code>\JSON_THROW_ON_ERROR</code> is set. Emits <code>\json_encode($a, $flags, $depth)</code>.</p>
+</div>
+<h3 id="int-methods">Int methods</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;abs(): int</code></h4><br/><p>Emits <code>\abs($i)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;clamp(int $min, int $max): int</code></h4><br/><p>Limits the value to the range <code>$min</code>…<code>$max</code>. When <code>$min</code> is greater than <code>$max</code>, the result is <code>$min</code>. Emits <code>\max($min, \min($max, $i))</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;between(int $min, int $max): bool</code></h4><br/><p>Inclusive range test. Emits <code>($i &gt;= $min) &amp;&amp; ($i &lt;= $max)</code>. Pass variables or literals as <code>$min</code> and <code>$max</code>; a call as either bound is <strong>TYHP4181</strong>. Assign it to a variable first.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;isEven(): bool</code></h4><br/><p>Emits <code>($i % 2) === 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;isOdd(): bool</code></h4><br/><p>Emits <code>($i % 2) !== 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;isPositive(): bool</code></h4><br/><p>Strictly greater than zero. Emits <code>$i &gt; 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;isNegative(): bool</code></h4><br/><p>Emits <code>$i &lt; 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;isZero(): bool</code></h4><br/><p>Emits <code>$i === 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;sign(): int</code></h4><br/><p><code>-1</code>, <code>0</code>, or <code>1</code>. Emits <code>$i &lt;=&gt; 0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;max(int $value, int ...$values): int</code></h4><br/><p>The largest of the receiver and the arguments. At least one argument is required. Emits <code>\max($i, $value, ...$values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;min(int $value, int ...$values): int</code></h4><br/><p>The smallest of the receiver and the arguments. At least one argument is required. Emits <code>\min($i, $value, ...$values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;pow(int $exponent): int|float</code></h4><br/><p><code>$i ** $exponent</code>. The result is a <code>float</code> for a negative exponent or when the result overflows <code>int</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;toBase(int $base): string</code></h4><br/><p>The value written in base 2–36. Emits <code>\base_convert((string) $i, 10, $base)</code>. <code>\base_convert</code> drops the minus sign with a deprecation notice, so <code>(-10)-&gt;toBase(2)</code> is <code>'1010'</code>; convert <code>abs()</code> and add the sign yourself for negative values.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;toHex(): string</code></h4><br/><p>Lowercase hexadecimal. Negative values give the two's-complement form. Emits <code>\dechex($i)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;toOctal(): string</code></h4><br/><p>Emits <code>\decoct($i)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;toBinary(): string</code></h4><br/><p>Emits <code>\decbin($i)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;format(int $decimals = 0, string $decimalSeparator = &#039;.&#039;, string $thousandsSeparator = &#039;,&#039;): string</code></h4><br/><p>Groups thousands: <code>(1234567)-&gt;format()</code> is <code>'1,234,567'</code>. Emits <code>\number_format($i, $decimals, $decimalSeparator, $thousandsSeparator)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;__toString(): string</code></h4><br/><p>Emits <code>(string) $i</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;__toFloat(): float</code></h4><br/><p>Emits <code>(float) $i</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$i-&gt;__toBool(): bool</code></h4><br/><p><code>false</code> only for <code>0</code>. Emits <code>(bool) $i</code>.</p>
+</div>
+<h3 id="float-methods">Float methods</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;abs(): float</code></h4><br/><p>Emits <code>\abs($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;ceil(): int</code></h4><br/><p>Rounds up and returns an <code>int</code>. Emits <code>(int) \ceil($f)</code>. Values outside the <code>int</code> range (and <code>NAN</code> / <code>INF</code>) do not convert meaningfully; check <code>isFinite()</code> first when the input is untrusted.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;floor(): int</code></h4><br/><p>Rounds down and returns an <code>int</code>. Emits <code>(int) \floor($f)</code>. The same range caveat as <code>ceil()</code> applies.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;round(int $precision = 0, int $mode = \PHP_ROUND_HALF_UP): float</code></h4><br/><p>Rounds to <code>$precision</code> decimal places and stays a <code>float</code>. Emits <code>\round($f, $precision, $mode)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;clamp(float $min, float $max): float</code></h4><br/><p>Emits <code>\max($min, \min($max, $f))</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;between(float $min, float $max): bool</code></h4><br/><p>Inclusive range test.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;isNan(): bool</code></h4><br/><p>Emits <code>\is_nan($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;isInfinite(): bool</code></h4><br/><p>Emits <code>\is_infinite($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;isFinite(): bool</code></h4><br/><p>Emits <code>\is_finite($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;isPositive(): bool</code></h4><br/><p>Emits <code>$f &gt; 0.0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;isNegative(): bool</code></h4><br/><p>Emits <code>$f &lt; 0.0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;isZero(): bool</code></h4><br/><p>Emits <code>$f == 0.0</code>, so <code>-0.0</code> also counts as zero.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;sign(): int</code></h4><br/><p><code>-1</code>, <code>0</code>, or <code>1</code>. Emits <code>$f &lt;=&gt; 0.0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;max(float $value, float ...$values): float</code></h4><br/><p>The largest of the receiver and the arguments. At least one argument is required. Emits <code>\max($f, $value, ...$values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;min(float $value, float ...$values): float</code></h4><br/><p>Emits <code>\min($f, $value, ...$values)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;pow(float $exponent): float</code></h4><br/><p>Emits <code>$f ** $exponent</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;sqrt(): float</code></h4><br/><p><code>NAN</code> for negative values. Emits <code>\sqrt($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;log(float $base = \M_E): float</code></h4><br/><p>Natural logarithm by default. Emits <code>\log($f, $base)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;sin(): float</code></h4><br/><p>Argument in radians. Emits <code>\sin($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;cos(): float</code></h4><br/><p>Emits <code>\cos($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;tan(): float</code></h4><br/><p>Emits <code>\tan($f)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;fmod(float $divisor): float</code></h4><br/><p>Floating-point remainder, with the sign of the receiver. Emits <code>\fmod($f, $divisor)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;format(int $decimals = 0, string $decimalSeparator = &#039;.&#039;, string $thousandsSeparator = &#039;,&#039;): string</code></h4><br/><p><code>(1234.5)-&gt;format(2, ',', '.')</code> is <code>'1.234,50'</code>. Emits <code>\number_format($f, $decimals, $decimalSeparator, $thousandsSeparator)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;__toString(): string</code></h4><br/><p>Emits <code>(string) $f</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;__toInt(): int</code></h4><br/><p>Truncates toward zero. Emits <code>(int) $f</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$f-&gt;__toBool(): bool</code></h4><br/><p>Emits <code>(bool) $f</code>.</p>
+</div>
+<h3 id="bool-methods">Bool methods</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>$b-&gt;__toString(): string</code></h4><br/><p><code>'true'</code> or <code>'false'</code>. This differs from a PHP cast: <code>(string) $b</code> stays a PHP cast and gives <code>'1'</code> or <code>''</code>. Emits <code>$b ? 'true' : 'false'</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$b-&gt;__toInt(): int</code></h4><br/><p><code>1</code> or <code>0</code>. Emits <code>(int) $b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$b-&gt;not(): bool</code></h4><br/><p>Emits <code>!$b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$b-&gt;and(bool $other): bool</code></h4><br/><p>Emits <code>$b &amp;&amp; $other</code>, so <code>$other</code> is not evaluated when <code>$b</code> is <code>false</code>. Pass a variable or a literal as <code>$other</code>; an expression such as a comparison or a call is <strong>TYHP4181</strong>, because splicing it would make its evaluation conditional. Assign it to a variable first, or use <code>&amp;&amp;</code> directly. The receiver can be a literal: <code>true-&gt;not()</code>, <code>false-&gt;or($flag)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$b-&gt;or(bool $other): bool</code></h4><br/><p>Emits <code>$b || $other</code>, so <code>$other</code> is not evaluated when <code>$b</code> is <code>true</code>. The same argument rule as <code>and()</code> applies.</p>
+</div>
+<h3 id="closure-methods">Closure methods</h3>
+<p>These work on any <code>\Closure</code>, including first-class callables such as <code>slowSquare(...)</code>. They call static methods on <code>\Tyhp\ClosureExtensions</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>$fn-&gt;then&lt;TNextReturn&gt;(\Closure&lt;callable(__CallableReturnType&lt;TThisCallable&gt;): TNextReturn&gt; $next): \Closure&lt;callable(__CallableParametersRest&lt;TThisCallable&gt; ...): TNextReturn&gt;</code></h4><br/><p>Left-to-right composition: the result calls <code>$fn</code> with its arguments, then passes the return value to <code>$next</code>. <code>$trim-&gt;then($len)</code> trims and then measures.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$fn-&gt;compose(\Closure&lt;TNextCallable&gt; $next): \Closure&lt;callable(__CallableParametersRest&lt;TNextCallable&gt; ...): TThisReturn&gt;</code></h4><br/><p>Right-to-left composition: the result calls <code>$next</code> first, then <code>$fn</code> on its result. <code>$label-&gt;compose($len)</code> measures and then labels. Available when <code>$fn</code> takes the return type of <code>$next</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$fn-&gt;memoize(): \Closure&lt;TThisCallable&gt;</code></h4><br/><p>Returns a closure with the same signature that caches results by its arguments. The cache key is <code>\serialize($args)</code>, so arguments must be serializable (closures and many resources are not), and the cache lives as long as the returned closure. Only use it for pure functions.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>$fn-&gt;partial(mixed ...$partialArgs): \Closure</code></h4><br/><p>Fixes the leading arguments and returns a closure that takes the rest. The result is an untyped <code>\Closure</code> returning <code>mixed</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function pipeline(): string {
+    \Closure&lt;callable(string): string&gt; $trim = fn(string $s): string =&gt; \trim($s);
+    \Closure&lt;callable(string): int&gt; $len = fn(string $s): int =&gt; \strlen($s);
+
+    $trimThenLen = $trim-&gt;then($len);
+    int $n = $trimThenLen(&#039;  hello  &#039;);            // 5
+
+    \Closure&lt;callable(int): string&gt; $label = fn(int $n): string =&gt; &quot;len={$n}&quot;;
+    $labelOfLen = $label-&gt;compose($len);
+    return $labelOfLen(&#039;abc&#039;) . &#039; / &#039; . (string) $n;  // &#039;len=3 / 5&#039;
+}
+
+function slowSquare(int $n): int {
+    return $n * $n;
+}
+
+function cached(): int {
+    \Closure&lt;callable(int): int&gt; $square = slowSquare(...);
+    $fast = $square-&gt;memoize();
+    return $fast(12) + $fast(12);                   // second call is served from the cache
+}
+</code></pre></div>
+<h2 id="runtime-types-tyhptype">Runtime types: <code>\Tyhp\Type</code></h2>
+<p>A <code>\Tyhp\Type</code> is a runtime description of a Tyhp type. The compiler creates them for you: <code>typeof(T)</code> produces one, <code>$x is ?User</code> and other non-native guards compile to <code>\Tyhp\Type::is($x, …)</code>, <code>default(T)</code> compiles to <code>-&gt;defaultValue()</code> once <code>T</code> is known, and tracked generic classes carry the types they were constructed with. You use the class directly when you validate untrusted data, write generic infrastructure, or pass type arguments from hand-written PHP to <a href="#generics-bridge-tyhpgeneric"><code>\Tyhp\Generic::bind</code></a>. See <a href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a> for <code>typeof</code> and <code>default</code>.</p>
+<p><code>Type</code> implements <code>\Stringable</code>. Its constructor is protected; create instances with the static factories below. Scalar factories and <code>fromClassName()</code> return a shared instance per name, so <code>Type::int() === Type::int()</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Type;
+use Tyhp\NamedType;
+
+function classify(mixed $value): string {
+    Type $idList = Type::generic(&#039;array&#039;, new NamedType(&#039;TKey&#039;, Type::int()), new NamedType(&#039;TValue&#039;, Type::int()));
+    Type $maybeName = Type::nullable(Type::string());
+
+    if (Type::is($value, $idList)) {
+        return &#039;ids&#039;;
+    }
+    if (Type::is($value, $maybeName)) {
+        return &#039;name&#039;;
+    }
+    Type::check($value, Type::union(Type::int(), Type::string()));  // throws for anything else
+    return (string) Type::of($value);
+}
+
+// classify([1, 2]) === &#039;ids&#039;
+// classify(3.5) throws IncompatibleTypeException: &quot;Incompatible type: expected int|string, got float.&quot;
+</code></pre></div>
+<h3 id="scalar-and-pseudo-type-factories">Scalar and pseudo-type factories</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function string(): self</code></h4><br/><p><code>string</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function int(): self</code></h4><br/><p><code>int</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function float(): self</code></h4><br/><p><code>float</code>. <code>Type::is()</code> accepts <code>int</code> values for <code>float</code>, matching PHP's int-to-float widening.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function bool(): self</code></h4><br/><p><code>bool</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function null(): self</code></h4><br/><p><code>null</code>. This type is nullable and matches only <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function void(): self</code></h4><br/><p><code>void</code>. At runtime only <code>null</code> matches it, because <code>null</code> is what <code>default(void)</code> produces.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function mixed(): self</code></h4><br/><p><code>mixed</code>. Matches every value.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function never(): self</code></h4><br/><p><code>never</code>. Matches no value.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function array(): self</code></h4><br/><p>Any array.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function object(): self</code></h4><br/><p>Any object.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function callable(): self</code></h4><br/><p>Anything <code>\is_callable()</code> accepts.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function iterable(): self</code></h4><br/><p>Arrays and <code>\Traversable</code> objects.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function resource(): self</code></h4><br/><p>Open or closed resources.</p>
+</div>
+<h3 id="composite-factories">Composite factories</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function union(self ...$types): self</code></h4><br/><p>A union. Nested unions are flattened and repeated members (the same instance) are dropped. Throws <code>\Tyhp\Exceptions\InvalidTypeException</code> when fewer than two distinct members remain, so <code>Type::union(Type::int(), Type::int())</code> is an error; use the single type instead.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function intersection(self ...$types): self</code></h4><br/><p>An intersection, flattened and de-duplicated like <code>union()</code>. Throws <code>InvalidTypeException</code> with fewer than two distinct members.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function nullable(self $type): self</code></h4><br/><p>The nullable form of <code>$type</code>. Returns <code>$type</code> itself when it is already nullable, <code>null</code>, or <code>mixed</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function generic(string $className, \Tyhp\NamedType ...$params): self</code></h4><br/><p>A generic application such as <code>Box&lt;int&gt;</code> or <code>array&lt;string, int&gt;</code>. Pass one <code>NamedType</code> per type parameter in declaration order. For <code>'array'</code> and <code>'iterable'</code>, one parameter is the value type and two are key then value; <code>is()</code> then checks every element. For a class, <code>is()</code> checks the instance and, when the object tracks its own type arguments, that they are compatible.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function struct(string $name, array&lt;int|string, self&gt; $fields, array&lt;int, int|string&gt; $requiredKeys = []): self</code></h4><br/><p>A struct shape: an associative array with typed fields. <code>$fields</code> maps each key to its field type; every key in <code>$requiredKeys</code> must be present on a value. Fields that are present must match their type; missing optional fields and extra keys are ignored. <code>$name</code> is used for display only.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function objectShape(string $name, array&lt;int, string&gt; $methods = [], array&lt;int, string&gt; $properties = []): self</code></h4><br/><p>An object shape: any object that has every listed public method and public property. Only existence is checked, not signatures or property types. Do not list <code>__construct</code>. <code>$name</code> is used for display only.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function callableShape(string $name): self</code></h4><br/><p>A callable shape. Matches any value <code>\is_callable()</code> accepts; the signature is not compared. Pass the alias name, or <code>'callable'</code> for an inline shape.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function fromClassName(string $className): self</code></h4><br/><p>A class, interface, enum, or trait type. Matching uses <code>\is_a</code> on loaded names and never autoloads <code>$className</code>, so an object cannot match an interface that has not been loaded yet.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function fromReflectionType(\ReflectionType $type, ?string $relativeClassName = null): self</code></h4><br/><p>Converts a PHP reflection type. <code>true</code> and <code>false</code> become <code>bool</code>; <code>static</code> resolves to <code>$relativeClassName</code> (or <code>object</code> when it is <code>null</code>). When reflection reports <code>self</code> or <code>parent</code> unresolved, <code>self</code> resolves like <code>static</code> and <code>parent</code> to the parent class of <code>$relativeClassName</code>. A nullable reflection type becomes a nullable <code>Type</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function fromCallableReturn(callable $callable): ?self</code></h4><br/><p>The declared return type of a closure, function name, <code>'Class::method'</code> string, <code>[$objectOrClass, 'method']</code> array, or invokable object. Returns <code>null</code> when the callable has no declared return type or cannot be reflected.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function of(mixed $value): self</code></h4><br/><p>The runtime type of a value: a scalar type, <code>array</code>, <code>resource</code>, or the object's class. An object that tracks its generic arguments reports its full generic type. Arrays always report plain <code>array</code>; structs and element types are not inferred.</p>
+</div>
+<h3 id="checking-values">Checking values</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function is(mixed $value, self $type): bool</code></h4><br/><p><code>true</code> when <code>$value</code> matches <code>$type</code>. This is what compiled <code>is</code> guards call for unions, nullables, structs, shapes, generic parameters, and other types without a native PHP check. Array generics are checked element by element, so the cost grows with the size of the array.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function isType&lt;TTarget&gt;(mixed $value): $value is TTarget</code></h4><br/><p>A type guard: <code>Type::isType&lt;int&gt;($v)</code> narrows <code>$v</code> to <code>int</code> in Tyhp. From PHP, bind the type argument with <code>\Tyhp\Generic::bind(\Tyhp\Type::isType(...), \Tyhp\Type::int())($v)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function check(mixed $value, self $type): void</code></h4><br/><p>Throws <code>\Tyhp\Exceptions\IncompatibleTypeException</code> when <code>is()</code> is <code>false</code>. The exception reports <code>$type</code> as expected and <code>Type::of($value)</code> as actual.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function compatible(self $broad, self $narrow): bool</code></h4><br/><p><code>true</code> when every value of <code>$narrow</code> is also a value of <code>$broad</code>: <code>mixed</code> accepts everything, <code>never</code> fits everywhere, a nullable type does not fit a non-nullable one, a union fits when each member fits, and a class fits its parents and interfaces. Generic applications are compared argument by argument. Struct and shape types are compatible only with the same kind and name.</p>
+</div>
+<h3 id="instance-methods">Instance methods</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>public function defaultValue(): mixed</code></h4><br/><p>The zero value for the type, which is what <code>default(T)</code> produces: <code>''</code>, <code>0</code>, <code>0.0</code>, <code>false</code>, <code>[]</code> for <code>array</code> and <code>iterable</code>, <code>[]</code> for structs, and <code>null</code> for nullable types, objects, <code>void</code>, <code>never</code>, <code>mixed</code>, <code>resource</code>, unions, and intersections.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function asNullable(): self</code></h4><br/><p>Same as <code>Type::nullable($this)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function asNonNullable(): self</code></h4><br/><p>A non-nullable copy, or <code>$this</code> when it is already non-nullable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function asReadOnly(): self</code></h4><br/><p>A copy flagged read-only (used for read-only type arguments). The flag does not affect <code>is()</code> or <code>compatible()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function genericParameter(string $name): ?\Tyhp\NamedType</code></h4><br/><p>The type argument bound to the parameter called <code>$name</code> on a <code>generic()</code> type, or <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getKind(): string</code></h4><br/><p>The descriptor kind: <code>'scalar'</code> (for all scalar and pseudo types), <code>'class'</code>, <code>'union'</code>, <code>'intersection'</code>, <code>'generic'</code>, <code>'struct'</code>, <code>'objectShape'</code>, <code>'callableShape'</code>, or <code>'named'</code> for a <code>NamedType</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getName(): ?string</code></h4><br/><p>The scalar name, class name (<code>'array'</code> for an <code>array</code> generic), struct or shape name, or the parameter name for a <code>NamedType</code>; <code>null</code> for unions and intersections.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isNullable(): bool</code></h4><br/><p><code>true</code> for <code>null</code> and for types made nullable with <code>nullable()</code>. A union that merely contains <code>Type::null()</code> reports <code>false</code>, although <code>is(null, …)</code> still matches it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isReadOnly(): bool</code></h4><br/><p><code>true</code> after <code>asReadOnly()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __toString(): string</code></h4><br/><p>Tyhp spelling: <code>'?string'</code>, <code>'int|string|null'</code>, <code>'Box&lt;int&gt;'</code>, <code>'struct App\User'</code>, <code>'object HasName'</code>, <code>'callable callable'</code>.</p>
+</div>
+<h3 id="tyhpnamedtype"><code>\Tyhp\NamedType</code></h3>
+<p><code>final class NamedType extends \Tyhp\Type</code> pairs a generic parameter name with the type bound to it. It is the argument type of <code>Type::generic()</code>. Matching and display delegate to the underlying type, and its nullability follows the underlying type.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $parameterName, \Tyhp\Type $underlyingType, bool $readOnly = false)</code></h4><br/><p>Binds <code>$underlyingType</code> to the parameter <code>$parameterName</code> (for example <code>'T'</code> or <code>'TValue'</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getParameterName(): string</code></h4><br/><p>The parameter name.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getUnderlyingType(): \Tyhp\Type</code></h4><br/><p>The bound type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function asReadOnly(): self</code></h4><br/><p>A read-only copy with the same name and underlying type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __toString(): string</code></h4><br/><p>The underlying type's string form; the parameter name is not included.</p>
+</div>
+<h2 id="typed-json-tyhpjson">Typed JSON: <code>\Tyhp\Json</code></h2>
+<p><code>\Tyhp\Json</code> decodes JSON straight into a Tyhp struct and verifies the shape, the way <code>JsonSerializer.Deserialize&lt;T&gt;</code> does in C#. JSON objects always decode to associative arrays, which is how structs are represented in PHP. The string methods <code>jsonDecodeAs&lt;T&gt;()</code> and <code>jsonTryDecodeAs&lt;T&gt;()</code> are shorthands for these two methods. <code>\json_decode</code> itself stays an ordinary PHP builtin; see <a href="tyhp_0151_newFunctions.html">New Functions</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function decode&lt;T extends struct&gt;(string $json, int $depth = 512, int $flags = 0): T</code></h4><br/><p>Decodes <code>$json</code> and checks the result against <code>T</code> with <code>Type::is()</code>. <code>\JSON_THROW_ON_ERROR</code> is always added to <code>$flags</code>. Throws <code>\JsonException</code> for invalid JSON (including exceeding <code>$depth</code>) and <code>\Tyhp\Exceptions\IncompatibleTypeException</code> when the decoded value does not match <code>T</code>: it is not an object, a field has the wrong type, or a required field (one that is neither nullable nor defaulted) is missing. Absent fields are not filled in from the struct's defaults; the decoded array contains only what the JSON contained.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function tryDecode&lt;T extends struct&gt;(string $json, T &amp;$out, int $depth = 512, int $flags = 0): bool</code></h4><br/><p>Like <code>decode()</code>, but returns <code>false</code> instead of throwing for invalid JSON or a shape mismatch, and leaves <code>$out</code> unchanged in that case. On success, writes the value to <code>$out</code> and returns <code>true</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Json;
+use Tyhp\Exceptions\IncompatibleTypeException;
+
+type User = struct {
+    int $id;
+    string $name;
+    ?string $email;
+};
+
+function loadUser(string $json): User {
+    try {
+        return Json::decode&lt;User&gt;($json);
+    } catch (\JsonException $e) {
+        throw new \RuntimeException(&#039;Malformed user JSON: &#039; . $e-&gt;getMessage(), 0, $e);
+    } catch (IncompatibleTypeException $e) {
+        throw new \RuntimeException(&#039;Unexpected user shape: &#039; . $e-&gt;getMessage(), 0, $e);
+    }
+}
+
+function tryUser(string $json): ?User {
+    User $user = new User() with [id =&gt; 0, name =&gt; &#039;&#039;];
+    if (!Json::tryDecode&lt;User&gt;($json, $user)) {
+        return null;
+    }
+    return $user;
+}
+
+// loadUser(&#039;{&quot;id&quot;: 7, &quot;name&quot;: &quot;Ada&quot;}&#039;) returns [&#039;id&#039; =&gt; 7, &#039;name&#039; =&gt; &#039;Ada&#039;]
+// loadUser(&#039;{&quot;id&quot;: 7, &quot;name&quot;: &quot;Ada&quot;, &quot;email&quot;: null}&#039;) returns [&#039;id&#039; =&gt; 7, &#039;name&#039; =&gt; &#039;Ada&#039;, &#039;email&#039; =&gt; null]
+// loadUser(&#039;{&quot;id&quot;: &quot;7&quot;, &quot;name&quot;: &quot;Ada&quot;}&#039;) throws RuntimeException:
+//     &quot;Unexpected user shape: Incompatible type: expected struct App\User, got array.&quot;
+// loadUser(&#039;{&quot;name&quot;: &quot;Ada&quot;}&#039;) throws the same exception: `id` is required.
+// loadUser(&#039;{&quot;id&quot;: 7&#039;) throws RuntimeException: &quot;Malformed user JSON: Syntax error&quot;
+// tryUser(&#039;{&quot;id&quot;: &quot;x&quot;}&#039;) returns null
+</code></pre></div>
+<p>A struct field is required when it is neither nullable nor given a default, so <code>email</code> may be absent or <code>null</code> while <code>id</code> and <code>name</code> must be present. Keys the struct does not declare are kept in the decoded array.</p>
+<p>From hand-written PHP, bind <code>T</code> with <a href="#generics-bridge-tyhpgeneric"><code>\Tyhp\Generic::bind</code></a>, passing a <code>Type::struct()</code> descriptor whose third argument lists the required keys:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+declare(strict_types=1);
+
+use Tyhp\Generic;
+use Tyhp\Json;
+use Tyhp\Type;
+
+$userType = Type::struct(&#039;App\\User&#039;, [
+    &#039;id&#039; =&gt; Type::int(),
+    &#039;name&#039; =&gt; Type::string(),
+    &#039;email&#039; =&gt; Type::nullable(Type::string()),
+], [&#039;id&#039;, &#039;name&#039;]);
+
+$decodeUser = Generic::bind(Json::decode(...), $userType);
+
+try {
+    $user = $decodeUser(&#039;{&quot;id&quot;: 7, &quot;name&quot;: &quot;Ada&quot;}&#039;);
+} catch (\Throwable $e) {
+    \error_log(&#039;Could not decode user: &#039; . $e-&gt;getMessage());
+}
+</code></pre></div>
+<h2 id="generics-bridge-tyhpgeneric">Generics bridge: <code>\Tyhp\Generic</code></h2>
+<p>Tyhp generics are erased from PHP signatures. When a generic class or callable needs its type arguments at runtime, the compiler emits a factory or binder and stamps the declaration with <a href="#tyhpgenericruntime"><code>#[\Tyhp\GenericRuntime]</code></a>. Inside one compilation, Tyhp calls those helpers directly. <code>\Tyhp\Generic::bind</code> is the stable entry point for everyone else: hand-written PHP, and Tyhp code that uses a generic from another compiled library (the compiler emits <code>bind</code> for those call sites). See <a href="tyhp_0500_generics.html#compiled-php-output">Generics</a>.</p>
+<p><code>final class Generic</code> cannot be constructed directly.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function bind(mixed $target, ?\Tyhp\Type ...$typeArguments): mixed</code></h4><br/><p>Binds type arguments to a generic class or callable. Pass one <code>Type</code> per type parameter of the target, in declaration order. A <code>null</code> (or an omitted trailing argument) leaves that parameter unbound, and it resolves the way a missing type argument does in Tyhp: the declared default, else the constraint, else <code>mixed</code>.</p>
+<p>When <code>$target</code> is a class name, <code>bind</code> returns a <code>Generic</code> binder; nothing is constructed until you call <code>new(...)</code> or invoke the binder. When <code>$target</code> is a callable, <code>bind</code> returns a <code>\Closure</code> that takes the target's value arguments. For a static method or function, pass a first-class callable (<code>\Vendor\Util::first(...)</code>) or a <code>'Class::method'</code> / function-name string; for an instance method, pass <code>$object-&gt;method(...)</code> so the receiver is known. By-reference parameters are preserved.</p>
+<p>Throws <code>\Tyhp\Exceptions\InvalidTypeException</code> when the target is not a compiled Tyhp generic (no <code>GenericRuntime</code> stamp), was compiled with a binding layout this runtime does not support, or is an instance method bound without a receiver. Throws <code>\ReflectionException</code> when a class name cannot be loaded, and <code>\InvalidArgumentException</code> when <code>$target</code> is an anonymous closure (other than one made by <code>wrapCallable</code>) or neither a class name nor a resolvable callable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function wrapCallable(\Closure $target, \Closure $factory): \Closure</code></h4><br/><p>Wraps the first-class callable of a generic function or method so that it keeps its type-binding identity. The compiler emits it for a generic function whose first-class callable needs implicit <code>operator convert</code> conversions. <code>$target</code> is the native first-class callable. <code>$factory</code> is <code>fn(\Closure $target): \Closure</code> and returns the closure that converts the arguments and then calls <code>$target</code>. The result behaves as <code>$factory($target)</code>; <code>Generic::bind</code> on it binds <code>$target</code> and applies <code>$factory</code> to the bound closure, so the conversions survive the binding.</p>
+<p>Throws <code>\InvalidArgumentException</code> when <code>$factory</code> does not return a <code>\Closure</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function new(mixed ...$constructorArguments): object</code></h4><br/><p>Runs the class's constructor with the bound type arguments and returns the instance. Named arguments are forwarded to the constructor by name. Each binder constructs exactly one object: a second <code>new()</code> or invocation on the same binder throws <code>\LogicException</code> (&quot;Generic instance of 'Vendor\Box' has already been constructed.&quot;). Call <code>bind()</code> again for another instance. Prefer <code>new()</code> over invoking the binder when you want IDEs and static analyzers to infer the instance type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __invoke(mixed ...$constructorArguments): object</code></h4><br/><p>Same as <code>new()</code>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+declare(strict_types=1);
+
+use Tyhp\Generic;
+use Tyhp\Type;
+
+// A generic class from a compiled Tyhp library: class Box&lt;T&gt; { public function __construct(T $value) {} }
+$intBox = Generic::bind(\Vendor\Box::class, Type::int())-&gt;new(42);
+
+// A generic method: public function identity&lt;T&gt;(T $value): T
+$identity = Generic::bind($helper-&gt;identity(...), Type::string());
+$value = $identity(&#039;hello&#039;);
+</code></pre></div>
+<h2 id="object-with-helper-tyhpobjecthelper">Object <code>with</code> helper: <code>\Tyhp\ObjectHelper</code></h2>
+<p>A <code>with</code> expression used as a value compiles to <code>\Tyhp\ObjectHelper::with(...)</code> for <code>new Widget() with [color =&gt; 'blue']</code> on a class without readonly overrides (on every PHP version), and for <code>clone $cfg with [...]</code> when the target is PHP 8.2–8.4. On PHP 8.5, <code>clone $cfg with [...]</code> uses PHP's native <code>clone($cfg, [...])</code>. See <a href="tyhp_2200_withKeyword.html#compiled-php-output">The with Keyword</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function with&lt;TProperties extends struct, T extends object&amp;TProperties&gt;(T $object, TProperties $properties): T</code></h4><br/><p>Assigns each entry of <code>$properties</code> to the property of the same name on <code>$object</code> and returns the same instance; it does not clone. Throws <code>\Tyhp\Exceptions\PropertyNotFoundException</code> when a key is not a property of the object. Readonly properties cannot be assigned this way.</p>
+</div>
+<h2 id="string-helper-tyhpstringhelper">String helper: <code>\Tyhp\StringHelper</code></h2>
+<p><code>final class StringHelper</code> holds the multibyte-or-byte switch behind the string methods. Each method uses the <code>\mb_*</code> function when <code>ext-mbstring</code> is loaded and the byte function otherwise. Compiled code calls it; you can call it from PHP for the same behaviour.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function hasMbStringExt(): bool</code></h4><br/><p><code>true</code> when <code>ext-mbstring</code> is loaded. The answer is cached for the request.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strlen(string $string): int</code></h4><br/><p><code>\mb_strlen</code> or <code>\strlen</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function substr(string $string, int $start, ?int $length = null): string</code></h4><br/><p><code>\mb_substr</code> or <code>\substr</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strpos(string $haystack, string $needle, int $offset = 0): int|false</code></h4><br/><p><code>\mb_strpos</code> or <code>\strpos</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strrpos(string $haystack, string $needle, int $offset = 0): int|false</code></h4><br/><p><code>\mb_strrpos</code> or <code>\strrpos</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function stripos(string $haystack, string $needle, int $offset = 0): int|false</code></h4><br/><p><code>\mb_stripos</code> or <code>\stripos</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strtolower(string $string): string</code></h4><br/><p><code>\mb_strtolower</code> or <code>\strtolower</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strtoupper(string $string): string</code></h4><br/><p><code>\mb_strtoupper</code> or <code>\strtoupper</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strSplit(string $string, int $length = 1): array&lt;int, string&gt;</code></h4><br/><p><code>\mb_str_split</code> or <code>\str_split</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function ord(string $string): int|false</code></h4><br/><p><code>\mb_ord</code> or <code>\ord</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function ucWords(string $string): string</code></h4><br/><p><code>\mb_convert_case($string, \MB_CASE_TITLE)</code> or <code>\ucwords</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function convertEncoding(string $string, string $toEncoding, array|string|null $fromEncoding = null): string|false</code></h4><br/><p><code>\mb_convert_encoding</code>, or <code>false</code> without mbstring.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function detectEncoding(string $string): string|false</code></h4><br/><p><code>\mb_detect_encoding</code>, or <code>false</code> without mbstring.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function strPad(string $string, int $length, string $padString = &#039; &#039;, int $padType = \STR_PAD_RIGHT): string</code></h4><br/><p><code>\mb_str_pad</code> or <code>\str_pad</code>. Exists only when <code>output.phpVersion</code> is 8.3 or later.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function ucFirst(string $string): string</code></h4><br/><p><code>\mb_ucfirst</code> or <code>\ucfirst</code>. Exists only when <code>output.phpVersion</code> is 8.4 or later.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function lcFirst(string $string): string</code></h4><br/><p><code>\mb_lcfirst</code> or <code>\lcfirst</code>. Exists only when <code>output.phpVersion</code> is 8.4 or later.</p>
+</div>
+<h2 id="contracts">Contracts</h2>
+<h3 id="tyhpcontractsisdisposable"><code>\Tyhp\Contracts\IsDisposable</code></h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+interface IsDisposable {
+    public function dispose(): void;
+}
+</code></pre></div>
+<p>Implement it on classes that own something that must be released: file handles, locks, connections, temporary files. <code>using (...)</code> blocks and <code>:=</code> declarations call <code>dispose()</code> for you; see <a href="tyhp_2300_disposables.html">Disposables</a>. Make <code>dispose()</code> safe to call more than once. The asynchronous counterpart, <code>AsyncIsDisposable</code>, and the <code>DisposableScope</code> that <code>:=</code> uses live in <code>tyhp/async</code>; see <a href="package_async.html">the tyhp/async package</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Contracts\IsDisposable;
+
+final class TempFile implements IsDisposable {
+    private bool $closed = false;
+
+    public function __construct(public readonly string $path) {}
+
+    public function dispose(): void {
+        if ($this-&gt;closed) {
+            return;
+        }
+        $this-&gt;closed = true;
+        if (\is_file($this-&gt;path)) {
+            \unlink($this-&gt;path);
+        }
+    }
+}
+
+function writeReport(): int {
+    TempFile $tmp = new TempFile(\sys_get_temp_dir() . &#039;/report.csv&#039;);
+    try {
+        int|false $written = \file_put_contents($tmp-&gt;path, &quot;a,b\n&quot;);
+        return $written === false ? 0 : $written;
+    } finally {
+        $tmp-&gt;dispose();
+    }
+}
+</code></pre></div>
+<h3 id="conversion-contracts">Conversion contracts</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Interface</th>
+<th>Declares</th>
+<th>Extends</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Tyhp\Contracts\Convertible</code></td>
+<td>nothing (marker)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\IntConvertible</code></td>
+<td><code>public function __toInt(): int;</code></td>
+<td><code>Convertible</code></td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\FloatConvertible</code></td>
+<td><code>public function __toFloat(): float;</code></td>
+<td><code>Convertible</code></td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\BoolConvertible</code></td>
+<td><code>public function __toBool(): bool;</code></td>
+<td><code>Convertible</code></td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\StringConvertible</code></td>
+<td><code>__toString()</code> via <code>\Stringable</code></td>
+<td><code>\Stringable</code>, <code>Convertible</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>These interfaces mark a class that converts itself to a scalar. When a class declares a convert-to operator (<code>operator convert(self $value): int</code>), the compiler emits the matching <code>__toInt()</code> method, adds the matching interface for you, and rewrites explicit casts, arguments, and return values to the call (<code>(int) $celsius</code>, <code>takesInt($celsius)</code>, and <code>return $celsius;</code> from an <code>int</code> function all become <code>$celsius-&gt;__toInt()</code>). See <a href="tyhp_1600_operatorOverloads.html#conversion-operators">Operator Overloads</a>. If you implement an interface by hand instead, you get the method and the type, but only <code>operator convert</code> triggers the rewrites: <code>(int) $value</code> stays an ordinary PHP cast, so call the method explicitly. Use <code>Convertible</code> as a parameter type when any conversion is acceptable.</p>
+<h3 id="tyhpcontractsarrayaccessshapetstruct-extends-struct"><code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct extends struct&gt;</code></h3>
+<p>Per-key array access over a struct schema: <code>$config['host']</code> has the <code>host</code> field's type and <code>$config['port']</code> the <code>port</code> field's type. It extends <code>\ArrayAccess&lt;__IndexKeys&lt;TStruct&gt;, __IndexValueTypes&lt;TStruct&gt;&gt;</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+interface ArrayAccessShape&lt;TStruct extends struct&gt; extends \ArrayAccess&lt;__IndexKeys&lt;TStruct&gt;, __IndexValueTypes&lt;TStruct&gt;&gt; {
+    public function offsetExists(#[\Tyhp\PhpType(&#039;mixed&#039;)] __IndexKeys&lt;TStruct&gt; $offset): bool;
+
+    #[\Tyhp\PhpType(&#039;mixed&#039;)]
+    public function offsetGet&lt;TKey extends __IndexKeys&lt;TStruct&gt;&gt;(#[\Tyhp\PhpType(&#039;mixed&#039;)] TKey $offset): __IndexValueType&lt;TStruct, TKey&gt;;
+
+    public function offsetSet&lt;TKey extends __IndexKeys&lt;TStruct&gt;&gt;(#[\Tyhp\PhpType(&#039;mixed&#039;)] TKey $offset, #[\Tyhp\PhpType(&#039;mixed&#039;)] __IndexValueType&lt;TStruct, TKey&gt; $value): void;
+
+    public function offsetUnset(#[\Tyhp\PhpType(&#039;mixed&#039;)] __IndexKeys&lt;TStruct&gt; $offset): void;
+}
+</code></pre></div>
+<p>The <code>#[\Tyhp\PhpType('mixed')]</code> attributes keep the emitted PHP signatures compatible with <code>\ArrayAccess</code>; implementors inherit them. Call sites must index with a key literal. The rules for implementing <code>offsetGet</code> and <code>offsetSet</code> (per-key coverage, <code>TYHP4331</code>–<code>TYHP4333</code>) are on <a href="tyhp_0150_newTypes.html#the-tyhpcontractsarrayaccessshapetstruct-type">New and Changed Types</a>.</p>
+<h2 id="attributes">Attributes</h2>
+<h3 id="tyhpphp"><code>#[\Tyhp\Php]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\Php(string $version)]</code></h4><br/><p>Keeps the declaration only when <code>output.phpVersion</code> satisfies the Composer constraint <code>$version</code> (<code>&quot;&gt;=8.4&quot;</code>, <code>&quot;&gt;=8.2 &lt;8.4&quot;</code>). <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]</code> and <code>#[\Tyhp\Php(version: &quot;&gt;=8.4&quot;)]</code> are equivalent. It is valid on any declaration except <code>struct</code> and <code>extension</code>; wrap those in <code>declare(php=&quot;…&quot;) { }</code>. The attribute is compile-time only and is removed from emitted PHP. See <a href="tyhp_0320_phpVersionGating.html#tyhpphp">PHP Version Gating</a>.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]
+function onlyOn84(): string {
+    return &#039;new&#039;;
+}
+</code></pre></div>
+<h3 id="tyhpphptype"><code>#[\Tyhp\PhpType]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\PhpType(string $type)]</code></h4><br/><p>Replaces the emitted PHP type of the parameter, return type, property, or typed constant it is on, without changing the Tyhp type the checker sees. <code>$type</code> is a PHP type spelling such as <code>'mixed'</code> or <code>'string|int'</code>. Implementing an interface or abstract member inherits the attribute. Compile-time only. Not valid on classes. See <a href="tyhp_0150_newTypes.html#the-tyhpphptype-attribute">New and Changed Types</a>.</p>
+</div>
+<h3 id="tyhpnativetypetest"><code>#[\Tyhp\NativeTypeTest]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\NativeTypeTest]</code></h4><br/><p>Marks a free function or concrete static method whose return is a type guard (<code>function isUuid(mixed $value): $value is Uuid</code>) as the native check for that type. <code>$x is Uuid</code> then compiles to a call of that function instead of <code>\Tyhp\Type::is</code>. The guard type must be a single type, extra parameters need defaults, and two markers for the same type conflict (<code>TYHP4340</code>–<code>TYHP4344</code>). <code>tyhpdef/php</code> marks <code>is_string</code>, <code>is_int</code>, and the other built-in checks this way. Compile-time only. See <a href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards</a>.</p>
+</div>
+<h3 id="tyhperasegeneric"><code>#[\Tyhp\EraseGeneric]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\EraseGeneric]</code></h4><br/><p>Opts a generic-typed property, promoted constructor parameter, or every generic-typed property of a class out of runtime property type checks. A class with generic-typed properties is otherwise tracked at runtime so writes are checked against the bound type argument. Uses of <code>typeof(T)</code>, <code>default(T)</code>, <code>is T</code>, <code>new T()</code>, or forwarded type arguments still force tracking. Not inherited. Not valid on methods or functions (<code>TYHP4345</code>). Compile-time only. See <a href="tyhp_0500_generics.html">Generics</a>.</p>
+</div>
+<h3 id="tyhpallowunset"><code>#[\Tyhp\AllowUnset]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\AllowUnset]</code></h4><br/><p>Allows <code>unset($this-&gt;prop)</code> on a typed property or promoted constructor parameter. Without it, unsetting a typed property is an error (<code>TYHP4158</code>), because PHP returns the property to the uninitialized state. With it, the checker treats the property as possibly uninitialized when an instance method starts, so guard reads with <code>isset()</code> or <code>??</code> (<code>TYHP4157</code> otherwise). When &quot;no value&quot; and <code>null</code> mean the same thing, declare <code>?T $prop = null</code> instead. This attribute is kept in the emitted PHP.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+final class Profile {
+    #[\Tyhp\AllowUnset]
+    public string $cachedName;
+
+    public function __construct(string $name) {
+        $this-&gt;cachedName = $name;
+    }
+
+    public function forget(): void {
+        unset($this-&gt;cachedName);
+    }
+}
+</code></pre></div>
+<h3 id="tyhpgenericruntime"><code>#[\Tyhp\GenericRuntime]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\GenericRuntime(bool $erased = false, ?string $binder = null, ?string $factory = null, ?string $aliasFactory = null, array&lt;int&gt; $layouts = [1], ?string $compiler = null)]</code></h4><br/><p>The compiler stamps this attribute on every generic class, method, and function it emits; you do not write it (an authored one is overwritten, <code>TYHP4346</code>). It is kept in the emitted PHP so <code>\Tyhp\Generic::bind</code> can find the declaration's factory or binder at runtime. Its readonly public properties describe the declaration: <code>erased</code> (no runtime helpers were emitted), <code>binder</code> (generic method or function helper), <code>factory</code> (generic class helper), <code>aliasFactory</code> (the <code>\Tyhp\Type</code> factory of a type alias), <code>layouts</code> (supported binding layouts; this runtime supports <code>1</code>), and <code>compiler</code> (the compiler version, for diagnostics only).</p>
+</div>
+<h3 id="tyhpnoemit"><code>#[\Tyhp\NoEmit]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\NoEmit]</code></h4><br/><p>Marks an attribute class as compile-time only: the class and every use of it are left out of the emitted PHP. <code>Php</code>, <code>PhpType</code>, <code>NativeTypeTest</code>, <code>EraseGeneric</code>, <code>Optimize\Pure</code>, and <code>Optimize\Inline</code> carry it. Valid on classes.</p>
+</div>
+<h3 id="tyhpoptimizepure-and-tyhpoptimizeinline"><code>#[\Tyhp\Optimize\Pure]</code> and <code>#[\Tyhp\Optimize\Inline]</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\Optimize\Pure]</code></h4><br/><p>Documents that a function or method has no side effects and depends only on its arguments. The scalar catalog marks its side-effect-free members this way. Compile-time only: it does not change checking or the emitted PHP, and the attribute is removed from the output.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>#[\Tyhp\Optimize\Inline]</code></h4><br/><p>Applies the call-site splice safety rules to a function or method. Calls to it stay ordinary PHP calls; the checker validates that its single-<code>return</code> body could be spliced safely: a parameter the body writes must be declared <code>&amp;</code> (<code>TYHP4174</code>), and members that call each other in a cycle are rejected (<code>TYHP4175</code>). It is an error on extension members (<code>TYHP4176</code>), where the member's form (short <code>fn</code> or full body) already decides whether a call is spliced. Compile-time only; the attribute is removed from emitted PHP.</p>
+</div>
+<h2 id="exceptions">Exceptions</h2>
+<p>All exception classes are <code>final</code> and live in <code>\Tyhp\Exceptions</code>.</p>
+<h3 id="incompatibletypeexception"><code>IncompatibleTypeException</code></h3>
+<p><code>final class IncompatibleTypeException extends \RuntimeException</code>. Thrown when a value does not match a required type at runtime: <code>Type::check()</code>, <code>Json::decode()</code>, generic property writes in tracked classes, and other runtime checks the compiler emits. The message reads <code>Incompatible type for $name: expected X, got Y.</code> (the <code>for $name</code> part only when a name is known).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(\Tyhp\Type $expected, \Tyhp\Type $actual, ?string $variableOrParameterName = null, ?\Throwable $previous = null)</code></h4><br/><p>Builds the message from the two types and the optional name.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getExpectedType(): \Tyhp\Type</code></h4><br/><p>The type that was required.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getActualType(): \Tyhp\Type</code></h4><br/><p>The type of the value that was found, usually <code>Type::of($value)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getVariableOrParameterName(): ?string</code></h4><br/><p>The variable, parameter, or property name without <code>$</code>, when known.</p>
+</div>
+<h3 id="invalidtypeexception"><code>InvalidTypeException</code></h3>
+<p><code>final class InvalidTypeException extends \LogicException</code>. Signals a programming error in how types are used: a union or intersection with fewer than two distinct members, or a <code>\Tyhp\Generic::bind</code> call on something that is not a compiled Tyhp generic. It has no members beyond <code>\LogicException</code>.</p>
+<h3 id="aggregateexception"><code>AggregateException</code></h3>
+<p><code>final class AggregateException extends \RuntimeException</code>. Carries several exceptions at once. A <code>using</code> block throws it when more than one resource fails to dispose; see <a href="tyhp_2300_disposables.html">Disposables</a>. Other runtime packages throw it from combinators that collect failures.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(array&lt;\Throwable&gt; $innerExceptions, string $message = &#039;One or more errors occurred&#039;, ?\Throwable $previous = null)</code></h4><br/><p>Throws <code>\InvalidArgumentException</code> when an element of <code>$innerExceptions</code> is not a <code>\Throwable</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getInnerExceptions(): array&lt;\Throwable&gt;</code></h4><br/><p>The collected exceptions, in the order given.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Contracts\IsDisposable;
+use Tyhp\Exceptions\AggregateException;
+
+function closeAll(array&lt;int, IsDisposable&gt; $resources): void {
+    array&lt;int, \Throwable&gt; $errors = [];
+    foreach ($resources as $r) {
+        try {
+            $r-&gt;dispose();
+        } catch (\Throwable $e) {
+            $errors[] = $e;
+        }
+    }
+    if ($errors !== []) {
+        throw new AggregateException($errors, &#039;Some resources failed to close&#039;);
+    }
+}
+</code></pre></div>
+<h3 id="propertynotfoundexception"><code>PropertyNotFoundException</code></h3>
+<p><code>final class PropertyNotFoundException extends \RuntimeException</code>. Thrown by <code>ObjectHelper::with()</code> (and therefore by compiled <code>with</code> expressions) when a key does not name a property of the object. Message: <code>Property 'name' does not exist on class 'Class'.</code></p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $propertyName, string $className, ?\Throwable $previous = null)</code></h4><br/><p>Builds the message.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getPropertyName(): string</code></h4><br/><p>The missing property name.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getClassName(): string</code></h4><br/><p>The object's class.</p>
+</div>
+<h3 id="invalidparametersforoperatoroverloadexception"><code>InvalidParametersForOperatorOverloadException</code></h3>
+<p><code>final class InvalidParametersForOperatorOverloadException extends \RuntimeException</code>. Thrown by a compiled operator-overload method when the runtime operand types match none of the declared forms, for example when a value reaches the operator through <code>mixed</code>. Message: <code>Invalid parameters for operator overload Class::method() — received: int, string.</code> See <a href="tyhp_1600_operatorOverloads.html">Operator Overloads</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $className, string $methodName, mixed ...$operands)</code></h4><br/><p>Records the class, the generated operator method name, and the operands' types.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getClassName(): string</code></h4><br/><p>The class that declares the operator.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getMethodName(): string</code></h4><br/><p>The generated operator method name.</p>
+</div>
+<h2 id="compiled-code-plumbing">Compiled-code plumbing</h2>
+<p>The following public types exist so that emitted PHP can implement Tyhp features on every supported PHP version. They are used by compiled code; you don't call them directly, and their members can change with the compiler. You will see them in generated PHP, <code>var_dump</code> output, and stack traces.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\Tyhp\PropertyAccessor&lt;TValue&gt;</code>, <code>\Tyhp\PropertyAccessorObject</code>, <code>\Tyhp\PropertyBackingCell</code></td>
+<td>Polyfill for PHP 8.4 property hooks (<code>get</code> / <code>set</code>, asymmetric visibility, <code>final</code> hooks, <code>parent::$prop::get()</code>) when <code>output.phpVersion</code> is below 8.4.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\GenericObject</code></td>
+<td>Per-instance record of the type arguments a tracked generic object was constructed with; backs <code>typeof(T)</code>, <code>default(T)</code>, and generic property checks inside the class.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Concerns\HasGenerics</code></td>
+<td>Adds the <code>$__tyhpGeneric</code> property that holds a <code>GenericObject</code>.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Concerns\HasPropertyAccessors</code>, <code>UsesPropertyAccessors</code></td>
+<td>Add the <code>$__tyhpPropertyHook</code> property that holds a <code>PropertyAccessorObject</code>.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Concerns\HandlesGet</code>, <code>HandlesSet</code>, <code>HandlesIsset</code>, <code>HandlesUnset</code></td>
+<td>Dispatch <code>__get</code>, <code>__set</code>, <code>__isset</code>, and <code>__unset</code> to registered handlers.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Concerns\BootsTraits</code></td>
+<td>Runs each trait's <code>__bootTrait_*</code> initializer once per instance.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\StringExtensions</code> and the other catalog classes</td>
+<td>Static methods for catalog members that need a PHP body (see <a href="#how-to-read-the-signatures">How to read the signatures</a>).</td>
+</tr>
+</tbody>
+</table></div>
+<p>When a class uses property hooks on a PHP target below 8.4, the <code>Handles*</code> traits supply <code>final</code> <code>__get</code>, <code>__set</code>, <code>__isset</code>, and <code>__unset</code> methods, so subclasses cannot override them. If the class defines one of those magic methods itself, its own method is kept and the compiler inserts the hook dispatch at the top of it.</p>
+<h2 id="the-composer-plugin">The Composer plugin</h2>
+<p><code>tyhp/core</code> is a Composer plugin (<code>&quot;type&quot;: &quot;composer-plugin&quot;</code>, class <code>Tyhp\Composer\Plugin</code>). Its job is to make the type definitions your dependencies need for type-checking land in your project automatically. A Tyhp library lists those packages in <code>extra.tyhp.require</code> of its <code>composer.json</code>; the plugin collects them across your whole dependency tree and writes them to your root <code>require-dev</code>. The rules for what belongs in <code>extra.tyhp.require</code> are on <a href="project_composerPackages.html#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+<p>Composer only runs plugins that you allow:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">&quot;config&quot;: {
+    &quot;allow-plugins&quot;: {
+        &quot;tyhp/core&quot;: true
+    }
+}
+</code></pre></div>
+<p><code>tyhp init</code>, <code>tyhp composer</code> (including <code>tyhp composer sync</code>), and <code>tyhp build --fix</code> add that key when it is missing and never overwrite an explicit <code>false</code>.</p>
+<h3 id="what-it-does-on-each-composer-run">What it does on each Composer run</h3>
+<p>The plugin runs once per Composer command, before Composer resolves dependencies (<code>pre-pool-create</code>):</p>
+<ol>
+<li><strong>Skips dev-less installs.</strong> Nothing happens when the run excludes dev dependencies: <code>--no-dev</code>, <code>COMPOSER_NO_DEV</code> set to a true value, <code>COMPOSER_DEV_MODE=0</code>, or a lock file installed without dev packages.</li>
+<li><strong>Walks the dependency tree.</strong> It starts from your root <code>require</code>, <code>require-dev</code>, and <code>extra.tyhp.require</code>, looks each package up in your configured repositories (the highest version that matches the constraint), and follows that package's <code>require</code> and <code>extra.tyhp.require</code>. A dependency's own <code>require-dev</code> is never followed. Platform packages (<code>php</code>, <code>ext-*</code>, <code>lib-*</code>, <code>composer-plugin-api</code>, …) are skipped.</li>
+<li><strong>Merges the collected pins onto your root <code>require-dev</code>.</strong> Packages already in your root <code>require</code> are left alone, and your own package name is never added. When the same package is pinned twice and the constraints overlap, the existing pin is kept. When they cannot both be satisfied, the Composer command fails with <code>TYHP7700</code>.</li>
+<li><strong>Adds the compiler.</strong> When <code>tyhp/core</code> is in the graph and <code>tyhp/compiler</code> is not already pinned, it adds <code>&quot;tyhp/compiler&quot;: &quot;@dev&quot;</code>, unless your root package is <code>tyhp/compiler</code>.</li>
+<li><strong>Writes <code>composer.json</code>.</strong> When the merged <code>require-dev</code> differs from yours, it rewrites the root <code>composer.json</code>: existing entries keep their order, new entries are appended in alphabetical order, other keys are preserved, and <code>config.allow-plugins.tyhp/core</code> is added if missing. The new requirements are also fed into the running Composer command. If the file cannot be read or written, the command fails with <code>TYHP7703</code>.</li>
+</ol>
+<p>For example, if your application requires a library whose <code>composer.json</code> contains:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;name&quot;: &quot;acme/invoices&quot;,
+    &quot;require&quot;: {
+        &quot;php&quot;: &quot;&gt;=8.2&quot;,
+        &quot;tyhp/core&quot;: &quot;804.0.*&quot;
+    },
+    &quot;extra&quot;: {
+        &quot;tyhp&quot;: {
+            &quot;require&quot;: {
+                &quot;tyhpdef/php&quot;: &quot;@dev&quot;,
+                &quot;tyhpdef/php-ext-intl&quot;: &quot;@dev&quot;
+            }
+        }
+    }
+}
+</code></pre></div>
+<p>then after <code>composer update</code> your root <code>require-dev</code> contains <code>tyhpdef/php</code>, <code>tyhpdef/php-ext-intl</code>, and <code>tyhp/compiler</code>, and the type checker sees the <code>intl</code> definitions that <code>acme/invoices</code> exposes in its public API.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>A package's <code>extra.tyhp.require</code> is only known once Composer can see that package in a repository. The very first <code>composer require</code> of a Tyhp library therefore often installs the library without its extras. Run <code>composer update</code> or <code>tyhp composer sync</code> once more. <code>tyhp build</code> and <code>tyhp lint</code> report missing extras (<code>TYHP7701</code>) but never change <code>composer.json</code> themselves; see <a href="cli_composer.html">CLI: Composer</a>.</p>
+</div>
+    </div>
+</div>
+<h2 id="common-mistakes">Common mistakes</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't add <code>use extension \Tyhp\StringExtensions;</code> (or any other catalog) to a file just to &quot;enable&quot; scalar methods. They are already global; the import only warns (<code>TYHP4169</code>). Use a local <code>use extension</code> only to hide or rename members.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Don't compare <code>indexOf()</code>, <code>lastIndexOf()</code>, <code>search()</code>, or <code>strpos</code>-style results with <code>!= false</code> or treat them as booleans. Position <code>0</code> and key <code>0</code> are valid results; compare with <code>=== false</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><code>contains()</code> and <code>search()</code> on arrays compare loosely by default, like <code>\in_array</code>. Pass <code>true</code> as the second argument when values can be numeric strings or of mixed types.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><code>filtered()</code> and <code>unique()</code> keep the original keys. A filtered list such as <code>[0 =&gt; 'a', 2 =&gt; 'c']</code> encodes as a JSON object, not an array. Call <code>-&gt;values()</code> when you need a list.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><code>$flag-&gt;__toString()</code> gives <code>'true'</code> / <code>'false'</code>, but <code>(string) $flag</code> is still PHP's cast and gives <code>'1'</code> / <code>''</code>. Choose deliberately when building output.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p><code>Type::union()</code> and <code>Type::intersection()</code> throw <code>InvalidTypeException</code> when fewer than two distinct members remain. When you build unions from data, handle the single-type case yourself.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>A <code>\Tyhp\Generic</code> binder constructs one object. Calling <code>new()</code> (or invoking the binder) a second time throws <code>\LogicException</code>; call <code>bind()</code> again for each instance.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Prefer <code>Json::decode&lt;T&gt;()</code> or <code>$json-&gt;jsonDecodeAs&lt;T&gt;()</code> over <code>$json-&gt;jsonDecode()</code> whenever the shape is known. You get a typed value and a precise error instead of <code>mixed</code>.</p>
+</div>
+    </div>
+</div>
+<h2 id="related">Related</h2>
+<ul>
+<li><a href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a> — how scalar method calls work in the language</li>
+<li><a href="tyhp_2100_extensions.html">Extensions</a> — writing your own extension methods; <code>use extension</code> adaptations</li>
+<li><a href="tyhp_0500_generics.html">Generics</a> — runtime tracking, <code>#[\Tyhp\EraseGeneric]</code>, <code>\Tyhp\Generic::bind</code></li>
+<li><a href="tyhp_0150_newTypes.html">New and Changed Types</a> — <code>ArrayAccessShape</code>, <code>#[\Tyhp\PhpType]</code>, <code>\Closure&lt;…&gt;</code></li>
+<li><a href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a> — <code>typeof</code>, <code>default</code>, <code>nameof</code></li>
+<li><a href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards</a> — <code>is</code>, <code>instanceof</code>, <code>#[\Tyhp\NativeTypeTest]</code></li>
+<li><a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a> — <code>#[\Tyhp\Php]</code> and <code>declare(php=…)</code></li>
+<li><a href="tyhp_2300_disposables.html">Disposables</a> — <code>IsDisposable</code>, <code>using</code>, <code>:=</code></li>
+<li><a href="tyhp_1600_operatorOverloads.html">Operator Overloads</a> — <code>convert</code> and the <code>*Convertible</code> contracts</li>
+<li><a href="tyhp_2200_withKeyword.html">The with Keyword</a> — <code>\Tyhp\ObjectHelper::with</code></li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> and <a href="cli_composer.html">CLI: Composer</a> — versions, <code>extra.tyhp.require</code>, the plugin</li>
+<li><a href="package_intro.html">Runtime packages overview</a>, <a href="package_async.html">tyhp/async</a>, <a href="package_decimal.html">tyhp/decimal</a>, <a href="package_lambda.html">tyhp/lambda</a></li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_intro.html">&larr; Runtime Packages Overview</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_async.html">The tyhp/async Package &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

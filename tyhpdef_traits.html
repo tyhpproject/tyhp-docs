@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhpdef lets you describe existing PHP traits to the Tyhp compiler. Traits in PHP provide a mechanism for code reuse across classes. When importing a trait, you declare the typed signatures of its public and protected members — methods, properties, and constants — so that Tyhp can type-check code that uses the trait.</p>
-<h2>Basic Trait Declaration</h2>
+<h2 id="basic-trait-declaration">Basic Trait Declaration</h2>
 <p>Consider a PHP trait you want to use from Tyhp:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -306,8 +325,8 @@ trait TimestampedEntity {
     abstract public function save(): void;
 }
 </code></pre></div>
-<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
-<h2>Properties</h2>
+<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.html#reserved-word-type-names">Reserved-word type names</a>.</p>
+<h2 id="properties">Properties</h2>
 <p>Trait properties are declared with visibility modifiers and types, just like class properties. Hooked properties use the same bodyless <code>{ get; set; }</code> form as on classes.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -319,7 +338,7 @@ trait HasSlug {
     public function getSlugAttribute(): string;
 }
 </code></pre></div>
-<h2>Constants</h2>
+<h2 id="constants">Constants</h2>
 <p>Traits can declare typed constants.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -331,7 +350,7 @@ trait Configurable {
     public function setConfig(string $key, mixed $value): void;
 }
 </code></pre></div>
-<h2>Abstract Methods</h2>
+<h2 id="abstract-methods">Abstract Methods</h2>
 <p>Traits can require using classes to implement specific methods by declaring them as abstract.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -343,7 +362,7 @@ trait Validatable {
     public function getErrors(): array&lt;string&gt;;
 }
 </code></pre></div>
-<h2>Generic Traits</h2>
+<h2 id="generic-traits">Generic Traits</h2>
 <p>Traits support generic type parameters. When a class uses a generic trait, it must provide concrete type arguments.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -361,9 +380,9 @@ trait KeyValueStore&lt;TKey extends string|int, TValue&gt; {
     public function has(TKey $key): bool;
 }
 </code></pre></div>
-<h2>Partial traits</h2>
-<p><code>partial</code> on a tyhpdef trait follows the same rules as on classes. Include brace <code>partial trait Foo { … }</code> adds members. Overlay <code>partial trait Foo&lt;T&gt;;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a>.</p>
-<h2>Using Imported Traits in Tyhp</h2>
+<h2 id="partial-traits">Partial traits</h2>
+<p><code>partial</code> on a tyhpdef trait follows the same rules as on classes. Include brace <code>partial trait Foo { … }</code> adds members. Overlay <code>partial trait Foo&lt;T&gt;;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.html#partial-types-base--include">Classes in Tyhpdef</a>.</p>
+<h2 id="using-imported-traits-in-tyhp">Using Imported Traits in Tyhp</h2>
 <p>Once a trait is declared in Tyhpdef, Tyhp classes can use it with full type checking. Generic traits require concrete type arguments at the use site.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -388,7 +407,7 @@ class UserCollection {
     }
 }
 </code></pre></div>
-<h2>Trait Conflict Resolution</h2>
+<h2 id="trait-conflict-resolution">Trait Conflict Resolution</h2>
 <p>When a class uses multiple traits that have methods with the same name, you can use PHP's conflict resolution syntax (<code>insteadof</code> and <code>as</code>) in your Tyhp code. The imported traits will carry their method signatures so Tyhp can validate the resolution.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -399,7 +418,7 @@ class AuditableUser {
     }
 }
 </code></pre></div>
-<h2>Deprecated and Obsolete</h2>
+<h2 id="deprecated-and-obsolete">Deprecated and Obsolete</h2>
 <p>The trait itself can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Member-level markers parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -413,7 +432,7 @@ trait Cacheable {
     public function invalidateCache(): void;
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">

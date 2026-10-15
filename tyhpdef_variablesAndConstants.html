@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhpdef lets you describe existing PHP global variables and constants to the Tyhp compiler. This enables type-safe access to PHP superglobals, user-defined globals, and defined constants from your Tyhp code. You can specify types, alias names with <code>as</code>, and mark top-level imports <code>deprecated</code> or <code>obsolete</code>.</p>
-<h2>Declaring Variables</h2>
+<h2 id="declaring-variables">Declaring Variables</h2>
 <p>Variable declarations specify a type followed by the variable name. The compiler uses that type when your Tyhp code reads the global. There is <strong>no</strong> runtime existence check or <code>ErrorException</code> coercion generated from the tyhpdef.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -293,19 +312,19 @@ string $globalAppName;
 // Import a typed array
 array&lt;string, mixed&gt; $globalSettings;
 </code></pre></div>
-<h2><code>??</code> expected start values</h2>
+<h2 id="-expected-start-values"><code>??</code> expected start values</h2>
 <p>The grammar accepts <code>??</code> after a tyhpdef variable, constant, or class property (<code>int $maxRetries ?? 3</code>, <code>const int FLAG ?? 1</code>, <code>public array $items ?? [];</code>). That clause records the value PHP is <strong>expected</strong> to start with. The live value may differ; tyhpdef does not assign or define it. Handle missing PHP globals at the use site (<code>isset</code>, <code>??</code> in <strong>code</strong>, or nullable types).</p>
 <p>Parameter defaults are unrelated: they still use <code>function foo(int $x = 1)</code>.</p>
-<h2>Variable Aliasing</h2>
+<h2 id="variable-aliasing">Variable Aliasing</h2>
 <p>Variables can be aliased using <code>as $newName</code> so your Tyhp code uses a different name than the PHP global.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // Import $blah1 from PHP as $globalGuest in Tyhp
 Guest $blah1 as $globalGuest;
 </code></pre></div>
-<h2>Import by reference</h2>
+<h2 id="import-by-reference">Import by reference</h2>
 <p>Tyhpdef variable declarations do <strong>not</strong> accept <code>&amp;</code>. <code>int &amp;$sharedCounter</code> is not a tyhpdef form. Object values are PHP references as usual; scalars are whatever PHP already stored.</p>
-<h2>Declaring Constants</h2>
+<h2 id="declaring-constants">Declaring Constants</h2>
 <p>Constants are declared using the <code>const</code> keyword followed by the type and name. Tyhpdef file-level constants <strong>need</strong> a type because they describe existing PHP constants that may not have an exact value in the tyhpdef. (Tyhp source does not allow a type on file-level <code>const</code>; PHP has no typed file-level constants.)</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -316,8 +335,8 @@ const int MAX_CONNECTIONS;
 const float PI_PRECISE;
 const array&lt;string&gt; SUPPORTED_LOCALES;
 </code></pre></div>
-<h2>Fallback constants</h2>
-<p><code>fallback const</code> describes a PHP constant that is defined only when that name does not already exist (<code>if (!defined('NAME')) { define('NAME', …); }</code>). Constant names are case-sensitive. The winner rules match <a href="tyhpdef_functions.md#fallback-functions">fallback functions</a>: one package fills the name, several packages follow <code>vendor/composer/autoload_files.php</code> order, <code>tyhpdef/php</code> wins over every fallback, and a loaded package that requires <code>ext-*</code> wins over a fallback of the same name.</p>
+<h2 id="fallback-constants">Fallback constants</h2>
+<p><code>fallback const</code> describes a PHP constant that is defined only when that name does not already exist (<code>if (!defined('NAME')) { define('NAME', …); }</code>). Constant names are case-sensitive. The winner rules match <a href="tyhpdef_functions.html#fallback-functions">fallback functions</a>: one package fills the name, several packages follow <code>vendor/composer/autoload_files.php</code> order, <code>tyhpdef/php</code> wins over every fallback, and a loaded package that requires <code>ext-*</code> wins over a fallback of the same name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 declare(ext=&quot;!intl&quot;) {
@@ -325,8 +344,8 @@ declare(ext=&quot;!intl&quot;) {
 }
 </code></pre></div>
 <p>A later fallback const with a different type or value warns (<code>TYHP8042</code>) and is ignored. Two fallback consts and no autoload file list is an error (<code>TYHP8041</code>). An ordinary const that Composer loads after a fallback const of the same name is an error (<code>TYHP8043</code>). A plain <code>const</code> in the same package replaces that package's fallback.</p>
-<p><code>declare(ext=&quot;intl&quot;)</code> keeps the block when a loaded tyhpdef package requires <code>ext-intl</code>. <code>declare(ext=&quot;!intl&quot;)</code> keeps it when none do. The directive is alone in that <code>declare</code> (<code>TYHP8039</code>). The value is the extension name, or <code>!</code> plus that name (<code>TYHP8040</code>). It composes with <code>declare(php=…)</code> by nesting. See <a href="tyhp_0320_phpVersionGating.md#extension-presence">PHP Version Gating</a>.</p>
-<h2>Constant Aliasing</h2>
+<p><code>declare(ext=&quot;intl&quot;)</code> keeps the block when a loaded tyhpdef package requires <code>ext-intl</code>. <code>declare(ext=&quot;!intl&quot;)</code> keeps it when none do. The directive is alone in that <code>declare</code> (<code>TYHP8039</code>). The value is the extension name, or <code>!</code> plus that name (<code>TYHP8040</code>). It composes with <code>declare(php=…)</code> by nesting. See <a href="tyhp_0320_phpVersionGating.html#extension-presence">PHP Version Gating</a>.</p>
+<h2 id="constant-aliasing">Constant Aliasing</h2>
 <p>Constants can be aliased using the fully-qualified PHP name with <code>as</code> to use a different name in Tyhp.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -334,18 +353,18 @@ declare(ext=&quot;!intl&quot;) {
 const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 const string \App\Config\DATABASE_URL as DB_URL;
 </code></pre></div>
-<h2>Superglobal Type Declarations</h2>
+<h2 id="superglobal-type-declarations">Superglobal Type Declarations</h2>
 <p>PHP superglobals (<code>$_GET</code>, <code>$_POST</code>, <code>$_SERVER</code>, and similar) are typed by the <code>tyhpdef/php</code> package. You do not need to redeclare them unless you want a narrower project-specific type.</p>
-<h2>Deprecated and Obsolete</h2>
+<h2 id="deprecated-and-obsolete">Deprecated and Obsolete</h2>
 <p>Both <strong>top-level</strong> variables and constants can be marked as <code>deprecated</code> or <code>obsolete</code>. Member-level markers on class constants are parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 deprecated const string OLD_API_KEY;
 deprecated string $legacyConfig;
 </code></pre></div>
-<h2>Runtime Behavior</h2>
+<h2 id="runtime-behavior">Runtime Behavior</h2>
 <p>Tyhpdef imports are <strong>type information</strong>. The compiler does not emit existence checks, coercion, or <code>ErrorException</code> for missing globals. If a PHP variable or constant is unset, PHP's usual notices/errors apply at runtime.</p>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -394,8 +413,8 @@ deprecated string $legacyConfig;
 </div>
     </div>
 </div>
-<h2>Extern constants</h2>
-<p>A name-only <code>extern const \GMP_ROUND_PLUSINF;</code> occupies the const name when this package mentions a constant it does not own. Using it from <code>.tyhp</code> is <code>TYHP4307</code>. See <a href="tyhpdef_extern.md">Extern Types</a>.</p>
+<h2 id="extern-constants">Extern constants</h2>
+<p>A name-only <code>extern const \GMP_ROUND_PLUSINF;</code> occupies the const name when this package mentions a constant it does not own. Using it from <code>.tyhp</code> is <code>TYHP4307</code>. See <a href="tyhpdef_extern.html">Extern Types</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">

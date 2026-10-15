@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,13 +299,13 @@
     <span class="badge bg-primary me-1">Tier 2 · Story 19</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The <code>language_server</code> action starts the Tyhp Language Server Protocol (LSP) server. It uses the same parse, bind, and check pipeline as <code>tyhp lint</code>, then keeps that analysis live as you edit.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp language_server [options]
 </code></pre></div>
-<h2>How It Works</h2>
+<h2 id="how-it-works">How It Works</h2>
 <p>The language server is a long-running process that communicates with your editor over stdin/stdout. When it starts, it loads the <code>tyhp.json</code> given by <code>--tyhp-project</code> (or <code>./tyhp.json</code>), discovers source and tyhpdef files, and builds an initial representation of the project. As you edit files, it incrementally re-processes changed documents (debounced) and publishes diagnostics.</p>
 <p><code>--stdio</code> is accepted and is the default transport. <code>--tcp</code> and <code>--pipe</code> are listed by <code>tyhp help</code> but are not implemented: passing either flag prints an error and exits.</p>
-<h2>Features</h2>
+<h2 id="features">Features</h2>
 <ul>
 <li>Diagnostics — The same errors and warnings as <code>tyhp lint</code>, updated as you type.</li>
 <li>Completions — Context-aware completion for variables, functions, classes, methods, properties, types, keywords, and import suggestions (with <code>completionItem/resolve</code>).</li>
@@ -304,13 +323,13 @@
 <li>Semantic Tokens — Semantic highlighting from binder results (full document plus delta; range tokens are not advertised).</li>
 <li>Workspace Symbols — Search for a symbol across the project by name.</li>
 </ul>
-<h2>IDE Integration</h2>
+<h2 id="ide-integration">IDE Integration</h2>
 <p>The Tyhp Language extension for VS Code / Cursor and the Tyhp Language plugin for PhpStorm start one <code>tyhp language_server</code> process per owned <code>tyhp.json</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp language_server --quiet --stdio --tyhp-project=&lt;path-to-tyhp.json&gt;
 </code></pre></div>
 <p>Point <code>tyhp.path</code> at your <code>tyhp</code> CLI if it is not on <code>PATH</code>. Extra tokens go in <code>tyhp.languageServer.args</code>.</p>
 <p>Any other LSP client can launch the same command. Editors with LSP support include Sublime Text (LSP package), Neovim (nvim-lspconfig), Emacs (lsp-mode or eglot), and Helix.</p>
-<h2>Options</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li><code>--tyhp-project=&lt;path&gt;</code> — Path to the <code>tyhp.json</code> project file. The language server uses this to discover source files and configuration.</li>
 <li><code>--stdio</code> — Communicate via stdin/stdout (default; the only transport implemented).</li>

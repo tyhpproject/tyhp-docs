@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Namespaces in tyhpdef work just like in Tyhp and PHP, allowing you to organize declarations into logical groups. When you declare items inside a namespace block, the compiler registers them under that namespace. You can also import items from one PHP namespace and place them into a different namespace for use in Tyhp code, which is useful for reorganizing third-party library APIs.</p>
-<h2>Basic Namespace Declarations</h2>
+<h2 id="basic-namespace-declarations">Basic Namespace Declarations</h2>
 <p>Use the namespace keyword followed by the namespace name and a block of declarations. All items inside the block belong to that namespace.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -305,7 +324,7 @@ namespace App\Models {
     }
 }
 </code></pre></div>
-<h2>Semicolon Namespace Syntax</h2>
+<h2 id="semicolon-namespace-syntax">Semicolon Namespace Syntax</h2>
 <p>You can also use the semicolon namespace syntax, where all declarations following the namespace statement until the end of the file (or the next namespace statement) belong to that namespace.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -317,7 +336,7 @@ class UserService {
     public function create(string $name, string $email): \App\Models\User;
 }
 </code></pre></div>
-<h2>Multiple Namespaces in One File</h2>
+<h2 id="multiple-namespaces-in-one-file">Multiple Namespaces in One File</h2>
 <p>A single tyhpdef file can contain multiple namespace blocks. This is common when describing a PHP extension or library that uses several namespaces.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -350,9 +369,9 @@ namespace Psr\Log\LogLevel {
     const string DEBUG;
 }
 </code></pre></div>
-<h2>Importing Into a Different Namespace</h2>
+<h2 id="importing-into-a-different-namespace">Importing Into a Different Namespace</h2>
 <p>You can import a PHP item from its original namespace and expose it under a different namespace in Tyhp. When a fully-qualified name with a leading backslash is used on a declaration, the item is imported from that PHP namespace but registered in the tyhpdef's declared namespace.</p>
-<p>A leading-backslash name that matches the enclosing namespace is also how a reserved-word short name is written (<code>class \Hamcrest\Core\Is</code> inside <code>namespace Hamcrest\Core</code>). Generate emits that form so the parser treats the name as a name rather than a keyword. It is not a cross-namespace import. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
+<p>A leading-backslash name that matches the enclosing namespace is also how a reserved-word short name is written (<code>class \Hamcrest\Core\Is</code> inside <code>namespace Hamcrest\Core</code>). Generate emits that form so the parser treats the name as a name rather than a keyword. It is not a cross-namespace import. See <a href="tyhpdef_classes.html#reserved-word-type-names">Reserved-word type names</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 namespace EmailerLib {
@@ -402,7 +421,7 @@ namespace EL\Helpers {
 </div>
     </div>
 </div>
-<h2>Declaring PHP Extension Types</h2>
+<h2 id="declaring-php-extension-types">Declaring PHP Extension Types</h2>
 <p>When writing tyhpdef files for PHP extensions, place declarations in the correct namespace. Most PHP extension classes and functions live in the global namespace, but some (like PDO, Reflection, and Random) use their own namespaces.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -481,7 +500,7 @@ namespace Random {
 </div>
     </div>
 </div>
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <ul>
 <li>Namespace declarations do not use a leading backslash</li>
 <li>Items imported from a different PHP namespace use a fully-qualified name with leading backslash</li>

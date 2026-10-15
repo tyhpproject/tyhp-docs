@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 06</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Two of the first differences you will notice in Tyhp are a new open tag and a new file extension. These allow the Tyhp compiler to distinguish Tyhp code from PHP code and apply its type-checking and compilation rules only to the appropriate sections. The new open tags work the same way as the existing PHP open tag <code>&lt;?php</code>. The echo open tag <code>&lt;?=</code> is PHP echo mode (not Tyhp). A bare <code>&lt;?</code> is not a PHP short open tag — Tyhp uses <code>&lt;?</code> only as the start of <code>&lt;?tyhp</code>, <code>&lt;?tyhpdef</code>, or <code>&lt;?php</code>.</p>
-<h2>The <code>&lt;?tyhp</code> Open Tag</h2>
+<h2 id="the-tyhp-open-tag">The <code>&lt;?tyhp</code> Open Tag</h2>
 <p>The <code>&lt;?tyhp</code> open tag marks the start of a Tyhp code block. It is the primary open tag for all Tyhp source files. Like <code>&lt;?php</code>, it must be followed by at least one whitespace character. Tyhp code blocks can be closed with <code>?&gt;</code> for inline output (same as PHP), and the file can contain multiple Tyhp code blocks interleaved with inline HTML.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -288,7 +307,7 @@ $greeting = &quot;Hello, Tyhp!&quot;;
 echo $greeting;
 </code></pre></div>
 <p>When the compiler encounters <code>&lt;?tyhp</code>, it enters Tyhp language mode. All code within this block is subject to Tyhp's type checking, new keywords (<code>struct</code>, <code>extension</code>, <code>async</code>, <code>await</code>, <code>with</code>, <code>operator</code>, <code>is</code>, <code>typeof</code>, <code>nameof</code>, <code>variable_exists</code>, etc.), and compile-time checks. The block ends at <code>?&gt;</code> (for inline output) or at the end of the file.</p>
-<h2>The <code>&lt;?tyhpdef</code> Open Tag</h2>
+<h2 id="the-tyhpdef-open-tag">The <code>&lt;?tyhpdef</code> Open Tag</h2>
 <p>The <code>&lt;?tyhpdef</code> open tag marks the start of a Tyhp type definition file. Tyhpdef files describe the type signatures of external PHP code -- extensions, Composer packages, or any PHP code that your Tyhp project depends on. They provide the compiler with type information without containing any runtime logic.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -300,16 +319,16 @@ class PaymentGateway {
 }
 </code></pre></div>
 <p>Tyhpdef files are not compiled into PHP output. They exist purely for the compiler's type-checking phase. The compiler parses them and registers their symbols (classes, functions, constants, interfaces, enums, traits, type aliases) into the global scope so that your Tyhp code can reference and type-check against them. Tyhpdef also supports the <code>deprecated</code> and <code>obsolete</code> keywords to mark declarations that should trigger compiler warnings or errors when used.</p>
-<h2>File Extensions</h2>
+<h2 id="file-extensions">File Extensions</h2>
 <p>Tyhp uses two file extensions that correspond to the two open tags:</p>
 <ul>
 <li><code>.tyhp</code> -- Tyhp source files containing <code>&lt;?tyhp</code> code blocks. These are compiled into <code>.php</code> output files.</li>
 <li><code>.tyhpdef</code> -- Tyhp type definition files containing <code>&lt;?tyhpdef</code> declarations. These are consumed by the compiler for type checking but produce no output.</li>
 </ul>
 <p>The compiler uses the file extension to determine how to parse the file. A <code>.tyhp</code> file is parsed starting with the <code>tyhpSrcFile</code> grammar rule, which expects <code>&lt;?tyhp</code> blocks (with optional inline HTML output between blocks). A <code>.tyhpdef</code> file is parsed starting with the <code>tyhpdefSrcFile</code> grammar rule, which expects a single <code>&lt;?tyhpdef</code> block.</p>
-<h2>Tagless source (<code>source.tagless</code>)</h2>
+<h2 id="tagless-source-sourcetagless">Tagless source (<code>source.tagless</code>)</h2>
 <p>Set <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code> in <code>tyhp.json</code> (or <code>source.tagless</code> on a package's <code>extra.tyhp.package</code>) to parse <code>.tyhp</code> / <code>.tyhpdef</code> files as Tyhp/tyhpdef from the first token, without an open tag. Closing <code>?&gt;</code> is not allowed in that mode. Use this for files that are entirely Tyhp (no interleaved HTML). The default remains tagged <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code> files.</p>
-<h2>Strict Types Are Always Enabled</h2>
+<h2 id="strict-types-are-always-enabled">Strict Types Are Always Enabled</h2>
 <p>In Tyhp, compiled PHP output always includes <code>declare(strict_types=1);</code>. Every <code>.tyhp</code> file is compiled with strict types enforced. This means PHP's type coercion rules do not apply in Tyhp code -- passing an <code>int</code> where a <code>string</code> is expected always produces a type error, never a silent conversion.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -329,7 +348,7 @@ function greet(string $name): string {
     return &quot;Hello, &quot; . $name;
 }
 </code></pre></div>
-<h2>The <code>declare(output_file='path')</code> Directive</h2>
+<h2 id="the-declareoutputfilepath-directive">The <code>declare(output_file='path')</code> Directive</h2>
 <p>Tyhp extends PHP's <code>declare()</code> statement with a custom <code>output_file</code> directive. This tells the compiler to emit the code that follows the declaration into a specific output file path, overriding the default PSR-4 path computation. This is useful when you need precise control over where a file ends up in the build output.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -352,7 +371,7 @@ $app-&gt;run();
 </div>
     </div>
 </div>
-<h2>The <code>declare(autoload=…)</code> Directive</h2>
+<h2 id="the-declareautoload-directive">The <code>declare(autoload=…)</code> Directive</h2>
 <p><code>declare(autoload=…)</code> is a per-file override for <code>build.entryPointAutoloader</code>. Values:</p>
 <ul>
 <li><code>'composer'</code> — inject the configured Composer autoloader (default <code>vendor/autoload.php</code> under <code>output.publishPath</code>)</li>
@@ -360,9 +379,9 @@ $app-&gt;run();
 <li>a config map key or a path — look up <code>build.entryPointAutoloader</code> first, otherwise treat the value as a path relative to <code>output.publishPath</code></li>
 </ul>
 <p>The emitter writes the <code>require_once</code> into the PHP output. Do not put <code>require_once 'vendor/autoload.php'</code> in Tyhp source.</p>
-<h2>How the Compiler Distinguishes Tyhp from PHP</h2>
+<h2 id="how-the-compiler-distinguishes-tyhp-from-php">How the Compiler Distinguishes Tyhp from PHP</h2>
 <p>The lexer recognizes the tag that follows <code>&lt;?</code> and sets an internal language mode accordingly. When it sees <code>&lt;?tyhp</code> followed by whitespace, it emits a <code>T_TYHP_OPEN_TAG</code> token and enters Tyhp mode. When it sees <code>&lt;?tyhpdef</code> followed by whitespace, it emits a <code>T_TYHPDEF_OPEN_TAG</code> token and enters Tyhpdef mode. When it sees <code>&lt;?php</code>, it emits the standard <code>T_OPEN_TAG</code> token and enters PHP mode. When it sees <code>&lt;?=</code>, it enters PHP echo mode (<code>phpEcho</code>). A bare <code>&lt;?</code> that is not followed by <code>tyhp</code>, <code>tyhpdef</code>, or <code>php</code> is not a PHP short open tag. This language mode determines which keywords are active -- for example, <code>struct</code>, <code>async</code>, <code>await</code>, <code>is</code>, <code>typeof</code>, and <code>nameof</code> are only recognized as keywords in Tyhp mode.</p>
-<h2>Mixing <code>&lt;?tyhp</code> and <code>&lt;?php</code> in <code>.tyhp</code> Files</h2>
+<h2 id="mixing-tyhp-and-php-in-tyhp-files">Mixing <code>&lt;?tyhp</code> and <code>&lt;?php</code> in <code>.tyhp</code> Files</h2>
 <p>A <code>.tyhp</code> file can contain both <code>&lt;?tyhp</code> and <code>&lt;?php</code> code blocks. This is useful for gradual migration or when you need to include PHP code that uses features outside Tyhp's type system. Each block is independently parsed in its respective language mode:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 // This block is Tyhp code -- type-checked
@@ -389,7 +408,7 @@ $legacyVar = someOldFunction();
 </div>
     </div>
 </div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Every <code>&lt;?tyhp</code> code block compiles to a <code>&lt;?php</code> block with <code>declare(strict_types=1)</code> automatically inserted. Tyhp-specific syntax (variable type declarations, generics, structs, etc.) is transformed into valid PHP. The <code>&lt;?tyhp</code> tag itself does not appear in the output.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -413,7 +432,7 @@ class HomeController {
     }
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -462,7 +481,7 @@ class HomeController {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -499,7 +518,7 @@ class HomeController {
 </div>
     </div>
 </div>
-<h2>Compiler Error Examples</h2>
+<h2 id="compiler-error-examples">Compiler Error Examples</h2>
 <p>If you accidentally use <code>&lt;?php</code> in a <code>.tyhp</code> file and try to use Tyhp-specific syntax, the compiler reports parse errors because those keywords are not active in PHP mode:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?php
 // ERROR: &#039;struct&#039; is not recognized as a keyword in PHP mode

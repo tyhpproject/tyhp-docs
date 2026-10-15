@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -283,7 +302,7 @@
 <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Complete</span>
 </p>
-<p>The <code>tyhp/core</code> package ships a built-in catalog of those methods (<code>length</code>, <code>contains</code>, <code>toUpper</code>, <code>mapped</code>, …) and activates them for the whole compilation with <code>global use extension \Tyhp\StringExtensions</code> (and the matching <code>ArrayExtensions</code>, <code>IntExtensions</code>, <code>FloatExtensions</code>, <code>BoolExtensions</code>, <code>ClosureExtensions</code>). You do <strong>not</strong> write <code>use extension</code> in each file.</p>
+<p>The <code>tyhp/core</code> package ships a built-in catalog of those methods (<code>length</code>, <code>contains</code>, <code>toUpper</code>, <code>mapped</code>, …) and activates them for the whole compilation with <code>global use extension \Tyhp\StringExtensions</code> (and the matching <code>ArrayExtensions</code>, <code>IntExtensions</code>, <code>FloatExtensions</code>, <code>BoolExtensions</code>, <code>ClosureExtensions</code>). The catalog is ordinary Tyhp <code>extension</code> source inside <code>tyhp/core</code>; see <a href="package_core.html"><code>tyhp/core</code></a> for the full method list. You do <strong>not</strong> write <code>use extension</code> in each file.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 string $name = &quot;Hello, World!&quot;;
@@ -295,32 +314,44 @@ string $trimmed = &quot;  spaces  &quot;-&gt;trim();
 array&lt;int, int&gt; $nums = [3, 1, 4];
 array&lt;int, int&gt; $evens = $nums-&gt;filtered(fn(int $v): bool =&gt; $v % 2 === 0);
 array&lt;int, string&gt; $labels = $nums-&gt;mapped(fn(int $v): string =&gt; (string)$v);
-int $n = 42-&gt;abs();
-float $rounded = 3.14159-&gt;round(2);
+int $n = (42)-&gt;abs();
+float $rounded = (3.14159)-&gt;round(2);
 </code></pre></div>
-<p><code>$name-&gt;length()</code> emits <code>\Tyhp\StringHelper::strlen($name)</code>. <code>$name-&gt;contains(&quot;World&quot;)</code> emits <code>\str_contains($name, &quot;World&quot;)</code>.</p>
-<h2>Unicode by default, <code>byte</code> prefix for bytes</h2>
+<p>Compiled PHP (excerpt):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$len = \Tyhp\StringHelper::strlen($name);
+$has = \str_contains($name, &quot;World&quot;);
+$trimmed = \trim(&quot;  spaces  &quot;, &quot; \t\n\r\0\x0B&quot;);
+$evens = \array_filter($nums, fn(int $v): bool =&gt; ($v % 2) === 0, 0);
+$labels = \array_map(fn(int $v): string =&gt; (string) $v, $nums);
+$n = \abs(42);
+$rounded = \round(3.14159, 2, \PHP_ROUND_HALF_UP);
+</code></pre></div>
+<p>Integer and float literals must be parenthesised before <code>-&gt;</code> (<code>(42)-&gt;abs()</code>, <code>(-1.5)-&gt;abs()</code>, <code>(0x1F)-&gt;toHex()</code>); string and array literals can be used directly (<code>&quot;a,b&quot;-&gt;split(&quot;,&quot;)</code>, <code>[1, 2, 3]-&gt;count()</code>).</p>
+<h2 id="unicode-by-default-byte-prefix-for-bytes">Unicode by default, <code>byte</code> prefix for bytes</h2>
 <p>String methods that measure or slice characters prefer the multibyte (<code>\mb_*</code>) APIs when <code>ext-mbstring</code> is loaded: <code>length()</code> is <code>\mb_strlen</code>, <code>toUpper()</code> is <code>\mb_strtoupper</code>, <code>substring()</code> is <code>\mb_substr</code>, and so on. Those calls go through <code>\Tyhp\StringHelper</code>, which caches the extension check and falls back to the matching byte API (<code>\strlen</code>, <code>\strtoupper</code>, <code>\substr</code>, …) when mbstring is not installed.</p>
 <p>Byte-oriented variants use a <code>byte</code> prefix and the corresponding byte API: <code>byteLength()</code> is <code>\strlen</code>, <code>byteReverse()</code> is <code>\strrev</code>.</p>
-<h2>Local <code>use</code> only when adapting</h2>
+<h2 id="local-use-only-when-adapting">Local <code>use</code> only when adapting</h2>
 <p>Because <code>tyhp/core</code> already issued <code>global use extension</code>, a file-level <code>use extension \Tyhp\StringExtensions;</code> with no adaptations is redundant and warns (<code>TYHP4169</code>). Use a local <code>use</code> only to <strong>adapt</strong> the catalog in that file (<code>hide</code>, method <code>as</code>, <code>insteadof</code>):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 use extension \Tyhp\StringExtensions {
     StringExtensions::toLower hide;
-};
+}
 
-string $name = &#039;hello_world&#039;;
-int $len = $name-&gt;length();
+function lengthOf(string $name): int {
+    return $name-&gt;length();
+}
 </code></pre></div>
-<p>See <a href="tyhp_0350_useStatements.md#local-use-overlaying-global-use">Use Statements</a>.</p>
-<h2>How to Write an Extension</h2>
+<p>Inside the file, <code>toLower</code> is no longer available as a method; every other <code>StringExtensions</code> method still is.</p>
+<p>See <a href="tyhp_0350_useStatements.html#local-use-overlaying-global-use">Use Statements</a>.</p>
+<h2 id="how-to-write-an-extension">How to Write an Extension</h2>
 <p>Declare an <code>extension</code> with the target on the header (<code>extends string</code>) or in a nested <code>extends</code> group. <code>$this</code> is that target and is not a caller parameter. Same-file extensions are in scope without an import. Extensions from another file or namespace need <code>use extension</code> unless a loaded tyhpdef used <code>global use extension</code> for that name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 extension StringHelpers extends string {
     function toCamelCase(): string {
-        return $this;
+        string $parts = \str_replace(&#039;_&#039;, &#039; &#039;, $this);
+        return \lcfirst(\str_replace(&#039; &#039;, &#039;&#039;, \ucwords($parts)));
     }
 
     function trimLower(): string {
@@ -330,6 +361,7 @@ extension StringHelpers extends string {
 
 string $name = &#039;hello_world&#039;;
 string $camel = $name-&gt;toCamelCase();
+string $tidy = $name-&gt;trimLower();
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -337,7 +369,9 @@ declare(strict_types=1);
 
 $name = &#039;hello_world&#039;;
 $camel = \StringHelpers::toCamelCase($name);
+$tidy = \strtolower(\trim($name));
 </code></pre></div>
+<p><code>toCamelCase</code> has several statements, so it is emitted as a static method on <code>StringHelpers</code> (with <code>$this</code> passed as the first argument) and call sites call it. <code>trimLower</code> is a single <code>return</code>, so its expression is inlined at each call site.</p>
 <p>When the extension lives in another file or namespace, import it with <code>use extension</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -346,8 +380,8 @@ use extension App\Extensions\StringHelpers;
 string $name = &#039;hello_world&#039;;
 string $camel = $name-&gt;toCamelCase();
 </code></pre></div>
-<p>See Use Statements for adaptation syntax (<code>as</code> / hide) on <code>use extension</code>.</p>
-<h2>Method Chaining (User Extensions)</h2>
+<p>Without the import, a call to the extension's method is <strong>TYHP4101</strong>. See Use Statements for adaptation syntax (<code>as</code> / hide) on <code>use extension</code>.</p>
+<h2 id="method-chaining-user-extensions">Method Chaining (User Extensions)</h2>
 <p>If your extensions return the extended type (or another type that also has extensions in scope), you can chain calls. Each call is rewritten independently.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -361,7 +395,8 @@ extension StringHelpers extends string {
     }
 
     function dashed(): string {
-        return \str_replace(&#039; &#039;, &#039;-&#039;, $this);
+        string $spaced = \str_replace(&#039; &#039;, &#039;-&#039;, $this);
+        return $spaced;
     }
 }
 
@@ -371,17 +406,18 @@ $result = $input-&gt;trimmed()-&gt;lower()-&gt;dashed();
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 $input = &quot;  Hello World  &quot;;
-$result = \StringHelpers::dashed(\StringHelpers::lower(\StringHelpers::trimmed($input)));
+$result = \StringHelpers::dashed(\strtolower(\trim($input)));
 </code></pre></div>
+<p><code>trimmed</code> and <code>lower</code> are single-<code>return</code> members, so they are inlined; <code>dashed</code> has two statements, so it stays a static call.</p>
 <p>The built-in catalog chains the same way: <code>&quot;  Hello  &quot;-&gt;trim()-&gt;toLower()</code>.</p>
-<h2>Calling on Literal Values</h2>
+<h2 id="calling-on-literal-values">Calling on Literal Values</h2>
 <p>Extension methods can be called on literals. Wrap integer and float literals in parentheses.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 $char = (65)-&gt;toHex();
 $parts = &quot;a,b,c&quot;-&gt;split(&quot;,&quot;);
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -406,7 +442,7 @@ $parts = &quot;a,b,c&quot;-&gt;split(&quot;,&quot;);
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

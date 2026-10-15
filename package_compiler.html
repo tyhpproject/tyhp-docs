@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>The tyhp/compiler Package - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="The_tyhp_compiler_Package">
+    <h2 class="section-heading">The tyhp/compiler Package</h2>
+    
+    <p><code>tyhp/compiler</code> puts the Tyhp compiler into your project through Composer. It provides <code>vendor/bin/tyhp</code>, which is a small PHP script (a <em>shim</em>). The shim downloads the native Tyhp compiler that matches the package version, then forwards every command to that compiler.</p>
+<p>The compiler only runs at development and build time. Your application runs the PHP that the compiler emits. For that reason the package belongs in <code>require-dev</code>, and production installs can leave it out.</p>
+<p>Installing the compiler per project through Composer has three benefits:</p>
+<ul>
+<li>Every developer and every CI job uses the same compiler version, because <code>composer.lock</code> pins it.</li>
+<li>Projects on one machine can use different compiler versions.</li>
+<li>No global install is needed. <code>composer install</code> is enough.</li>
+</ul>
+<p>For the commands the compiler supports, see <a href="cli_intro.html">CLI: Introduction</a>. This page covers how the package installs and runs the compiler.</p>
+<h2 id="installing">Installing</h2>
+<p>New projects get the package from <a href="intro_installation.html"><code>tyhp init</code></a>. To add it to an existing Composer project, run:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require --dev tyhp/compiler
+</code></pre></div>
+<p>Requirements:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHP 8.2 or newer</td>
+<td>Runs the shim and the download.</td>
+</tr>
+<tr>
+<td><code>ext-curl</code></td>
+<td>Composer requires it to install the package. Only <code>--install-binary</code> uses it, to download the compiler; running an installed compiler doesn't.</td>
+</tr>
+<tr>
+<td><code>proc_open()</code></td>
+<td>The shim starts the native compiler with <code>proc_open()</code>, so the function must not be listed in <code>disable_functions</code>.</td>
+</tr>
+<tr>
+<td><code>tyhp/core</code></td>
+<td>Composer installs it automatically.</td>
+</tr>
+<tr>
+<td>A supported platform</td>
+<td>macOS (x64 and arm64), Linux (x64 and arm64), or Windows (x64).</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="the-install-hook">The install hook</h3>
+<p>Composer doesn't run scripts declared by dependencies, so the download is triggered by a script in <strong>your</strong> <code>composer.json</code>. <code>tyhp init</code> adds these entries:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;scripts&quot;: {
+        &quot;tyhp&quot;: &quot;vendor/bin/tyhp&quot;,
+        &quot;post-autoload-dump&quot;: [
+            &quot;vendor/bin/tyhp --install-binary&quot;,
+            &quot;vendor/bin/tyhp generate_tyhpdef --vendor&quot;
+        ]
+    },
+    &quot;scripts-descriptions&quot;: {
+        &quot;tyhp&quot;: &quot;Forward extra args to the Tyhp CLI (e.g. composer tyhp build)&quot;
+    }
+}
+</code></pre></div>
+<ul>
+<li><code>vendor/bin/tyhp --install-binary</code> downloads the compiler after every <code>composer install</code>, <code>composer update</code>, and <code>composer dump-autoload</code>. It does nothing when the right version is already installed.</li>
+<li><code>vendor/bin/tyhp generate_tyhpdef --vendor</code> generates type definitions for your PHP dependencies. See <a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a>.</li>
+<li>The <code>tyhp</code> script lets you run <code>composer tyhp build</code>, <code>composer tyhp lint</code>, and so on.</li>
+</ul>
+<p>If your project sets Composer's <code>config.bin-dir</code>, <code>tyhp init</code> writes that directory instead of <code>vendor/bin</code>.</p>
+<p>If you add the package by hand, add at least the <code>--install-binary</code> entry to <code>post-autoload-dump</code>. Without it, the first run reports that the compiler binary isn't available. You can also run the install step yourself:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">vendor/bin/tyhp --install-binary
+</code></pre></div>
+<h2 id="running-the-compiler">Running the compiler</h2>
+<p>Run <code>vendor/bin/tyhp</code> exactly as you would run <code>tyhp</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">vendor/bin/tyhp build
+vendor/bin/tyhp lint src/
+composer tyhp build --watch
+</code></pre></div>
+<p>The shim passes every argument through unchanged and adds none of its own. The native compiler runs with the same working directory, environment variables, standard input, standard output, and standard error. No shell is involved, so arguments are never re-split or expanded. The shim exits with the compiler's exit code (for example, <code>tyhp lint</code> exit codes are listed in <a href="cli_lint.html">CLI: Lint</a>).</p>
+<p>The shim handles one flag itself: <code>--install-binary</code>. When that flag appears anywhere in the arguments, the shim runs the installer and ignores every other argument. The flag is never passed to the compiler. It exits with <code>0</code> when the compiler is installed (or already was) and <code>1</code> with a message on standard error when installation fails.</p>
+<p>Ordinary commands never download anything. If the compiler binary is missing, the shim prints this message and exits with <code>1</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">The Tyhp native compiler binary is not available.
+Run `vendor/bin/tyhp --install-binary` to download it.
+This can happen if `composer install` was run with `--no-scripts`, or if that post-install step failed.
+</code></pre></div>
+<p>On Windows, Composer creates <code>vendor\bin\tyhp.bat</code>, so <code>vendor\bin\tyhp build</code> works from <code>cmd.exe</code> and PowerShell.</p>
+<h2 id="how-the-binary-is-installed">How the binary is installed</h2>
+<p><code>vendor/bin/tyhp --install-binary</code> takes these steps.</p>
+<ol>
+<li><strong>Find the release tag.</strong> The tag is <code>v</code> followed by the version of the installed <code>tyhp/compiler</code> package. For example, package version <code>805.1.0</code> downloads release <code>v805.1.0</code>. The installer reads the version from the package's own <code>composer.json</code>.</li>
+<li><strong>Skip the download if it's already done.</strong> If the binary exists, is not empty, is executable, and its version stamp matches the tag, the installer stops here.</li>
+<li><strong>Detect the platform</strong> from PHP's <code>PHP_OS_FAMILY</code> and <code>php_uname('m')</code>.</li>
+<li><strong>Choose the build variant.</strong> The installer runs <code>dotnet --list-runtimes</code>. If the output lists a <code>Microsoft.NETCore.App 9.x</code> runtime, it downloads the smaller framework-dependent build. Otherwise (no <code>dotnet</code> command, or no .NET 9 runtime) it downloads the self-contained build, which needs no .NET installation.</li>
+<li><strong>Look up the release</strong> at <code>https://api.github.com/repos/tyhpproject/tyhp/releases/tags/{tag}</code>.</li>
+<li><strong>Download <code>checksums.txt</code> and the binary</strong> from the release, following redirects. Each request has a 120-second timeout.</li>
+<li><strong>Verify the SHA-256 checksum.</strong> The binary is installed only if its hash matches the entry for its asset in <code>checksums.txt</code>. A missing entry or a mismatch stops the installation.</li>
+<li><strong>Install the binary.</strong> The installer moves the binary into the package's <code>native/</code> directory, marks it executable on macOS and Linux, and writes the tag to <code>native/version</code>.</li>
+</ol>
+<p>The download goes to the system temporary directory first. A failed or rejected download never replaces a working binary.</p>
+<h3 id="release-assets">Release assets</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Platform</th>
+<th>Self-contained asset</th>
+<th>Framework-dependent asset (.NET 9 installed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macOS, Apple silicon</td>
+<td><code>tyhp-osx-arm64</code></td>
+<td><code>tyhp-osx-arm64-fxdependent</code></td>
+</tr>
+<tr>
+<td>macOS, Intel</td>
+<td><code>tyhp-osx-x64</code></td>
+<td><code>tyhp-osx-x64-fxdependent</code></td>
+</tr>
+<tr>
+<td>Linux, x64</td>
+<td><code>tyhp-linux-x64</code></td>
+<td><code>tyhp-linux-x64-fxdependent</code></td>
+</tr>
+<tr>
+<td>Linux, arm64</td>
+<td><code>tyhp-linux-arm64</code></td>
+<td><code>tyhp-linux-arm64-fxdependent</code></td>
+</tr>
+<tr>
+<td>Windows, x64</td>
+<td><code>tyhp-win-x64.exe</code></td>
+<td><code>tyhp-win-x64-fxdependent.exe</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The architecture names <code>x86_64</code> and <code>amd64</code> map to x64, and <code>arm64</code> and <code>aarch64</code> map to arm64. Windows on arm64 has no release asset.</p>
+<h3 id="files-on-disk">Files on disk</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Path</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vendor/tyhp/compiler/native/tyhp</code></td>
+<td>The native compiler (<code>tyhp.exe</code> on Windows).</td>
+</tr>
+<tr>
+<td><code>vendor/tyhp/compiler/native/version</code></td>
+<td>The release tag that was installed, such as <code>v805.1.0</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Composer replaces the whole <code>vendor/tyhp/compiler/</code> directory when the package version changes, so the <code>native/</code> directory disappears with it. The <code>post-autoload-dump</code> hook downloads the new version right away.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p><code>--install-binary</code> keeps an existing binary whenever the version stamp matches, no matter which variant it is. To switch between the framework-dependent and self-contained builds, or to replace a damaged binary, delete <code>vendor/tyhp/compiler/native/</code> and run <code>vendor/bin/tyhp --install-binary</code> again.</p>
+</div>
+    </div>
+</div>
+<h2 id="versions">Versions</h2>
+<p>The <code>tyhp/compiler</code> version is the compiler version. It does not use the <code>80N.X.Y</code> PHP-target scheme of the runtime packages, so a single version serves every PHP target. See <a href="project_composerPackages.html">Composer Runtime Packages</a> for how runtime package versions work.</p>
+<p>To upgrade the compiler, update the package:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer update tyhp/compiler
+</code></pre></div>
+<p>Composer installs the new package version, and the <code>post-autoload-dump</code> hook downloads the matching binary. To check which compiler is running, use <code>vendor/bin/tyhp version</code>.</p>
+<p>Ordinary commands don't compare the installed binary with the package version. If the hook was skipped during an update, run <code>vendor/bin/tyhp --install-binary</code> before you build.</p>
+<h2 id="relationship-with-tyhpcore">Relationship with <code>tyhp/core</code></h2>
+<p><code>tyhp/compiler</code> depends on <code>tyhp/core</code>, and <code>tyhp/core</code> includes a Composer plugin that keeps the compiler pin in place:</p>
+<ul>
+<li>When <code>tyhp/core</code> is anywhere in the dependency graph and your root <code>composer.json</code> doesn't already require <code>tyhp/compiler</code>, the plugin adds <code>&quot;tyhp/compiler&quot;: &quot;@dev&quot;</code> to root <code>require-dev</code> while Composer resolves dependencies.</li>
+<li>The plugin does nothing when Composer runs without dev dependencies (<code>--no-dev</code>, <code>COMPOSER_NO_DEV</code>, or <code>COMPOSER_DEV_MODE=0</code>).</li>
+<li>The plugin runs only if Composer is allowed to run it. <code>tyhp init</code> sets <code>config.allow-plugins.tyhp/core</code> to <code>true</code>.</li>
+</ul>
+<p><code>tyhp build</code> and <code>tyhp lint</code> also check for the pin. When it is missing, they report warning <a href="diagnostics_reference.html"><code>TYHP7702</code></a> (<code>`tyhp/compiler` is missing from root require-dev while `{0}` is in the graph</code>). With <code>--strict</code> the warning fails the run. <code>tyhp composer sync</code> and <code>tyhp build --fix</code> write the missing pin. See <a href="cli_composer.html">CLI: Composer</a>.</p>
+<p><code>tyhp init</code>, <code>tyhp composer sync</code>, and <code>tyhp build --fix</code> write an exact compiler version (the version of the <code>tyhp/compiler</code> package that matches the CLI). The plugin writes <code>@dev</code>, which accepts the newest available version. Replace either with a specific constraint if you want to control upgrades.</p>
+<h2 id="environment-variables">Environment variables</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Variable</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GITHUB_TOKEN</code></td>
+<td>Sent as a GitHub API token when <code>--install-binary</code> downloads from GitHub. It raises the API rate limit, which matters on shared CI runners.</td>
+</tr>
+<tr>
+<td><code>GH_TOKEN</code></td>
+<td>Used instead when <code>GITHUB_TOKEN</code> is unset or empty.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The token needs no scopes, because the releases are public. The shim reads no other environment variables. The native compiler sees your environment unchanged.</p>
+<h2 id="ci-pipelines">CI pipelines</h2>
+<p>A normal <code>composer install</code> installs the compiler through the hook, so CI needs no extra step. Provide a GitHub token so that many jobs sharing an IP address don't hit the anonymous API rate limit:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">- name: Install dependencies
+  run: composer install --no-interaction --no-progress
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+- name: Lint
+  run: vendor/bin/tyhp lint
+
+- name: Build
+  run: vendor/bin/tyhp build
+</code></pre></div>
+<p>The binary lives inside <code>vendor/</code>. If you cache <code>vendor/</code> keyed on <code>composer.lock</code>, the binary is cached with it, and the hook skips the download on later runs.</p>
+<p>If your pipeline runs <code>composer install --no-scripts</code>, run the install step yourself before using the compiler:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer install --no-interaction --no-scripts
+vendor/bin/tyhp --install-binary
+vendor/bin/tyhp build
+</code></pre></div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>The variant is chosen on the machine that runs <code>--install-binary</code>. If an image with .NET 9 installs the compiler and you then copy <code>vendor/</code> into an image without .NET, the copied binary is the framework-dependent build and won't start. Install the compiler in the image that runs it, or make sure .NET 9 is not present where it is installed.</p>
+</div>
+    </div>
+</div>
+<h2 id="production-deployments">Production deployments</h2>
+<p>Production servers run the emitted PHP and don't need the compiler. Build the PHP in CI, then deploy it with dev dependencies left out:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer install --no-dev --no-scripts --optimize-autoloader
+</code></pre></div>
+<p>Use <code>--no-scripts</code> together with <code>--no-dev</code>. Without it, Composer still runs the root <code>post-autoload-dump</code> hook. The hook calls <code>vendor/bin/tyhp</code>, which doesn't exist in a <code>--no-dev</code> install, and the install fails with an error such as <code>sh: vendor/bin/tyhp: No such file or directory</code>. <code>--no-scripts</code> also skips any other root scripts, so run the ones your deployment needs explicitly.</p>
+<h2 id="restricted-networks">Restricted networks</h2>
+<p><code>--install-binary</code> needs HTTPS access to <code>api.github.com</code> and to the hosts that GitHub release downloads redirect to. Behind a proxy, configure it for PHP's cURL extension, for example with the <code>https_proxy</code> environment variable.</p>
+<p>If the build machine can't reach GitHub, use one of these approaches:</p>
+<ul>
+<li><strong>Install the compiler globally</strong> from the GitHub release with the standalone installer (see <a href="intro_installation.html">Installing Tyhp</a>), and run <code>tyhp</code> instead of <code>vendor/bin/tyhp</code>.</li>
+<li><strong>Place the binary yourself.</strong> Download the asset for your platform and <code>checksums.txt</code> from the release that matches your package version, and check the SHA-256 hash. Then copy the binary to <code>vendor/tyhp/compiler/native/tyhp</code> (<code>tyhp.exe</code> on Windows), make it executable, and write the tag, such as <code>v805.1.0</code>, to <code>vendor/tyhp/compiler/native/version</code>. <code>--install-binary</code> then finds a matching binary and makes no network request.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>All of these messages are printed to standard error, and the shim exits with <code>1</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Message</th>
+<th>Cause and fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>The Tyhp native compiler binary is not available.</code></td>
+<td>The binary was never downloaded, or the hook failed or was skipped with <code>--no-scripts</code>. Run <code>vendor/bin/tyhp --install-binary</code> and read its error if it fails.</td>
+</tr>
+<tr>
+<td><code>tyhp: Composer autoloader not found. Run `composer install` in the project that requires tyhp/compiler.</code></td>
+<td>The shim was started outside a Composer install, or <code>vendor/autoload.php</code> is missing. Run <code>composer install</code>.</td>
+</tr>
+<tr>
+<td><code>The curl PHP extension is required to download the Tyhp compiler binary.</code></td>
+<td>Enable <code>ext-curl</code> for the PHP that runs Composer, then run <code>vendor/bin/tyhp --install-binary</code>.</td>
+</tr>
+<tr>
+<td><code>Download failed for {url}: {error}</code></td>
+<td>The request didn't complete because of DNS, TLS, proxy, or timeout problems. Check network access to GitHub. See <a href="#restricted-networks">Restricted networks</a>.</td>
+</tr>
+<tr>
+<td><code>HTTP 403 from https://api.github.com/repos/tyhpproject/tyhp/releases/tags/{tag}: …</code></td>
+<td>Usually the anonymous GitHub API rate limit. Set <code>GITHUB_TOKEN</code> or <code>GH_TOKEN</code> and retry.</td>
+</tr>
+<tr>
+<td><code>GitHub release tag `{tag}` was not found on tyhpproject/tyhp.</code> (GitHub's own message may follow the repository name in parentheses)</td>
+<td>No release exists for the package version. This happens with development checkouts of the package. Require a released version of <code>tyhp/compiler</code>.</td>
+</tr>
+<tr>
+<td><code>GitHub release {tag} has no asset named `{asset}`.</code></td>
+<td>That release has no build for your platform or variant. If .NET 9 is installed, try a machine without it (the self-contained asset), or use another release.</td>
+</tr>
+<tr>
+<td><code>Tyhp CLI has no GitHub Release asset for {os}/{machine}. …</code></td>
+<td>Your OS or CPU isn't supported, for example Windows on arm64. The shim reports this for every command, not only <code>--install-binary</code>.</td>
+</tr>
+<tr>
+<td><code>checksums.txt has no SHA-256 for `{asset}`. Refusing to install an unverified binary.</code></td>
+<td>The release is missing a checksum for your asset. Nothing was installed. Use another release.</td>
+</tr>
+<tr>
+<td><code>SHA-256 mismatch for `{asset}`: expected {hash}, got {hash}. The download may be corrupt or tampered with.</code></td>
+<td>The download was damaged or altered, often by a proxy that rewrites responses. Nothing was installed. Retry, or download from another network.</td>
+</tr>
+<tr>
+<td><code>Downloaded artifact `{asset}` is empty.</code></td>
+<td>The server returned an empty body. Retry.</td>
+</tr>
+<tr>
+<td><code>Failed to create {dir}.</code> / <code>Failed to place native binary at {path}.</code> / <code>Failed to open {path} for writing.</code></td>
+<td>The user running Composer can't write to <code>vendor/tyhp/compiler/native/</code> or to the system temporary directory. Fix the permissions.</td>
+</tr>
+<tr>
+<td><code>composer.json not found at {path}; cannot pin the compiler release tag.</code> (or <code>… has no version …</code>, <code>… could not be parsed …</code>)</td>
+<td>The installed package is incomplete. Reinstall it with <code>composer reinstall tyhp/compiler</code>.</td>
+</tr>
+<tr>
+<td><code>Failed to launch the Tyhp native compiler at {path}.</code></td>
+<td>PHP couldn't start the binary. Delete <code>vendor/tyhp/compiler/native/</code> and run <code>vendor/bin/tyhp --install-binary</code> again.</td>
+</tr>
+</tbody>
+</table></div>
+<p>If the compiler starts but immediately reports that a .NET runtime is missing, the framework-dependent build was installed on a machine without .NET 9. Delete <code>vendor/tyhp/compiler/native/</code> and run <code>vendor/bin/tyhp --install-binary</code> on the machine that runs the compiler.</p>
+<h2 id="related-pages">Related pages</h2>
+<ul>
+<li><a href="intro_installation.html">Installing Tyhp</a>: setting up a new project and the global installer.</li>
+<li><a href="cli_intro.html">CLI: Introduction</a>: every compiler command.</li>
+<li><a href="cli_build.html">CLI: Build</a>: <code>tyhp build</code>, <code>--strict</code>, and <code>--fix</code>.</li>
+<li><a href="cli_composer.html">CLI: Composer</a>: <code>tyhp composer sync</code> and how the compiler keeps <code>composer.json</code> in step.</li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a>: runtime package versions and <code>extra.tyhp.require</code>.</li>
+<li><a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a>: what the <code>generate_tyhpdef --vendor</code> hook does.</li>
+<li><a href="package_core.html">The tyhp/core Package</a>: the runtime library and its Composer plugin.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_parallel.html">&larr; The tyhp/parallel Package</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="faq_general.html">FAQ: General &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

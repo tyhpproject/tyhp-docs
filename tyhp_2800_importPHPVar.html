@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,15 +299,15 @@
     <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp uses tyhpdef files to declare the types of PHP global variables, constants, functions, classes, and interfaces that your Tyhp code interacts with. Since Tyhp requires explicit types for all values, tyhpdef provides the bridge between PHP's dynamic runtime and Tyhp's static type system. Tyhpdef files use the &lt;?tyhpdef opening tag and support importing constants, variables, functions, classes, traits, interfaces, and enums with full type annotations.</p>
-<h2>What Are Tyhpdef Files?</h2>
+<h2 id="what-are-tyhpdef-files">What Are Tyhpdef Files?</h2>
 <p>Tyhpdef files (.tyhpdef) are declaration files that tell the Tyhp compiler about the types of PHP symbols that exist outside of your Tyhp codebase. They are similar to TypeScript's .d.ts files — they contain only type signatures, no implementation. The compiler uses these declarations to type-check your code against PHP's standard library, extensions, and third-party packages.</p>
 <ul>
 <li>Composer packages with <code>extra.tyhp.package</code> on <code>composer.json</code> (<code>tyhpdef/php</code>, <code>tyhp/core</code>, <code>tyhp/decimal</code>, <code>tyhp/async</code>, <code>tyhp/lambda</code>) provide types for PHP builtins and Tyhp runtime APIs</li>
 <li>Built-in compiler registrations cover language types such as <code>decimal</code> aliases, compile-time constructs, and generic overlays the binder always knows</li>
 <li>User tyhpdef files declare types for your project's PHP dependencies and global variables</li>
-<li>Auto-generated tyhpdefs (<code>tyhp generate_tyhpdef</code>) cover PHP extensions, Composer packages, and PHP sources — see <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a></li>
+<li>Auto-generated tyhpdefs (<code>tyhp generate_tyhpdef</code>) cover PHP extensions, Composer packages, and PHP sources — see <a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
 </ul>
-<h2>Importing Constants</h2>
+<h2 id="importing-constants">Importing Constants</h2>
 <p>PHP constants (defined with define() or const) are imported into tyhpdef files using the const keyword with an explicit type annotation.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -316,7 +335,7 @@ echo APP_NAME;
 // Aliased constants compile to the original constant name
 echo DB_HOST;
 </code></pre></div>
-<h2>Importing Variables</h2>
+<h2 id="importing-variables">Importing Variables</h2>
 <p>PHP global variables can be imported into tyhpdef files with explicit type annotations. The as keyword aliases the variable name within Tyhp code.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -344,7 +363,7 @@ echo $globalConfig;
 // Aliased variables compile to the original variable name
 echo $legacy_var;
 </code></pre></div>
-<h2>Importing Functions</h2>
+<h2 id="importing-functions">Importing Functions</h2>
 <p>PHP functions are imported in tyhpdef files with full type signatures, including parameter types, return types, and optional parameter markers. This allows the Tyhp type checker to validate calls to PHP functions. Function overloads (multiple signatures for the same function) are supported.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -372,7 +391,7 @@ deprecated function mysql_connect(string $server): mixed;
 // Import as async function
 async function fetchRemoteData(string $url): string;
 </code></pre></div>
-<h2>Importing Classes and Interfaces</h2>
+<h2 id="importing-classes-and-interfaces">Importing Classes and Interfaces</h2>
 <p>PHP classes and interfaces are imported with their full type signatures, including method signatures, properties, constants, and inheritance. Generic type parameters can be added to PHP classes that Tyhp provides generic overlays for.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -404,9 +423,9 @@ interface JsonSerializable {
     public function jsonSerialize(): mixed;
 }
 </code></pre></div>
-<h2><code>??</code> on tyhpdef imports</h2>
+<h2 id="-on-tyhpdef-imports"><code>??</code> on tyhpdef imports</h2>
 <p>The grammar accepts <code>??</code> after a tyhpdef variable, constant, or class property (<code>int $dbPort ?? 5432</code>). That records the value PHP is <strong>expected</strong> to start with. The live value may differ; tyhpdef does not assign it or emit <code>defined()</code> / null-coalesce / <code>ErrorException</code> checks. Handle missing PHP globals in Tyhp (<code>isset</code>, <code>??</code> at the <strong>use</strong> site, or nullable types). Parameter defaults still use <code>=</code>.</p>
-<h2>Aliasing with as</h2>
+<h2 id="aliasing-with-as">Aliasing with as</h2>
 <p>The as keyword renames an imported symbol within Tyhp code. This is useful when PHP constants or variables have names that conflict with Tyhp reserved words, or when you want a more descriptive name. The alias is compile-time only — the generated PHP uses the original name.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -433,7 +452,7 @@ echo PHP_EOL;
 
 $found = \str_contains(&#039;hello world&#039;, &#039;world&#039;);
 </code></pre></div>
-<h2>Deprecated and Obsolete Markers</h2>
+<h2 id="deprecated-and-obsolete-markers">Deprecated and Obsolete Markers</h2>
 <p>Tyhpdef supports deprecated and obsolete markers on imported declarations. Using a deprecated symbol emits a compiler warning, while using an obsolete symbol emits an error. This helps projects gradually migrate away from legacy PHP APIs.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -454,7 +473,7 @@ deprecated const string LEGACY_API_URL;
 // ERROR: &#039;ereg&#039; is obsolete and should not be used
 // $result = \ereg(&#039;[0-9]+&#039;, $input);
 </code></pre></div>
-<h2>Tyhpdef File Organization</h2>
+<h2 id="tyhpdef-file-organization">Tyhpdef File Organization</h2>
 <p>Tyhpdef files are loaded from multiple sources in a specific priority order. Higher-priority sources take precedence when the same symbol is declared in multiple places.</p>
 <ol>
 <li>Built-in compiler registrations — language types always available (highest priority).</li>
@@ -462,7 +481,7 @@ deprecated const string LEGACY_API_URL;
 <li>User project tyhpdefs — files matching <code>tyhpdefInclude</code> in <code>tyhp.json</code>, plus <code>include</code> entries that end in <code>.tyhpdef</code> or <code>composer.json</code> (with <code>extra.tyhp.package</code> present as an object). Omitting <code>tyhpdefInclude</code> loads <strong>no</strong> project <code>.tyhpdef</code> files. <code>tyhp init</code> sets <code>&quot;tyhpdefInclude&quot;: [&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;]</code> and <code>&quot;overlay&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]</code>.</li>
 </ol>
 <p><code>tyhp generate_tyhpdef --vendor</code> writes generated Composer and extension stubs into <code>vendor-tyhpdef/</code>. Do not edit those files; put lasting changes in overlay tyhpdefs.</p>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -523,7 +542,7 @@ deprecated const string LEGACY_API_URL;
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -572,7 +591,7 @@ deprecated const string LEGACY_API_URL;
 </div>
     </div>
 </div>
-<h2>Compiler Errors</h2>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 // ERROR: Missing type annotation

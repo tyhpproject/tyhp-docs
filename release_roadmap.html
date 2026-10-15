@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 3 · Story 30</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp is built in a deliberately ordered sequence of stories, grouped into four tiers. The guiding principle is a thin vertical slice that compiles and runs end-to-end as early as possible.</p>
-<p><strong>This beta (805.1.0-beta.1) is Tier 2 through 21.12.</strong> Stories <strong>27</strong> (object shapes), <strong>27.1</strong> (callable shapes + <code>type Name = struct { };</code>), <strong>27.2</strong> (block-target extension syntax), and <strong>27.3</strong> (split runtime / docs / AIDevGuide / IDE plugin into dedicated git repos) are next, still in this beta, before deferred Story 22. Other stories remain planned unless noted below.</p>
+<p><strong>This beta (805.1.0-beta.1) is Tier 2 through 21.12.</strong> Stories <strong>27</strong> (object shapes), <strong>27.1</strong> (callable shapes + <code>type Name = struct { };</code>), <strong>27.2</strong> (block-target extension syntax), and <strong>27.3</strong> (split runtime / docs / AI developer guide / IDE plugin into dedicated git repos) are next, still in this beta, before deferred Story 22. Other stories remain planned unless noted below.</p>
 <p>Stories are numbered contiguously from 01 to 30 with additive sub-stories (<code>08.5</code>, <code>10.5</code>, <code>14.5</code>, <code>16.5</code>, <code>19.5</code>, <code>20.5</code>, <code>27.1</code>, <code>27.2</code>, <code>27.3</code>). Each documentation page carries a Tier/Story badge.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -294,7 +313,7 @@
 </div>
     </div>
 </div>
-<h2>Tier 0 — Spine (a real program compiles and runs) — done</h2>
+<h2 id="tier-0--spine-a-real-program-compiles-and-runs--done">Tier 0 — Spine (a real program compiles and runs) — done</h2>
 <ol>
 <li><strong>Story 01 — Foundation:</strong> diagnostic system, compilation pipeline, and build endpoint.</li>
 <li><strong>Story 02 — Binder:</strong> name resolution and scope building.</li>
@@ -309,7 +328,7 @@
 <li><strong>Story 10 — Build action</strong> (wires everything together).</li>
 <li><strong>Story 10.5 — Deferred correctness &amp; quality fixes.</strong></li>
 </ol>
-<h2>Tier 1 — Usable — done (previous alpha)</h2>
+<h2 id="tier-1--usable--done-previous-alpha">Tier 1 — Usable — done (previous alpha)</h2>
 <ol>
 <li><strong>Story 11 — Emitter feature expansion:</strong> structs, generics erasure, extension methods, operator overloads, type aliases, with, disposables, async/await, compile-time constructs, short function syntax, overloads, type guards, trait requirements, and import lowering.</li>
 <li><strong>Story 12 — Lint action.</strong></li>
@@ -321,12 +340,12 @@
 <li><strong>Story 16.5 — Callable signature utilities</strong> (<code>__CallableParametersStruct</code> / <code>__CallableParametersTuple</code> / <code>__CallableReturnType</code>).</li>
 <li><strong>Story 28 — Generic type parameter defaults</strong> (originally sequenced in Tier 3; already in the alpha).</li>
 </ol>
-<h2>Tier 2 — Developer Experience &amp; Ecosystem (this beta)</h2>
+<h2 id="tier-2--developer-experience--ecosystem-this-beta">Tier 2 — Developer Experience &amp; Ecosystem (this beta)</h2>
 <ol>
 <li><strong>Story 17 — Sourcemap generation</strong> (shipped).</li>
 <li><strong>Story 18 — XDebug proxy</strong> (shipped).</li>
 <li><strong>Story 19 — Language Server (LSP)</strong> (shipped; stdio only).</li>
-<li><strong>Story 19.5 — IDE clients (<code>tyhp-lang</code>)</strong> (shipped).</li>
+<li><strong>Story 19.5 — IDE clients (VS Code and PhpStorm)</strong> (shipped).</li>
 <li><strong>Story 20 — Tyhpdef generator</strong> (C# CLI integration; <code>generate_tyhpdef</code> and <code>package.tyhpdef</code> on <code>tyhp build</code> shipped, plus <code>--php-targets</code> gated emit).</li>
 <li><strong>Story 20.5 — PHP version gating</strong> (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>).</li>
 <li><strong>Story 21 — PHP extension Composer packages</strong> (<code>tyhpdef/php</code> + <code>tyhpdef/php-ext-*</code>; one package per extension across 8.2–8.5 with <code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code> gates). Includes the built-in scalar method catalog (<code>$name-&gt;toUpper()</code>, …) via <code>global use extension \Tyhp\StringExtensions</code>.</li>
@@ -334,14 +353,14 @@
 <li><strong>Story 27 — Object shapes and <code>__New&lt;T&gt;</code></strong> (next).</li>
 <li><strong>Story 27.1 — Callable shapes and <code>type Name = struct { };</code></strong> (after 27).</li>
 <li><strong>Story 27.2 — Block-target extension syntax</strong> (<code>extension Name extends Type</code>; after 27.1 in numbering, may run in parallel).</li>
-<li><strong>Story 27.3 — Split runtime, docs, AIDevGuide, and IDE plugin into dedicated git repos</strong> (after 27.2).</li>
+<li><strong>Story 27.3 — Split runtime, docs, AI developer guide, and IDE plugin into dedicated git repos</strong> (after 27.2).</li>
 <li><strong>Story 22 — Web playground</strong> (live .tyhp → PHP) — DEFERRED, not in this beta.</li>
 </ol>
-<h2>Tier 3 — Advanced — not in this beta</h2>
+<h2 id="tier-3--advanced--not-in-this-beta">Tier 3 — Advanced — not in this beta</h2>
 <ol>
 <li><strong>Story 23 — Compiler optimizer (MVP).</strong></li>
 <li><strong>Story 24 — Advanced optimizations.</strong></li>
-<li><strong>Story 25 — <code>internal</code> project-boundary enforcement and the internals overlay (<code>includeInternals</code>)</strong> (the modifier itself already hides symbols from published <code>package.tyhpdef</code>; see <a href="tyhp_3100_internalModifier.md">The internal Visibility Modifier</a>).</li>
+<li><strong>Story 25 — <code>internal</code> project-boundary enforcement and the internals overlay (<code>includeInternals</code>)</strong> (the modifier itself already hides symbols from published <code>package.tyhpdef</code>; see <a href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a>).</li>
 <li><strong>Story 26 — Null-conditional chaining with assignment.</strong></li>
 <li><strong>Story 29 — Tyhp reflection API</strong> (sourcemap-backed).</li>
 <li><strong>Story 30 — Documentation &amp; polish</strong> (final capstone).</li>
@@ -349,7 +368,7 @@
 <blockquote>
 <p>Story 28 (generic defaults) shipped with the alpha; see Tier 1 above.</p>
 </blockquote>
-<h2>Runtime Library Packages</h2>
+<h2 id="runtime-library-packages">Runtime Library Packages</h2>
 <p>Compiled Tyhp code depends on Composer packages under the <code>tyhp/</code> vendor (GitHub org <code>tyhpproject</code>):</p>
 <ul>
 <li><code>tyhp/core</code> — type-system support, typed variables, property accessors, and disposable interfaces</li>
@@ -358,7 +377,7 @@
 <li><code>tyhp/lambda</code> — expression-tree nodes, visitors, and serialization for parsable lambdas</li>
 <li><code>tyhpdef/php</code> — PHP builtin tyhpdefs (8.2 baseline in the alpha)</li>
 </ul>
-<h2>Long-Term Vision</h2>
+<h2 id="long-term-vision">Long-Term Vision</h2>
 <p>Tyhp's long-term goal is a typed superset of the PHP language in the same role TypeScript has for JavaScript: compile-time types, readable PHP output, and use of the existing PHP runtime and ecosystem.</p>
 
 </section>

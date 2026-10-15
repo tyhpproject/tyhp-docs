@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Almost anything declared in a tyhpdef file can be aliased using the as keyword. Aliasing lets you expose PHP items under different names in Tyhp — renaming functions, classes, methods, properties, constants, and even enum cases. When an item is aliased, only the aliased name is available in Tyhp code; the original name is not accessible unless it is also imported separately without an alias. You can import the same PHP item multiple times with different aliases.</p>
-<h2>Use Statement Aliases</h2>
+<h2 id="use-statement-aliases">Use Statement Aliases</h2>
 <p>Tyhpdef supports standard PHP use statement syntax for importing and aliasing classes, functions, and constants from other namespaces. This includes single imports, aliased imports, and grouped imports.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -293,7 +312,7 @@ use function App\Helpers\sanitize as clean;
 use const App\Config\MAX_RETRIES;
 use const App\Config\DEFAULT_TIMEOUT as TIMEOUT;
 </code></pre></div>
-<h2>Group Use Declarations</h2>
+<h2 id="group-use-declarations">Group Use Declarations</h2>
 <p>Multiple imports from the same namespace can be grouped using brace syntax, just like in PHP.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -309,7 +328,7 @@ use function App\Helpers\{
     truncate
 };
 </code></pre></div>
-<h2>Function Aliases</h2>
+<h2 id="function-aliases">Function Aliases</h2>
 <p>Functions can be aliased at the declaration level. The original PHP function name comes first, then as, then the name Tyhp code will use. That <strong>adds</strong> a Tyhp name and leaves the PHP name callable.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -326,8 +345,8 @@ function \array_map&lt;T, U&gt; as map(
     array&lt;T&gt; $array
 ): array&lt;U&gt;;
 </code></pre></div>
-<p>Overlay <code>partial function X as Y</code> is different: it <strong>renames</strong> the live Tyhp name without restating the signature, unless the same overlay file also keeps <code>X</code>. Match later overlays to the current Tyhp name. See <a href="tyhpdef_overlays.md#overlay-partial-function">Tyhpdef Overlays</a>.</p>
-<h2>Variable and Constant Aliases</h2>
+<p>Overlay <code>partial function X as Y</code> is different: it <strong>renames</strong> the live Tyhp name without restating the signature, unless the same overlay file also keeps <code>X</code>. Match later overlays to the current Tyhp name. See <a href="tyhpdef_overlays.html#overlay-partial-function">Tyhpdef Overlays</a>.</p>
+<h2 id="variable-and-constant-aliases">Variable and Constant Aliases</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 int $myGlobalPHPVar as $myGlobalTyhpVar;
@@ -336,8 +355,8 @@ const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 
 const string \APP_VERSION as VERSION;
 </code></pre></div>
-<h2>Class, Interface, Trait, and Enum Aliases</h2>
-<p>Object type declarations can be aliased at the declaration level. The original PHP name is specified with as followed by the alias name that Tyhp will use. When that PHP name is a reserved word (<code>is</code>, <code>isset</code>, …), write it fully qualified: <code>class \Hamcrest\Core\Is as IsMatcher { … }</code>. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
+<h2 id="class-interface-trait-and-enum-aliases">Class, Interface, Trait, and Enum Aliases</h2>
+<p>Object type declarations can be aliased at the declaration level. The original PHP name is specified with as followed by the alias name that Tyhp will use. When that PHP name is a reserved word (<code>is</code>, <code>isset</code>, …), write it fully qualified: <code>class \Hamcrest\Core\Is as IsMatcher { … }</code>. See <a href="tyhpdef_classes.html#reserved-word-type-names">Reserved-word type names</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
 class Guest as Ghost implements Person {
@@ -352,8 +371,8 @@ trait HasTools as isHandyman {}
 
 enum USAStates as CountryProvinces {}
 </code></pre></div>
-<p>Overlay <code>partial class X as Y;</code> (also interface / trait / enum) is different: it <strong>renames</strong> the live Tyhp name without restating members, unless the same overlay file also keeps <code>X</code> (<code>partial class X;</code>). Match later overlays to the current Tyhp name. See <a href="tyhpdef_overlays.md#overlay-partial-header-form-partial-class-foo">Tyhpdef Overlays</a>.</p>
-<h2>Member Aliases Within Classes</h2>
+<p>Overlay <code>partial class X as Y;</code> (also interface / trait / enum) is different: it <strong>renames</strong> the live Tyhp name without restating members, unless the same overlay file also keeps <code>X</code> (<code>partial class X;</code>). Match later overlays to the current Tyhp name. See <a href="tyhpdef_overlays.html#overlay-partial-header-form-partial-class-foo">Tyhpdef Overlays</a>.</p>
+<h2 id="member-aliases-within-classes">Member Aliases Within Classes</h2>
 <p>Properties, methods, and constants within a class or interface declaration can be individually aliased. This lets you rename members without changing the underlying PHP class.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -367,7 +386,7 @@ class LegacyApi as Api {
     public function del_usr as deleteUser(int $id): bool;
 }
 </code></pre></div>
-<h2>Enum Aliases with Backing Types</h2>
+<h2 id="enum-aliases-with-backing-types">Enum Aliases with Backing Types</h2>
 <p>An enum can be imported multiple times with different aliases, and can even be given a backing type that differs from the original PHP enum definition.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -380,7 +399,7 @@ enum BadgeType as BackedBadgeType: string implements PersonalInfoAttachmentInter
     public function canAccessBreakRoom as canAccessServerRoom(): bool;
 }
 </code></pre></div>
-<h2>Extension Import Aliases</h2>
+<h2 id="extension-import-aliases">Extension Import Aliases</h2>
 <p>Extension classes (Tyhp's extension method feature) can be imported with use extension and aliased using trait adaptation syntax.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -389,7 +408,7 @@ use extension StringExtensions {
     StringExtensions::toSnakeCase as toSC;
 }
 </code></pre></div>
-<h2>Alias Restrictions</h2>
+<h2 id="alias-restrictions">Alias Restrictions</h2>
 <p>Do not alias these — PHP dispatches them by their real names. This alpha does <strong>not</strong> reject the aliases at compile time:</p>
 <ul>
 <li>A class's <code>__construct</code> or <code>__destruct</code> method</li>
@@ -443,7 +462,7 @@ use extension StringExtensions {
 </div>
     </div>
 </div>
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <ul>
 <li>When an item is aliased, only the aliased name is available in Tyhp</li>
 <li>The same PHP item can be imported multiple times with different aliases</li>

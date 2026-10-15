@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -281,7 +300,7 @@
 </p>
     <p>Tyhpdef lets you describe existing PHP enums to the Tyhp compiler. PHP supports two kinds of enums: unit enums (no backing value) and backed enums (each case has a string or int value). Both are fully supported in Tyhpdef, along with methods, interface implementations, and constants.</p>
 <p>Every enum is <code>\UnitEnum</code> without a written <code>implements</code>. A backed enum is also <code>\BackedEnum</code>. <code>cases()</code> resolves on every enum; backed enums also have <code>from()</code> / <code>tryFrom()</code>. Harvested stubs may keep <code>implements \UnitEnum</code> / <code>\BackedEnum</code>. Do not redeclare <code>cases</code>, <code>from</code>, or <code>tryFrom</code>.</p>
-<h2>Unit Enums</h2>
+<h2 id="unit-enums">Unit Enums</h2>
 <p>A unit enum has no backing type. Each case is a standalone value with no associated scalar.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -291,8 +310,8 @@ enum Status {
     case Deleted;
 }
 </code></pre></div>
-<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
-<h2>Backed Enums</h2>
+<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.html#reserved-word-type-names">Reserved-word type names</a>.</p>
+<h2 id="backed-enums">Backed Enums</h2>
 <p>A backed enum associates each case with a scalar value of a specific type — either <code>string</code> or <code>int</code>. When importing a backed enum in Tyhpdef, specifying case values is optional. The checker validates values that <strong>are</strong> present; omitted values are not treated as “matches any int/string.” Prefer listing known values when you have them.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -326,7 +345,7 @@ enum LogLevel: int {
 </div>
     </div>
 </div>
-<h2>Enums with Methods</h2>
+<h2 id="enums-with-methods">Enums with Methods</h2>
 <p>PHP enums can have methods. In Tyhpdef, you declare the method signatures just like class methods — signatures only, ending with semicolons.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -340,7 +359,7 @@ enum Color: string {
     public static function fromRgb(int $r, int $g, int $b): self;
 }
 </code></pre></div>
-<h2>Enums with Interface Implementation</h2>
+<h2 id="enums-with-interface-implementation">Enums with Interface Implementation</h2>
 <p>Enums can implement interfaces. The implements clause follows the backing type (if any), and the interface methods are declared within the enum body. <code>\UnitEnum</code> and <code>\BackedEnum</code> are already implied; harvested stubs may keep those clauses. List other interfaces (for example <code>\Stringable</code>) as usual.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -354,7 +373,7 @@ enum Permission: int implements \Stringable {
     public function includes(self $other): bool;
 }
 </code></pre></div>
-<h2>Enum Constants</h2>
+<h2 id="enum-constants">Enum Constants</h2>
 <p>Enums can declare constants, just like classes.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -368,9 +387,9 @@ enum Suit: string {
     public const array&lt;string&gt; RED_SUITS;
 }
 </code></pre></div>
-<h2>Partial enums</h2>
-<p><code>partial</code> on a tyhpdef enum follows the same rules as on classes. Include brace <code>partial enum Foo { … }</code> adds members. Overlay <code>partial enum Foo: string implements \Stringable;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a>.</p>
-<h2>Enum Aliasing</h2>
+<h2 id="partial-enums">Partial enums</h2>
+<p><code>partial</code> on a tyhpdef enum follows the same rules as on classes. Include brace <code>partial enum Foo { … }</code> adds members. Overlay <code>partial enum Foo: string implements \Stringable;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.html#partial-types-base--include">Classes in Tyhpdef</a>.</p>
+<h2 id="enum-aliasing">Enum Aliasing</h2>
 <p>The same PHP enum can be imported multiple times with different aliases. This is useful when you need to import an enum under a different name or re-import it with different backing type information.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -388,7 +407,7 @@ enum BadgeType as BackedBadgeType: string {
     case MANAGER;
 }
 </code></pre></div>
-<h2>Deprecated and Obsolete</h2>
+<h2 id="deprecated-and-obsolete">Deprecated and Obsolete</h2>
 <p>The enum itself can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Markers on cases and methods parse but are not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -399,7 +418,7 @@ deprecated enum LegacyPriority: int {
     case Urgent = 3;
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">

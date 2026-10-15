@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp supports static value types (also called literal types) — types that represent a single specific value rather than a range of values. A static value type is the type of a particular literal: the integer 42, the string 'hello', or the boolean true. Static value types enable precise type narrowing and more expressive function signatures (including overload dispatch on literals).</p>
-<h2>Supported Literal Types</h2>
+<h2 id="supported-literal-types">Supported Literal Types</h2>
 <p>Tyhp supports literal types for the following value categories:</p>
 <ul>
 <li>Boolean literals: true, false</li>
@@ -290,7 +309,7 @@
 <li>The null literal: null</li>
 </ul>
 <p>Each literal type is a subtype of its underlying scalar type. The literal type true is a subtype of bool, the literal type 42 is a subtype of int, and so on. This means a value of literal type 42 can be used wherever int is expected, but not vice versa.</p>
-<h2>Using Literal Types in Type Annotations</h2>
+<h2 id="using-literal-types-in-type-annotations">Using Literal Types in Type Annotations</h2>
 <p>Literal types can appear in type annotations, union types, and function parameter/return types. They restrict the accepted values to the specific literal.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -318,7 +337,7 @@ function compare(string $a, string $b): -1|0|1 {
     return $a &lt;=&gt; $b;
 }
 </code></pre></div>
-<h2>Literal Types in Union Types</h2>
+<h2 id="literal-types-in-union-types">Literal Types in Union Types</h2>
 <p>Literal types are most powerful when used in union types. A union of literal types creates an enum-like constraint on the accepted values without needing a formal enum declaration.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -339,7 +358,7 @@ function log(LogLevel $level, string $message): void {
 // Mixed literal types in a union
 type Result = true|&#039;error&#039;|0;
 </code></pre></div>
-<h2>true and false as Types</h2>
+<h2 id="true-and-false-as-types">true and false as Types</h2>
 <p>The boolean literals true and false are each their own type. PHP 8.0+ supports true and false as standalone types. In Tyhp's type system, true and false are subtypes of bool, and the union true|false is equivalent to bool.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -357,8 +376,8 @@ function tryParse(string $input): int|false {
 // true|false is equivalent to bool
 type StrictBool = true|false;  // Same as bool
 </code></pre></div>
-<h2>Literal Types in Function Overloads</h2>
-<p>Literal types enable function overloads where different literal argument values produce different return types. The compiler uses the literal type to select the correct overload signature.</p>
+<h2 id="literal-types-in-function-overloads">Literal Types in Function Overloads</h2>
+<p>Literal types enable function overloads where different literal argument values produce different return types. The compiler picks the first declared signature whose literal parameter type accepts the argument; a call with a plain <code>string</code> argument matches none of the literal signatures and reports TYHP4374 (no signature accepts it, even through implicit conversions). See <a href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Overloaded function signatures with literal types
@@ -379,7 +398,7 @@ function getConfig(string $key): mixed {
 DatabaseConfig $db = getConfig(&#039;database&#039;);  // Returns DatabaseConfig
 CacheConfig $cache = getConfig(&#039;cache&#039;);      // Returns CacheConfig
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Literal types are a compile-time feature. In the PHP output, literal types are widened to their underlying scalar type because PHP does not support arbitrary literal types in type hints. The exceptions are true, false, and null, which PHP 8.0+ supports as standalone types.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -426,7 +445,7 @@ function mayFail(): string|false {
     return false;
 }
 </code></pre></div>
-<h2>Type Narrowing with Literal Types</h2>
+<h2 id="type-narrowing-with-literal-types">Type Narrowing with Literal Types</h2>
 <p>The checker automatically narrows union types containing literal values when control flow eliminates possibilities. After checking a specific literal value, the type is narrowed accordingly.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -445,7 +464,7 @@ function handle(&#039;success&#039;|&#039;error&#039;|&#039;pending&#039; $statu
     echo &#039;Still pending...&#039;;
 }
 </code></pre></div>
-<h2>Combining with Type Aliases</h2>
+<h2 id="combining-with-type-aliases">Combining with Type Aliases</h2>
 <p>Static value types combine well with type aliases to create meaningful, named value sets.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -461,7 +480,7 @@ function isSuccessCode(HttpOk $code): true {
     return true;
 }
 </code></pre></div>
-<h2>Error: Assigning Outside the Static Value Set</h2>
+<h2 id="error-assigning-outside-the-static-value-set">Error: Assigning Outside the Static Value Set</h2>
 <p>The compiler reports an error when a value that is not part of the static value type set is assigned.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -471,7 +490,7 @@ Status $s = &#039;active&#039;;    // OK
 // Status $s = &#039;deleted&#039;;   // ERROR — &#039;deleted&#039; is not in Status
 // Status $s = 42;          // ERROR — int is not assignable to &#039;active&#039;|&#039;inactive&#039;
 </code></pre></div>
-<h2>Interaction with match Expressions</h2>
+<h2 id="interaction-with-match-expressions">Interaction with match Expressions</h2>
 <p>Static value types work with match expressions. The compiler does <strong>not</strong> check match exhaustiveness. A non-exhaustive <code>match</code> is accepted at compile time; at runtime PHP throws <code>\UnhandledMatchError</code> if no arm matches.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -487,7 +506,7 @@ function toHex(Color $color): string {
     };
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -548,7 +567,7 @@ function toHex(Color $color): string {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

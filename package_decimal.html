@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>The tyhp/decimal Package - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="The_tyhp_decimal_Package">
+    <h2 class="section-heading">The tyhp/decimal Package</h2>
+    
+    <p><code>tyhp/decimal</code> provides <code>\Tyhp\Decimal</code>, an immutable arbitrary-precision decimal number, and the <code>\Tyhp\decimal()</code> helper that creates one. It is the runtime behind the Tyhp <code>decimal</code> type. Use it wherever binary floating point is not good enough: prices, invoice totals, tax, exchange rates, account balances, and measurements that must round-trip exactly through a database or an API.</p>
+<p>A <code>Decimal</code> stores its digits as a string, so <code>0.1 + 0.2</code> is exactly <code>0.3</code>. Arithmetic runs on the fastest arbitrary-precision extension that PHP has loaded (<code>ext-decimal</code>, <code>ext-bcmath</code>, or <code>ext-gmp</code>), with a pure-PHP fallback when none is available.</p>
+<p>This page is the package reference: installation, how scale and rounding work, every public class and method, the backends, and worked recipes. For the <code>decimal</code> type as a language feature, see <a href="tyhp_0150_newTypes.html">New and Changed Types</a>. For how operators compile in general, see <a href="tyhp_1600_operatorOverloads.html">Operator Overloads</a>.</p>
+<h2 id="installing">Installing</h2>
+<p><code>tyhp build</code> reports <code>tyhp/decimal</code> as a needed runtime package as soon as your code uses <code>decimal</code>, and writes the pin for you when <code>build.updateComposer</code> is enabled. To add it yourself, pick the prefix that matches <code>output.phpVersion</code> in <code>tyhp.json</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require tyhp/decimal:804.0.*
+</code></pre></div>
+<p>The package needs PHP 8.2 or later and <code>tyhp/core</code>, which Composer installs with it. <a href="project_composerPackages.html">Composer Runtime Packages</a> explains the <code>80N.X.Y</code> version scheme and how libraries should pin it.</p>
+<p>No PHP extension is required, but install one for production. The package picks a backend automatically when the first decimal operation runs:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Loaded extension</th>
+<th>Backend name</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ext-decimal</code> (PECL php-decimal / mpdecimal)</td>
+<td><code>decimal</code></td>
+<td>Preferred</td>
+</tr>
+<tr>
+<td><code>ext-bcmath</code></td>
+<td><code>bcmath</code></td>
+<td>Bundled with most PHP builds</td>
+</tr>
+<tr>
+<td><code>ext-gmp</code></td>
+<td><code>gmp</code></td>
+<td>Used only when neither of the above is loaded</td>
+</tr>
+<tr>
+<td>none</td>
+<td><code>integer-scaled</code></td>
+<td>Pure PHP, slower; raises a one-time <code>E_USER_NOTICE</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>See <a href="#backends">Backends</a> for details.</p>
+<h2 id="quick-start">Quick start</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+decimal $price = \Tyhp\decimal(&#039;19.99&#039;);
+decimal $subtotal = $price * 3;                   // 59.97
+decimal $total = $subtotal + &#039;4.50&#039;;              // 64.47
+
+echo $total, &quot;\n&quot;;                                // 64.47
+echo $total-&gt;format(2), &quot;\n&quot;;                     // 64.47
+echo \json_encode([&#039;total&#039; =&gt; $total]), &quot;\n&quot;;     // {&quot;total&quot;:&quot;64.47&quot;}
+
+if ($total &gt; Decimal::zero()) {
+    echo &quot;Amount due\n&quot;;
+}
+</code></pre></div>
+<p>Arithmetic and comparison operators work on <code>decimal</code> values and call the <code>Decimal</code> methods for you (see <a href="#operators">Operators</a>). The rest of this page explains the rules that decide how many digits each result keeps, because those rules matter for money.</p>
+<h2 id="core-concepts">Core concepts</h2>
+<h3 id="values-are-immutable">Values are immutable</h3>
+<p>Every operation returns a new <code>Decimal</code>. The original is never changed, so you can share instances freely and reuse them as constants.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $balance = \Tyhp\decimal(&#039;10.00&#039;);
+decimal $bigger = $balance + 5;   // $balance is still 10.00
+$balance += 5;                    // assigns a new Decimal: 15.00
+</code></pre></div>
+<h3 id="value-and-scale">Value and scale</h3>
+<p>A <code>Decimal</code> has two readonly parts: <code>value</code>, the digits as a string such as <code>'19.99'</code>, and <code>scale</code>, the number of digits after the decimal point. A value created from a string keeps the scale it was written with, so <code>'5'</code>, <code>'5.0'</code>, and <code>'5.00'</code> are equal but have scales 0, 1, and 2. Scale controls how many digits arithmetic results keep and how the value prints.</p>
+<h3 id="how-each-results-scale-is-chosen">How each result's scale is chosen</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Operation</th>
+<th>Result scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$a + $b</code>, <code>$a - $b</code>, <code>$a * $b</code>, <code>$a % $b</code> (<code>add</code>, <code>subtract</code>, <code>multiply</code>, <code>modulo</code>)</td>
+<td>The larger scale of the two operands</td>
+</tr>
+<tr>
+<td><code>$a / $b</code> (<code>divide($x)</code>)</td>
+<td>The larger scale of the two operands, unless you call <code>divide($x, $scale)</code></td>
+</tr>
+<tr>
+<td><code>$a ** $n</code> (<code>power($n)</code>), <code>sqrt()</code></td>
+<td>The scale of the value you call it on, unless you pass <code>$scale</code> to <code>sqrt()</code></td>
+</tr>
+<tr>
+<td><code>-$a</code> (<code>negate</code>), <code>abs</code></td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td><code>round($precision)</code></td>
+<td><code>$precision</code></td>
+</tr>
+<tr>
+<td><code>floor</code>, <code>ceil</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>withScale($n)</code></td>
+<td><code>$n</code></td>
+</tr>
+<tr>
+<td><code>sum</code></td>
+<td>The largest scale among the inputs</td>
+</tr>
+<tr>
+<td><code>avg</code></td>
+<td>The scale of the sum</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="arithmetic-truncates">Arithmetic truncates</h3>
+<p>When an exact result has more digits than the result scale, the extra digits are dropped (truncated toward zero). Nothing is rounded until you ask for it:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $ten = \Tyhp\decimal(&#039;10&#039;);
+decimal $tenCents = \Tyhp\decimal(&#039;10.00&#039;);
+decimal $two = \Tyhp\decimal(&#039;2.00&#039;);
+decimal $quarter = \Tyhp\decimal(&#039;1.25&#039;);
+
+$ten / 3;                  // 3          (scale 0)
+$tenCents / 3;             // 3.33       (scale 2)
+$ten-&gt;divide(3, 4);        // 3.3333     (scale 4; the operator form has no scale argument)
+$two / 3;                  // 0.66       (truncated, not 0.67)
+$quarter * $quarter;       // 1.56       (exact result is 1.5625)
+</code></pre></div>
+<p>For money, the safe pattern is to widen the scale before multiplying or dividing, then round once at the end:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $net = \Tyhp\decimal(&#039;59.97&#039;);
+decimal $rate = \Tyhp\decimal(&#039;0.08&#039;);
+
+decimal $truncated = $net * $rate;                             // 4.79  (scale 2, truncated from 4.7976)
+decimal $rounded = ($net-&gt;withScale(6) * $rate)-&gt;round(2);     // 4.80
+</code></pre></div>
+<h3 id="rounding-modes">Rounding modes</h3>
+<p><code>round()</code> takes PHP's standard rounding constants. <code>withScale()</code> and the constructor, when they reduce the scale, round half up if the value's <code>roundingMode</code> property is <code>\PHP_ROUND_HALF_UP</code> and truncate for any other mode.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Constant</th>
+<th>Rounds a tie (…5)</th>
+<th>Example: <code>2.545</code> to 2 places</th>
+<th>Example: <code>-2.555</code> to 2 places</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\PHP_ROUND_HALF_UP</code> (default)</td>
+<td>Away from zero</td>
+<td><code>2.55</code></td>
+<td><code>-2.56</code></td>
+</tr>
+<tr>
+<td><code>\PHP_ROUND_HALF_DOWN</code></td>
+<td>Toward zero</td>
+<td><code>2.54</code></td>
+<td><code>-2.55</code></td>
+</tr>
+<tr>
+<td><code>\PHP_ROUND_HALF_EVEN</code></td>
+<td>To the even digit (banker's rounding)</td>
+<td><code>2.54</code></td>
+<td><code>-2.56</code></td>
+</tr>
+<tr>
+<td><code>\PHP_ROUND_HALF_ODD</code></td>
+<td>To the odd digit</td>
+<td><code>2.55</code></td>
+<td><code>-2.55</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>A value is a tie only when every discarded digit is a <code>5</code> followed by zeros. <code>2.5451</code> is above a tie, so it rounds up to <code>2.55</code> in every mode, while <code>2.545</code> is a tie and follows the mode. Any other mode value truncates.</p>
+<h3 id="accepted-input">Accepted input</h3>
+<p>Anything typed <code>\Tyhp\DecimalCoercible</code> (or <code>null</code>) can become a <code>Decimal</code>:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Input</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string</code></td>
+<td>Leading and trailing whitespace is trimmed. The rest must be an optional <code>-</code>, one or more digits, and optionally <code>.</code> followed by one or more digits. An empty string is <code>0</code>. Anything else throws <code>\InvalidArgumentException</code>.</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td>The exact integer, scale 0.</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>Converted with 20 fractional digits, then trailing zeros are removed. <code>NaN</code> and <code>INF</code> throw <code>\InvalidArgumentException</code>.</td>
+</tr>
+<tr>
+<td><code>\Tyhp\Contracts\DecimalConvertible</code></td>
+<td>The value returned by its <code>__toDecimal()</code>.</td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>0</code>. With <code>$scale</code> passed to the constructor, <code>0</code> at that scale (<code>new Decimal(null, 2)</code> is <code>0.00</code>); otherwise scale 0.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Strings that the parser rejects include <code>'+1'</code>, <code>'.5'</code>, <code>'5.'</code>, <code>'1e3'</code>, <code>'1,000'</code>, and <code>'1 000'</code>. Normalize user input before constructing a value (see <a href="#parsing-user-input">Parsing user input</a>).</p>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Do not create money values from floats. A float carries its binary rounding error into the decimal: <code>new Decimal(0.1)</code> is <code>0.10000000000000000555</code> with scale 20, and <code>new Decimal(19.99)</code> is <code>19.98999999999999843681</code>. Always pass strings (or integers) for values that must be exact. The same applies to a float on either side of an operator: <code>$amount + 0.01</code> adds <code>0.01000000000000000021</code>, so write <code>$amount + '0.01'</code>.</p>
+</div>
+    </div>
+</div>
+<h2 id="using-decimal-in-tyhp-code">Using <code>decimal</code> in Tyhp code</h2>
+<h3 id="the-decimal-type">The <code>decimal</code> type</h3>
+<p>In Tyhp, <code>decimal</code> and <code>\Tyhp\Decimal</code> name the same type, and <code>decimal</code> needs no import in namespaced files. Write <code>decimal</code> in type positions (parameters, properties, returns, locals) and the class name where you need the class itself (<code>new</code>, static calls, <code>instanceof</code>): either <code>\Tyhp\Decimal</code> or <code>Decimal</code> after <code>use Tyhp\Decimal;</code>. Both compile to <code>\Tyhp\Decimal</code> in PHP.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+final class Product
+{
+    public function __construct(
+        public readonly string $sku,
+        public readonly decimal $price,
+    ) {}
+
+    public function discounted(decimal $percent): decimal {
+        decimal $factor = Decimal::one() - $percent-&gt;divide(100, 4);
+        return ($this-&gt;price-&gt;withScale(4) * $factor)-&gt;round(2);
+    }
+}
+</code></pre></div>
+<h3 id="creating-values">Creating values</h3>
+<p>There are three ways to create a value:</p>
+<ul>
+<li><code>\Tyhp\decimal($value)</code> accepts any <code>DecimalCoercible</code> or <code>null</code>.</li>
+<li><code>new \Tyhp\Decimal($value, $scale, $roundingMode)</code> does the same and also lets you fix the scale or the rounding mode.</li>
+<li><code>(decimal) $expr</code> converts an expression whose type is <code>string</code>, <code>int</code>, <code>float</code>, or a union of those, and compiles to <code>\Tyhp\Decimal::__from($expr)</code>. The result is a <code>decimal</code>, so it can be assigned, passed, or used as an operand: <code>decimal $total = (decimal) $input + 1;</code>. A string that is not a valid number throws <code>\InvalidArgumentException</code> when the cast runs. A cast of a <code>float</code> keeps the float's binary error. Casting a value that is already <code>decimal</code> does nothing and reports the warning <strong>TYHP4205</strong>.</li>
+</ul>
+<p>Any other source type is an error (<strong>TYHP4008</strong>): <code>bool</code>, <code>null</code>, arrays, nullable types such as <code>?string</code>, and objects that implement <code>DecimalConvertible</code>. Use <code>\Tyhp\decimal($value)</code> for a <code>DecimalConvertible</code> object, and check a nullable value for <code>null</code> first.</p>
+<p>The compiler also converts a <code>string</code>, <code>int</code>, or <code>float</code> to <code>decimal</code> for you in two places: call arguments to a <code>decimal</code> parameter, and <code>return</code> values in a function that returns <code>decimal</code>. A <code>Decimal</code> passed to a <code>string</code> parameter is converted with <code>__toString()</code>. Other positions need an explicit conversion. A plain assignment such as <code>decimal $x = '2.5';</code>, a property assignment, and an array element are errors (<strong>TYHP4008</strong>); write <code>decimal $x = \Tyhp\decimal('2.5');</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function charge(decimal $amount): void {
+    // ...
+}
+
+function defaultFee(): decimal {
+    return &#039;2.50&#039;;       // compiles to return \Tyhp\Decimal::__from(&#039;2.50&#039;)
+}
+
+charge(&#039;19.99&#039;);         // compiles to charge(\Tyhp\Decimal::__from(&#039;19.99&#039;))
+charge(20);              // compiles to charge(\Tyhp\Decimal::__from(20))
+
+string $input = &#039;99.95&#039;;
+decimal $parsed = (decimal) $input;   // 99.95
+</code></pre></div>
+<h3 id="operators">Operators</h3>
+<p><code>\Tyhp\Decimal</code> declares operator overloads, so use the operators in your code instead of calling <code>add()</code>, <code>multiply()</code>, <code>lessThan()</code> and the other named methods. The compiler rewrites each operator into the matching call, and the checker types the result: <code>decimal $total = $a + $b;</code> and <code>if ($a &lt; $b)</code> type-check as written. At least one operand must be a <code>Decimal</code>; the other may be a <code>string</code>, <code>int</code>, or <code>float</code>, which is converted to a <code>Decimal</code> first. The right operand can also be any other <code>DecimalCoercible</code> value: a union such as <code>float|int|string</code> or <code>int|string</code>, a value typed <code>\Tyhp\DecimalCoercible</code>, or an object of a class that implements <code>\Tyhp\Contracts\DecimalConvertible</code>. A class that declares <code>operator convert(self $value): decimal</code> counts as <code>DecimalConvertible</code>, so its objects work as the right operand directly. Operators can be chained and nested (<code>$a + $b + $c</code>, <code>$a * ($b + $c)</code>), and the left operand can be a call result (<code>\Tyhp\decimal('2') + 1</code>).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $price = \Tyhp\decimal(&#039;19.99&#039;);
+decimal $subtotal = $price * 3;                      // 59.97
+decimal $discounted = $subtotal - &#039;5.00&#039;;            // 54.97
+$discounted += &#039;0.03&#039;;                               // 55.00
+$discounted *= 2;                                    // 110.00
+decimal $remaining = 150 - $discounted;              // 40.00
+
+if ($discounted &gt;= 100 &amp;&amp; $discounted != $subtotal) {
+    echo -$discounted, &quot;\n&quot;;                         // -110.00
+}
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Expression</th>
+<th>Same as</th>
+<th>Result type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$a + $b</code></td>
+<td><code>$a-&gt;add($b)</code></td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>$a - $b</code></td>
+<td><code>$a-&gt;subtract($b)</code></td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>$a * $b</code></td>
+<td><code>$a-&gt;multiply($b)</code></td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>$a / $b</code></td>
+<td><code>$a-&gt;divide($b)</code> (default scale)</td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>$a % $b</code></td>
+<td><code>$a-&gt;modulo($b)</code></td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>$a ** $n</code></td>
+<td><code>$a-&gt;power($n)</code> (<code>$a</code> must be a <code>Decimal</code>, <code>$n</code> an <code>int</code>)</td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>-$a</code></td>
+<td><code>$a-&gt;negate()</code></td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>+$a</code></td>
+<td><code>(float) $a-&gt;value</code></td>
+<td><code>float</code></td>
+</tr>
+<tr>
+<td><code>$a == $b</code> / <code>$a != $b</code></td>
+<td><code>$a-&gt;equals($b)</code> / its negation</td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td><code>$a &lt; $b</code> / <code>$a &lt;= $b</code> / <code>$a &gt; $b</code> / <code>$a &gt;= $b</code></td>
+<td><code>lessThan</code> / <code>lessThanOrEqual</code> / <code>greaterThan</code> / <code>greaterThanOrEqual</code></td>
+<td><code>bool</code></td>
+</tr>
+<tr>
+<td><code>$a &lt;=&gt; $b</code></td>
+<td><code>$a-&gt;compareTo($b)</code></td>
+<td><code>int</code> (-1, 0, 1)</td>
+</tr>
+<tr>
+<td><code>$a += $b</code> and other compound forms</td>
+<td>The matching binary operator</td>
+<td><code>decimal</code></td>
+</tr>
+<tr>
+<td><code>(int) $a</code> / <code>(float) $a</code> / <code>(string) $a</code></td>
+<td><code>__toInt()</code> / <code>__toFloat()</code> / <code>__toString()</code></td>
+<td><code>int</code> / <code>float</code> / <code>string</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>&quot;Total: {$a}&quot;</code> and <code>echo $a</code> print the value through <code>__toString()</code>.</p>
+<p>Keep these limits in mind:</p>
+<ul>
+<li><strong>The operators have no scale argument.</strong> <code>$a / $b</code> divides at the larger of the two scales. Call <code>$a-&gt;divide($b, $scale)</code> when you need more digits, and <code>round()</code>, <code>withScale()</code>, <code>power()</code>, and <code>sqrt()</code> for the operations that have no operator.</li>
+<li><strong>A number or string on the left works for every operator except <code>**</code>.</strong> <code>5 + $a</code>, <code>'1.00' * $a</code>, and <code>100 &gt; $a</code> convert the left value to a <code>Decimal</code> (with the scale it was written with) before the operation. <code>**</code> needs a <code>Decimal</code> base and an <code>int</code> exponent, so <code>2 ** $a</code> is a compile error (<strong>TYHP4029</strong>).</li>
+<li><strong>Floats carry their binary error.</strong> <code>$a * 0.1</code> multiplies by <code>0.1000000000000000055…</code>. Write <code>$a * '0.1'</code>.</li>
+<li><strong><code>===</code> and <code>!==</code></strong> compare object identity, as in PHP. Two equal decimals are usually different instances. Use <code>==</code> (or <code>equals()</code>).</li>
+</ul>
+<h2 id="api-reference">API reference</h2>
+<h3 id="the-tyhpdecimal-function">The <code>\Tyhp\decimal()</code> function</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>function \Tyhp\decimal(float|int|string|\Tyhp\Contracts\DecimalConvertible|null $value = null): decimal</code></h4><br/><p>Creates a <code>Decimal</code> from <code>$value</code> with the default scale (the digits as written) and <code>\PHP_ROUND_HALF_UP</code>. Equivalent to <code>new \Tyhp\Decimal($value)</code>. Throws <code>\InvalidArgumentException</code> for input the parser rejects (see <a href="#accepted-input">Accepted input</a>).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $a = \Tyhp\decimal(&#039;19.99&#039;);   // scale 2
+decimal $b = \Tyhp\decimal(42);        // scale 0
+decimal $c = \Tyhp\decimal();          // 0
+</code></pre></div>
+</div>
+<h3 id="tyhpdecimal"><code>\Tyhp\Decimal</code></h3>
+<p><code>final class Decimal implements \Tyhp\Contracts\DecimalConvertible, \Tyhp\Contracts\FloatConvertible, \Tyhp\Contracts\IntConvertible, \Tyhp\Contracts\StringConvertible, \JsonSerializable</code></p>
+<p>An immutable decimal number. In Tyhp code, prefer the operators described in <a href="#operators">Operators</a>; each method below says which operator it backs. Methods that take an operand accept <code>\Tyhp\DecimalCoercible</code>, so <code>$price-&gt;add('1.50')</code>, <code>$price-&gt;add(2)</code>, and <code>$price-&gt;add($otherDecimal)</code> all work (and so do <code>$price + '1.50'</code>, <code>$price + 2</code>, and <code>$price + $otherDecimal</code>). Results keep the rounding mode of the value the method is called on.</p>
+<h4 id="properties">Properties</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public readonly string $value</code></h4><br/><p>The digits as a string, for example <code>'19.99'</code> or <code>'-0.50'</code>. String input is stored as written after trimming whitespace, so <code>new Decimal('007.50')</code> keeps its leading zeros. This is the form to store in a database or send in JSON.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public readonly int $scale</code></h4><br/><p>The number of digits after the decimal point.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public readonly int $roundingMode</code></h4><br/><p>The rounding mode used when <code>withScale()</code> or the constructor reduces the scale. Arithmetic results inherit it from the left operand. <code>round()</code> and <code>format()</code> do not use it.</p>
+</div>
+<h4 id="construction">Construction</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(\Tyhp\DecimalCoercible|null $value = null, ?int $scale = null, int $roundingMode = \PHP_ROUND_HALF_UP)</code></h4><br/><p>Creates a decimal.</p>
+<ul>
+<li><code>$value</code> — see <a href="#accepted-input">Accepted input</a>.</li>
+<li><code>$scale</code> — <code>null</code> keeps the digits as written. A larger scale pads with zeros (<code>new Decimal('1.5', 4)</code> is <code>1.5000</code>). A smaller scale removes digits: with <code>\PHP_ROUND_HALF_UP</code> the last kept digit is rounded half up (<code>new Decimal('1.005', 2)</code> is <code>1.01</code>, and <code>new Decimal('1.7', 0)</code> is <code>2</code>). With any other rounding mode, extra digits are truncated. Must be 0 or greater.</li>
+<li><code>$roundingMode</code> — stored on the value (see <code>roundingMode</code>).</li>
+</ul>
+<p>When <code>$value</code> is a <code>DecimalConvertible</code> and <code>$scale</code> is <code>null</code>, the value and its scale are copied unchanged. When you pass <code>$scale</code>, the value is rescaled exactly like string input.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> with the message <code>Cannot create Decimal from non-numeric string: …</code> or <code>Cannot create Decimal from NaN or Inf float value</code>. A negative <code>$scale</code> throws <code>\ValueError</code> with the message <code>Decimal scale must be 0 or greater, -1 given</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+$price = new Decimal(&#039;19.99&#039;);                           // 19.99, scale 2
+$cents = new Decimal(&#039;1.005&#039;, 2);                        // 1.01
+$truncating = new Decimal(&#039;1.005&#039;, 2, \PHP_ROUND_HALF_EVEN); // 1.00
+</code></pre></div>
+</div>
+<h4 id="arithmetic">Arithmetic</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public function add(\Tyhp\DecimalCoercible $operand): self</code></h4><br/><p>Returns <code>$this + $operand</code> at the larger of the two scales. Operator: <code>$a + $b</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $a = \Tyhp\decimal(&#039;1.5&#039;);
+decimal $sum = $a + 2;      // 3.5
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function subtract(\Tyhp\DecimalCoercible $operand): self</code></h4><br/><p>Returns <code>$this - $operand</code> at the larger of the two scales. Operator: <code>$a - $b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function multiply(\Tyhp\DecimalCoercible $operand): self</code></h4><br/><p>Returns <code>$this * $operand</code> at the larger of the two scales, truncated. Operator: <code>$a * $b</code>. The exact product usually has more digits than either operand. Widen the scale first with <code>withScale()</code> when you need those digits.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $price = \Tyhp\decimal(&#039;19.99&#039;);
+decimal $tax = $price * &#039;0.0825&#039;;                          // 1.6491 (exact: 1.649175)
+decimal $exact = $price-&gt;withScale(6) * &#039;0.0825&#039;;          // 1.649175
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function divide(\Tyhp\DecimalCoercible $operand, ?int $scale = null): self</code></h4><br/><p>Returns <code>$this / $operand</code>, truncated to <code>$scale</code> digits. Operator: <code>$a / $b</code>, which uses the default scale. Call the method only when you need to choose <code>$scale</code>. When <code>$scale</code> is <code>null</code>, the result uses the larger of the two operand scales, so dividing two whole numbers gives a whole number (<code>10 / 3</code> is <code>3</code>). Pass <code>$scale</code> whenever the quotient can be fractional.</p>
+<p><strong>Throws</strong> <code>\DivisionByZeroError</code> (<code>Cannot divide … by zero</code>) when <code>$operand</code> is zero. <code>\DivisionByZeroError</code> is an <code>\Error</code>, not an <code>\Exception</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $whole = \Tyhp\decimal(&#039;100&#039;);
+decimal $cents = \Tyhp\decimal(&#039;100.00&#039;);
+
+$whole-&gt;divide(3, 2);     // 33.33
+$cents / 3;               // 33.33
+$whole-&gt;divide(&#039;8&#039;, 3);   // 12.500
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function modulo(\Tyhp\DecimalCoercible $operand): self</code></h4><br/><p>Returns the remainder of <code>$this / $operand</code> at the larger of the two scales. Operator: <code>$a % $b</code>. The sign follows the dividend: <code>-7 % 3</code> is <code>-1</code>, and <code>7.5 % 2</code> is <code>1.5</code>.</p>
+<p><strong>Throws</strong> <code>\DivisionByZeroError</code> (<code>Modulo by zero</code>) when <code>$operand</code> is zero.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function power(int $exponent): self</code></h4><br/><p>Returns <code>$this</code> raised to <code>$exponent</code> at the scale of <code>$this</code>, truncated. Operator: <code>$a ** $n</code>. When <code>$a</code> is <code>1.10</code>, <code>$a ** 3</code> is <code>1.33</code>; widen the scale first for more digits (<code>$a-&gt;withScale(6) ** 3</code> is <code>1.331000</code>). <code>$a ** 0</code> is <code>1.00</code>.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> (<code>Negative exponents are not supported</code>) when <code>$exponent</code> is negative. For a reciprocal, use <code>Decimal::one()-&gt;divide($x, $scale)</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function negate(): self</code></h4><br/><p>Returns <code>-$this</code> at the same scale. Negating zero returns zero. Operator: <code>-$a</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function abs(): self</code></h4><br/><p>Returns the absolute value at the same scale.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function sqrt(?int $scale = null): self</code></h4><br/><p>Returns the square root, truncated to <code>$scale</code> digits (default: the scale of <code>$this</code>). <code>\Tyhp\decimal('2')-&gt;sqrt()</code> is <code>1</code>; <code>\Tyhp\decimal('2')-&gt;sqrt(6)</code> is <code>1.414213</code>.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> (<code>Square root of a negative number is not supported</code>) when <code>$this</code> is negative.</p>
+</div>
+<h4 id="comparison">Comparison</h4>
+<p>All comparisons are exact. Both sides are compared at the larger of their scales, so trailing zeros never matter: <code>'5.00'</code> equals <code>'5'</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function compareTo(\Tyhp\DecimalCoercible $other): int</code></h4><br/><p>Returns <code>-1</code> when <code>$this</code> is less than <code>$other</code>, <code>0</code> when they are equal, and <code>1</code> when it is greater. Operator: <code>$a &lt;=&gt; $b</code>. Use it as a sort comparator: <code>\usort($prices, fn(Decimal $a, Decimal $b): int =&gt; $a &lt;=&gt; $b);</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function equals(\Tyhp\DecimalCoercible $other): bool</code></h4><br/><p><code>true</code> when the two values are numerically equal, regardless of scale. Operators: <code>$a == $b</code>, and <code>$a != $b</code> for the negation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function greaterThan(\Tyhp\DecimalCoercible $other): bool</code></h4><br/><p><code>true</code> when <code>$this &gt; $other</code>. Operator: <code>$a &gt; $b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function greaterThanOrEqual(\Tyhp\DecimalCoercible $other): bool</code></h4><br/><p><code>true</code> when <code>$this &gt;= $other</code>. Operator: <code>$a &gt;= $b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function lessThan(\Tyhp\DecimalCoercible $other): bool</code></h4><br/><p><code>true</code> when <code>$this &lt; $other</code>. Operator: <code>$a &lt; $b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function lessThanOrEqual(\Tyhp\DecimalCoercible $other): bool</code></h4><br/><p><code>true</code> when <code>$this &lt;= $other</code>. Operator: <code>$a &lt;= $b</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isZero(): bool</code></h4><br/><p><code>true</code> for any zero, including <code>0.00</code> and <code>-0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isPositive(): bool</code></h4><br/><p><code>true</code> when the value is greater than zero.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function isNegative(): bool</code></h4><br/><p><code>true</code> when the value is less than zero. <code>-0</code> is not negative.</p>
+</div>
+<h4 id="scale-and-rounding">Scale and rounding</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public function withScale(int $scale): self</code></h4><br/><p>Returns the same number with a different scale. Increasing the scale pads with zeros (<code>5.1</code> becomes <code>5.1000</code>). Decreasing it follows the constructor's rule: half up when <code>roundingMode</code> is <code>\PHP_ROUND_HALF_UP</code> (<code>1.25</code> becomes <code>1.3</code>, and <code>1.75</code> becomes <code>2</code> at scale 0), and truncation for any other rounding mode. A negative <code>$scale</code> throws <code>\ValueError</code>.</p>
+<p>Use <code>withScale()</code> to widen a value before multiplying, dividing, or raising to a power, and <code>round()</code> to reduce a value to its final precision.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function round(int $precision = 0, int $mode = \PHP_ROUND_HALF_UP): self</code></h4><br/><p>Rounds to <code>$precision</code> digits after the decimal point using <code>$mode</code> (see <a href="#rounding-modes">Rounding modes</a>). The result's scale is <code>$precision</code>. When the value already has <code>$precision</code> digits or fewer, it is padded instead (<code>1.5</code> rounded to 4 places is <code>1.5000</code>). A negative <code>$precision</code> throws <code>\ValueError</code>. This method ignores <code>roundingMode</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+\Tyhp\decimal(&#039;2.555&#039;)-&gt;round(2);                         // 2.56
+\Tyhp\decimal(&#039;-2.555&#039;)-&gt;round(2);                        // -2.56
+\Tyhp\decimal(&#039;2.545&#039;)-&gt;round(2, \PHP_ROUND_HALF_EVEN);   // 2.54
+\Tyhp\decimal(&#039;9.999&#039;)-&gt;round(2);                         // 10.00
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function floor(): self</code></h4><br/><p>Rounds toward negative infinity to a whole number (scale 0). <code>3.7</code> becomes <code>3</code>; <code>-3.2</code> becomes <code>-4</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function ceil(): self</code></h4><br/><p>Rounds toward positive infinity to a whole number (scale 0). <code>3.2</code> becomes <code>4</code>; <code>-3.7</code> becomes <code>-3</code>.</p>
+</div>
+<h4 id="conversion-and-output">Conversion and output</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public function format(int $decimals = 2, string $decimalSep = &#039;.&#039;, string $thousandsSep = &#039;,&#039;): string</code></h4><br/><p>Rounds to <code>$decimals</code> places with <code>\PHP_ROUND_HALF_UP</code> and returns a display string with grouped thousands. Pass <code>''</code> as <code>$thousandsSep</code> to disable grouping. With <code>$decimals</code> set to 0, no decimal separator is printed. A value that rounds to zero prints without a minus sign. For locale-aware currency formatting, pass the result of <code>round()</code> to <code>\NumberFormatter</code> from <code>ext-intl</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+decimal $d = \Tyhp\decimal(&#039;1234567.891&#039;);
+$d-&gt;format();                // 1,234,567.89
+$d-&gt;format(2, &#039;,&#039;, &#039;.&#039;);     // 1.234.567,89
+$d-&gt;format(2, &#039;.&#039;, &#039;&#039;);      // 1234567.89
+\Tyhp\decimal(&#039;-1234.5&#039;)-&gt;format(0);   // -1,235
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function jsonSerialize(): string</code></h4><br/><p>Returns <code>value</code>. <code>\json_encode()</code> therefore writes a decimal as a JSON <strong>string</strong> (<code>&quot;19.99&quot;</code>), which keeps every digit. Clients that need a number must parse it themselves.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __toString(): string</code></h4><br/><p>Returns <code>value</code> unchanged (same scale, same leading zeros). Used by <code>(string) $d</code>, string interpolation, <code>echo</code>, and string concatenation.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __toInt(): int</code></h4><br/><p>Returns the integer part, truncated toward zero (<code>-42.9</code> becomes <code>-42</code>). Used by <code>(int) $d</code> in Tyhp. Values outside the <code>int</code> range follow PHP's string-to-int conversion.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __toFloat(): float</code></h4><br/><p>Returns the nearest <code>float</code>. Used by <code>(float) $d</code> in Tyhp. The conversion can lose precision; use it only for display, charts, or APIs that require floats.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __toDecimal(): self</code></h4><br/><p>Returns <code>$this</code>. This satisfies <code>\Tyhp\Contracts\DecimalConvertible</code>, so a <code>Decimal</code> can go anywhere a <code>DecimalConvertible</code> is accepted.</p>
+</div>
+<h4 id="static-helpers">Static helpers</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function zero(int $scale = 2): self</code></h4><br/><p>Returns zero at <code>$scale</code> (default <code>0.00</code>). A convenient starting value for sums of money.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function one(int $scale = 2): self</code></h4><br/><p>Returns one at <code>$scale</code> (default <code>1.00</code>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function min(Decimal ...$values): self</code></h4><br/><p>Returns the smallest of the arguments, unchanged (it keeps its own scale). When several are equal, the first one wins. Arguments must be <code>Decimal</code> instances; spread an array with <code>Decimal::min(...$prices)</code>.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> (<code>At least one value is required</code>) when called with no arguments.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function max(Decimal ...$values): self</code></h4><br/><p>Returns the largest of the arguments, unchanged. When several are equal, the first one wins.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> (<code>At least one value is required</code>) when called with no arguments.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function sum(Decimal ...$values): self</code></h4><br/><p>Returns the total at the largest scale among the arguments. <code>Decimal::sum(\Tyhp\decimal('1.5'), \Tyhp\decimal('2.25'))</code> is <code>3.75</code>.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> (<code>At least one value is required</code>) when called with no arguments. For a list that can be empty, start from <code>Decimal::zero()</code> and use <code>+=</code> in a loop.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function avg(Decimal ...$values): self</code></h4><br/><p>Returns the arithmetic mean at the scale of the sum. The division keeps four extra digits, then the result is reduced to that scale with <code>withScale()</code>. Averaging <code>9.99</code>, <code>10</code>, and <code>2.50</code> gives <code>7.50</code>. When every input has scale 0, the result is rounded half up to a whole number (<code>avg(1, 2)</code> is <code>2</code>), so give the inputs the scale you want back.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> (<code>At least one value is required</code>) when called with no arguments.</p>
+</div>
+<h4 id="backend-management">Backend management</h4>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function getBackendName(): string</code></h4><br/><p>Returns the name of the active backend: <code>'decimal'</code>, <code>'bcmath'</code>, <code>'gmp'</code>, <code>'integer-scaled'</code>, or the <code>getName()</code> of a backend you installed with <code>setBackend()</code>. Calling it selects the backend if no operation has done so yet. Useful in health checks and diagnostics.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function setBackend(\Tyhp\Backend\DecimalBackend $backend): void</code></h4><br/><p>Replaces the backend for every <code>Decimal</code> operation in the current PHP process from now on. Use it in tests (for example, to run the suite against <code>IntegerScaledBackend</code>) or to wrap the default backend with instrumentation. Once set, automatic selection no longer runs.</p>
+</div>
+<h4 id="operator-methods">Operator methods</h4>
+<p>The compiler turns operators on <code>decimal</code> values into calls to these public static methods. They are part of the compiled-code contract. In Tyhp code, write the operator; in plain PHP, call the named methods.</p>
+<p>In the table, <code>L</code> is <code>self|float|int|string</code> and <code>R</code> is <code>self|\Tyhp\DecimalCoercible</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Method</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__add(L $l, R $r): self</code></td>
+<td><code>+</code></td>
+</tr>
+<tr>
+<td><code>__subtract(L $l, R $r): self</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>__multiply(L $l, R $r): self</code></td>
+<td><code>*</code></td>
+</tr>
+<tr>
+<td><code>__divide(L $l, R $r): self</code></td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td><code>__mod(L $l, R $r): self</code></td>
+<td><code>%</code></td>
+</tr>
+<tr>
+<td><code>__pow(self $l, int $r): self</code></td>
+<td><code>**</code></td>
+</tr>
+<tr>
+<td><code>__negate(self $o): self</code></td>
+<td>unary <code>-</code></td>
+</tr>
+<tr>
+<td><code>__isEqual(L $l, R $r): bool</code></td>
+<td><code>==</code></td>
+</tr>
+<tr>
+<td><code>__isNotEqual(L $l, R $r): bool</code></td>
+<td><code>!=</code></td>
+</tr>
+<tr>
+<td><code>__isLessThan(L $l, R $r): bool</code></td>
+<td><code>&lt;</code></td>
+</tr>
+<tr>
+<td><code>__isLessThanOrEqual(L $l, R $r): bool</code></td>
+<td><code>&lt;=</code></td>
+</tr>
+<tr>
+<td><code>__isGreaterThan(L $l, R $r): bool</code></td>
+<td><code>&gt;</code></td>
+</tr>
+<tr>
+<td><code>__isGreaterThanOrEqual(L $l, R $r): bool</code></td>
+<td><code>&gt;=</code></td>
+</tr>
+<tr>
+<td><code>__compare(L $l, R $r): int</code></td>
+<td><code>&lt;=&gt;</code></td>
+</tr>
+<tr>
+<td><code>__asNumeric(self $o): float</code></td>
+<td>unary <code>+</code></td>
+</tr>
+<tr>
+<td><code>__from(int|float|string $from): self</code></td>
+<td><code>(decimal)</code> casts, and the conversion of a scalar to a <code>decimal</code> parameter or return value</td>
+</tr>
+</tbody>
+</table></div>
+<p>A call to an arithmetic or comparison method needs a <code>Decimal</code> on at least one side. <code>Decimal::__add(1, 2)</code> throws <code>\Tyhp\Exceptions\InvalidParametersForOperatorOverloadException</code>.</p>
+<h3 id="the-tyhpdecimalcoercible-type-alias">The <code>\Tyhp\DecimalCoercible</code> type alias</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>type DecimalCoercible = float|int|string|\Tyhp\Contracts\DecimalConvertible</code></h4><br/><p>Everything that can be turned into a <code>Decimal</code>. Use it for parameters that accept &quot;anything numeric&quot; and convert on entry:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+function money(\Tyhp\DecimalCoercible $value): decimal {
+    return new Decimal($value, 2);
+}
+
+money(&#039;3.456&#039;);   // 3.46
+money(12);        // 12.00
+</code></pre></div>
+<p><code>\Tyhp\DecimalCoercible()</code> returns the alias as a runtime <code>\Tyhp\Type</code> (see <a href="tyhp_0700_typeAliases.html">Type Aliases</a>).</p>
+</div>
+<h3 id="tyhpcontractsdecimalconvertible"><code>\Tyhp\Contracts\DecimalConvertible</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>interface DecimalConvertible extends \Tyhp\Contracts\Convertible</code></h4><br/><p>Implement this on your own value objects so they can be passed anywhere a <code>DecimalCoercible</code> is accepted: to <code>\Tyhp\decimal()</code>, the <code>Decimal</code> constructor, and every <code>Decimal</code> method that takes an operand (<code>add()</code>, <code>compareTo()</code>, and the others).</p>
+<p><code>public function __toDecimal(): \Tyhp\Decimal;</code> returns the decimal form of the object.</p>
+<p>A <code>DecimalConvertible</code> object can be the right operand of a decimal operator: <code>$unit + $price</code> with <code>$unit</code> a <code>decimal</code> and <code>$price</code> a <code>Price</code>.</p>
+<p>Declaring <code>operator convert(self $value): decimal</code> on a class also gives it <code>__toDecimal()</code> and the interface in the compiled PHP (see <a href="tyhp_1600_operatorOverloads.html">Operator Overloads</a>), so such a class needs no <code>implements</code> clause to be used as an operand.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+final class Price implements \Tyhp\Contracts\DecimalConvertible
+{
+    public function __construct(private readonly int $cents) {}
+
+    public function __toDecimal(): Decimal {
+        return (new Decimal($this-&gt;cents))-&gt;divide(100, 2);
+    }
+}
+
+$price = new Price(1999);
+decimal $unit = \Tyhp\decimal($price);                 // 19.99
+decimal $sum = $unit + $price;                         // 39.98
+</code></pre></div>
+</div>
+<h3 id="tyhpbackenddecimalbackend"><code>\Tyhp\Backend\DecimalBackend</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>interface DecimalBackend</code></h4><br/><p>The arithmetic engine behind <code>Decimal</code>. You only implement it to supply your own backend through <code>Decimal::setBackend()</code>. Every operand is a plain decimal string (<code>-?digits(.digits)?</code>), and <code>$scale</code> is the result scale. Return results truncated to exactly <code>$scale</code> fractional digits to match the built-in backends.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Method</th>
+<th>Contract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>add(string $a, string $b, int $scale): string</code></td>
+<td><code>$a + $b</code></td>
+</tr>
+<tr>
+<td><code>subtract(string $a, string $b, int $scale): string</code></td>
+<td><code>$a - $b</code></td>
+</tr>
+<tr>
+<td><code>multiply(string $a, string $b, int $scale): string</code></td>
+<td><code>$a * $b</code></td>
+</tr>
+<tr>
+<td><code>divide(string $a, string $b, int $scale): string</code></td>
+<td><code>$a / $b</code>; throw <code>\DivisionByZeroError</code> when <code>$b</code> is zero</td>
+</tr>
+<tr>
+<td><code>modulo(string $a, string $b, int $scale): string</code></td>
+<td>Remainder with the sign of <code>$a</code>; throw <code>\DivisionByZeroError</code> when <code>$b</code> is zero</td>
+</tr>
+<tr>
+<td><code>power(string $base, int $exponent, int $scale): string</code></td>
+<td><code>$base ** $exponent</code> for <code>$exponent &gt;= 0</code></td>
+</tr>
+<tr>
+<td><code>sqrt(string $value, int $scale): string</code></td>
+<td>Square root; throw <code>\InvalidArgumentException</code> when <code>$value</code> is negative</td>
+</tr>
+<tr>
+<td><code>compare(string $a, string $b, int $scale): -1|0|1</code></td>
+<td>Compare at <code>$scale</code></td>
+</tr>
+<tr>
+<td><code>negate(string $value): string</code></td>
+<td><code>-$value</code>; zero stays unsigned</td>
+</tr>
+<tr>
+<td><code>abs(string $value): string</code></td>
+<td>Absolute value</td>
+</tr>
+<tr>
+<td><code>getName(): string</code></td>
+<td>Name reported by <code>Decimal::getBackendName()</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>This backend wraps another one and changes only its name, which is a starting point for logging or metrics:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+use Tyhp\Backend\DecimalBackend;
+use Tyhp\Backend\IntegerScaledBackend;
+
+final class LoggingBackend implements DecimalBackend
+{
+    public function __construct(private readonly DecimalBackend $inner) {}
+
+    public function add(string $a, string $b, int $scale): string { return $this-&gt;inner-&gt;add($a, $b, $scale); }
+    public function subtract(string $a, string $b, int $scale): string { return $this-&gt;inner-&gt;subtract($a, $b, $scale); }
+    public function multiply(string $a, string $b, int $scale): string { return $this-&gt;inner-&gt;multiply($a, $b, $scale); }
+    public function divide(string $a, string $b, int $scale): string { return $this-&gt;inner-&gt;divide($a, $b, $scale); }
+    public function modulo(string $a, string $b, int $scale): string { return $this-&gt;inner-&gt;modulo($a, $b, $scale); }
+    public function power(string $base, int $exponent, int $scale): string { return $this-&gt;inner-&gt;power($base, $exponent, $scale); }
+    public function sqrt(string $value, int $scale): string { return $this-&gt;inner-&gt;sqrt($value, $scale); }
+    public function compare(string $a, string $b, int $scale): -1|0|1 { return $this-&gt;inner-&gt;compare($a, $b, $scale); }
+    public function negate(string $value): string { return $this-&gt;inner-&gt;negate($value); }
+    public function abs(string $value): string { return $this-&gt;inner-&gt;abs($value); }
+    public function getName(): string { return &#039;logging(&#039; . $this-&gt;inner-&gt;getName() . &#039;)&#039;; }
+}
+
+Decimal::setBackend(new LoggingBackend(new IntegerScaledBackend()));
+echo Decimal::getBackendName();   // logging(integer-scaled)
+</code></pre></div>
+</div>
+<h3 id="tyhpbackendintegerscaledbackend"><code>\Tyhp\Backend\IntegerScaledBackend</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class IntegerScaledBackend implements DecimalBackend</code></h4><br/><p>The pure-PHP backend. It needs no extension and is selected automatically when <code>ext-decimal</code>, <code>ext-bcmath</code>, and <code>ext-gmp</code> are all missing. It is noticeably slower than the extension backends.</p>
+<p><code>public function __construct()</code> raises this <code>E_USER_NOTICE</code> the first time an instance is created in a process:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">Tyhp\Decimal: Neither ext-decimal, ext-bcmath, nor ext-gmp is loaded. Using pure-PHP integer-scaled fallback, which is slower and has precision limitations. Install ext-decimal (preferred) or ext-bcmath for optimal performance: https://php-decimal.github.io/ or https://www.php.net/manual/en/book.bc.php
+</code></pre></div>
+<p><code>getName()</code> returns <code>'integer-scaled'</code>. Construct it yourself and pass it to <code>Decimal::setBackend()</code> to check that your code gives the same results without any extension.</p>
+</div>
+<h2 id="backends">Backends</h2>
+<p>The backend is chosen once per PHP process, the first time a decimal operation (or <code>Decimal::getBackendName()</code>) runs, and then reused. The choice is made at runtime with <code>\extension_loaded()</code> checks in this order:</p>
+<ol>
+<li><code>ext-decimal</code> → <code>decimal</code></li>
+<li><code>ext-bcmath</code> → <code>bcmath</code></li>
+<li><code>ext-gmp</code> → <code>gmp</code></li>
+<li>Otherwise → <code>integer-scaled</code>, with the one-time notice shown above</li>
+</ol>
+<p>All backends follow the same scale and truncation rules, so results do not depend on which extension is loaded. Install <code>ext-bcmath</code> or <code>ext-decimal</code> on production servers; they are the fastest and most widely used. To confirm which backend a server uses, log <code>Decimal::getBackendName()</code> at startup.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>The backend is picked at runtime from the extensions that are loaded. To force a specific one, for example in tests, call <code>Decimal::setBackend()</code>.</p>
+</div>
+    </div>
+</div>
+<p>The <code>tyhpdef/php-ext-decimal</code> package (type definitions for the PECL Decimal extension's own <code>\Decimal\Decimal</code> class) is unrelated to this package. You do not need it to use <code>\Tyhp\Decimal</code>, even when <code>ext-decimal</code> is the active backend.</p>
+<h2 id="errors">Errors</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Situation</th>
+<th>Thrown</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A string the parser rejects</td>
+<td><code>\InvalidArgumentException</code></td>
+<td><code>Cannot create Decimal from non-numeric string: {input}</code></td>
+</tr>
+<tr>
+<td>A <code>NaN</code> or <code>INF</code> float</td>
+<td><code>\InvalidArgumentException</code></td>
+<td><code>Cannot create Decimal from NaN or Inf float value</code></td>
+</tr>
+<tr>
+<td><code>divide()</code> / <code>/</code> by zero</td>
+<td><code>\DivisionByZeroError</code></td>
+<td><code>Cannot divide {value} by zero</code></td>
+</tr>
+<tr>
+<td><code>modulo()</code> / <code>%</code> by zero</td>
+<td><code>\DivisionByZeroError</code></td>
+<td><code>Modulo by zero</code></td>
+</tr>
+<tr>
+<td>A negative <code>$scale</code> (<code>withScale()</code>, the constructor)</td>
+<td><code>\ValueError</code></td>
+<td><code>Decimal scale must be 0 or greater, {scale} given</code></td>
+</tr>
+<tr>
+<td>A negative <code>$precision</code> (<code>round()</code>, and <code>format()</code> with a negative <code>$decimals</code>)</td>
+<td><code>\ValueError</code></td>
+<td><code>Rounding precision must be 0 or greater, {precision} given</code></td>
+</tr>
+<tr>
+<td><code>power()</code> with a negative exponent</td>
+<td><code>\InvalidArgumentException</code></td>
+<td><code>Negative exponents are not supported</code></td>
+</tr>
+<tr>
+<td><code>sqrt()</code> of a negative value</td>
+<td><code>\InvalidArgumentException</code></td>
+<td><code>Square root of a negative number is not supported</code></td>
+</tr>
+<tr>
+<td><code>min()</code>, <code>max()</code>, <code>sum()</code>, <code>avg()</code> with no arguments</td>
+<td><code>\InvalidArgumentException</code></td>
+<td><code>At least one value is required</code></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>\DivisionByZeroError</code> extends <code>\ArithmeticError</code>, which is an <code>\Error</code>. A <code>catch (\Exception $e)</code> block does not catch it; catch <code>\DivisionByZeroError</code> or <code>\Throwable</code>.</p>
+<h2 id="recipes">Recipes</h2>
+<h3 id="invoice-totals-with-tax">Invoice totals with tax</h3>
+<p>Keep line amounts at two places, widen before applying a tax rate, and round each line's tax once.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+final class InvoiceLine
+{
+    public function __construct(
+        public readonly string $description,
+        public readonly decimal $unitPrice,
+        public readonly int $quantity,
+    ) {}
+
+    public function net(): decimal {
+        return $this-&gt;unitPrice * $this-&gt;quantity;
+    }
+
+    public function tax(decimal $rate): decimal {
+        return ($this-&gt;net()-&gt;withScale(6) * $rate)-&gt;round(2);
+    }
+}
+
+final class Invoice
+{
+    private array&lt;int, InvoiceLine&gt; $lines = [];
+
+    public function __construct(private readonly decimal $taxRate) {}
+
+    public function add(InvoiceLine $line): void {
+        $this-&gt;lines[] = $line;
+    }
+
+    public function netTotal(): decimal {
+        decimal $sum = Decimal::zero(2);
+        foreach ($this-&gt;lines as InvoiceLine $line) {
+            $sum += $line-&gt;net();
+        }
+        return $sum;
+    }
+
+    public function taxTotal(): decimal {
+        decimal $sum = Decimal::zero(2);
+        foreach ($this-&gt;lines as InvoiceLine $line) {
+            $sum += $line-&gt;tax($this-&gt;taxRate);
+        }
+        return $sum;
+    }
+
+    public function grandTotal(): decimal {
+        return $this-&gt;netTotal() + $this-&gt;taxTotal();
+    }
+}
+
+$invoice = new Invoice(\Tyhp\decimal(&#039;0.0825&#039;));
+$invoice-&gt;add(new InvoiceLine(&#039;Widget&#039;, \Tyhp\decimal(&#039;19.99&#039;), 3));
+$invoice-&gt;add(new InvoiceLine(&#039;Gadget&#039;, \Tyhp\decimal(&#039;4.25&#039;), 2));
+
+echo $invoice-&gt;netTotal()-&gt;format(), &quot;\n&quot;;    // 68.47
+echo $invoice-&gt;taxTotal()-&gt;format(), &quot;\n&quot;;    // 5.65
+echo $invoice-&gt;grandTotal()-&gt;format(), &quot;\n&quot;;  // 74.12
+</code></pre></div>
+<p>Some tax rules round the invoice total instead of each line. In that case, sum the unrounded line taxes (<code>$this-&gt;net()-&gt;withScale(6) * $rate</code>) and call <code>round(2)</code> once on the sum.</p>
+<h3 id="splitting-an-amount-without-losing-cents">Splitting an amount without losing cents</h3>
+<p>Dividing <code>100.00</code> three ways gives <code>33.33</code> three times, which loses a cent. Compute the truncated share, then give the remainder to the first part:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function allocate(decimal $total, int $parts): array&lt;int, decimal&gt; {
+    if ($parts &lt; 1) {
+        throw new \InvalidArgumentException(&#039;parts must be at least 1&#039;);
+    }
+
+    decimal $amount = $total-&gt;withScale(2);
+    decimal $share = $amount-&gt;divide($parts, 2);
+    decimal $remainder = $amount - $share * $parts;
+
+    array&lt;int, decimal&gt; $shares = [];
+    for (int $i = 0; $i &lt; $parts; $i++) {
+        $shares[] = $share;
+    }
+    $shares[0] = $shares[0] + $remainder;
+
+    return $shares;
+}
+
+foreach (allocate(\Tyhp\decimal(&#039;100.00&#039;), 3) as decimal $share) {
+    echo $share, &quot;\n&quot;;   // 33.34, 33.33, 33.33
+}
+</code></pre></div>
+<h3 id="parsing-user-input">Parsing user input</h3>
+<p>The constructor accepts only plain digits with an optional <code>-</code> and <code>.</code>. Remove formatting first, and check the shape so you can show a helpful error instead of letting the exception escape:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+function parseAmount(string $input): ?decimal {
+    string $normalized = \str_replace([&#039;,&#039;, &#039; &#039;], &#039;&#039;, \trim($input));
+    if (\preg_match(&#039;/^-?\d+(\.\d{1,2})?$/&#039;, $normalized) !== 1) {
+        return null;
+    }
+    return new Decimal($normalized, 2);
+}
+
+$amount = parseAmount(&#039; 1,234.50 &#039;);
+echo $amount === null ? &#039;invalid&#039; : $amount-&gt;value;   // 1234.50
+</code></pre></div>
+<p>This version treats <code>,</code> as a thousands separator. For locales that use <code>,</code> as the decimal separator, convert it to <code>.</code> instead. When you would rather let the constructor validate, catch its exception:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+function parseOrThrow(string $input): decimal {
+    try {
+        return new Decimal($input);
+    } catch (\InvalidArgumentException $e) {
+        throw new \DomainException(&quot;Not a valid amount: {$input}&quot;, 0, $e);
+    }
+}
+</code></pre></div>
+<h3 id="storing-decimals-in-a-database">Storing decimals in a database</h3>
+<p>Use a fixed-point column (<code>DECIMAL(12,2)</code> in MySQL, <code>NUMERIC(12,2)</code> in PostgreSQL) and pass <code>value</code> as a string. PDO returns these columns as strings, which you can pass straight to the constructor.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+final class PaymentRepository
+{
+    public function __construct(private readonly \PDO $pdo) {}
+
+    public function record(int $orderId, decimal $amount): void {
+        $stmt = $this-&gt;pdo-&gt;prepare(&#039;INSERT INTO payments (order_id, amount) VALUES (:order_id, :amount)&#039;);
+        $stmt-&gt;execute([
+            &#039;order_id&#039; =&gt; $orderId,
+            &#039;amount&#039; =&gt; $amount-&gt;withScale(2)-&gt;value,
+        ]);
+    }
+
+    public function totalFor(int $orderId): decimal {
+        $stmt = $this-&gt;pdo-&gt;prepare(&#039;SELECT COALESCE(SUM(amount), 0) FROM payments WHERE order_id = :order_id&#039;);
+        $stmt-&gt;execute([&#039;order_id&#039; =&gt; $orderId]);
+        $raw = $stmt-&gt;fetchColumn();
+        if (!\is_string($raw) &amp;&amp; !\is_int($raw)) {
+            throw new \UnexpectedValueException(&#039;Unexpected SUM(amount) result&#039;);
+        }
+        return new Decimal($raw, 2);
+    }
+}
+</code></pre></div>
+<p>Do not store decimals in <code>FLOAT</code> or <code>DOUBLE</code> columns, and do not read them back through <code>(float)</code>. Either step reintroduces binary rounding error.</p>
+<h3 id="json-apis">JSON APIs</h3>
+<p><code>\json_encode()</code> writes a <code>Decimal</code> as a JSON string, so no digits are lost on the way out. Ask clients to send amounts as strings too; a JSON number is decoded as a PHP <code>float</code> before your code sees it.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+function amountFromJson(array&lt;int|string, mixed&gt; $payload): decimal {
+    $raw = $payload[&#039;amount&#039;] ?? null;
+    if (!\is_string($raw)) {
+        throw new \InvalidArgumentException(&#039;amount must be a JSON string such as &quot;19.99&quot;&#039;);
+    }
+    return new Decimal($raw, 2);
+}
+
+$payload = \json_decode(&#039;{&quot;amount&quot;: &quot;19.99&quot;}&#039;, true, 512, \JSON_THROW_ON_ERROR);
+if (!\is_array($payload)) {
+    throw new \UnexpectedValueException(&#039;Expected a JSON object&#039;);
+}
+decimal $amount = amountFromJson($payload);
+echo \json_encode([&#039;amount&#039; =&gt; $amount, &#039;doubled&#039; =&gt; $amount * 2], \JSON_THROW_ON_ERROR);
+// {&quot;amount&quot;:&quot;19.99&quot;,&quot;doubled&quot;:&quot;39.98&quot;}
+</code></pre></div>
+<h3 id="sorting-and-aggregating">Sorting and aggregating</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Decimal;
+
+array&lt;int, decimal&gt; $prices = [\Tyhp\decimal(&#039;9.99&#039;), \Tyhp\decimal(&#039;10&#039;), \Tyhp\decimal(&#039;2.50&#039;)];
+
+\usort($prices, fn(Decimal $a, Decimal $b): int =&gt; $a &lt;=&gt; $b);
+
+decimal $cheapest = Decimal::min(...$prices);   // 2.50
+decimal $average = Decimal::avg(...$prices);    // 7.50
+</code></pre></div>
+<p>To use decimals as array keys (for example, to group by price), use a normalized string such as <code>$price-&gt;withScale(2)-&gt;value</code>. <code>'5.0'</code> and <code>'5.00'</code> are different keys.</p>
+<h2 id="using-tyhpdecimal-from-plain-php">Using <code>\Tyhp\Decimal</code> from plain PHP</h2>
+<p>The class is ordinary PHP once compiled, so hand-written PHP in the same project can use it through its methods. PHP has no operator overloading: <code>$a + $b</code> on two <code>Decimal</code> objects throws <code>\TypeError</code> (<code>Unsupported operand types</code>), and PHP's <code>==</code> and <code>&lt;</code> compare the object properties, so <code>5.0 == 5.00</code> is <code>false</code>. Call the methods instead.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+declare(strict_types=1);
+
+use Tyhp\Decimal;
+
+$total = \Tyhp\decimal(&#039;19.99&#039;)-&gt;multiply(3)-&gt;add(&#039;4.50&#039;);
+
+echo $total-&gt;format(2), &quot;\n&quot;;                       // 64.47
+echo $total-&gt;equals(&#039;64.470&#039;) ? &#039;equal&#039; : &#039;different&#039;, &quot;\n&quot;; // equal
+
+try {
+    $share = $total-&gt;divide(0);
+} catch (\Throwable $e) {
+    echo $e-&gt;getMessage(), &quot;\n&quot;;                    // Cannot divide 64.47 by zero
+}
+</code></pre></div>
+<h2 id="gotchas">Gotchas</h2>
+<ul>
+<li><strong>Integer division stays whole.</strong> <code>10 / 3</code> on decimals with scale 0 is <code>3</code>. Call <code>divide($x, $scale)</code>, or give an operand the scale you want.</li>
+<li><strong>Results truncate.</strong> <code>*</code>, <code>/</code>, <code>**</code>, and <code>sqrt()</code> drop digits beyond the result scale. Widen with <code>withScale()</code> first and <code>round()</code> at the end.</li>
+<li><strong>Floats are not exact.</strong> <code>new Decimal(0.1)</code> is <code>0.10000000000000000555</code>, and <code>$a + 0.01</code> adds <code>0.01000000000000000021</code>. Construct from strings and write string operands.</li>
+<li><strong>Do not use <code>===</code> on decimals.</strong> It compares object identity. Use <code>==</code>.</li>
+<li><strong><code>withScale()</code> and the constructor truncate</strong> unless <code>roundingMode</code> is <code>\PHP_ROUND_HALF_UP</code>. Use <code>round($precision, $mode)</code> to pick a rounding mode explicitly.</li>
+<li><strong>Scale is part of the string.</strong> <code>'5.0'</code> and <code>'5.00'</code> are equal numbers but different <code>value</code> strings. Normalize with <code>withScale()</code> before using <code>value</code> as a key or comparing strings.</li>
+<li><strong>Leading zeros survive.</strong> <code>new Decimal('007.50')</code> prints as <code>007.50</code>. Normalize input before constructing (<code>$value + 0</code> also normalizes it to <code>7.50</code>).</li>
+<li><strong><code>\DivisionByZeroError</code> is not an <code>\Exception</code>.</strong> Catch it explicitly or catch <code>\Throwable</code>.</li>
+</ul>
+<h2 id="related-pages">Related pages</h2>
+<ul>
+<li><a href="tyhp_0150_newTypes.html">New and Changed Types</a> — the <code>decimal</code> type and how it compiles.</li>
+<li><a href="tyhp_1600_operatorOverloads.html">Operator Overloads</a> — how operator declarations and <code>convert</code> work.</li>
+<li><a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a> — the <code>declare(ext=…)</code> checks that select the backend.</li>
+<li><a href="package_intro.html">Runtime Packages Overview</a> — all <code>tyhp/*</code> packages.</li>
+<li><a href="package_core.html">The tyhp/core Package</a> — the <code>Convertible</code> contracts that <code>Decimal</code> implements.</li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> — versioning and installation.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_async.html">&larr; The tyhp/async Package</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_lambda.html">The tyhp/lambda Package &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

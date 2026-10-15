@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,9 +299,9 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Every Tyhpdef file begins with the <code>&lt;?tyhpdef</code> open tag. This tag tells the Tyhp compiler that the file contains declaration-only code describing external PHP constructs. Unlike <code>&lt;?tyhp</code> files, Tyhpdef files are never compiled into PHP output — they exist solely to inform the compiler's type system.</p>
-<h2>File Extension</h2>
+<h2 id="file-extension">File Extension</h2>
 <p>Tyhpdef files use the <code>.tyhpdef</code> file extension. The compiler uses this extension, along with the open tag, to identify and parse Tyhpdef files separately from regular Tyhp source files.</p>
-<h2>Basic File Structure</h2>
+<h2 id="basic-file-structure">Basic File Structure</h2>
 <p>A Tyhpdef file starts with the open tag and then contains top-level declarations. There is no closing tag.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -295,7 +314,7 @@ class MyPhpClass {
     public function getName(): string;
 }
 </code></pre></div>
-<h2>Using Namespaces</h2>
+<h2 id="using-namespaces">Using Namespaces</h2>
 <p>Tyhpdef files support namespace declarations, both as a simple file-level declaration and as grouped blocks. Use namespaces to organize your declarations just like you would in PHP.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -322,7 +341,7 @@ namespace App\Services {
     }
 }
 </code></pre></div>
-<h2>Use Statements</h2>
+<h2 id="use-statements">Use Statements</h2>
 <p>Tyhpdef files support use statements for importing types from other namespaces, just like PHP and Tyhp. This includes grouped use declarations and typed use declarations for functions and constants.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -337,7 +356,7 @@ class OrderHandler {
     public function process(User $user, Order $order): Product;
 }
 </code></pre></div>
-<h2>Top-Level Declarations</h2>
+<h2 id="top-level-declarations">Top-Level Declarations</h2>
 <p>The following declarations are valid at the top level of a Tyhpdef file:</p>
 <ul>
 <li>Namespace declarations</li>
@@ -372,7 +391,7 @@ class OrderHandler {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>DON'T include ordinary implementation code in Tyhpdef files. No function bodies, no <code>=</code> property or const initializers, no executable statements. Optional <code>?? &lt;value&gt;</code> on properties and consts records PHP's expected start value; it does not assign. Tyhpdef is declarations only — except inline <code>extension fn</code> / <code>extension operator</code> members, which require a <code>=&gt;</code> mapping expression. See <a href="tyhpdef_extensions.md">Extensions in Tyhpdef</a>.</p>
+        <div class="callout-content"><p>DON'T include ordinary implementation code in Tyhpdef files. No function bodies, no <code>=</code> property or const initializers, no executable statements. Optional <code>?? &lt;value&gt;</code> on properties and consts records PHP's expected start value; it does not assign. Tyhpdef is declarations only — except inline <code>extension fn</code> / <code>extension operator</code> members, which require a <code>=&gt;</code> mapping expression. See <a href="tyhpdef_extensions.html">Extensions in Tyhpdef</a>.</p>
 </div>
     </div>
 </div>

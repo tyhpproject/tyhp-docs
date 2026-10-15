@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,9 +299,9 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp restricts PHP's dynamic language features to improve type safety and enable static analysis. Variable variables (<code>$$var</code>) are prohibited (TYHP4133). Variable functions, dynamic property access, dynamic method calls, and dynamic class instantiation are not disabled — but they require type narrowing through special string value types or type guard functions before use. This ensures the compiler can verify that the referenced symbols actually exist, preventing runtime errors from invalid references.</p>
-<h2>Why Dynamic Features Are Restricted</h2>
+<h2 id="why-dynamic-features-are-restricted">Why Dynamic Features Are Restricted</h2>
 <p>In PHP, dynamic features like variable functions and dynamic method calls accept any string at runtime with no compile-time verification. This makes it impossible for a static type checker to reason about the code. Tyhp solves this by requiring developers to narrow the type of the string before using it in a dynamic context. Once narrowed, the compiler can verify the symbol exists and the dynamic access compiles to the same PHP code as standard PHP — no runtime overhead is added. Variable variables (<code>$$var</code>) are a separate case: they are banned outright (TYHP4133).</p>
-<h2>The Special __ Types</h2>
+<h2 id="the-special--types">The Special __ Types</h2>
 <p>Tyhp introduces a set of special string value types (prefixed with __) that represent compile-time-verified symbol names. These types are subtypes of string that carry additional compile-time guarantees about the symbol they reference. Assigning a string literal to one of these types causes the compiler to verify the symbol exists at compile time.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__VarName</code></h4><br/><p>A string that is a valid variable name in the current scope. Used with <code>variable_exists($input)</code> on a simple variable. Variable variables (<code>$$var</code>) are prohibited (TYHP4133) — <code>__VarName</code> does not re-enable them.</p>
 </div>
@@ -292,7 +311,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__PropertyName&lt;T&gt;</code></h4><br/><p>A string that is a valid property name on type T. Required for dynamic property access ($obj-&gt;$prop). The generic parameter T specifies which class's properties are valid.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A string that is a valid, existing class name (resolvable to a class declaration). Required for dynamic class instantiation (new $className()). When parameterized with an object-shape alias, <code>__ClassName&lt;Shape&gt;</code> names some class whose instances match <code>Shape</code>; <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> additionally requires a public <code>new</code> that matches the shape constructor. See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A string that is a valid, existing class name (resolvable to a class declaration). Required for dynamic class instantiation (new $className()). When parameterized with an object-shape alias, <code>__ClassName&lt;Shape&gt;</code> names some class whose instances match <code>Shape</code>; <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> additionally requires a public <code>new</code> that matches the shape constructor. See <a href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__ConstName</code></h4><br/><p>A string that is a valid constant name. Required for dynamic constant access.</p>
 </div>
@@ -308,7 +327,7 @@
 </div>
     </div>
 </div>
-<h2>Variable Variables ($$var) — Prohibited</h2>
+<h2 id="variable-variables-var--prohibited">Variable Variables ($$var) — Prohibited</h2>
 <p>PHP allows accessing variables by name using <code>$$var</code>. Tyhp <strong>prohibits</strong> variable variables (TYHP4133). There is no <code>__VarName</code> exception and no <code>variable_exists($$input)</code> guard that re-enables them. Check whether a simple variable is in scope with <code>variable_exists($input)</code> (see Compile-Time Constructs).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -331,7 +350,7 @@ if (\array_key_exists(&#039;greeting&#039;, \get_defined_vars())) {
     echo $greeting;
 }
 </code></pre></div>
-<h2>Variable Functions ($fn())</h2>
+<h2 id="variable-functions-fn">Variable Functions ($fn())</h2>
 <p>Calling a function through a variable requires the variable to be of type __FunctionName. The compiler verifies the function exists and is callable.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -364,7 +383,7 @@ if (\function_exists($funcName)) {
     echo $funcName(&#039;test&#039;);
 }
 </code></pre></div>
-<h2>Dynamic Property Access ($obj-&gt;$prop)</h2>
+<h2 id="dynamic-property-access-obj-prop">Dynamic Property Access ($obj-&gt;$prop)</h2>
 <p>Accessing a property via a variable requires __PropertyName&lt;T&gt; where T is the type of the object. The generic parameter ensures only valid property names for that specific class are accepted.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -405,7 +424,7 @@ if (\property_exists($user, $fieldName)) {
     echo $user-&gt;$fieldName;
 }
 </code></pre></div>
-<h2>Dynamic Method Calls ($obj-&gt;$method())</h2>
+<h2 id="dynamic-method-calls-obj-method">Dynamic Method Calls ($obj-&gt;$method())</h2>
 <p>Calling a method via a variable requires the variable to be narrowed to __MethodName. The compiler verifies the method exists on the target object.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -443,7 +462,7 @@ if (\method_exists($calc, $op)) {
     echo $calc-&gt;$op(10, 4);
 }
 </code></pre></div>
-<h2>Dynamic Class Instantiation (new $className())</h2>
+<h2 id="dynamic-class-instantiation-new-classname">Dynamic Class Instantiation (new $className())</h2>
 <p>Creating an object from a variable class name requires __ClassName. The compiler verifies that the string refers to an existing class. <code>__ClassName&lt;Shape&gt;</code> (a shape without <code>__New</code>) does not allow <code>new $cls(...)</code>. <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> does, and the argument list is checked against the shape constructor.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -472,7 +491,7 @@ if (\is_string($className) &amp;&amp; \class_exists($className)) {
     $handler = new $className();
 }
 </code></pre></div>
-<h2>Type Narrowing for Dynamic Features</h2>
+<h2 id="type-narrowing-for-dynamic-features">Type Narrowing for Dynamic Features</h2>
 <p>The special __ types are subtypes of string. You can narrow a plain string to a __ type in several ways: assigning a string literal (the compiler verifies it at compile time), using the is keyword for type assertion, or using PHP's built-in existence-checking functions which the Tyhp compiler recognizes as type guards.</p>
 <p>The following ExtCore / PHP existence checks are type guards (return <code>$param is …</code> in tyhpdefs) that narrow strings to the appropriate __ types:</p>
 <ul>
@@ -506,7 +525,7 @@ if ($methodName is string &amp;&amp; \method_exists($obj, $methodName)) {
     $obj-&gt;$methodName();
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -555,7 +574,7 @@ if ($methodName is string &amp;&amp; \method_exists($obj, $methodName)) {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -592,7 +611,7 @@ if ($methodName is string &amp;&amp; \method_exists($obj, $methodName)) {
 </div>
     </div>
 </div>
-<h2>Compiler Errors</h2>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <p>The Tyhp compiler reports specific errors when dynamic features are used without proper type narrowing.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 

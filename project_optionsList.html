@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link active" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 10</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>This is the complete reference for all options available in <code>tyhp.json</code>. Options can also be passed as CLI arguments where noted. CLI arguments take precedence over file-based configuration.</p>
-<h2>General Options</h2>
+<h2 id="general-options">General Options</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>quiet</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, suppresses the banner and non-error output. Useful for scripting and CI environments.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>suppressWarnings</code></h4><br/><p>Type: <code>array&lt;string&gt;</code> (default: <code>[]</code>). Warning codes to hide during build, lint, overlay, and language-server analysis. Each entry is a diagnostic id such as <code>&quot;TYHP8027&quot;</code> or <code>&quot;8027&quot;</code> (case-insensitive <code>TYHP</code> prefix). Matching <strong>warning</strong>-severity diagnostics are dropped: they are not printed, not counted, and do not fail <code>--strict</code>. Errors and info diagnostics are never dropped, even if their code is listed. Unknown tokens emit warning <strong>TYHP6003</strong> (<code>ConfigInvalidValue</code>) and are ignored. CLI: <code>--suppress-warnings=TYHP8027,TYHP8021</code> replaces the JSON array when present.</p>
@@ -291,7 +310,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>cache-dir</code></h4><br/><p>Type: <code>string</code> (default: system local application data directory). Sets the directory used for caching parsed ASTs and build state. Caching speeds up subsequent builds by reusing parsed results for unchanged files. Supports <a href="#string-interpolation">string interpolation</a>.</p>
 </div>
-<h2>String interpolation</h2>
+<h2 id="string-interpolation">String interpolation</h2>
 <p>Selected path-like strings in <code>tyhp.json</code> expand <code>{name}</code>-style placeholders when the project is loaded. Use <code>{{</code> and <code>}}</code> for a literal brace. An unknown placeholder, an unset <code>{env.NAME}</code>, or a missing Composer field is error <strong>TYHP6009</strong>.</p>
 <p>Identity comes from <strong><code>composer.json</code> next to <code>tyhp.json</code></strong> (the project root), never from a <code>composer.json</code> that <code>build.updateComposer</code> may write under <code>output.publishPath</code>. <code>tyhp init</code> writes <code>name</code> but not <code>version</code>; add <code>&quot;version&quot;</code> before using <code>{version}</code>. Composer is loaded only when a Composer-sourced variable is used.</p>
 <p><strong>Composer</strong> (from that root <code>composer.json</code>):</p>
@@ -320,14 +339,14 @@
 <p>A <code>dst</code> that still contains file variables is the destination for that one file (it does not also append the glob-relative path). A trailing <code>/</code> on <code>dst</code> means a directory: only <code>{fileName}</code> is appended. That lets <code>{fileStem}.txt</code> be unique per match.</p>
 <p><strong>Interpolated keys:</strong> <code>cache-dir</code>; <code>output.path</code>; <code>output.publishPath</code>; <code>output.publishContent</code> <code>src</code> / <code>dst</code> / <code>exclude</code>; <code>psr4</code> <strong>values</strong> (not keys); <code>psr4Includes</code>; <code>build.entryPointAutoloader</code> values; <code>xdebugProxy.sourceMapDir</code>, <code>xdebugProxy.tyhpSourceRoot</code>, and <code>xdebugProxy.phpOutputRoot</code>.</p>
 <p><strong>Not interpolated:</strong> <code>include</code> / <code>exclude</code> / <code>tyhpdefInclude</code> / <code>tyhpdefExclude</code> / <code>overlay</code>; <code>output.phpVersion</code>; <code>output.namespacePrefix</code>; flags and enums. Substituted values cannot be empty (except <code>{version.suffix}</code>, <code>{recursiveDir}</code>, <code>{extension}</code>, and <code>{fileStem}</code>), contain <code>\</code>, or use <code>..</code> as a path segment. <code>{env.*}</code> follows the same rules (a tag like <code>v1.2.3</code> is fine).</p>
-<h2>Source File Options</h2>
+<h2 id="source-file-options">Source File Options</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>include</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for source files to include in the project. Supports <code>*</code> (any file), <code>**</code> (any directory depth), and <code>?</code> (single character) wildcards. Example: <code>[&quot;./src/**/*.tyhp&quot;, &quot;./src/**/*.php&quot;]</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>exclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for files to exclude from the project. Files matching these patterns are skipped even if they match an <code>include</code> pattern. Useful for excluding test files, vendor directories, or generated code.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>source.tagless</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, <code>.tyhp</code> and <code>.tyhpdef</code> files are parsed without requiring <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code>. Closing <code>?&gt;</code> is an error in this mode. Nested as <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code>.</p>
 </div>
-<h2>Output Options</h2>
+<h2 id="output-options">Output Options</h2>
 <p>These options are nested under the <code>&quot;output&quot;</code> key in <code>tyhp.json</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>output.path</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;build/&quot;</code>). The directory where compiled PHP files are written, relative to the project root. The directory is created automatically if it does not exist. Supports <a href="#string-interpolation">string interpolation</a>.</p>
 </div>
@@ -351,7 +370,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>output.phpVersion</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;8.2&quot;</code>). The oldest PHP version the compiled output runs on. Supported values: <code>&quot;8.0&quot;</code> through <code>&quot;8.5&quot;</code>. This affects which PHP features the emitter uses in the generated code and which gated declarations the binder keeps. A PHP version gate (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) that holds for every version from this one up emits no check; one that holds for only some versions emits a <code>\PHP_VERSION_ID</code> check in the PHP. This key itself is not interpolated; use <code>{phpVersion}</code> or <code>{phpVersion.id}</code> in other path keys (<code>&quot;8.2&quot;</code> → <code>{phpVersion.id}</code> <code>802</code>).</p>
 <p>If the key is omitted (and the legacy top-level <code>phpVersion</code> key is also omitted), the compiler uses <code>&quot;8.2&quot;</code> and emits warning <strong>TYHP4306</strong> once per compilation — not per file. That default is the compiler check/emit target. It is not the managed PHP runtime used by <code>tyhp generate_tyhpdef</code>.</p>
-<p>An explicit but unsupported value is a different path: warning <strong>TYHP6006</strong> and a fallback to <code>&quot;8.4&quot;</code>. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
+<p>An explicit but unsupported value is a different path: warning <strong>TYHP6006</strong> and a fallback to <code>&quot;8.4&quot;</code>. See <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>output.strictTypes</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). When true, adds <code>declare(strict_types=1);</code> to all compiled PHP output files. Recommended for type safety.</p>
 </div>
@@ -359,25 +378,17 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>output.comments</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). Controls whether comments from the Tyhp source are preserved in the compiled PHP output. Set to <code>false</code> to strip comments for smaller output.</p>
 </div>
-<h2>Build Options</h2>
+<h2 id="build-options">Build Options</h2>
 <p>These options are nested under the <code>&quot;build&quot;</code> key in <code>tyhp.json</code>, except where noted.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>build.generateSourcemap</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When <code>true</code>, <code>tyhp build</code> writes a Source Map v3 <code>.php.map</code> file next to each compiled <code>.php</code> file and appends <code>//# sourceMappingURL=</code>. Used by <code>tyhp xdebug_proxy</code>. See <a href="cli_sourcemapGeneration.md">CLI: Source Map Generation</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>build.generateSourcemap</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When <code>true</code>, <code>tyhp build</code> writes a Source Map v3 <code>.php.map</code> file next to each compiled <code>.php</code> file and appends <code>//# sourceMappingURL=</code>. Used by <code>tyhp xdebug_proxy</code>. See <a href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.sourcemapIncludeContent</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When <code>true</code> with <code>build.generateSourcemap</code> enabled, embed original <code>.tyhp</code> source in each map's <code>sourcesContent</code> array.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.generateTyhpdef</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). For <strong>applications</strong>, write <code>package.tyhpdef</code> in the publish directory (<code>output.publishPath</code>, default: the project root) when <code>true</code>. <strong>Libraries always emit</strong> <code>package.tyhpdef</code> and additive-merge <code>extra.tyhp.package</code> on <code>composer.json</code>; this key is ignored for <code>&quot;type&quot;: &quot;library&quot;</code>. See <a href="cli_build.md">CLI: Build</a> and <a href="cli_tyhpdefGeneration.md#auto-generation-during-build">CLI: Tyhpdef Generation</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>build.generateTyhpdef</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). For <strong>applications</strong>, write <code>package.tyhpdef</code> in the publish directory (<code>output.publishPath</code>, default: the project root) when <code>true</code>. <strong>Libraries always emit</strong> <code>package.tyhpdef</code> and additive-merge <code>extra.tyhp.package</code> on <code>composer.json</code>; this key is ignored for <code>&quot;type&quot;: &quot;library&quot;</code>. See <a href="cli_build.html">CLI: Build</a> and <a href="cli_tyhpdefGeneration.html#auto-generation-during-build">CLI: Tyhpdef Generation</a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.updateComposer</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, generates or updates a <code>composer.json</code> in <code>output.publishPath</code> with PSR-4 autoload mappings (relative to that file) and Tyhp runtime package dependencies.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.entryPointAutoloader</code></h4><br/><p>Type: <code>object | null</code> (default: <code>null</code>). A map of named autoloader paths. When set, entry point files (root code files) will have <code>require_once</code> statements added for the Composer autoloader. Example: <code>{&quot;default&quot;: &quot;vendor/autoload.php&quot;}</code>. Map <strong>values</strong> support <a href="#string-interpolation">string interpolation</a>.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.structBacking</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;array&quot;</code>). Controls how Tyhp structs are represented in compiled PHP. The default <code>&quot;array&quot;</code> compiles structs to associative arrays.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.decimalBacking</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;bcmath&quot;</code>). The PHP extension used for decimal arithmetic. Supported values: <code>&quot;bcmath&quot;</code>, <code>&quot;gmp&quot;</code>.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.decimalScale</code></h4><br/><p>Type: <code>int</code> (default: <code>28</code>). The default number of decimal places for decimal arithmetic operations.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.decimalRounding</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;halfUp&quot;</code>). The default rounding mode for decimal arithmetic.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.allowEval</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, re-enables <code>eval()</code> usage in Tyhp code. By default, <code>eval()</code> is disabled for security and type-safety reasons.</p>
 </div>
@@ -385,7 +396,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.runtimeGenericChecks</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, the emitter inserts runtime type checks at generic parameter and return boundaries (in addition to compile-time checking). Off by default.</p>
 </div>
-<h2>Optimization Options</h2>
+<h2 id="optimization-options">Optimization Options</h2>
 <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 3 · Story 23</span><span class="badge bg-secondary">Planned</span>
 </p>
@@ -408,12 +419,12 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.optimizations</code></h4><br/><p>Type: <code>object</code> (default: <code>{}</code>). Per-module enable/disable overrides applied on top of the <code>optimize</code> level. Keys are optimization module names; values are booleans. Use this to turn individual optimizations on or off without changing the overall level. CLI: <code>--optimize-enable=&lt;module&gt;</code> and <code>--optimize-disable=&lt;module&gt;</code>.</p>
 </div>
-<h2>PSR-4 Autoload Options</h2>
+<h2 id="psr-4-autoload-options">PSR-4 Autoload Options</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>psr4</code></h4><br/><p>Type: <code>object | null</code> (default: <code>null</code>). PSR-4 namespace-to-directory mappings for the compiled output. Keys are namespace prefixes (with trailing <code>\\</code>), values are directory paths. Example: <code>{&quot;App\\&quot;: &quot;src/&quot;}</code>. Values support <a href="#string-interpolation">string interpolation</a>; keys do not.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>psr4Includes</code></h4><br/><p>Type: <code>array&lt;string&gt; | null</code> (default: <code>null</code>). Additional PSR-4 autoload paths to include in the generated <code>composer.json</code>. Supports <a href="#string-interpolation">string interpolation</a>.</p>
 </div>
-<h2>Checker Options</h2>
+<h2 id="checker-options">Checker Options</h2>
 <p>These options are nested under the <code>&quot;checker&quot;</code> key in <code>tyhp.json</code>. They control resource limits and tooling behavior — not language strictness.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -431,14 +442,14 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>checker.maxFixIterations</code></h4><br/><p>Type: <code>int</code> (default: <code>10</code>). Maximum auto-fix re-run iterations for <code>tyhp lint --fix</code>.</p>
 </div>
-<h2>Tyhpdef Options</h2>
+<h2 id="tyhpdef-options">Tyhpdef Options</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>tyhpdefInclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for tyhpdef files to load. These files provide type information for existing PHP code, Composer packages, and PHP extensions. The <code>TyhpdefConfig</code> class default is <code>[&quot;**/*.tyhpdef&quot;]</code>, but loading <strong>clears</strong> that list then reads <code>tyhp.json</code>. If you omit <code>tyhpdefInclude</code>, <strong>no</strong> project <code>.tyhpdef</code> files are loaded. <code>tyhp init</code> sets <code>[&quot;./vendor-tyhpdef/**/*.tyhpdef&quot;]</code> so generated <code>--vendor</code> stubs load. Hand overlays belong in <code>&quot;overlay&quot;</code>, not this array. Entries in <code>include</code> that end in <code>.tyhpdef</code> or <code>composer.json</code> (with <code>extra.tyhp.package</code> present as an object) are also loaded as tyhpdefs.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>overlay</code></h4><br/><p>Type: <code>array&lt;string&gt;</code> (default: <code>[]</code>). Glob patterns for overlay tyhpdefs loaded <strong>after</strong> <code>tyhpdefInclude</code> (last wins for the same Tyhp name). <code>tyhp init</code> sets <code>[&quot;./tyhpdef/**/*.tyhpdef&quot;]</code>. Put lasting type fixes here — generated files under <code>vendor-tyhpdef/</code> are overwritten by <code>generate_tyhpdef --vendor</code>. See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>overlay</code></h4><br/><p>Type: <code>array&lt;string&gt;</code> (default: <code>[]</code>). Glob patterns for overlay tyhpdefs loaded <strong>after</strong> <code>tyhpdefInclude</code> (last wins for the same Tyhp name). <code>tyhp init</code> sets <code>[&quot;./tyhpdef/**/*.tyhpdef&quot;]</code>. Put lasting type fixes here — generated files under <code>vendor-tyhpdef/</code> are overwritten by <code>generate_tyhpdef --vendor</code>. See <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>tyhpdefExclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code> (default: <code>[]</code>). Glob patterns for tyhpdef files to exclude from loading.</p>
 </div>
-<h2>CLI-Only Options</h2>
+<h2 id="cli-only-options">CLI-Only Options</h2>
 <p>These options are only available as command-line arguments and override corresponding config file values.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>--clean</code></h4><br/><p>Wipe the output directory before building. Deletes all <code>.php</code> and <code>.php.map</code> files in the output directory. Safety checks prevent cleaning the project root or system directories.</p>
 </div>
@@ -452,19 +463,19 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>--watch</code></h4><br/><p><strong>Not in this alpha.</strong> <code>tyhp build --watch</code> prints that watch mode is unimplemented, then runs a normal one-shot build.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>--fix</code></h4><br/><p>On <code>tyhp lint</code>: apply auto-fixable diagnostic replacements (experimental). On <code>tyhp build</code>: write stale <code>extra.tyhp.require</code> pins onto root <code>require-dev</code> and Composer-update those packages (same as <code>tyhp composer sync</code>). Ordinary <code>tyhp build</code> never auto-updates Composer. See <a href="cli_composer.md">CLI: Composer</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>--fix</code></h4><br/><p>On <code>tyhp lint</code>: apply auto-fixable diagnostic replacements (experimental). On <code>tyhp build</code>: write stale <code>extra.tyhp.require</code> pins onto root <code>require-dev</code> and Composer-update those packages (same as <code>tyhp composer sync</code>). Ordinary <code>tyhp build</code> never auto-updates Composer. See <a href="cli_composer.html">CLI: Composer</a>.</p>
 </div>
-<h2>Lint-Specific Options</h2>
+<h2 id="lint-specific-options">Lint-Specific Options</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>--format</code></h4><br/><p>Output format for lint diagnostics. Supported values: <code>text</code> (default, human-readable), <code>json</code> (machine-readable), <code>sarif</code> (SARIF v2.1.0 for GitHub Code Scanning and similar).</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>--file</code></h4><br/><p>Lint a single file instead of the whole project. Still loads tyhpdefs and built-in types for full type checking.</p>
 </div>
-<h2>Action-Specific Options</h2>
-<div class="alert alert-secondary" role="alert"><h4><code>ext-name</code></h4><br/><p>Type: <code>string</code>. Used with the <code>generate_tyhpdef</code> action. Specifies the PHP extension name to generate type definitions for (<code>--ext-name</code>). See <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a>.</p>
+<h2 id="action-specific-options">Action-Specific Options</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>ext-name</code></h4><br/><p>Type: <code>string</code>. Used with the <code>generate_tyhpdef</code> action. Specifies the PHP extension name to generate type definitions for (<code>--ext-name</code>). See <a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>subject</code></h4><br/><p>Type: <code>string</code>. Used with the <code>help</code> action. Specifies which action to display help for.</p>
 </div>
-<h2>Complete Example</h2>
+<h2 id="complete-example">Complete Example</h2>
 <p>Below is a comprehensive <code>tyhp.json</code> showing all available options with their default values. In practice, you only need to specify the options you want to change from their defaults.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;type&quot;: &quot;application&quot;,
@@ -494,10 +505,6 @@
         &quot;sourcemapIncludeContent&quot;: false,
         &quot;generateTyhpdef&quot;: false,
         &quot;updateComposer&quot;: false,
-        &quot;structBacking&quot;: &quot;array&quot;,
-        &quot;decimalBacking&quot;: &quot;bcmath&quot;,
-        &quot;decimalScale&quot;: 28,
-        &quot;decimalRounding&quot;: &quot;halfUp&quot;,
         &quot;allowEval&quot;: false,
         &quot;experimentalReadonlyCloneWith&quot;: false,
         &quot;runtimeGenericChecks&quot;: false
@@ -536,7 +543,7 @@
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
     <div class="docs-prev"><a class="btn btn-outline-primary" href="project_composerPackages.html">&larr; Composer Runtime Packages</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="faq_general.html">FAQ: General &rarr;</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_intro.html">Runtime Packages Overview &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">

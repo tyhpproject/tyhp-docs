@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link active" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -277,7 +296,7 @@
 				<section class="docs-section" id="FAQ_Project_Configuration">
     <h2 class="section-heading">FAQ: Project Configuration</h2>
     
-    <h2>What goes in tyhp.json?</h2>
+    <h2 id="what-goes-in-tyhpjson">What goes in tyhp.json?</h2>
 <p>The <code>tyhp.json</code> file configures the Tyhp compiler for your project. It specifies which source files to include, where to write compiled PHP output, which PHP version to target, and various build options. Language strictness is not a config knob — null safety and required types are always on. The file uses standard JSON format and is placed in your project root.</p>
 <p>A minimal configuration only needs source file patterns and an output path. <code>tyhp init</code> also sets <code>tyhpdefInclude</code> for <code>vendor-tyhpdef/</code> and <code>overlay</code> for <code>tyhpdef/</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
@@ -289,17 +308,17 @@
     &quot;overlay&quot;: [&quot;./tyhpdef/**/*.tyhpdef&quot;]
 }
 </code></pre></div>
-<h2>How do I set the target PHP version?</h2>
-<p>Set the <code>output.phpVersion</code> option in <code>tyhp.json</code>. Supported values are <code>&quot;8.0&quot;</code> through <code>&quot;8.5&quot;</code>. If the key is omitted, the compiler defaults to <strong><code>&quot;8.2&quot;</code></strong> and emits warning <strong>TYHP4306</strong> once per compilation. This controls which PHP features the compiler uses in the generated output, which version-gated declarations are visible, <strong>and</strong> which <code>tyhp/*</code> Composer MAJOR to install (<code>&quot;8.3&quot;</code> → <code>803.x</code>). See the Composer Runtime Packages page and <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
+<h2 id="how-do-i-set-the-target-php-version">How do I set the target PHP version?</h2>
+<p>Set the <code>output.phpVersion</code> option in <code>tyhp.json</code>. Supported values are <code>&quot;8.0&quot;</code> through <code>&quot;8.5&quot;</code>. If the key is omitted, the compiler defaults to <strong><code>&quot;8.2&quot;</code></strong> and emits warning <strong>TYHP4306</strong> once per compilation. This controls which PHP features the compiler uses in the generated output, which version-gated declarations are visible, <strong>and</strong> which <code>tyhp/*</code> Composer MAJOR to install (<code>&quot;8.3&quot;</code> → <code>803.x</code>). See the Composer Runtime Packages page and <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;output&quot;: {
         &quot;phpVersion&quot;: &quot;8.3&quot;
     }
 }
 </code></pre></div>
-<h2>How do I set tyhp/* versions in composer.json?</h2>
+<h2 id="how-do-i-set-tyhp-versions-in-composerjson">How do I set tyhp/* versions in composer.json?</h2>
 <p>Package MAJOR is the <strong>PHP version the artifact is for</strong>, not the compiler version. Each <code>tyhp/*</code> package has its own <code>X.Y</code>. An app with <code>output.phpVersion</code> <code>&quot;8.4&quot;</code> and core <code>0.0</code> should require <code>tyhp/core: 804.0.0</code>. A library that supports PHP 8.3+ should require an OR of the majors using <strong>that package's</strong> X: <code>803.0.* || 804.0.* || 805.0.*</code>. See the Composer Runtime Packages page.</p>
-<h2>How do I configure source maps?</h2>
+<h2 id="how-do-i-configure-source-maps">How do I configure source maps?</h2>
 <p>Set <code>build.generateSourcemap</code> to <code>true</code> in <code>tyhp.json</code>, then run <code>tyhp build</code>. Each compiled <code>.php</code> file gets a sibling <code>.php.map</code> (Source Map v3) and a <code>//# sourceMappingURL=</code> comment. Set <code>build.sourcemapIncludeContent</code> to <code>true</code> to embed the original <code>.tyhp</code> text in the map.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;build&quot;: {
@@ -308,8 +327,8 @@
     }
 }
 </code></pre></div>
-<p>Use the maps with <code>tyhp xdebug_proxy</code> to debug <code>.tyhp</code> sources. See <a href="cli_sourcemapGeneration.md">CLI: Source Map Generation</a>.</p>
-<h2>How do I exclude files from compilation?</h2>
+<p>Use the maps with <code>tyhp xdebug_proxy</code> to debug <code>.tyhp</code> sources. See <a href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a>.</p>
+<h2 id="how-do-i-exclude-files-from-compilation">How do I exclude files from compilation?</h2>
 <p>Use the <code>exclude</code> array with glob patterns. Files matching any exclude pattern are skipped even if they match an <code>include</code> pattern:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;include&quot;: [&quot;./src/**/*.tyhp&quot;],
@@ -321,7 +340,7 @@
 }
 </code></pre></div>
 <p>Glob patterns support <code>*</code> (any file name), <code>**</code> (any directory depth), and <code>?</code> (single character).</p>
-<h2>Can I have multiple output directories?</h2>
+<h2 id="can-i-have-multiple-output-directories">Can I have multiple output directories?</h2>
 <p>Not directly. The <code>output.path</code> option specifies a single output directory. However, PSR-4 namespace mappings (via the <code>psr4</code> option) control the directory structure within the output directory. Each namespace prefix maps to a subdirectory, so classes in different namespaces are written to different subdirectories automatically.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;output&quot;: {
@@ -334,13 +353,13 @@
 }
 </code></pre></div>
 <p>If you need completely separate output directories for different parts of your project, consider using multiple <code>tyhp.json</code> files with the <code>--tyhp-project</code> flag.</p>
-<h2>What happens if there is no tyhp.json?</h2>
+<h2 id="what-happens-if-there-is-no-tyhpjson">What happens if there is no tyhp.json?</h2>
 <p>If no <code>tyhp.json</code> is found, the compiler uses sensible defaults: it looks for <code>.tyhp</code> files in the current directory, outputs to <code>build/</code>, targets PHP <strong>8.2</strong> (warning <strong>TYHP4306</strong>), and enables strict type checking. An informational message is displayed to let you know defaults are being used. Run <code>tyhp init</code> to create a configuration file.</p>
-<h2>Why one <code>tyhpdef/php</code> package across PHP 8.2–8.5?</h2>
-<p>The compiler filters version-gated stubs (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) to your <code>output.phpVersion</code>. One <code>tyhpdef/php</code> package (and one <code>tyhpdef/php-ext-*</code> per optional extension) describes APIs that differ by minor; you do not install <code>tyhpdef/php-8.2</code> forks or a PHP version matrix. Contributors lint/build against <code>&quot;8.2&quot;</code>–<code>&quot;8.5&quot;</code> by changing <code>output.phpVersion</code>. Packagist artifacts for runtime helpers (<code>tyhp/core</code>, …) still use MAJOR <code>802</code>–<code>805</code> for the PHP the <em>runtime</em> package runs on. See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a> and the Composer Runtime Packages page.</p>
-<h2>Why don't scalar methods need <code>use extension</code>?</h2>
+<h2 id="why-one-tyhpdefphp-package-across-php-8285">Why one <code>tyhpdef/php</code> package across PHP 8.2–8.5?</h2>
+<p>The compiler filters version-gated stubs (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) to your <code>output.phpVersion</code>. One <code>tyhpdef/php</code> package (and one <code>tyhpdef/php-ext-*</code> per optional extension) describes APIs that differ by minor; you do not install <code>tyhpdef/php-8.2</code> forks or a PHP version matrix. Contributors lint/build against <code>&quot;8.2&quot;</code>–<code>&quot;8.5&quot;</code> by changing <code>output.phpVersion</code>. Packagist artifacts for runtime helpers (<code>tyhp/core</code>, …) still use MAJOR <code>802</code>–<code>805</code> for the PHP the <em>runtime</em> package runs on. See <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a> and the Composer Runtime Packages page.</p>
+<h2 id="why-dont-scalar-methods-need-use-extension">Why don't scalar methods need <code>use extension</code>?</h2>
 <p><code>tyhp/core</code> contains <code>global use extension \Tyhp\StringExtensions;</code> (and the matching Array / Int / Float / Bool / Closure files). Every <code>.tyhp</code> file in that compilation already has those methods. A local <code>use extension \Tyhp\StringExtensions;</code> with no adaptations warns (<code>TYHP4169</code>). Write a local <code>use</code> only to hide or rename methods in that file.</p>
-<h2>How do I configure the type checker?</h2>
+<h2 id="how-do-i-configure-the-type-checker">How do I configure the type checker?</h2>
 <p>Language strictness is not configurable. Null safety, required type annotations (or inferable initializers), and narrowing <code>mixed</code> before use are always enforced. The <code>checker</code> section only exposes resource limits and tooling knobs:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;checker&quot;: {
@@ -353,16 +372,16 @@
 <li><code>templateStringMaxStates</code> (default: <code>256</code>) — Upper bound on template-string automaton complexity for subtyping checks.</li>
 <li><code>maxFixIterations</code> (default: <code>10</code>) — Maximum auto-fix re-run iterations for <code>tyhp lint --fix</code>.</li>
 </ul>
-<h2>How do I hide a compiler warning?</h2>
+<h2 id="how-do-i-hide-a-compiler-warning">How do I hide a compiler warning?</h2>
 <p>Add the diagnostic id to <code>suppressWarnings</code> in <code>tyhp.json</code>. Only <strong>warnings</strong> are hidden — listing an error code has no effect.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;suppressWarnings&quot;: [&quot;TYHP8027&quot;]
 }
 </code></pre></div>
 <p>CLI <code>--suppress-warnings=TYHP8027</code> replaces the JSON array for that run. Use <code>tyhp --explain TYHP8027</code> to read the long-form explanation before suppressing a code.</p>
-<h2>How do I declare ambient tyhpdefs on a library?</h2>
+<h2 id="how-do-i-declare-ambient-tyhpdefs-on-a-library">How do I declare ambient tyhpdefs on a library?</h2>
 <p>Put everything this package needs to compile in <code>require-dev</code>. Copy the subset consumers must install into <code>extra.tyhp.require</code> (any Composer package name; duplicate those pins in <code>require-dev</code>). Leave author-only wrappers out of extras — <code>tyhp/decimal</code> keeps bcmath / gmp / php-decimal tyhpdefs in <code>require-dev</code> only.</p>
-<p><code>tyhp/core</code> ships a Composer plugin that merges extras onto the application root <code>require-dev</code>. Allow <code>tyhp/core</code> under <code>config.allow-plugins</code>. If extras are missing after <code>composer require tyhp/core</code>, run <code>tyhp composer sync</code> or <code>composer update</code>. See <a href="project_composerPackages.md#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
+<p><code>tyhp/core</code> ships a Composer plugin that merges extras onto the application root <code>require-dev</code>. Allow <code>tyhp/core</code> under <code>config.allow-plugins</code>. If extras are missing after <code>composer require tyhp/core</code>, run <code>tyhp composer sync</code> or <code>composer update</code>. See <a href="project_composerPackages.html#ambient-tyhpdefs-extratyhprequire">Composer Runtime Packages</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">

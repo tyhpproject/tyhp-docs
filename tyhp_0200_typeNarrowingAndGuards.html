@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>When dealing with values that can be of multiple types (such as union types or nullable types), you often need to verify or narrow the type before performing type-specific operations. Tyhp uses type guards -- boolean checks that narrow a variable's type within a guarded scope. This happens automatically: whenever a variable passes a type guard check, the compiler tracks its narrowed type within the guarded block. No explicit casts or re-declarations are needed.</p>
-<h2>How Type Narrowing Works</h2>
+<h2 id="how-type-narrowing-works">How Type Narrowing Works</h2>
 <p>Type narrowing is scope-sensitive. When a variable passes a type guard check in a conditional, its type is narrowed within the guarded block. Outside the block, the variable reverts to its full declared type. Narrowing is automatic -- the compiler tracks the narrowed type and uses it for all subsequent type checks within the scope.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -297,7 +316,7 @@ if (\is_string($myVar)) {
 // Outside the if block, $myVar is its full union type again:
 // string|int|float|bool
 </code></pre></div>
-<h2>Built-in Type Guards</h2>
+<h2 id="built-in-type-guards">Built-in Type Guards</h2>
 <p>PHP's built-in type checking functions act as type guards in Tyhp because their php-package tyhpdefs declare type-guard returns. When used in a conditional check, they narrow the type of the checked variable.</p>
 <ul>
 <li><code>\is_string($val)</code> -- narrows to <code>string</code></li>
@@ -311,7 +330,7 @@ if (\is_string($myVar)) {
 <li><code>\is_callable($val)</code> -- narrows to <code>callable</code></li>
 <li><code>\is_resource($val)</code> -- narrows to <code>resource</code></li>
 </ul>
-<h2>The <code>instanceof</code> and <code>is</code> Keywords</h2>
+<h2 id="the-instanceof-and-is-keywords">The <code>instanceof</code> and <code>is</code> Keywords</h2>
 <p>Tyhp supports <code>instanceof</code> from PHP and <code>is</code> as a Tyhp alias. They are equivalent type-guard expressions:</p>
 <ul>
 <li><code>instanceof</code> -- the standard PHP keyword</li>
@@ -356,7 +375,7 @@ if ($value is int) {
     // $value is narrowed to int
 }
 </code></pre></div>
-<h2>Null Checks as Type Guards</h2>
+<h2 id="null-checks-as-type-guards">Null Checks as Type Guards</h2>
 <p>Null comparisons also act as type guards. Checking <code>!== null</code>, <code>=== null</code>, <code>$x is null</code>, or <code>!\is_null()</code> narrows nullable types:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -370,7 +389,7 @@ if ($name !== null) {
     echo &quot;No name provided&quot;;
 }
 </code></pre></div>
-<h2>Negated Guards (Else Branches)</h2>
+<h2 id="negated-guards-else-branches">Negated Guards (Else Branches)</h2>
 <p>When a type guard check fails (the else branch), the variable is narrowed to the remaining types -- the original type minus the guarded type. This is called negative narrowing.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -386,7 +405,7 @@ if (\is_string($value)) {
     }
 }
 </code></pre></div>
-<h2>Narrowing Through Logical Operators</h2>
+<h2 id="narrowing-through-logical-operators">Narrowing Through Logical Operators</h2>
 <p>Type narrowing compounds through <code>&amp;&amp;</code> (AND) and distributes through <code>||</code> (OR) operators. Later operands are type-checked the way PHP short-circuits: after a true <code>&amp;&amp;</code> left operand, and after a false <code>||</code> left operand.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -409,7 +428,7 @@ if (!\class_exists($name) || !\is_subclass_of($name, $base)) {
     // `\is_subclass_of` sees `$name` as `__ClassName` because `class_exists` was true
 }
 </code></pre></div>
-<h2>Custom Type Guard Functions</h2>
+<h2 id="custom-type-guard-functions">Custom Type Guard Functions</h2>
 <p>You can define your own type guard functions using a special return type syntax. Instead of returning <code>bool</code>, the return type declares which subject is narrowed to which type using <code>$paramName is TypeExpr</code>, <code>$paramName instanceof TypeExpr</code>, or an index read <code>$array[$key] is TypeExpr</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -460,7 +479,7 @@ function demo(array $arr, int $k): void {
     }
 }
 </code></pre></div>
-<h2>Dynamic Guard Functions</h2>
+<h2 id="dynamic-guard-functions">Dynamic Guard Functions</h2>
 <p>PHP's symbol existence functions also act as type guards, narrowing string values to Tyhp's symbol name types. This enables type-safe dynamic programming:</p>
 <ul>
 <li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
@@ -472,7 +491,7 @@ function demo(array $arr, int $k): void {
 <li><code>\method_exists($obj, $name)</code> -- narrows <code>$name</code> to <code>__MethodName&lt;typeof($obj)&gt;</code></li>
 <li><code>variable_exists($count)</code> / <code>variable_exists('count')</code> -- narrows the name to <code>__VarName</code></li>
 </ul>
-<h2>Early Return Narrowing</h2>
+<h2 id="early-return-narrowing">Early Return Narrowing</h2>
 <p>When a type guard is used with an early return (or <code>throw</code>, <code>continue</code>, <code>break</code>), the type is narrowed for all subsequent code after the guard. This is a common pattern for eliminating null or invalid types at the top of a function.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -495,7 +514,7 @@ function handleValue(string|int|array $val): void {
     echo $val;
 }
 </code></pre></div>
-<h2>Ternary and Match Narrowing</h2>
+<h2 id="ternary-and-match-narrowing">Ternary and Match Narrowing</h2>
 <p>Type narrowing also works within ternary expressions and <code>match</code> expressions:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -512,7 +531,7 @@ string $result = match(true) {
     default            =&gt; \number_format($value, 2), // narrowed to float
 };
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Type narrowing is entirely a compile-time concept. The guard functions compile to normal PHP -- no runtime type tracking is added. The narrowing information only exists during the Tyhp compilation phase for type checking purposes.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -580,7 +599,7 @@ function checkInt(mixed $n): void {
     }
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -641,7 +660,7 @@ function checkInt(mixed $n): void {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -702,7 +721,7 @@ function checkInt(mixed $n): void {
 </div>
     </div>
 </div>
-<h2>Compiler Error Examples</h2>
+<h2 id="compiler-error-examples">Compiler Error Examples</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR: Cannot call string method on a union type without narrowing
@@ -726,7 +745,7 @@ if ($user !== null) {
 // Or use nullsafe operator (does not narrow, returns nullable)
 ?string $name = $user?-&gt;getName();
 </code></pre></div>
-<h2>Important Notes</h2>
+<h2 id="important-notes">Important Notes</h2>
 <ul>
 <li>Type narrowing is scope-sensitive -- it only applies within the guarded block.</li>
 <li>Assigning a value of a different type within a narrowed scope ends the current narrowing and starts a new one based on the assigned type.</li>

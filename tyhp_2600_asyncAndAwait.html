@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -279,20 +298,46 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp provides first-class async and await keywords for asynchronous programming. Async functions return Promise&lt;T&gt; values, and await suspends execution until a promise resolves, returning the resolved value. The compiler lowers <code>async</code> functions to <code>\Tyhp\Promise::_async(...)</code> and <code>await</code> to <code>\Tyhp\Promise::_await(...)</code>. Under the hood, the implementation uses PHP Fibers for cooperative scheduling, with a fiber-based event loop that supports real non-blocking I/O via stream_select(). The runtime is provided by the tyhp/async Composer package. Blocking PHP I/O (<code>\file_get_contents()</code>, PDO, curl without async wrappers, and similar) blocks that loop — every other fiber waits until the call returns.</p>
-<h2>Async Function Declaration</h2>
-<p>An async function is declared by adding the async keyword before function. The declared return type is the resolved value type — the compiler automatically wraps it in Promise&lt;T&gt;. You write the return type as if the function were synchronous, and the compiler handles the Promise wrapping.</p>
+    <p>Tyhp provides first-class <code>async</code> and <code>await</code> keywords for asynchronous programming. An async function returns a <code>Promise&lt;T&gt;</code>, and <code>await</code> suspends the current async code until a promise settles, returning its value. The compiler lowers <code>async</code> functions to <code>\Tyhp\Promise::_async(...)</code> and <code>await</code> to <code>\Tyhp\Promise::_await(...)</code>. The runtime is the <code>tyhp/async</code> Composer package: it uses PHP Fibers for cooperative scheduling and a single-process event loop with non-blocking timers and stream I/O. Blocking PHP I/O (<code>\file_get_contents()</code>, PDO, curl without async wrappers, and similar) blocks that loop — every other fiber waits until the call returns.</p>
+<p>This page covers the language constructs. The full runtime API (<code>Promise</code>, <code>Deferred</code>, <code>EventLoop</code>, <code>CancellationToken</code>, and the contracts) is documented in the <a href="package_async.html"><code>tyhp/async</code> package reference</a>.</p>
+<h2 id="async-function-declaration">Async Function Declaration</h2>
+<p>An async function is declared by adding the <code>async</code> keyword before <code>function</code>. The declared return type is the type you get when you <code>await</code> the function — the compiler makes the call return a <code>Promise</code> of it for you. Write the return type as if the function were synchronous.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+final class User {
+    public function __construct(
+        public readonly int $id,
+        public readonly string $name,
+    ) {}
+}
+
+final class UserRepository {
+    public async function find(int $id): User {
+        await Promise::delay(5);
+        return new User($id, &quot;user{$id}&quot;);
+    }
+
+    public async function delete(int $id): void {
+        await Promise::delay(5);
+        echo &quot;deleted {$id}\n&quot;;
+    }
+}
 
 // Async standalone function — declared return type is User,
 // actual return type is Promise&lt;User&gt;
-async function fetchUser(int $id): User {
-    $data = await $http-&gt;get(&quot;/api/users/{$id}&quot;);
-    return new User($data);
+async function fetchUser(UserRepository $repo, int $id): User {
+    User $user = await $repo-&gt;find($id);
+    return $user;
 }
 
 // Async method in a class
-class UserService {
+final class UserService {
+    public function __construct(private readonly UserRepository $repository) {}
+
     public async function getUser(int $id): User {
         return await $this-&gt;repository-&gt;find($id);
     }
@@ -302,343 +347,602 @@ class UserService {
         await $this-&gt;repository-&gt;delete($id);
     }
 }
+
+async function main(): void {
+    $repo = new UserRepository();
+    $user = await fetchUser($repo, 1);
+    echo $user-&gt;name, &quot;\n&quot;;
+
+    $service = new UserService($repo);
+    echo (await $service-&gt;getUser(2))-&gt;name, &quot;\n&quot;;
+    await $service-&gt;deleteUser(3);
+}
+
+// Prints:
+// user1
+// user2
+// deleted 3
 </code></pre></div>
+<p>The compiler emits:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// async function fetchUser(int $id): User compiles to:
-function fetchUser(int $id): \Tyhp\Promise {
-    return \Tyhp\Promise::_async(function () use ($id): User {
-        $data = \Tyhp\Promise::_await($http-&gt;get(&quot;/api/users/{$id}&quot;));
-        return new User($data);
+namespace App;
+
+function fetchUser(\App\UserRepository $repo, int $id): \Tyhp\Promise
+{
+    return \Tyhp\Promise::_async(function () use ($repo, $id): \App\User {
+        $user = \Tyhp\Promise::_await($repo-&gt;find($id));
+        return $user;
     });
 }
 
-// async methods compile similarly:
-class UserService {
-    public function getUser(int $id): \Tyhp\Promise {
-        return \Tyhp\Promise::_async(function () use ($id): User {
+class UserService
+{
+    public function __construct(private readonly \App\UserRepository $repository) {}
+
+    public function getUser(int $id): \Tyhp\Promise
+    {
+        return \Tyhp\Promise::_async(function () use ($id): \App\User {
             return \Tyhp\Promise::_await($this-&gt;repository-&gt;find($id));
         });
     }
 
-    public function deleteUser(int $id): \Tyhp\Promise {
+    public function deleteUser(int $id): \Tyhp\Promise
+    {
         return \Tyhp\Promise::_async(function () use ($id): void {
             \Tyhp\Promise::_await($this-&gt;repository-&gt;delete($id));
         });
     }
 }
 </code></pre></div>
-<h2>Await Expression</h2>
-<p>The await keyword is a unary prefix operator that suspends the current async function, async closure, or async block until the given Promise&lt;T&gt; resolves, then returns the resolved value of type T. It can only be used inside those async contexts. If the promise rejects, the exception is thrown at the await point.</p>
+<h3 id="the-declared-return-type-is-the-settled-type">The Declared Return Type Is the Settled Type</h3>
+<p>For every <code>async</code> function, method, closure, arrow function, interface or abstract method, and tyhpdef signature, the declared return type <code>R</code> is read as <code>__Awaited&lt;R&gt;</code> — the type with every <code>Promise</code> layer settled (see <a href="tyhp_0150_newTypes.html#type-utility-types"><code>__Awaited&lt;T&gt;</code></a>). A call has type <code>Promise&lt;__Awaited&lt;R&gt;&gt;</code>, and <code>await</code> gives <code>__Awaited&lt;R&gt;</code>. In particular:</p>
+<ul>
+<li><code>async function f(): Promise&lt;int&gt;</code> yields <code>int</code> when awaited, not <code>Promise&lt;int&gt;</code>. It is the same function as <code>async function f(): int</code>.</li>
+<li>Writing <code>__Awaited&lt;R&gt;</code> yourself is not wrapped a second time.</li>
+<li>A <code>return</code> of a promise inside the body is allowed: the function's own promise adopts the outcome of the returned one, so <code>async function g(): int { return f(); }</code> is valid.</li>
+<li>The PHP signature of the emitted function is always <code>\Tyhp\Promise</code>; the settled type appears only on the inner closure.</li>
+</ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-async function processOrder(int $orderId): OrderResult {
-    // await unwraps Promise&lt;Order&gt; to Order
-    Order $order = await $this-&gt;orderRepo-&gt;find($orderId);
+namespace App;
 
-    // await unwraps Promise&lt;PaymentResult&gt; to PaymentResult
-    PaymentResult $payment = await $this-&gt;paymentService-&gt;charge($order);
+use Tyhp\Promise;
 
-    // Multiple awaits can be chained sequentially
-    await $this-&gt;notificationService-&gt;send($order-&gt;customerId, &#039;Order processed&#039;);
+async function loadCount(): int {
+    await Promise::delay(5);
+    return 3;
+}
 
-    return new OrderResult($order, $payment);
+async function loadCountAgain(): Promise&lt;int&gt; { // read as: int
+    return 3;
+}
+
+async function main(): void {
+    Promise&lt;int&gt; $pending = loadCount(); // a call is a Promise of the settled type
+    int $a = await $pending;
+    int $b = await loadCountAgain();     // int, not Promise&lt;int&gt;
 }
 </code></pre></div>
-<h2>The Promise&lt;T&gt; Type</h2>
-<p>The Promise&lt;T&gt; class is provided by the tyhp/async Composer package. It represents an asynchronous computation that eventually resolves to a value of type T. The generic parameter is <code>TReturn extends void|mixed = mixed</code>, so unparameterized <code>Promise</code> defaults to <code>Promise&lt;mixed&gt;</code> (not <code>Promise&lt;void&gt;</code>). <code>Promise&lt;void&gt;</code> is still valid for async functions that return nothing.</p>
-<h2>Promise Combinators</h2>
-<p>Promise provides static combinator methods for coordinating multiple async operations.</p>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::all(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;array&lt;T&gt;&gt;</code></h4><br/><p>Waits for ALL promises to resolve. After <code>await</code>, you get an array of resolved values in the same order. If any promise rejects, the entire all() rejects with that error.</p>
+<p>A promise never holds another promise, so a <code>Promise&lt;Promise&lt;int&gt;&gt;</code> type cannot be written (TYHP4373). To hand a promise to a caller as a <em>value</em>, wrap it in an array, a class, or a struct, or settle a <a href="package_async.html#deferred"><code>Deferred</code></a> from outside.</p>
+<h2 id="await-expression">Await Expression</h2>
+<p><code>await</code> is a unary prefix operator. It suspends the current async function, async closure, or async block until the given <code>Promise&lt;T&gt;</code> settles, then evaluates to the resolved value of type <code>T</code>. It can only be used inside those async contexts. If the promise rejects, the rejection reason is thrown at the <code>await</code> point.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+async function greetUser(UserRepository $repo, int $id): string {
+    // await unwraps Promise&lt;User&gt; to User
+    User $user = await $repo-&gt;find($id);
+
+    // Awaits run one after another
+    await Promise::delay(5);
+
+    return &quot;Hello, {$user-&gt;name}!&quot;;
+}
+</code></pre></div>
+<h2 id="the-promiset-type">The Promise&lt;T&gt; Type</h2>
+<p><code>Promise&lt;T&gt;</code> is provided by the <code>tyhp/async</code> package. It represents a computation that eventually settles with a value of type <code>T</code>. The generic parameter is <code>TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;</code>: <code>T</code> must be an already-settled type, so an unparameterized <code>Promise</code> is <code>Promise&lt;mixed&gt;</code>, <code>Promise&lt;void&gt;</code> is the type of async functions that return nothing, and <code>Promise&lt;Promise&lt;int&gt;&gt;</code> is rejected (TYHP4373).</p>
+<h2 id="promise-combinators">Promise Combinators</h2>
+<p><code>Promise</code> provides static methods for coordinating several async operations. The common ones are summarized here; each is described in full in the <a href="package_async.html#the-promise-class">package reference</a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::all(array&lt;Promise&lt;T&gt;&gt; $promises, ?CancellationToken $token = null): array&lt;T&gt;</code></h4><br/><p>Waits for every promise and returns their values. Keys are preserved. If an input rejects, <code>all()</code> rejects with that reason once it reaches that input in key order. An empty array returns <code>[]</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::allSettled(array&lt;TKey, Promise&lt;T&gt;&gt; $promises): Promise&lt;array&lt;TKey, PromiseSettledResult&lt;T&gt;&gt;&gt;</code></h4><br/><p>Waits for every promise to settle (fulfill or reject). After <code>await</code>, you get an array of outcome objects with <code>status</code> (<code>'fulfilled'</code> or <code>'rejected'</code>), plus <code>value</code> or <code>reason</code>. Never rejects — even if every input rejects. Input keys are preserved.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::allSettled(array&lt;TKey, Promise&lt;T&gt;&gt; $promises): array&lt;TKey, PromiseSettledResult&lt;T&gt;&gt;</code></h4><br/><p>Waits for every promise to settle and returns one outcome object per input (with <code>status</code>, and either <code>value</code> or <code>reason</code>). Never rejects because of an input.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::race(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;T&gt;</code></h4><br/><p>After <code>await</code>, returns the value of the FIRST promise to settle (resolve or reject). Other promises continue running but their results are discarded.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::race(array&lt;Promise&lt;T&gt;&gt; $promises, ?CancellationToken $token = null): T</code></h4><br/><p>Settles like the first input to settle. The other promises keep running and their outcomes are ignored.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolve(T $value): Promise&lt;T&gt;</code></h4><br/><p>JS <code>Promise.resolve</code>: if <code>$value</code> is already a Promise, returns that same instance (flatten — it may still be pending). Otherwise returns an <strong>already-fulfilled</strong> Promise holding <code>$value</code>, with no Fiber scheduled.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolve(?T $value = null): Promise&lt;T&gt;</code></h4><br/><p>Returns an already-fulfilled promise holding <code>$value</code>. If <code>$value</code> is already a <code>Promise</code>, that same instance is returned.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolved(T $value): Promise&lt;T&gt;</code></h4><br/><p>Creates a new already-fulfilled Promise. Unlike <code>resolve()</code>, does not unwrap an existing Promise — a Promise passed as <code>$value</code> is stored as the fulfillment value.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::resolved(?T $value = null): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Always returns a new already-fulfilled promise. If <code>$value</code> is itself a promise, the new promise adopts it and settles when it does. Pass the type argument explicitly: <code>Promise::resolved&lt;int&gt;(42)</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::reject(Throwable $error): Promise&lt;T&gt;</code></h4><br/><p>Creates an already-rejected Promise with the given error (no Fiber). Alias of <code>rejected()</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::reject(\Throwable $reason): Promise&lt;T&gt;</code></h4><br/><p>Returns an already-rejected promise. Equivalent to <code>Promise::rejected()</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::delay(int $ms): Promise&lt;void&gt;</code></h4><br/><p>An async method that resolves after the specified number of milliseconds. <code>await Promise::delay(...)</code> yields <code>void</code>. Useful for implementing backoff, throttling, or timeouts.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::delay(int $ms, ?CancellationToken $token = null): void</code></h4><br/><p>Resolves after <code>$ms</code> milliseconds. Use it for backoff and throttling. With a token, cancellation rejects the delay with <code>OperationCancelledException</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::timeout(Promise&lt;T&gt; $promise, int $ms): Promise&lt;T&gt;</code></h4><br/><p>Races a promise against a timeout. After <code>await</code>, you get <code>T</code>. If the promise does not resolve within the specified milliseconds, a TimeoutException is thrown.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::timeout(Promise&lt;T&gt; $promise, int $ms, ?CancellationToken $token = null): Promise&lt;T&gt;</code></h4><br/><p>Settles like <code>$promise</code> if it does so within <code>$ms</code> milliseconds, otherwise rejects with <code>TimeoutException</code>. The underlying operation is not stopped.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::batch(array&lt;TItem&gt; $items, callable $processor, int $concurrency = 5): Promise&lt;array&lt;TResult&gt;&gt;</code></h4><br/><p>Processes an array of items through an async processor function with a configurable concurrency limit. After <code>await</code>, you get an array of results.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::batch(array&lt;TItem&gt; $items, callable(TItem): Promise&lt;TBatchReturn&gt; $processor, int $concurrency = 5, ?CancellationToken $token = null): array&lt;int, TBatchReturn&gt;</code></h4><br/><p>Runs <code>$processor</code> over the items in waves of up to <code>$concurrency</code> and returns the results in input order.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>Promise::run(callable $fn): ?T</code></h4><br/><p>Runs a callable inside the event loop. Used at the lowest async boundary to start the event loop. This is the entry point for async code from synchronous contexts — it returns the unwrapped value, not a Promise.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>Promise::run(callable(): T $fn, ?CancellationToken $token = null): __Awaited&lt;T&gt;</code></h4><br/><p>Runs <code>$fn</code> inside the event loop and returns its settled value (or throws its rejection reason). It is the entry point for async code from synchronous code. With a token, cancelling it while the work is still pending shuts the loop down and throws <code>OperationCancelledException</code>.</p>
 </div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Run multiple operations in parallel with Promise::all()
-async function fetchDashboard(int $userId): Dashboard {
-    array $results = await Promise::all([
-        $this-&gt;fetchProfile($userId),
-        $this-&gt;fetchOrders($userId),
-        $this-&gt;fetchNotifications($userId)
-    ]);
+namespace App;
 
-    return new Dashboard($results[0], $results[1], $results[2]);
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Promise;
+
+async function fetchProfile(int $userId): string {
+    await Promise::delay(30);
+    return &quot;profile:{$userId}&quot;;
 }
 
-// Race: first to resolve wins
-async function fetchWithFallback(string $url): Response {
+async function fetchOrders(int $userId): string {
+    await Promise::delay(10);
+    return &quot;orders:{$userId}&quot;;
+}
+
+async function fetchNotifications(int $userId): string {
+    await Promise::delay(20);
+    return &quot;notifications:{$userId}&quot;;
+}
+
+// Run multiple operations in parallel with Promise::all()
+async function fetchDashboard(int $userId): string {
+    array&lt;string&gt; $results = await Promise::all([
+        fetchProfile($userId),
+        fetchOrders($userId),
+        fetchNotifications($userId)
+    ]);
+
+    return \implode(&#039;, &#039;, $results);
+}
+
+async function primaryApi(string $url): string {
+    await Promise::delay(50);
+    return &quot;primary {$url}&quot;;
+}
+
+async function fallbackApi(string $url): string {
+    await Promise::delay(10);
+    return &quot;fallback {$url}&quot;;
+}
+
+// Race: the first to settle wins
+async function fetchWithFallback(string $url): string {
     return await Promise::race([
-        $this-&gt;primaryApi-&gt;get($url),
-        $this-&gt;fallbackApi-&gt;get($url)
+        primaryApi($url),
+        fallbackApi($url)
     ]);
 }
 
 // Delay for backoff
-async function retryWithBackoff(int $attempt): Data {
-    await Promise::delay($attempt * 1000);
-    return await $this-&gt;fetchData();
+async function retryWithBackoff(int $attempt): string {
+    await Promise::delay($attempt * 10);
+    return &quot;attempt {$attempt} done&quot;;
+}
+
+final class Item {
+    public function __construct(public readonly int $value) {}
+}
+
+final class Result {
+    public function __construct(public readonly int $doubled) {}
+}
+
+async function process(Item $item): Result {
+    await Promise::delay(5);
+    return new Result($item-&gt;value * 2);
 }
 
 // Batch processing with concurrency control
-async function processAll(array&lt;Item&gt; $items): array&lt;Result&gt; {
+async function processAll(array&lt;Item&gt; $items): array&lt;int, Result&gt; {
     return await Promise::batch(
         $items,
-        async fn(Item $item): Result =&gt; await $this-&gt;process($item),
+        fn(Item $item): Promise&lt;Result&gt; =&gt; process($item),
         concurrency: 5
     );
 }
 
-// Timeout: throw if not resolved within 5 seconds
-async function fetchWithTimeout(string $url): Response {
-    return await Promise::timeout($this-&gt;http-&gt;get($url), 5000);
+// Timeout: reject if not settled within the deadline
+async function fetchWithTimeout(string $url): string {
+    return await Promise::timeout(primaryApi($url), 20);
 }
+
+async function main(): void {
+    echo await fetchDashboard(1), &quot;\n&quot;;
+    echo await fetchWithFallback(&#039;/data&#039;), &quot;\n&quot;;
+    echo await retryWithBackoff(2), &quot;\n&quot;;
+    foreach (await processAll([new Item(1), new Item(2), new Item(3)]) as $result) {
+        echo $result-&gt;doubled, &quot;\n&quot;;
+    }
+    try {
+        await fetchWithTimeout(&#039;/slow&#039;);
+    } catch (TimeoutException $e) {
+        echo $e-&gt;getMessage(), &quot;\n&quot;;
+    }
+}
+
+// Prints:
+// profile:1, orders:1, notifications:1
+// fallback /data
+// attempt 2 done
+// 2
+// 4
+// 6
+// Operation timed out
 </code></pre></div>
-<h2>Instance Methods: then, catch, finally</h2>
-<p>Promise instances support chaining with then(), catch(), and finally() for callback-based composition.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p><code>Promise::all()</code> returns <code>array&lt;T&gt;</code>, but its static key type is <code>int|string</code> even for a list. Assign the result to an <code>array&lt;T&gt;</code> variable (or declare the function's return type as <code>array&lt;T&gt;</code>), not to <code>array&lt;int, T&gt;</code>.</p>
+</div>
+    </div>
+</div>
+<h2 id="instance-methods-then-catch-finally">Instance Methods: then, catch, finally</h2>
+<p>Promise instances support callback chaining with <code>then()</code>, <code>catch()</code>, and <code>finally()</code>. Each returns a new promise. A <code>finally()</code> callback that returns nothing can be an arrow function declared <code>: void</code>. The handler passed to <code>catch()</code> returns the same value type as the promise it is attached to, so <code>catch()</code> keeps the promise's type; <code>then()</code> is declared as a set of <a href="tyhp_1200_functionOverloads.html">overloads</a> (no handlers, only a rejection handler, or a fulfillment handler with an optional rejection handler) and its result type follows the handler you pass. See the <a href="package_async.html#chaining-handlers">package reference</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-async function withHandlers(): string {
-    string $result = await $this-&gt;fetchData()
+namespace App;
+
+use Tyhp\Promise;
+
+final class Data {
+    public function __construct(private readonly string $payload) {}
+
+    public function format(): string {
+        return \strtoupper($this-&gt;payload);
+    }
+}
+
+async function fetchData(bool $fail): Data {
+    await Promise::delay(5);
+    if ($fail) {
+        throw new \RuntimeException(&#039;upstream down&#039;);
+    }
+    return new Data(&#039;payload&#039;);
+}
+
+function cleanup(): void {
+    echo &quot;cleanup\n&quot;;
+}
+
+async function withHandlers(bool $fail): string {
+    string $result = await fetchData($fail)
         -&gt;then(fn(Data $d): string =&gt; $d-&gt;format())
         -&gt;catch(fn(\Throwable $e): string =&gt; &#039;fallback&#039;)
-        -&gt;finally(fn(): void =&gt; $this-&gt;cleanup());
+        -&gt;finally(fn(): void =&gt; cleanup());
 
     return $result;
 }
+
+// await withHandlers(false) prints &quot;cleanup&quot; and returns &quot;PAYLOAD&quot;.
+// await withHandlers(true) prints &quot;cleanup&quot; and returns &quot;fallback&quot;.
 </code></pre></div>
-<h2>Async Closures and Arrow Functions</h2>
-<p>The async keyword can be applied to closures and arrow functions, creating async lambdas that return Promise&lt;T&gt;.</p>
+<h2 id="async-closures-and-arrow-functions">Async Closures and Arrow Functions</h2>
+<p>The <code>async</code> keyword can be applied to closures and arrow functions. Calling one starts the work and gives you a promise to <code>await</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Async closure
-$handler = async function(Request $req): Response {
-    User $user = await $this-&gt;auth-&gt;getUser($req);
-    return new Response($user);
+namespace App;
+
+use Tyhp\Promise;
+
+final class Request {
+    public function __construct(public readonly int $userId) {}
+}
+
+final class Response {
+    public function __construct(public readonly string $body) {}
+}
+
+final class Auth {
+    public async function getUser(Request $req): User {
+        await Promise::delay(5);
+        return new User($req-&gt;userId, &quot;user{$req-&gt;userId}&quot;);
+    }
+}
+
+async function demo(Auth $auth, UserRepository $repo): void {
+    // Async closure
+    $handler = async function(Request $req) use ($auth): Response {
+        User $user = await $auth-&gt;getUser($req);
+        return new Response(&quot;Hello, {$user-&gt;name}&quot;);
+    };
+    Response $response = await $handler(new Request(1));
+    echo $response-&gt;body, &quot;\n&quot;;
+
+    // Async arrow function
+    $fetch = async fn(int $id): User =&gt; await $repo-&gt;find($id);
+    User $user = await $fetch(2);
+    echo $user-&gt;name, &quot;\n&quot;;
+
+    // An async closure is a callable that returns a Promise, so it works with \array_map()
+    array&lt;int&gt; $userIds = [3, 4];
+    array&lt;User&gt; $users = await Promise::all(
+        \array_map(async fn(int $id): User =&gt; await $repo-&gt;find($id), $userIds)
+    );
+    foreach ($users as $found) {
+        echo $found-&gt;name, &quot;\n&quot;;
+    }
+}
+
+// Prints:
+// Hello, user1
+// user2
+// user3
+// user4
+</code></pre></div>
+<p>The compiler emits:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Async closure: a closure that returns a started promise
+$handler = function (\App\Request $req) use ($auth): \Tyhp\Promise {
+    return \Tyhp\Promise::_async(function () use ($auth, $req): \App\Response {
+        $user = \Tyhp\Promise::_await($auth-&gt;getUser($req));
+        return new Response(&quot;Hello, $user-&gt;name&quot;);
+    });
 };
 
 // Async arrow function
-$fetch = async fn(int $id): User =&gt; await $repo-&gt;find($id);
-
-// Async closures as callbacks
-$results = await Promise::all(
-    \array_map(
-        async fn(int $id): User =&gt; await $this-&gt;fetchUser($id),
-        $userIds
-    )
-);
+$fetch = fn(int $id): \Tyhp\Promise =&gt; \Tyhp\Promise::_async(fn() =&gt; \Tyhp\Promise::_await($repo-&gt;find($id)));
 </code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-// Async closure compiles to closure returning Promise
-$handler = function(Request $req): \Tyhp\Promise {
-    return \Tyhp\Promise::_async(function () use ($req): Response {
-        $user = \Tyhp\Promise::_await($this-&gt;auth-&gt;getUser($req));
-        return new Response($user);
-    });
-};
-
-// Async arrow function compiles similarly
-$fetch = function(int $id) use ($repo): \Tyhp\Promise {
-    return \Tyhp\Promise::_async(function () use ($id, $repo): User {
-        return \Tyhp\Promise::_await($repo-&gt;find($id));
-    });
-};
-</code></pre></div>
-<h2>Async Blocks</h2>
-<p>An <code>async { ... }</code> block is an expression that evaluates to a <strong>running</strong> <code>Promise&lt;T&gt;</code>, not a callable. Inner <code>return</code> completes that promise; inner <code>await</code> is legal. This is the form to use when a method already returns <code>Promise&lt;T&gt;</code> / <code>self&lt;T&gt;</code> and you want to write sequential await logic without making the method itself <code>async</code> (which would wrap an extra Promise layer).</p>
+<p>The type of an <code>async</code> closure or arrow function is <code>callable(…): Promise&lt;R&gt;</code>, where <code>R</code> is its declared return type read as a settled type (<code>__Awaited&lt;R&gt;</code>), exactly as for an <code>async</code> function. You can call it through a variable, pass it to <code>\array_map()</code>, or pass it to a generic parameter such as the processor of <code>Promise::batch(array&lt;TItem&gt; $items, callable(TItem): Promise&lt;TBatchReturn&gt; $processor, …)</code>, and the compiler infers the result type from it. An ordinary closure declared as <code>fn(int $id): Promise&lt;User&gt; =&gt; $repo-&gt;find($id)</code> has the same type.</p>
+<h2 id="async-blocks">Async Blocks</h2>
+<p>An <code>async { ... }</code> block is an expression that evaluates to a <strong>running</strong> <code>Promise&lt;T&gt;</code>, not a callable. An inner <code>return</code> completes that promise and an inner <code>await</code> is legal. Use it when a method already returns <code>Promise&lt;T&gt;</code> and you want sequential await logic without making the method itself <code>async</code> (which would wrap a second promise layer).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function then&lt;TThenReturn&gt;(
-    ?callable(T): TThenReturn $onFulfilled = null
-): Promise&lt;TThenReturn&gt; {
-    return async {
-        TThenReturn $value = await $this;
-        return $onFulfilled !== null ? $onFulfilled($value) : $value;
-    };
+namespace App;
+
+use Tyhp\Promise;
+
+final class Greeter {
+    public function greet(string $name): Promise&lt;string&gt; {
+        return async {
+            await Promise::delay(5);
+            return &quot;Hello, {$name}!&quot;;
+        };
+    }
 }
 
 // Empty block — Promise&lt;void&gt;
 Promise&lt;void&gt; $idle = async {};
 </code></pre></div>
+<p>The compiler emits an already-started promise, not a callable:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// Compiles to an already-started Promise, not a callable:
-return \Tyhp\Promise::_async(function () use ($onFulfilled) {
-    $value = \Tyhp\Promise::_await($this);
-    return $onFulfilled !== null ? $onFulfilled($value) : $value;
-});
-</code></pre></div>
-<p><code>async function () { ... }</code> remains a <strong>callable</strong> that <em>returns</em> a Promise when invoked. <code>(async function () { ... })()</code> is the IIFE equivalent of <code>async { ... }</code>. Do not write <code>return async function () { ... };</code> from a method typed <code>Promise&lt;T&gt;</code> — that returns a callable, not a Promise.</p>
-<h2>Async Overloads</h2>
-<p>Tyhp supports async function overloads, allowing a function to have both synchronous and asynchronous signatures. The compiler selects the appropriate overload based on the calling context.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class DataService {
-    // Synchronous overload
-    public function process(Data $d): Result {
-        return $this-&gt;doProcess($d);
-    }
-
-    // Async overload — declared return is the unwrapped type (Result).
-    // Writing `Promise&lt;Result&gt;` here would wrap twice: Promise&lt;Promise&lt;Result&gt;&gt;.
-    public async function process(Data $d): Result {
-        await $this-&gt;validate($d);
-        return $this-&gt;doProcess($d);
-    }
+public function greet(string $name): \Tyhp\Promise
+{
+    return \Tyhp\Promise::_async(function () use ($name) {
+        \Tyhp\Promise::_await(\Tyhp\Promise::delay(5));
+        return &quot;Hello, $name!&quot;;
+    });
 }
 </code></pre></div>
-<h2>Error Handling in Async Functions</h2>
-<p>Errors in async functions work naturally with try/catch. When an awaited promise rejects, the exception is thrown at the await point, just like a synchronous exception. This makes async error handling feel identical to synchronous error handling.</p>
+<p><code>async function () { ... }</code> remains a <strong>callable</strong> that <em>returns</em> a promise when invoked. <code>(async function () { ... })()</code> is the equivalent of <code>async { ... }</code>. Do not write <code>return async function () { ... };</code> from a method typed <code>Promise&lt;T&gt;</code> — that returns a callable, not a promise.</p>
+<h2 id="error-handling-in-async-functions">Error Handling in Async Functions</h2>
+<p>Errors in async functions work with <code>try</code>/<code>catch</code>. When an awaited promise rejects, the exception is thrown at the <code>await</code> point, exactly like a synchronous exception.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-async function safeFetch(string $url): ?Data {
+namespace App;
+
+use Tyhp\Promise;
+
+async function safeGreeting(UserRepository $repo, int $id): ?string {
     try {
-        return await $http-&gt;get($url);
-    } catch (\Throwable $e) {
-        $this-&gt;logger-&gt;error(&#039;Fetch failed&#039;, [&#039;error&#039; =&gt; $e-&gt;getMessage()]);
+        return await greetUser($repo, $id);
+    } catch (\InvalidArgumentException $e) {
+        echo &#039;Lookup failed: &#039;, $e-&gt;getMessage(), &quot;\n&quot;;
         return null;
     }
 }
 
 // Errors propagate through await chains
-async function pipeline(): Result {
+async function pipeline(string $url): string {
     try {
-        Data $data = await $this-&gt;fetchData();
-        Data $validated = await $this-&gt;validate($data);
-        return await $this-&gt;transform($validated);
+        Data $data = await download($url);
+        Data $validated = await validate($data);
+        return await transform($validated);
     } catch (ValidationException $e) {
-        return Result::failed($e-&gt;getMessage());
+        return &#039;invalid: &#039; . $e-&gt;getMessage();
     } catch (\Throwable $e) {
         throw new ProcessingException(&#039;Pipeline failed&#039;, 0, $e);
     }
 }
 </code></pre></div>
-<h2>Event Loop and Promise::run()</h2>
-<p>The event loop is managed by the \Tyhp\EventLoop class from the tyhp/async package. At the lowest async call boundary — the first non-async function that calls an async function — the event loop is auto-started via Promise::run(). The event loop uses stream_select() for non-blocking I/O and supports timers, deferred operations, and fiber scheduling.</p>
+<p>If <code>UserRepository::find()</code> throws <code>\InvalidArgumentException(&quot;No user -1&quot;)</code> for a negative id, <code>await safeGreeting($repo, -1)</code> prints <code>Lookup failed: No user -1</code> and returns <code>null</code>.</p>
+<h2 id="running-async-code-from-synchronous-code">Running async code from synchronous code</h2>
+<p><code>await</code> is only legal in async code. Ordinary functions, PHP scripts, and test methods start the event loop explicitly. In an application entry file, a top-level <code>await</code> does this for you. <code>Promise::run()</code> runs a closure inside the loop and returns its settled value: the closure may be plain or <code>async</code>, and the call is typed as the value, not as a <code>Promise</code>. The type argument is inferred from the closure; <code>Promise::run&lt;string&gt;(…)</code> is accepted too.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Entry point: synchronous context calling into async code
+namespace App;
+
+use Tyhp\Promise;
+
 function main(): void {
-    // Promise::run() starts the event loop and blocks until complete
-    Result $result = Promise::run(async function(): Result {
-        Data $data = await fetchData();
-        return await processData($data);
+    // Promise::run() starts the event loop and returns the closure&#039;s value
+    string $result = Promise::run(async function(): string {
+        Data $first = await download(&#039;/a&#039;);
+        return $first-&gt;body;
     });
+    echo $result, &quot;\n&quot;;
 
-    echo $result-&gt;__toString();
+    // An async arrow function works too
+    int $count = Promise::run(async fn(): int =&gt; 3);
+    echo $count, &quot;\n&quot;;
 }
+
+// Prints:
+// body of /a
+// 3
 </code></pre></div>
-<h2>Async Iteration</h2>
-<p>Tyhp supports async iteration via foreach (await $expr as $item). The expression can be an AsyncIterable&lt;T&gt;, a Promise&lt;Iterable&lt;T&gt;&gt;, or a Promise&lt;AsyncIterable&lt;T&gt;&gt;. Each case compiles differently — AsyncIterable uses a while-loop with awaited next()/current() calls, while Promise&lt;Iterable&lt;T&gt;&gt; resolves the promise first then iterates synchronously.</p>
+<p><code>Promise::run()</code>, <code>EventLoop::run()</code>, and the other entry points throw <code>\LogicException</code> when called while the loop is already running; inside async code use <code>await</code>. The <a href="package_async.html#running-async-code-from-synchronous-code">package reference</a> lists every entry point and how the loop starts and stops.</p>
+<h2 id="async-iteration">Async Iteration</h2>
+<p><code>foreach (await $expr as $item)</code> iterates asynchronously. The expression can be an <code>AsyncIterable&lt;T&gt;</code>, a <code>Promise&lt;array&lt;...&gt;&gt;</code> (or other iterable), or a <code>Promise&lt;AsyncIterable&lt;T&gt;&gt;</code>. <code>AsyncIterable</code> is iterated with a loop of awaited <code>next()</code> / <code>current()</code> calls; a promise of an ordinary iterable is awaited first and then iterated synchronously.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Case 1: AsyncIterable&lt;T&gt; — true async iteration
-// Each element is awaited individually as it becomes available
+namespace App;
+
+use Tyhp\Contracts\AsyncIterable;
+use Tyhp\Contracts\AsyncIterator;
+use Tyhp\Promise;
+
+final class Message {
+    public function __construct(public readonly string $text) {}
+}
+
+final class MessageStream implements AsyncIterable&lt;Message&gt; {
+    public function __construct(private readonly array&lt;int, string&gt; $texts) {}
+
+    public function getAsyncIterator(): AsyncIterator&lt;Message&gt; {
+        return new MessageIterator($this-&gt;texts);
+    }
+}
+
+final class MessageIterator implements AsyncIterator&lt;Message&gt; {
+    private int $position = -1;
+
+    public function __construct(private readonly array&lt;int, string&gt; $texts) {}
+
+    public function next(): Promise&lt;bool&gt; {
+        return async {
+            await Promise::delay(5);
+            $this-&gt;position++;
+            return $this-&gt;position &lt; \count($this-&gt;texts);
+        };
+    }
+
+    public function current(): Promise&lt;Message&gt; {
+        return Promise::resolved&lt;Message&gt;(new Message($this-&gt;texts[$this-&gt;position]));
+    }
+}
+
+// Case 1: AsyncIterable&lt;T&gt; — true async iteration;
+// each element is awaited as it becomes available
 async function processMessages(MessageQueue $queue): void {
     foreach (await $queue-&gt;messagesAsync() as Message $message) {
-        await $this-&gt;handle($message);
+        await $queue-&gt;handle($message);
     }
 }
 
-// Case 2: Promise&lt;Iterable&lt;T&gt;&gt; — resolve then iterate
-// The entire collection is fetched first, then iterated synchronously
+// Case 2: Promise&lt;array&lt;int, Message&gt;&gt; — resolve, then iterate synchronously
 async function processAll(ApiClient $api): void {
-    foreach (await $api-&gt;fetchAllAsync() as Item $item) {
-        $this-&gt;process($item);
+    foreach (await $api-&gt;fetchAllAsync() as Message $item) {
+        echo &quot;item {$item-&gt;text}\n&quot;;
     }
 }
 
-// Key-value async iteration
-async function processKeyValues(AsyncIterable $source): void {
-    foreach (await $source as string $key =&gt; mixed $value) {
-        echo &quot;{$key}: {$value}&quot;;
+// Case 3: Promise&lt;AsyncIterable&lt;T&gt;&gt; — resolve, then iterate asynchronously
+async function processStream(ApiClient $api): void {
+    foreach (await $api-&gt;openStream() as Message $item) {
+        echo &quot;streamed {$item-&gt;text}\n&quot;;
     }
 }
 </code></pre></div>
+<p>The compiler emits:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// Case 1: AsyncIterable&lt;T&gt; compiles to while-loop with _await:
+// Case 1: AsyncIterable&lt;T&gt; compiles to a while-loop with _await:
 $__asyncIter_1 = $queue-&gt;messagesAsync()-&gt;getAsyncIterator();
 while (\Tyhp\Promise::_await($__asyncIter_1-&gt;next())) {
     $message = \Tyhp\Promise::_await($__asyncIter_1-&gt;current());
-    \Tyhp\Promise::_await($this-&gt;handle($message));
+    \Tyhp\Promise::_await($queue-&gt;handle($message));
 }
 
-// Case 2: Promise&lt;Iterable&lt;T&gt;&gt; compiles to resolve then foreach:
+// Case 2: Promise&lt;array&lt;...&gt;&gt; compiles to resolve, then foreach:
 foreach (\Tyhp\Promise::_await($api-&gt;fetchAllAsync()) as $item) {
-    $this-&gt;process($item);
+    echo &quot;item $item-&gt;text\n&quot;;
 }
 
-// Key-value compiles with currentKey() and currentValue():
-$__asyncIter_2 = $source-&gt;getAsyncIterator();
+// Case 3: Promise&lt;AsyncIterable&lt;T&gt;&gt; awaits the promise, then iterates asynchronously:
+$__asyncIter_2 = \Tyhp\Promise::_await($api-&gt;openStream())-&gt;getAsyncIterator();
 while (\Tyhp\Promise::_await($__asyncIter_2-&gt;next())) {
-    $key = \Tyhp\Promise::_await($__asyncIter_2-&gt;currentKey());
-    $value = \Tyhp\Promise::_await($__asyncIter_2-&gt;currentValue());
+    $item = \Tyhp\Promise::_await($__asyncIter_2-&gt;current());
+    echo &quot;streamed $item-&gt;text\n&quot;;
+}
+</code></pre></div>
+<h3 id="key-value-iteration">Key-value iteration</h3>
+<p><code>foreach (await $source as $key =&gt; $value)</code> calls <code>currentKey()</code> and <code>currentValue()</code> instead of <code>current()</code>, so the iterator returned by <code>getAsyncIterator()</code> must implement <code>AsyncKeyValueIterator&lt;TKey, TValue&gt;</code>. Declare <code>getAsyncIterator()</code> as returning <code>AsyncKeyValueIterator&lt;TKey, TValue&gt;</code> and iterate a value whose static type is your class, so the loop knows the key type:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+$__asyncIter_3 = $source-&gt;getAsyncIterator();
+while (\Tyhp\Promise::_await($__asyncIter_3-&gt;next())) {
+    $key = \Tyhp\Promise::_await($__asyncIter_3-&gt;currentKey());
+    $value = \Tyhp\Promise::_await($__asyncIter_3-&gt;currentValue());
     echo &quot;{$key}: {$value}&quot;;
 }
 </code></pre></div>
-<h2>Cancellation</h2>
-<p>The tyhp/async package provides CancellationToken and CancellationTokenSource for cooperative cancellation of async operations. CancellationTokenSource implements IsDisposable and can be used with the := operator for automatic disposal.</p>
+<p>A complete <code>AsyncKeyValueIterator</code> implementation is shown in the <a href="package_async.html#async-iteration-contracts">package reference</a>.</p>
+<h2 id="cancellation">Cancellation</h2>
+<p><code>CancellationTokenSource</code> and <code>CancellationToken</code> provide cooperative cancellation. Operations that accept a <code>?CancellationToken</code> (such as <code>Promise::delay()</code>, <code>Promise::all()</code>, and <code>Promise::batch()</code>) reject with <code>OperationCancelledException</code> when the token is cancelled. <code>CancellationTokenSource</code> implements <code>IsDisposable</code>, so <code>:=</code> disposes it for you; see <a href="tyhp_2300_disposables.html">Disposables</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-async function fetchWithTimeout(string $url): Data {
-    // CancellationTokenSource auto-cancels after 5000ms (positional ctor, not `timeout:`)
-    $cts := new CancellationTokenSource(5000);
-    return await $http-&gt;get($url, $cts-&gt;getToken());
-    // CancellationTokenSource is disposed when scope exits
+namespace App;
+
+use Tyhp\CancellationToken;
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\OperationCancelledException;
+use Tyhp\Promise;
+
+final class Data {
+    public function __construct(public readonly string $body) {}
+}
+
+async function download(string $url, ?CancellationToken $token = null): Data {
+    await Promise::delay(50, $token);
+    return new Data(&quot;body of {$url}&quot;);
+}
+
+async function fetchWithTimeout(string $url): ?Data {
+    // The source cancels its token after 20 ms
+    $cts := new CancellationTokenSource(20);
+    try {
+        return await download($url, $cts-&gt;getToken());
+    } catch (OperationCancelledException $e) {
+        echo &quot;cancelled: {$url}\n&quot;;
+        return null;
+    }
 }
 
 async function fetchWithManualCancel(string $url): ?Data {
     $cts := new CancellationTokenSource();
-
+    Promise&lt;Data&gt; $pending = download($url, $cts-&gt;getToken());
+    $cts-&gt;cancel();
     try {
-        return await $http-&gt;get($url, $cts-&gt;getToken());
-    } catch (\Throwable $e) {
-        $cts-&gt;cancel(); // manually cancel on error
+        return await $pending;
+    } catch (OperationCancelledException $e) {
+        echo &quot;manually cancelled: {$url}\n&quot;;
         return null;
     }
 }
 </code></pre></div>
-<h2>Awaiting in Loops</h2>
-<p>The await keyword works naturally inside loops. Each iteration suspends and resumes independently.</p>
+<p><code>await fetchWithTimeout('/slow')</code> prints <code>cancelled: /slow</code> and returns <code>null</code>; <code>await fetchWithManualCancel('/slow')</code> prints <code>manually cancelled: /slow</code> and returns <code>null</code>.</p>
+<p>A token can also be handed to the entry point: <code>Promise::run($fn, $token)</code> and <code>EventLoop::run($promise, $token)</code> check it once per loop iteration. If it is cancelled while the root work is still pending, the whole event loop is shut down — queued work, timers, intervals, and stream watchers are dropped, and every suspended fiber has <code>OperationCancelledException</code> thrown into it so its <code>finally</code> blocks run — and the entry point throws <code>OperationCancelledException</code>. The loop can be used again afterwards. See <a href="package_async.html#eventloop-run">How the loop reacts to cancellation</a> in the package reference.</p>
+<h2 id="awaiting-in-loops">Awaiting in Loops</h2>
+<p><code>await</code> works inside loops. Each iteration suspends and resumes independently, so a loop of awaits runs one operation at a time:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-async function fetchSequentially(array&lt;string&gt; $urls): array&lt;Response&gt; {
-    array&lt;Response&gt; $results = [];
+async function fetchSequentially(array&lt;string&gt; $urls): array&lt;Data&gt; {
+    array&lt;Data&gt; $results = [];
     foreach ($urls as string $url) {
-        $results[] = await $http-&gt;get($url);
+        $results[] = await download($url);
     }
     return $results;
 }
 
-// For parallel execution, use Promise::all() instead:
-async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt; {
+// For parallel execution, start every operation first and use Promise::all():
+async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Data&gt; {
     return await Promise::all(
         \array_map(
-            async fn(string $url): Response =&gt; await $http-&gt;get($url),
+            fn(string $url): Promise&lt;Data&gt; =&gt; download($url),
             $urls
         )
     );
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -647,19 +951,7 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use await to unwrap promises — it provides clean, sequential-looking code that is easier to read and debug than callback chains.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use Promise::all() for independent operations that can run concurrently. This significantly improves performance compared to sequential awaits.</p>
+        <div class="callout-content"><p>Use <code>await</code> to unwrap promises — it gives sequential-looking code that is easier to read and debug than callback chains.</p>
 </div>
     </div>
 </div>
@@ -671,7 +963,7 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use Promise::batch() with a concurrency limit when processing large collections to avoid overwhelming external services or running out of memory.</p>
+        <div class="callout-content"><p>Use <code>Promise::all()</code> for independent operations that can run concurrently. This improves performance compared to sequential awaits.</p>
 </div>
     </div>
 </div>
@@ -683,7 +975,7 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Always handle errors in async functions with try/catch around await expressions. Unhandled rejections in async functions propagate silently.</p>
+        <div class="callout-content"><p>Use <code>Promise::batch()</code> with a concurrency limit when processing large collections, to avoid overwhelming external services or running out of memory.</p>
 </div>
     </div>
 </div>
@@ -695,11 +987,23 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use CancellationToken with the := operator for timeout and cancellation scenarios. The disposal mechanism ensures tokens are cleaned up when the scope exits.</p>
+        <div class="callout-content"><p>Handle errors with <code>try</code>/<code>catch</code> around <code>await</code> expressions. A rejected promise that is never awaited and has no <code>catch()</code> handler is discarded without any report.</p>
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Tip
+        </h4>
+        <div class="callout-content"><p>Use a <code>CancellationToken</code> with <code>:=</code> for timeout and cancellation scenarios; the source is disposed when the function exits.</p>
+</div>
+    </div>
+</div>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -708,31 +1012,7 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Using await outside of an async function. The compiler reports error 4028: &quot;await can only be used inside an async function.&quot; Wrap the calling code in an async function or use Promise::run() at the entry point.</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Forgetting to await a promise (fire-and-forget). An unawaited promise executes but errors are silently lost. Always await promises or explicitly handle them with then()/catch().</p>
-</div>
-    </div>
-</div>
-<div class="callout-block callout-block-danger me-1">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder">
-                <i class="fas fa-exclamation-triangle"></i>
-            </span>
-            Danger
-        </h4>
-        <div class="callout-content"><p>Using blocking I/O inside async functions. Blocking PHP I/O (<code>\file_get_contents()</code>, PDO, curl without async wrappers, and similar) blocks the entire <code>tyhp/async</code> event loop, so other fibers cannot run until the call returns. Use the event loop's non-blocking I/O facilities instead.</p>
+        <div class="callout-content"><p>Using <code>await</code> outside of an async function. The compiler reports error TYHP4028: &quot;<code>await</code> can only be used inside an async function&quot;. Wrap the code in an async function, or start the loop with <code>Promise::run()</code> at the entry point.</p>
 </div>
     </div>
 </div>
@@ -744,7 +1024,7 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Mixing raw Fiber usage with async/await. The tyhp/async event loop manages fibers internally — creating and managing fibers directly can interfere with the event loop's scheduling.</p>
+        <div class="callout-content"><p>Forgetting to <code>await</code> a promise (fire-and-forget). If the root of the event loop finishes first, the unawaited work is abandoned mid-flight, and a rejection it produces is never reported. Await every promise whose completion or failure matters.</p>
 </div>
     </div>
 </div>
@@ -756,32 +1036,56 @@ async function fetchInParallel(array&lt;string&gt; $urls): array&lt;Response&gt;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Iterating an AsyncIterable&lt;T&gt; without await in the foreach. The compiler reports an error — async iterables must use foreach (await $expr as $item) inside an async function.</p>
+        <div class="callout-content"><p>Using blocking I/O inside async functions. Blocking PHP I/O (<code>\file_get_contents()</code>, PDO, curl without async wrappers, and similar) blocks the entire <code>tyhp/async</code> event loop, so other fibers cannot run until the call returns. Use non-blocking facilities instead.</p>
 </div>
     </div>
 </div>
-<h2>Compiler Errors</h2>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Mixing raw Fiber usage with async/await. The <code>tyhp/async</code> event loop manages fibers internally; creating and managing fibers directly can interfere with its scheduling.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Iterating an <code>AsyncIterable&lt;T&gt;</code> without <code>await</code> in the <code>foreach</code>. The compiler reports error TYHP4046; use <code>foreach (await $expr as $item)</code> inside an async function.</p>
+</div>
+    </div>
+</div>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// ERROR 4028: await can only be used inside an async function
+use Tyhp\Contracts\AsyncIterable;
+
+// ERROR TYHP4028: `await` can only be used inside an async function
 function notAsync(): int {
-    // return await somePromise();  // Compiler error!
-    return 0;
+    return await \Tyhp\Promise::resolved&lt;int&gt;(1);
 }
 
-// The declared return type IS the unwrapped type — Tyhp wraps it in Promise&lt;T&gt;
-async function good(): int {
-    return 42; // OK: returns Promise&lt;int&gt;, declared as int
+// ERROR TYHP4046: Cannot iterate `AsyncIterable&lt;string&gt;` synchronously;
+// use `foreach (await $expr as ...)` inside an async function
+function badIteration(AsyncIterable&lt;string&gt; $msgs): void {
+    foreach ($msgs as $m) {
+        echo $m;
+    }
 }
 
-// ERROR: Cannot iterate AsyncIterable&lt;T&gt; synchronously
-function badIteration(AsyncIterable&lt;Message&gt; $msgs): void {
-    // foreach ($msgs as $m) {}  // Compiler error!
-}
-// FIX: Use await in foreach inside async function
-async function goodIteration(AsyncIterable&lt;Message&gt; $msgs): void {
-    foreach (await $msgs as Message $m) {
-        await $this-&gt;handle($m);
+// FIX: use await in the foreach, inside an async function
+async function goodIteration(AsyncIterable&lt;string&gt; $msgs): void {
+    foreach (await $msgs as string $m) {
+        echo $m;
     }
 }
 </code></pre></div>
@@ -793,7 +1097,7 @@ async function goodIteration(AsyncIterable&lt;Message&gt; $msgs): void {
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>The tyhp/async Composer package is automatically added as a dependency to your output project when the compiler detects usage of async/await keywords or disposable features. You do not need to manually install it.</p>
+        <div class="callout-content"><p>The <code>tyhp/async</code> Composer package is added as a dependency of your output project automatically when the compiler detects <code>async</code>/<code>await</code> or disposable features. You do not need to install it manually.</p>
 </div>
     </div>
 </div>

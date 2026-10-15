@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,9 +299,9 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 06</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp adds new syntax to class declarations that does not exist in PHP. This includes constructor return types for explicit constructor chaining, promoted constructor parameters, and property accessors. These features make class declarations more expressive and self-documenting.</p>
-<h2>Constructor Return Types</h2>
+<h2 id="constructor-return-types">Constructor Return Types</h2>
 <p>In PHP, constructors never have a return type. Tyhp constructors may declare <code>: void</code> when the constructor does not chain to a parent, or <code>: parent(args...)</code> when it does. Omitting the return type is equivalent to <code>: void</code>: no <code>parent::__construct(...)</code> call is inserted. Use <code>: parent(args...)</code> when you want the parent constructor called first.</p>
-<h2>Explicit Void Constructor</h2>
+<h2 id="explicit-void-constructor">Explicit Void Constructor</h2>
 <p>A constructor that does not use <code>: parent(...)</code> may be declared <code>: void</code>, or the return type may be omitted entirely — the two forms are equivalent. Both mean this constructor does not insert a <code>parent::__construct(...)</code> call.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -303,7 +322,7 @@ class AnotherClass
     ) {}
 }
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>The : void annotation is stripped from the PHP output. The constructor is emitted as a standard PHP constructor with no return type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -315,7 +334,7 @@ class SimpleClass
     ) {}
 }
 </code></pre></div>
-<h2>Constructor Chaining with : parent(args...)</h2>
+<h2 id="constructor-chaining-with--parentargs">Constructor Chaining with : parent(args...)</h2>
 <p>The : parent(args...) syntax calls the parent constructor at the START of the child constructor body. The arguments in the parent(...) call are passed to parent::__construct(). This replaces the manual parent::__construct(...) call that PHP developers write by hand and guarantees it always runs first.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -338,7 +357,7 @@ class UserModel extends BaseModel
     }
 }
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output-1">Compiled PHP Output</h2>
 <p>The : parent(args...) annotation compiles to a parent::__construct(args...) call inserted at the very beginning of the constructor body. The return type annotation is removed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -362,7 +381,7 @@ class UserModel extends BaseModel
     }
 }
 </code></pre></div>
-<h2>Original Incoming Values</h2>
+<h2 id="original-incoming-values">Original Incoming Values</h2>
 <p>An important detail: the arguments passed to parent(...) use the original incoming parameter values, not values modified within the constructor body. Even if a parameter is reassigned inside the constructor, the parent receives the value as it was when the constructor was called.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -403,7 +422,7 @@ class Child extends BaseModel
 </div>
     </div>
 </div>
-<h2>Passing Static Values and Parameters</h2>
+<h2 id="passing-static-values-and-parameters">Passing Static Values and Parameters</h2>
 <p>Because parent(...) is inserted at the start of the constructor body, prefer literals, constants, and incoming parameters. Avoid <code>$this</code> and method calls in those arguments — the instance is not fully constructed yet. The compiler does not currently reject those expressions; treat this as guidance, not a hard check.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -440,7 +459,7 @@ class DefaultVehicle extends BaseModel
     }
 }
 </code></pre></div>
-<h2>Constructor Property Promotion</h2>
+<h2 id="constructor-property-promotion">Constructor Property Promotion</h2>
 <p>Constructor property promotion works as in PHP 8. Constructor parameters may be promoted with visibility and <code>readonly</code>. Use <code>readonly</code> when a property should be set only during construction. <code>clone $obj with [...]</code> can still update <code>readonly</code> properties on the copy; see the <code>with</code> keyword page.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -456,7 +475,7 @@ class Point
 $p = new Point(1.0, 2.0);
 $q = clone $p with [z =&gt; 5.0];
 </code></pre></div>
-<h2>Property Accessors (PHP 8.4 Hooks)</h2>
+<h2 id="property-accessors-php-84-hooks">Property Accessors (PHP 8.4 Hooks)</h2>
 <p>Tyhp supports PHP 8.4 property hooks (<code>get</code> / <code>set</code>) on class properties. Hook bodies match PHP: a parameter-less <code>get { ... }</code>, optional <code>set { ... }</code> (the incoming value is <code>$value</code>), or a typed <code>set(string $value) { ... }</code>. <code>&amp;get</code> and <code>final get</code> / <code>final set</code> are also valid.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -474,8 +493,8 @@ final class Widget {
 }
 </code></pre></div>
 <p>On PHP 8.4+, the compiler emits native hook syntax. On PHP 8.2–8.3, it lowers the same source through a polyfill (<code>\Tyhp\Concerns\UsesPropertyAccessors</code> and <code>$this-&gt;__tyhpPropertyHook</code>) so hooked properties work without native PHP 8.4 hooks.</p>
-<p>To <strong>describe</strong> a hooked PHP property in a <code>.tyhpdef</code> file, write the bodyless list <code>{ get; set; }</code> (or <code>{ &amp;get; }</code>). Hook bodies stay in <code>.tyhp</code> (and in PHP). See <a href="tyhpdef_classes.md#properties">Classes in Tyhpdef</a>.</p>
-<h2>Best Practices</h2>
+<p>To <strong>describe</strong> a hooked PHP property in a <code>.tyhpdef</code> file, write the bodyless list <code>{ get; set; }</code> (or <code>{ &amp;get; }</code>). Hook bodies stay in <code>.tyhp</code> (and in PHP). See <a href="tyhpdef_classes.html#properties">Classes in Tyhpdef</a>.</p>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -512,7 +531,7 @@ final class Widget {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -568,7 +587,7 @@ final class Widget {
 //     }
 // }
 </code></pre></div>
-<h2>Compiler Errors</h2>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <ul>
 <li>Passing arguments to parent(...) that don't match the parent constructor's parameter types.</li>
 </ul>

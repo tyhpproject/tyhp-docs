@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link active" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -277,13 +296,13 @@
 				<section class="docs-section" id="FAQ_Tyhp_Syntax">
     <h2 class="section-heading">FAQ: Tyhp Syntax</h2>
     
-    <h2>Do I have to type every variable?</h2>
+    <h2 id="do-i-have-to-type-every-variable">Do I have to type every variable?</h2>
 <p>Not explicitly. Tyhp supports type inference on first assignment. When you write <code>$x = 42;</code> without a type annotation, Tyhp infers that <code>$x</code> is <code>int</code>. You only need explicit type annotations when the type cannot be inferred (no initializer) or when you want a wider type than inference would give. Variables without both a type annotation and an inferable initializer always produce an error.</p>
-<h2>What happens to types at runtime?</h2>
-<p>Tyhp's type system is enforced at compile time. Types, generics, and type guards are erased from PHP signatures. The compiled PHP output contains the type hints that PHP itself supports (parameter types, return types, property types). Source type aliases expand to the underlying type in those hints and also emit a <code>\Tyhp\Type</code> factory (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>) so PHP can name the alias at runtime. A compiled Tyhp library's <code>package.tyhpdef</code> stamps <code>#[\Tyhp\GenericRuntime]</code> on every emitted generic class, method, and function. Foreign consumer sites use <code>\Tyhp\Generic::bind</code>; overlay tyhpdefs that omit the stamp keep erase / inline emit. See <a href="tyhp_0700_typeAliases.md">Type Aliases</a> and <a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a>.</p>
-<h2>Can I mix Tyhp and PHP files in the same project?</h2>
+<h2 id="what-happens-to-types-at-runtime">What happens to types at runtime?</h2>
+<p>Tyhp's type system is enforced at compile time. Types, generics, and type guards are erased from PHP signatures. The compiled PHP output contains the type hints that PHP itself supports (parameter types, return types, property types). Source type aliases expand to the underlying type in those hints and also emit a <code>\Tyhp\Type</code> factory (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>) so PHP can name the alias at runtime. A compiled Tyhp library's <code>package.tyhpdef</code> stamps <code>#[\Tyhp\GenericRuntime]</code> on every emitted generic class, method, and function. Foreign consumer sites use <code>\Tyhp\Generic::bind</code>; overlay tyhpdefs that omit the stamp keep erase / inline emit. See <a href="tyhp_0700_typeAliases.html">Type Aliases</a> and <a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a>.</p>
+<h2 id="can-i-mix-tyhp-and-php-files-in-the-same-project">Can I mix Tyhp and PHP files in the same project?</h2>
 <p>Yes. A Tyhp project can contain both <code>.tyhp</code> files (type-checked and compiled) and <code>.php</code> files (passed through unchanged). You can even mix Tyhp and PHP within a single file using the <code>&lt;?tyhp</code> and <code>&lt;?php</code> open tags. Code inside <code>&lt;?tyhp</code> blocks is type-checked and compiled; code inside <code>&lt;?php</code> blocks is passed through as-is.</p>
-<h2>How do generics work without runtime support?</h2>
+<h2 id="how-do-generics-work-without-runtime-support">How do generics work without runtime support?</h2>
 <p>Generics are enforced at compile time. Type parameters are erased from PHP signatures. Same-compilation tracked sites emit factories / <code>__tyhpGeneric</code> binders; erased sites stay a plain <code>new</code> or plain call. Foreign compiled-library tyhpdefs that stamp <code>#[\Tyhp\GenericRuntime]</code> always go through <code>\Tyhp\Generic::bind(...)(...)</code>. Overlay tyhpdefs without the stamp keep erase / inline emit. Alias factories (<code>aliasFactory</code>) are unchanged.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 function first&lt;T&gt;(array&lt;T&gt; $items): T {
@@ -293,9 +312,9 @@ function first&lt;T&gt;(array&lt;T&gt; $items): T {
 int $n = first&lt;int&gt;([1, 2, 3]);
 </code></pre></div>
 <p>The compiled PHP has no trace of the generic type parameter <code>T</code> — it is used only for compile-time type checking.</p>
-<h2>What is the difference between fn (Tyhp arrow functions) and fn (PHP arrow functions)?</h2>
+<h2 id="what-is-the-difference-between-fn-tyhp-arrow-functions-and-fn-php-arrow-functions">What is the difference between fn (Tyhp arrow functions) and fn (PHP arrow functions)?</h2>
 <p>In PHP, <code>fn</code> creates a short closure (arrow function) with a single expression body. Tyhp extends this: <code>fn</code> in Tyhp can also have a block body and supports full type annotations on parameters and return types. Tyhp arrow functions are compiled to PHP closures. The key difference is that Tyhp's <code>fn</code> is type-checked and supports generics, while PHP's <code>fn</code> has only basic type hints.</p>
-<h2>How do I handle nullable types?</h2>
+<h2 id="how-do-i-handle-nullable-types">How do I handle nullable types?</h2>
 <p>All types in Tyhp are non-nullable by default. To allow null, prefix the type with <code>?</code> or use a union type with <code>null</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 ?string $name = null;       // nullable via ? prefix
@@ -311,9 +330,9 @@ function greet(?string $name): string {
     return &quot;Hello, stranger&quot;;
 }
 </code></pre></div>
-<h2>Can I use eval() in Tyhp?</h2>
+<h2 id="can-i-use-eval-in-tyhp">Can I use eval() in Tyhp?</h2>
 <p>By default, <code>eval()</code> is disabled in Tyhp for security and type-safety reasons — the compiler cannot verify types inside dynamically evaluated strings. If you absolutely need it, you can re-enable it with <code>build.allowEval: true</code> in <code>tyhp.json</code>. However, code inside <code>eval()</code> is not type-checked. A better alternative is to write the dynamic code in a PHP file and import it via tyhpdef.</p>
-<h2>How do extensions differ from traits?</h2>
+<h2 id="how-do-extensions-differ-from-traits">How do extensions differ from traits?</h2>
 <p>Extensions and traits are both mechanisms for adding functionality to classes, but they work differently. Traits are a PHP feature where methods are copied into a class at the source level. Extensions are a Tyhp feature that lets you add methods to existing classes (even third-party classes) without modifying their source code. Extension methods are compiled to standalone functions that take the target object as the first parameter.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 extension StringExtensions extends string {
@@ -325,14 +344,14 @@ extension StringExtensions extends string {
 use extension StringExtensions;
 string $title = &quot;hello world&quot;-&gt;toTitleCase();
 </code></pre></div>
-<h2>What is <code>global use</code>? Is it PHP <code>global $var</code>?</h2>
+<h2 id="what-is-global-use-is-it-php-global-var">What is <code>global use</code>? Is it PHP <code>global $var</code>?</h2>
 <p>No. Tyhp <code>global use</code> is like C# <code>global using</code>: it prefixes <code>use</code> / <code>use function</code> / <code>use const</code> / <code>use extension</code> and applies to the <strong>entire compilation</strong> that loaded that file. It is <strong>not</strong> PHP <code>global $var</code>.</p>
-<p>A local (non-<code>global</code>) <code>use</code> may re-import a globally included symbol to give that file an alias or adaptations (<code>hide</code>, <code>insteadof</code>, method <code>as</code>). A local <code>use</code> that does not mutate warns (<code>TYHP4169</code>, <code>CheckerRedundantGlobalImport</code>). See <a href="tyhp_0350_useStatements.md#global-use">Use statements</a>.</p>
-<h2>How do I write code that differs by PHP version?</h2>
-<p>Use gates against <code>output.phpVersion</code>, the oldest PHP the build runs on: <code>declare(php=&quot;…&quot;)</code> (file- or block-level) and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> (positional or <code>version:</code>). Constraints are Composer syntax; <code>&quot;8.2&quot;</code> means the whole <code>8.2.*</code> minor. The gates themselves are not written to PHP; a gate that holds for only some versions at or above <code>output.phpVersion</code> becomes a <code>\PHP_VERSION_ID</code> check. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and <code>extension</code> (<strong>TYHP4304</strong>), and in <code>.tyhp</code> on a property, class constant, enum case, or interface method (<strong>TYHP4371</strong>) — use <code>declare(php=…)</code> (file-level <code>;</code> for Tyhp extensions today). See <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>.</p>
-<h2>Why is there one <code>tyhpdef/php</code> stubs package instead of one per PHP minor?</h2>
+<p>A local (non-<code>global</code>) <code>use</code> may re-import a globally included symbol to give that file an alias or adaptations (<code>hide</code>, <code>insteadof</code>, method <code>as</code>). A local <code>use</code> that does not mutate warns (<code>TYHP4169</code>, <code>CheckerRedundantGlobalImport</code>). See <a href="tyhp_0350_useStatements.html#global-use">Use statements</a>.</p>
+<h2 id="how-do-i-write-code-that-differs-by-php-version">How do I write code that differs by PHP version?</h2>
+<p>Use gates against <code>output.phpVersion</code>, the oldest PHP the build runs on: <code>declare(php=&quot;…&quot;)</code> (file- or block-level) and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> (positional or <code>version:</code>). Constraints are Composer syntax; <code>&quot;8.2&quot;</code> means the whole <code>8.2.*</code> minor. The gates themselves are not written to PHP; a gate that holds for only some versions at or above <code>output.phpVersion</code> becomes a <code>\PHP_VERSION_ID</code> check. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> and <code>extension</code> (<strong>TYHP4304</strong>), and in <code>.tyhp</code> on a property, class constant, enum case, or interface method (<strong>TYHP4371</strong>) — use <code>declare(php=…)</code> (file-level <code>;</code> for Tyhp extensions today). See <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>.</p>
+<h2 id="why-is-there-one-tyhpdefphp-stubs-package-instead-of-one-per-php-minor">Why is there one <code>tyhpdef/php</code> stubs package instead of one per PHP minor?</h2>
 <p>Almost all of the <code>tyhpdef/php</code> builtin surface is the same on 8.2–8.5. The small differences are version-gated in that single package; the compiler keeps only the declarations that match your <code>output.phpVersion</code>. You do not install <code>tyhpdef/php-8.2</code> vs <code>tyhpdef/php-8.4</code>.</p>
-<h2>What are structs used for?</h2>
+<h2 id="what-are-structs-used-for">What are structs used for?</h2>
 <p>Structs provide a typed alternative to raw associative arrays. They define a fixed set of named, typed properties and are compiled to PHP arrays by default. Structs are value types — they are copied on assignment and compared by value, not by reference — and use structural (schema-based) typing, meaning two structs with compatible shapes are interchangeable.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 type Point = struct {
@@ -343,7 +362,7 @@ type Point = struct {
 Point $p = new Point() with [x =&gt; 1.0, y =&gt; 2.5];
 float $distance = \sqrt($p-&gt;x ** 2 + $p-&gt;y ** 2);
 </code></pre></div>
-<h2>How do I use async/await?</h2>
+<h2 id="how-do-i-use-asyncawait">How do I use async/await?</h2>
 <p>Tyhp provides async/await syntax for asynchronous programming. Named async functions are declared with the unwrapped value type (the compiler wraps <code>Promise&lt;T&gt;</code>). <code>await</code> suspends until a promise resolves. An <code>async { ... }</code> block is itself a <code>Promise&lt;T&gt;</code> — use it when you want running async work rather than a callable. At compile time, async/await is transformed into promise-based PHP code using the <code>tyhp/async</code> runtime package.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 async function fetchUser(int $id): User {
@@ -358,8 +377,8 @@ function after(Promise&lt;User&gt; $pending): Promise&lt;string&gt; {
     };
 }
 </code></pre></div>
-<h2>How do I swallow an exception on purpose?</h2>
-<p>Empty <code>catch</code> blocks warn <strong>TYHP4121</strong> because they often hide real failures. A comment inside the braces does not count as a statement. Name the exception and discard it with <code>(void)$e</code> — the same intentional-discard syntax as unused <code>#[\NoDiscard]</code> returns. Catch the specific type you expect when you can. See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
+<h2 id="how-do-i-swallow-an-exception-on-purpose">How do I swallow an exception on purpose?</h2>
+<p>Empty <code>catch</code> blocks warn <strong>TYHP4121</strong> because they often hide real failures. A comment inside the braces does not count as a statement. Name the exception and discard it with <code>(void)$e</code> — the same intentional-discard syntax as unused <code>#[\NoDiscard]</code> returns. Catch the specific type you expect when you can. See <a href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 try {
     $rp = new \ReflectionProperty($class, $name);
@@ -367,13 +386,13 @@ try {
     (void)$e;
 }
 </code></pre></div>
-<h2>When should I write <code>callable</code> vs <code>\Closure</code>?</h2>
-<p>Use <code>callable</code> / <code>callable(TArgs …): TReturn</code> for any invokable: closures, functions, methods, and <code>__invoke</code> objects. Use <code>\Closure</code> / <code>\Closure&lt;callable(TArgs …): TReturn&gt;</code> when you need a Closure <strong>object</strong> (<code>bind</code>, <code>bindTo</code>, <code>call</code>, <code>fromCallable</code>) or the class type. Every Closure is callable via <code>__invoke</code>; not every callable is a Closure. Assert a specific Closure or Fiber generic shape with <code>as</code>. See <a href="tyhp_0150_newTypes.md#the-closuretcallableshape-tthis-tscope-type">New and Changed Types</a>.</p>
-<h2>What is the declared return type of a generator?</h2>
-<p>A function that contains <code>yield</code> returns a Generator object. Write <code>: \Generator</code>, <code>: \Generator&lt;TKey, TValue&gt;</code>, or the full four-arg form — not the type of <code>return</code> inside the body. That inner value is <code>TReturn</code>, read with <code>$g-&gt;getReturn()</code> after exhaustion. Bare <code>\Generator</code> infers all four arguments from the body. See <a href="tyhp_0150_newTypes.md#the-generatortkey-tvalue-tsend-treturn-type">New and Changed Types</a>.</p>
-<h2>Can my class implement <code>\Traversable</code>?</h2>
-<p>Implement <code>\Iterator</code> or <code>\IteratorAggregate</code> instead. <code>\Traversable</code> is an engine interface; only those two may extend it. Listing <code>\Traversable</code> on a user class, enum, interface, or trait is <strong>TYHP4326</strong>. See <a href="tyhp_0150_newTypes.md#the-traversabletkey-tvalue-type">New and Changed Types</a>.</p>
-<h2>How do <code>#[\Deprecated]</code>, <code>#[\Override]</code>, and <code>#[\NoDiscard]</code> work?</h2>
+<h2 id="when-should-i-write-callable-vs-closure">When should I write <code>callable</code> vs <code>\Closure</code>?</h2>
+<p>Use <code>callable</code> / <code>callable(TArgs …): TReturn</code> for any invokable: closures, functions, methods, and <code>__invoke</code> objects. Use <code>\Closure</code> / <code>\Closure&lt;callable(TArgs …): TReturn&gt;</code> when you need a Closure <strong>object</strong> (<code>bind</code>, <code>bindTo</code>, <code>call</code>, <code>fromCallable</code>) or the class type. Every Closure is callable via <code>__invoke</code>; not every callable is a Closure. Assert a specific Closure or Fiber generic shape with <code>as</code>. See <a href="tyhp_0150_newTypes.html#the-closuretcallableshape-tthis-tscope-type">New and Changed Types</a>.</p>
+<h2 id="what-is-the-declared-return-type-of-a-generator">What is the declared return type of a generator?</h2>
+<p>A function that contains <code>yield</code> returns a Generator object. Write <code>: \Generator</code>, <code>: \Generator&lt;TKey, TValue&gt;</code>, or the full four-arg form — not the type of <code>return</code> inside the body. That inner value is <code>TReturn</code>, read with <code>$g-&gt;getReturn()</code> after exhaustion. Bare <code>\Generator</code> infers all four arguments from the body. See <a href="tyhp_0150_newTypes.html#the-generatortkey-tvalue-tsend-treturn-type">New and Changed Types</a>.</p>
+<h2 id="can-my-class-implement-traversable">Can my class implement <code>\Traversable</code>?</h2>
+<p>Implement <code>\Iterator</code> or <code>\IteratorAggregate</code> instead. <code>\Traversable</code> is an engine interface; only those two may extend it. Listing <code>\Traversable</code> on a user class, enum, interface, or trait is <strong>TYHP4326</strong>. See <a href="tyhp_0150_newTypes.html#the-traversabletkey-tvalue-type">New and Changed Types</a>.</p>
+<h2 id="how-do-deprecated-override-and-nodiscard-work">How do <code>#[\Deprecated]</code>, <code>#[\Override]</code>, and <code>#[\NoDiscard]</code> work?</h2>
 <p>They are PHP Core attributes. Tyhp checks them at compile time:</p>
 <ul>
 <li><code>#[\Deprecated]</code> — use-site warning <strong>TYHP4500</strong>. A string-literal <code>$message</code> is included. The tyhpdef <code>deprecated</code> keyword is the same warning. Still warns when <code>output.phpVersion</code> is below 8.4.</li>
@@ -381,9 +400,9 @@ try {
 <li><code>#[\NoDiscard]</code> — unused return <strong>TYHP4165</strong> from the invoked declaration. Interface and abstract callees do not warn; overrides do not inherit the warning unless marked. <code>(void)</code> suppresses. Still warns below PHP 8.5.</li>
 <li><code>#[\DelayedTargetValidation]</code> — at PHP 8.5+, skip target mismatch (<strong>TYHP4127</strong>) for Core attributes on that declaration. Functional checks still run.</li>
 </ul>
-<p>See <a href="tyhp_0330_phpEngineAttributes.md">PHP Engine Attributes</a>.</p>
-<h2>Do enumerations implement <code>\UnitEnum</code>?</h2>
-<p>Yes. Every enum is <code>\UnitEnum</code> without a written <code>implements</code>. A backed enum is also <code>\BackedEnum</code>. <code>cases()</code> resolves on every enum; backed <code>from()</code> / <code>tryFrom()</code> resolve as well. Classes, interfaces, and traits must not list <code>\UnitEnum</code> or <code>\BackedEnum</code> (<strong>TYHP4337</strong>). Enums must not list them either, and must not redeclare <code>cases</code>, <code>from</code>, or <code>tryFrom</code> (<strong>TYHP4338</strong>). See <a href="tyhp_0150_newTypes.md#the-unitenum-and-backedenumtvalue-types">New and Changed Types</a>.</p>
+<p>See <a href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a>.</p>
+<h2 id="do-enumerations-implement-unitenum">Do enumerations implement <code>\UnitEnum</code>?</h2>
+<p>Yes. Every enum is <code>\UnitEnum</code> without a written <code>implements</code>. A backed enum is also <code>\BackedEnum</code>. <code>cases()</code> resolves on every enum; backed <code>from()</code> / <code>tryFrom()</code> resolve as well. Classes, interfaces, and traits must not list <code>\UnitEnum</code> or <code>\BackedEnum</code> (<strong>TYHP4337</strong>). Enums must not list them either, and must not redeclare <code>cases</code>, <code>from</code>, or <code>tryFrom</code> (<strong>TYHP4338</strong>). See <a href="tyhp_0150_newTypes.html#the-unitenum-and-backedenumtvalue-types">New and Changed Types</a>.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">

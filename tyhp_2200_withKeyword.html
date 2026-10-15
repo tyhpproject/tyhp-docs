@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -281,7 +300,7 @@
 </p>
     <p>The with keyword in Tyhp provides a concise way to set properties on objects and structs. It is a binary operator that produces a fully initialized value in a single expression. Combined with <code>readonly</code> properties, <code>clone ... with</code> enables immutable update patterns.</p>
 <p>Object <code>with</code> mutates identity. Struct <code>with</code> rebinds an array. That is the same distinction as passing an object vs passing an array into a PHP function: the callee can mutate the object instance; assignments to an array parameter do not change the caller's array unless the parameter is by-ref.</p>
-<h2>The Three Forms of with</h2>
+<h2 id="the-three-forms-of-with">The Three Forms of with</h2>
 <p>Tyhp supports three forms of the with keyword, distinguished by what appears on its left-hand side:</p>
 <div class="alert alert-secondary" role="alert"><h4><code>new X(...) with [...]</code></h4><br/><p>Follows a new expression. Constructs a fresh instance and sets the listed properties on it. The result is the newly constructed object.</p>
 </div>
@@ -289,7 +308,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>$obj with [...]</code></h4><br/><p>Operates in-place on an existing object instance. It MUTATES the same instance and RETURNS THE SAME instance — there is no clone and no new. Use this form when you want to set several properties on an object you already hold and keep working with that exact object.</p>
 </div>
-<h2>Basic Syntax</h2>
+<h2 id="basic-syntax">Basic Syntax</h2>
 <p>The with keyword follows a new expression, a clone expression, or an existing object/struct value, and is followed by a <code>[...]</code> list where keys are property names and values are the values to assign.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -315,22 +334,26 @@ $updated = clone $user with [
     age =&gt; 25
 ];
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Emit depends on whether <code>with</code> is a <strong>statement</strong> or an <strong>expression</strong>, whether the properties are <code>readonly</code>, and the target PHP version.</p>
-<p><strong>Statement</strong> form (an assignment, or a bare <code>$obj with [...]</code>): non-readonly properties become direct assignments on the same variable — no temp, no helper.</p>
+<p><strong>Statement</strong> form (an assignment, or a bare <code>$obj with [...]</code>): non-readonly properties become direct assignments — no temp, no helper. <code>new ... with</code> assigns on the new instance, in-place <code>with</code> assigns on the object you already hold, and <code>clone ... with</code> clones first and then assigns on the clone. On PHP 8.5, <code>clone ... with</code> instead emits native <code>clone($x, [...])</code>, as in the expression form below.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 $user = new User(&#039;Alice&#039;, 30);
 $user-&gt;role = &#039;admin&#039;;
 
+// PHP 8.2–8.4
 $updated = clone $user;
 $updated-&gt;name = &#039;Bob&#039;;
 $updated-&gt;age = 25;
 </code></pre></div>
 <p><strong>Expression</strong> form (for example <code>return clone $x with [...]</code>, or a <code>with</code> used as a value):</p>
 <ul>
-<li>PHP 8.5: native <code>clone($x, [...])</code> (including <code>clone(new Color(), [...])</code> for <code>new ... with</code>)</li>
-<li>PHP 8.2–8.4: <code>\Tyhp\ObjectHelper::with(...)</code></li>
+<li><code>clone ... with</code> on PHP 8.5: native <code>clone($x, [...])</code></li>
+<li><code>clone ... with</code> on PHP 8.2–8.4: <code>\Tyhp\ObjectHelper::with(clone $x, [...])</code></li>
+<li><code>new ... with</code> on non-<code>readonly</code> properties: <code>\Tyhp\ObjectHelper::with(new X(), [...])</code> on every PHP version</li>
+<li><code>new ... with</code> that sets <code>readonly</code> properties: see below</li>
+<li>In-place <code>$obj with [...]</code> used as a value: <code>\Tyhp\ObjectHelper::with($obj, [...])</code>, which mutates and returns the same instance</li>
 </ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -344,10 +367,10 @@ return \Tyhp\ObjectHelper::with(new Widget(), [&#039;color&#039; =&gt; &quot;blu
 <p><strong>Readonly <code>clone ... with</code> on PHP 8.2–8.4</strong> (requires <code>build.experimentalReadonlyCloneWith: true</code>) emits a reflection IIFE: an anonymous subclass with <code>$__tyhp_overrides</code>, <code>ReflectionClass::newInstanceWithoutConstructor()</code>, a property copy via <code>ReflectionObject</code>, then <code>clone $__wrapper</code>. It is not a simple <code>__clone()</code> wrapper around the source object.</p>
 <p><strong>Readonly <code>new ... with</code>:</strong></p>
 <ul>
-<li>PHP 8.4: <code>clone (new class(...) extends \Color { public function __clone(): void { ... } })</code></li>
+<li>PHP 8.2–8.4: <code>clone (new class(...) extends \Color { public function __clone(): void { ... } })</code></li>
 <li>PHP 8.5: <code>clone(new Color(), ['alpha' =&gt; 128])</code></li>
 </ul>
-<h2>In-Place with on an Existing Instance</h2>
+<h2 id="in-place-with-on-an-existing-instance">In-Place with on an Existing Instance</h2>
 <p>When with is applied directly to an existing object instance (not preceded by new or clone), it mutates that instance in place and evaluates to the SAME instance. No clone is made and no new object is constructed — any other reference to the object sees the updated values. This is the form to use when you want to batch-assign several properties on an object you already hold.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -374,20 +397,20 @@ $same = $user with [
 // $user-&gt;age is now 31 and $user-&gt;role is now &#039;admin&#039;
 // ($same === $user) is true
 </code></pre></div>
-<h2>Compiled PHP Output for In-Place with</h2>
-<p>For an object instance, the in-place form compiles to direct property-assignment statements on the same variable. The expression's value is the object itself, so it can be assigned or chained without a clone or a constructor call.</p>
+<h2 id="compiled-php-output-for-in-place-with">Compiled PHP Output for In-Place with</h2>
+<p>For an object instance, the in-place form compiles to direct property-assignment statements. The expression's value is the object itself, so it can be assigned without a clone or a constructor call. Used as a value inside a larger expression (for example <code>return $user with [...]</code>), it emits <code>\Tyhp\ObjectHelper::with($user, [...])</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 $user = new User(&#039;Alice&#039;, 30);
 
-// $user with [...] emits direct property assignments on the same variable
-$user-&gt;age = 31;
-$user-&gt;role = &#039;admin&#039;;
+// $same = $user with [...] aliases the object, then assigns properties
 $same = $user;
+$same-&gt;age = 31;
+$same-&gt;role = &#039;admin&#039;;
 
 // No clone, no new — $same and $user reference the same object
 </code></pre></div>
-<p>For a struct value (which is backed by a PHP associative array), the in-place form emits as an array replace/merge that writes the updated keys back into the same variable.</p>
+<p>A struct is always a PHP associative array. As a statement, the in-place form reassigns the target variable (or property) with <code>\array_replace</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 type Coordinates = struct {
@@ -403,11 +426,13 @@ $coords with [alt =&gt; 100.0];
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-$coords = [&#039;lat&#039; =&gt; 40.7, &#039;lng&#039; =&gt; -74.0, &#039;alt&#039; =&gt; 0.0];
+$coords = [&#039;alt&#039; =&gt; 0.0, &#039;lat&#039; =&gt; 40.7, &#039;lng&#039; =&gt; -74.0];
 
-// In-place struct with emits an array replace into the same variable
+// In-place struct with reassigns the same variable
 $coords = \array_replace($coords, [&#039;alt&#039; =&gt; 100.0]);
 </code></pre></div>
+<p>A property target is reassigned the same way: <code>$this-&gt;coords with [alt =&gt; 100.0];</code> emits <code>$this-&gt;coords = \array_replace($this-&gt;coords, ['alt' =&gt; 100.0]);</code>.</p>
+<p>When an in-place struct <code>with</code> is used as a value (<code>$b = $a with [...]</code>, <code>return $a with [...]</code>), it emits <code>\array_replace($a, [...])</code> and leaves <code>$a</code> unchanged.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
@@ -420,7 +445,7 @@ $coords = \array_replace($coords, [&#039;alt&#039; =&gt; 100.0]);
 </div>
     </div>
 </div>
-<h2>Nested with Expressions</h2>
+<h2 id="nested-with-expressions">Nested with Expressions</h2>
 <p>The with keyword supports nesting. Inner with expressions are processed before outer ones.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -444,11 +469,12 @@ $app = new App() with [
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
+// PHP 8.2–8.4
 $app = new App();
 $app-&gt;name = &#039;MyApp&#039;;
 $app-&gt;config = \Tyhp\ObjectHelper::with(clone $defaultConfig, [&#039;debug&#039; =&gt; true, &#039;env&#039; =&gt; &#039;production&#039;]);
 </code></pre></div>
-<h2>with and readonly Properties</h2>
+<h2 id="with-and-readonly-properties">with and readonly Properties</h2>
 <p><code>readonly</code> properties cannot be assigned after construction. <code>new ... with</code> and <code>clone ... with</code> are allowed to set them on the new or cloned instance. Direct assignment and in-place <code>$obj with [...]</code> after construction are not.</p>
 <p>On PHP 8.5+, <code>clone ... with</code> uses native <code>clone($obj, [...])</code>. On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> (the compiler emits a reflection IIFE: <code>newInstanceWithoutConstructor</code>, <code>$__tyhp_overrides</code>, then <code>clone $__wrapper</code> — not a simple <code>__clone()</code> wrapper around the source). <code>new ... with</code> on <code>readonly</code> does not need that flag (PHP 8.4 emits an anonymous class with <code>__clone()</code>; PHP 8.5 uses <code>clone(new Color(), [...])</code>). <code>readonly</code> plus <code>with</code> is the immutable-update pattern.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>(no modifier)</code></h4><br/><p>Set in constructor: Yes. Set after construction: Yes. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: Yes.</p>
@@ -474,8 +500,8 @@ $q = clone $p with [z =&gt; 5.0];
 // $p-&gt;z = 3.0;  // ERROR: readonly
 // $p with [z =&gt; 3.0];  // ERROR after construction: in-place with cannot set readonly
 </code></pre></div>
-<h2>with on Structs</h2>
-<p>Since structs compile to PHP associative arrays, the with keyword on structs compiles to <code>\array_replace</code> (not <code>\array_merge</code>). That rebinds the array the same way a PHP function rebinds an array parameter — it does not mutate a shared object identity.</p>
+<h2 id="with-on-structs">with on Structs</h2>
+<p>Structs are always PHP associative arrays, so the with keyword on structs compiles to <code>\array_replace</code> (not <code>\array_merge</code>). That rebinds the array the same way a PHP function rebinds an array parameter — it does not mutate a shared object identity. Named and anonymous struct types support the same operations: property access and writes, <code>with</code>, <code>clone ... with</code>, <code>isset</code>, <code>??</code>, and array key aliases.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 type Coordinates = struct {
@@ -489,10 +515,29 @@ $elevated = clone $coords with [alt =&gt; 100.0];
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-$coords = [&#039;lat&#039; =&gt; 40.7, &#039;lng&#039; =&gt; -74.0, &#039;alt&#039; =&gt; 0.0];
+$coords = [&#039;alt&#039; =&gt; 0.0, &#039;lat&#039; =&gt; 40.7, &#039;lng&#039; =&gt; -74.0];
 $elevated = \array_replace($coords, [&#039;alt&#039; =&gt; 100.0]);
 </code></pre></div>
-<h2>Best Practices</h2>
+<p>An anonymous struct type behaves the same way:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+struct { string $name; int $age; } $person = new struct {
+    string $name;
+    int $age;
+} with [name =&gt; &#039;Alice&#039;, age =&gt; 30];
+
+$person-&gt;age = 31;
+$person with [age =&gt; 32];
+$renamed = clone $person with [name =&gt; &#039;Bob&#039;];
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+$person = [&#039;name&#039; =&gt; &#039;Alice&#039;, &#039;age&#039; =&gt; 30];
+$person[&#039;age&#039;] = 31;
+$person = \array_replace($person, [&#039;age&#039; =&gt; 32]);
+$renamed = \array_replace($person, [&#039;name&#039; =&gt; &#039;Bob&#039;]);
+</code></pre></div>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -553,7 +598,7 @@ $elevated = \array_replace($coords, [&#039;alt&#039; =&gt; 100.0]);
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -625,7 +670,7 @@ $c = clone $a with [name =&gt; &#039;Bob&#039;];
 </div>
     </div>
 </div>
-<h2>Compiler Errors</h2>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <ul>
 <li>Setting a readonly property via in-place <code>$obj with [...]</code> after construction.</li>
 <li><code>clone ... with</code> on a readonly property on PHP &lt; 8.5 without <code>build.experimentalReadonlyCloneWith</code>.</li>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -278,16 +297,16 @@
     <h2 class="section-heading">PXP</h2>
     
     <p>PXP is a project that adds syntax on top of PHP and compiles the result to PHP. Tyhp is also a superset of the PHP language that compiles to PHP. The two differ in scope, approach, and focus.</p>
-<h2>What PXP Is</h2>
+<h2 id="what-pxp-is">What PXP Is</h2>
 <p>PXP (pxp-lang) is an open-source project that provides a Rust-based parser and compiler for an extended PHP syntax. It began as a high-performance PHP parser and has grown into a language project that adds features like generics to PHP. PXP's tooling infrastructure — parser, AST, and formatter — is written in Rust, giving it strong performance characteristics for parsing and analysis.</p>
-<h2>Similarities</h2>
+<h2 id="similarities">Similarities</h2>
 <ul>
 <li>Both are supersets of the PHP language that compile to PHP</li>
 <li>Both aim to add features that PHP currently lacks</li>
 <li>Both support generics as a key language addition</li>
 <li>Both produce standard PHP output that runs on any PHP runtime</li>
 </ul>
-<h2>Differences</h2>
+<h2 id="differences">Differences</h2>
 <ul>
 <li>Tyhp's primary focus is a comprehensive, enforced type system — every variable, parameter, property, and return type must be typed. PXP focuses on adding syntax features without requiring types everywhere.</li>
 <li>Tyhp includes a compile-time type checker. PXP's type handling is more limited in scope.</li>
@@ -297,7 +316,7 @@
 <li>Tyhp's compiler is written in C# (.NET), while PXP's tooling is written in Rust.</li>
 <li>Tyhp includes a linter (<code>tyhp lint</code>), a language server (<code>tyhp language_server</code>), and sourcemap debugging (<code>build.generateSourcemap</code> with <code>tyhp xdebug_proxy</code>).</li>
 </ul>
-<h2>Complementary Strengths</h2>
+<h2 id="complementary-strengths">Complementary Strengths</h2>
 <p>PXP's Rust-based parser is aimed at PHP-adjacent tooling. Tyhp is a language with a type checker, compiler pipeline, runtime packages, and development tools. Both compile to PHP.</p>
 
 </section>

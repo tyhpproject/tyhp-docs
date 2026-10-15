@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -292,7 +311,7 @@
 </div>
     </div>
 </div>
-<h2>Binary Operators</h2>
+<h2 id="binary-operators">Binary Operators</h2>
 <p>Binary operator overloads take two parameters. At least one side must be self (the defining class type). When both operands are objects with the same operator defined, the left operand's class takes precedence (left-first resolution).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -325,7 +344,7 @@ class Money
     }
 }
 </code></pre></div>
-<h2>Compiled PHP Output for Binary Operators</h2>
+<h2 id="compiled-php-output-for-binary-operators">Compiled PHP Output for Binary Operators</h2>
 <p>All forms of one operator collapse into a single static method with union-typed operands and return. The method dispatches on the runtime operand types (instanceof for objects, is_int/is_float/is_string/is_bool/is_array for builtins) and throws for an unaccepted combination.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -364,7 +383,7 @@ class Money
     }
 }
 </code></pre></div>
-<h2>Call-Site Rewriting</h2>
+<h2 id="call-site-rewriting">Call-Site Rewriting</h2>
 <p>At call sites, operator usage is rewritten to static method calls. Binary expressions resolve the left operand first; the original operand order is preserved in the arguments.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -386,10 +405,10 @@ $e = \Money::__add(100, $a);
 </code></pre></div>
 <p><strong>Tyhpdef native passthrough:</strong> a bodyless <code>operator +(…): T;</code> (no <code>extension</code> keyword) on a<br />
 tyhpdef class means the PHP type already supports the operator. Call sites keep the PHP operator —<br />
-they are <strong>not</strong> rewritten to <code>__add</code>. See <a href="tyhpdef_classes.md#operators">Tyhpdef classes — Operators</a>.<br />
+they are <strong>not</strong> rewritten to <code>__add</code>. See <a href="tyhpdef_classes.html#operators">Tyhpdef classes — Operators</a>.<br />
 Mapped overloads use <code>extension operator</code> with a required <code>=&gt;</code> expression; see<br />
-<a href="tyhpdef_extensions.md#native-vs-mapped-operators">Extensions in Tyhpdef</a>.</p>
-<h2>Extension operators</h2>
+<a href="tyhpdef_extensions.html#native-vs-mapped-operators">Extensions in Tyhpdef</a>.</p>
+<h2 id="extension-operators">Extension operators</h2>
 <p>An operator inside <code>extension Name { }</code> takes its target from the block. List every operand. <code>self</code> is that target, including a scalar. <code>int + Money</code> is <code>operator + (int $left, self $right)</code> on an extension whose target is <code>Money</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -401,8 +420,8 @@ extension MoneyOps extends \App\Money {
     operator + (int $left, self $right): self =&gt; $right;
 }
 </code></pre></div>
-<p>Class, enum, trait, and interface operators stay on that type: <code>self</code> is the enclosing type. Tyhpdef class-body <code>extension operator</code> is the same: <code>self</code> is the enclosing class. See <a href="tyhp_2100_extensions.md">Extensions</a>.</p>
-<h2>Hiding and preferring extension operators</h2>
+<p>Class, enum, trait, and interface operators stay on that type: <code>self</code> is the enclosing type. Tyhpdef class-body <code>extension operator</code> is the same: <code>self</code> is the enclosing class. See <a href="tyhp_2100_extensions.html">Extensions</a>.</p>
+<h2 id="hiding-and-preferring-extension-operators">Hiding and preferring extension operators</h2>
 <p>When two in-scope extensions both declare the same operator for a target that both can match, that is a conflict — the same idea as conflicting extension methods. Resolve it on <code>use extension</code> with postfix <code>hide</code> or <code>insteadof</code>. The adaptation names the target in angle brackets (<code>operator *&lt;string&gt;</code>). That qualifier is not part of the operator declaration. <strong>Operators cannot be renamed with <code>as</code></strong> (<code>TYHP4170</code>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -422,8 +441,8 @@ use extension StringOperators, RepeatOps {
 <li><code>operator +&lt;Money&gt; hide</code> hides all <code>+</code> members for that target (unary and binary together).</li>
 <li><code>hide</code> is a contextual keyword only inside <code>{ }</code> adaptations. Do not use overlay <code>omit</code> here, and do not use PHP trait <code>as private</code>.</li>
 </ul>
-<p>The same syntax works in <code>.tyhp</code> and tyhpdef. See <a href="tyhp_0350_useStatements.md">Use statements</a> and <a href="tyhp_2100_extensions.md#importing-extensions-with-use-extension">Extensions</a>.</p>
-<h2>Unary Operators</h2>
+<p>The same syntax works in <code>.tyhp</code> and tyhpdef. See <a href="tyhp_0350_useStatements.html">Use statements</a> and <a href="tyhp_2100_extensions.html#importing-extensions-with-use-extension">Extensions</a>.</p>
+<h2 id="unary-operators">Unary Operators</h2>
 <p>Unary operator overloads take a single self parameter and emit as static methods.</p>
 <p>Unary operators compile to methods with fixed names:</p>
 <ul>
@@ -434,7 +453,7 @@ use extension StringOperators, RepeatOps {
 <li><code>++</code> (increment) -&gt; <code>__increment(self $o): self</code></li>
 <li><code>--</code> (decrement) -&gt; <code>__decrement(self $o): self</code></li>
 </ul>
-<h2>Comparison Operators</h2>
+<h2 id="comparison-operators">Comparison Operators</h2>
 <p>Comparison operators return bool (int for spaceship). They emit as static methods just like other binary operators.</p>
 <p>Comparison operators compile to these method names:</p>
 <ul>
@@ -448,7 +467,7 @@ use extension StringOperators, RepeatOps {
 <li><code>!==</code> -&gt; <code>__isNotExact($l, $r): bool</code></li>
 <li><code>&lt;=&gt;</code> -&gt; <code>__compare($l, $r): int</code></li>
 </ul>
-<h2>Conversion Operators</h2>
+<h2 id="conversion-operators">Conversion Operators</h2>
 <p>The convert operator enables type conversion. Converting FROM another type returns self (the return type is implied) and emits as a static __from method. Converting TO another type requires an explicit return type and emits as an INSTANCE __to{T}() method. Declaring a convert-to also auto-adds the matching \Tyhp\Contracts*Convertible interface to the class. A self-&gt;self convert is a compile-time error.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -465,7 +484,7 @@ class Celsius
     operator convert(self $value): int   { return (int)\round($value-&gt;degrees); }
 }
 </code></pre></div>
-<h2>Compiled PHP Output for Conversion Operators</h2>
+<h2 id="compiled-php-output-for-conversion-operators">Compiled PHP Output for Conversion Operators</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
 class Celsius implements \Tyhp\Contracts\FloatConvertible, \Tyhp\Contracts\IntConvertible
@@ -496,7 +515,50 @@ class Celsius implements \Tyhp\Contracts\FloatConvertible, \Tyhp\Contracts\IntCo
 </div>
     </div>
 </div>
-<h2>Word Operator: empty</h2>
+<h3 id="conversions-declared-in-an-extension">Conversions Declared in an Extension</h3>
+<p>A conversion declared in an <a href="tyhp_2100_extensions.html"><code>extension</code></a> applies only where that extension is active: in the file that declares it, in a file that imports it with <code>use extension</code>, and in every file once a file declares it with <code>global use extension</code>. Conversions declared in a class itself apply everywhere. In a file where the extension is not active, an argument that needs the conversion reports TYHP4010 and a <code>return</code> that needs it is a type error.</p>
+<p>A call that needs an extension conversion compiles to a call of the extension class's static method, also when the call goes through another namespace or a <code>use function</code> import. A short <code>=&gt;</code> conversion in an extension compiles the same way:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">\Probe\takeWallet(\Probe\WalletConv::__from($n))
+</code></pre></div>
+<h3 id="conversions-on-first-class-callables">Conversions on First-Class Callables</h3>
+<p>A first-class callable (<code>describe(...)</code>, <code>$object-&gt;method(...)</code>, <code>Util::make(...)</code>, <code>$invokable(...)</code>, or an extension method such as <code>$text-&gt;label(...)</code>) whose callee has a parameter that other types convert to becomes a wrapper closure. The wrapper accepts those types in addition to the declared one and converts them before it calls the callee, so the value behaves like a direct call:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+final class Money
+{
+    public function __construct(public int $cents) {}
+
+    operator convert(int $value)
+    {
+        return new self($value);
+    }
+}
+
+function describe(Money $amount): string
+{
+    return &quot;money:{$amount-&gt;cents}&quot;;
+}
+
+function run(): void
+{
+    $fn = describe(...);
+    echo $fn(5), &quot;\n&quot;;                             // the int converts to a Money
+    array&lt;string&gt; $all = \array_map($fn, [5, 6]);  // callers in PHP get the same behavior
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$fn = (static fn(\App\Money|int $amount): string =&gt; describe((\is_int($amount) ? \App\Money::__from($amount) : $amount)));
+</code></pre></div>
+<p>The widening has these limits:</p>
+<ul>
+<li>Only a first-class callable is widened. A variable declared <code>callable(Money): string</code> and a closure written with <code>fn</code> or <code>function</code> keep exactly the parameter types they declare.</li>
+<li>By-reference, variadic, and generic-typed parameters are not converted.</li>
+<li>A callee with no convertible parameter stays a plain native first-class callable.</li>
+<li>The wrapper keeps the callee's return type. It adds one call frame and reflects as an anonymous closure.</li>
+<li>For an overloaded function, the conversion is chosen per parameter position. See <a href="tyhp_1200_functionOverloads.html#overloaded-functions-as-values">Overloaded Functions as Values</a>.</li>
+</ul>
+<h2 id="word-operator-empty">Word Operator: empty</h2>
 <p>The empty word operator defines how an object behaves in emptiness checks. It takes a single self parameter and returns bool. The true, false, and null operators do NOT exist — express truthiness via operator convert(self): bool (-&gt; __toBool).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -511,7 +573,7 @@ class OptionalValue
 }
 </code></pre></div>
 <p>empty compiles to a static __isEmpty(self $o): bool. Its call site rewrites so a null/unset receiver short-circuits: empty($o) -&gt; (empty($o) || \Type::__isEmpty($o)).</p>
-<h2>Expression Body Shorthand</h2>
+<h2 id="expression-body-shorthand">Expression Body Shorthand</h2>
 <p>Operator overloads support the =&gt; expr shorthand instead of a full block body.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -525,7 +587,7 @@ class Point
     operator ==(self $left, self $right) =&gt; $left-&gt;x === $right-&gt;x &amp;&amp; $left-&gt;y === $right-&gt;y;
 }
 </code></pre></div>
-<h2>Abstract and Final Operators</h2>
+<h2 id="abstract-and-final-operators">Abstract and Final Operators</h2>
 <p>Operator overloads support abstract and final. An abstract operator introduces an abstract generated method that a subclass's operator satisfies; a final operator cannot be overridden.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -544,7 +606,7 @@ class Circle extends Shape
     }
 }
 </code></pre></div>
-<h2>Compound Assignment Operators</h2>
+<h2 id="compound-assignment-operators">Compound Assignment Operators</h2>
 <p>Compound assignment operators (+=, -=, *=, etc.) are derived from their corresponding binary operators. You do not declare them separately.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -560,9 +622,9 @@ $cost = new Money(250);
 
 $wallet = \Money::__add($wallet, $cost);
 </code></pre></div>
-<h2>Supported Operators Reference</h2>
+<h2 id="supported-operators-reference">Supported Operators Reference</h2>
 <p>The following operators can be overloaded. Each shows the operator, kind (unary/binary), and the generated static PHP method name.</p>
-<h2>Arithmetic Operators</h2>
+<h2 id="arithmetic-operators">Arithmetic Operators</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>+ (unary)</code></h4><br/><p>As-numeric. Method: __asNumeric(self $o): int|float</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>+ (binary)</code></h4><br/><p>Addition. Method: __add($l, $r)</p>
@@ -583,7 +645,7 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>-- (unary)</code></h4><br/><p>Decrement. Method: __decrement(self $o): self</p>
 </div>
-<h2>Bitwise Operators</h2>
+<h2 id="bitwise-operators">Bitwise Operators</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>~ (unary)</code></h4><br/><p>Bitwise not. Method: __bwNot(self $o)</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>&lt;&lt; (binary)</code></h4><br/><p>Shift left. Method: __bwSL($l, $r)</p>
@@ -596,7 +658,7 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>| (binary)</code></h4><br/><p>Bitwise OR. Method: __bwOr($l, $r)</p>
 </div>
-<h2>String and Comparison Operators</h2>
+<h2 id="string-and-comparison-operators">String and Comparison Operators</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>. (binary)</code></h4><br/><p>String concat. Method: __concat($l, $r)</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>&lt; (binary)</code></h4><br/><p>Less than. Method: __isLessThan($l, $r): bool</p>
@@ -617,7 +679,7 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>&lt;=&gt; (binary)</code></h4><br/><p>Spaceship. Method: __compare($l, $r): int</p>
 </div>
-<h2>Boolean, Word, and Conversion</h2>
+<h2 id="boolean-word-and-conversion">Boolean, Word, and Conversion</h2>
 <div class="alert alert-secondary" role="alert"><h4><code>! (unary)</code></h4><br/><p>Boolean not. Method: __not(self $o)</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>empty (word)</code></h4><br/><p>Empty check. Method: __isEmpty(self $o): bool</p>
@@ -626,9 +688,9 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>convert (to)</code></h4><br/><p>Convert self to other type. Instance method __to{T}(): T (e.g. __toInt, __toFloat, __toString, __toBool, __toDecimal); auto-adds the matching *Convertible interface</p>
 </div>
-<h2>Reserved Names</h2>
+<h2 id="reserved-names">Reserved Names</h2>
 <p>Generated operator method names are reserved. If a class declares an operator and also hand-writes a method with the generated name (e.g. operator + and __add), it is a compile-time error. Names are reserved only when the corresponding operator is declared, so a class without a convert(self): string may still hand-write __toString.</p>
-<h2>Resolution Order</h2>
+<h2 id="resolution-order">Resolution Order</h2>
 <ol>
 <li>If no operands are objects, standard PHP behavior applies.</li>
 <li>For a unary operator, the operand's class defines the overload.</li>
@@ -637,7 +699,7 @@ $wallet = \Money::__add($wallet, $cost);
 <li>If no match is found, emit a compiler error.</li>
 <li>All forms of a given operator must be mutually distinguishable by operand type, otherwise the collapsed dispatch would be ambiguous (compile-time error).</li>
 </ol>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -698,7 +760,7 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -759,7 +821,7 @@ $wallet = \Money::__add($wallet, $cost);
 </div>
     </div>
 </div>
-<h2>Compiler Errors</h2>
+<h2 id="compiler-errors">Compiler Errors</h2>
 <ul>
 <li>Defining operator overloads on structs.</li>
 <li>Binary operator where neither operand is self.</li>

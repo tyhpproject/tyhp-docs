@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -282,7 +301,7 @@
     <p>An <strong>object shape</strong> is a structural object type: a named predicate on an instance. It is the object counterpart of a struct (an array shape). Two values may match the same shape and still be different PHP classes.</p>
 <p>A shape is declared only as the right-hand side of a <code>type</code> alias, using <code>object { … }</code>. Use the alias name everywhere else (parameters, properties, returns, generic bounds, unions). <code>new class { … }</code> remains the anonymous-class <strong>expression</strong>.</p>
 <p><code>__New&lt;T&gt;</code> marks a shape as <strong>constructable</strong>: a concrete class with a public constructor that can be invoked as the shape’s <code>__construct</code> (or the PHP default zero-argument constructor when the shape has no <code>__construct</code>). Values of a shape and of <code>__New&lt;Shape&gt;</code> are <strong>instances</strong>. Class-name strings use <code>__ClassName&lt;Shape&gt;</code> and <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code>.</p>
-<h2>Object shapes</h2>
+<h2 id="object-shapes">Object shapes</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 type ClockShape = object {
@@ -311,7 +330,7 @@ type FallbackConstraint = object {
 function parseConstraint(string $pretty): \Composer\Semver\Constraint\ConstraintInterface | FallbackConstraint;
 </code></pre></div>
 <p><code>ClockShape</code> in type position means <code>object</code> refined by that shape. You do not write <code>object &amp; ClockShape</code>.</p>
-<h3>What a shape matches</h3>
+<h3 id="what-a-shape-matches">What a shape matches</h3>
 <p>A nominal object type (or another shape) assigns to a shape when:</p>
 <ul>
 <li>Every <strong>public</strong> member of the shape exists on the source (extra source members are allowed).</li>
@@ -322,7 +341,7 @@ function parseConstraint(string $pretty): \Composer\Semver\Constraint\Constraint
 </ul>
 <p><code>object</code> and <code>mixed</code> do not assign to a shape. Narrow with <code>$x is ClockShape</code> or declare the value as the shape (including tyhpdef returns).</p>
 <p>Empty <code>type X = object {};</code> is illegal; write <code>object</code>.</p>
-<h3>What a shape cannot do</h3>
+<h3 id="what-a-shape-cannot-do">What a shape cannot do</h3>
 <p>A shape alias is not a PHP class. These are errors:</p>
 <ul>
 <li><code>new ClockShape</code></li>
@@ -331,14 +350,14 @@ function parseConstraint(string $pretty): \Composer\Semver\Constraint\Constraint
 <li><code>$x-&gt;__construct(...)</code> when <code>$x</code> is shape-typed (<code>__construct</code> on a shape is only for <code>__New</code> / <code>new T()</code>)</li>
 </ul>
 <p><code>object { … }</code> is illegal except as the alias right-hand side.</p>
-<h3>Nominal parents plus extra members</h3>
+<h3 id="nominal-parents-plus-extra-members">Nominal parents plus extra members</h3>
 <p>There is no <code>extends</code> / <code>implements</code> on the <code>object { }</code> header. Nominal parents are intersections:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">type TimestampedLogger = \Psr\Log\LoggerInterface &amp; object {
     public function getLastLogAt(): \DateTimeImmutable;
 };
 </code></pre></div>
 <p>That type is <code>\Psr\Log\LoggerInterface</code> plus <code>getLastLogAt()</code>.</p>
-<h2><code>__New&lt;T&gt;</code></h2>
+<h2 id="newt"><code>__New&lt;T&gt;</code></h2>
 <p><code>T</code> must be an object-shape alias. <code>T extends ClockShape</code> is an instance bound. <code>T extends __New&lt;ClockShape&gt;</code> is the same instance API <strong>and</strong> <code>new T(...)</code> is allowed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -354,7 +373,7 @@ function makeNamed&lt;T extends __New&lt;Named&gt;&gt;(string $name): T {
 <p>If the shape has <strong>no</strong> <code>__construct</code>, <code>__New&lt;Shape&gt;</code> requires the PHP default <strong>zero-argument</strong> public constructor (no constructor in source, or every constructor parameter has a default). That is not “any constructor.” A type can match <code>HasQuery</code> as an instance and still fail <code>__New&lt;HasQuery&gt;</code> if its constructor needs arguments.</p>
 <p><code>public function __construct(): void;</code> on a shape is the explicit zero-argument form (same matching rule). <code>__construct</code> on a shape is never an instance method.</p>
 <p>Abstract classes, interfaces, traits, enums, and non-public constructors do not satisfy <code>__New&lt;T&gt;</code>. They may still satisfy the shape as instance types when the public members match.</p>
-<h2>Class-name strings</h2>
+<h2 id="class-name-strings">Class-name strings</h2>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
 <tr>
@@ -388,7 +407,7 @@ if (\class_exists&lt;__New&lt;Named&gt;&gt;($raw)) {
 </code></pre></div>
 <p><code>new $cls(...)</code> is an error when <code>$cls</code> is <code>__ClassName&lt;Shape&gt;</code> without <code>__New</code>. Bare <code>__ClassName</code> / <code>__ClassName&lt;object&gt;</code> / <code>__ClassName&lt;SomeClass&gt;</code> keep their existing dynamic-<code>new</code> rules.</p>
 <p><code>\class_exists&lt;ClockShape&gt;($name)</code> narrows to <code>__ClassName&lt;ClockShape&gt;</code>. <code>\class_exists&lt;__New&lt;ClockShape&gt;&gt;($name)</code> narrows to <code>__ClassName&lt;__New&lt;ClockShape&gt;&gt;</code>. A string literal that already names a matching class can assign without a guard.</p>
-<h2><code>is</code> and <code>instanceof</code></h2>
+<h2 id="is-and-instanceof"><code>is</code> and <code>instanceof</code></h2>
 <p><code>is</code> and <code>instanceof</code> are the same operator in Tyhp. Prefer <code>is</code> in examples.</p>
 <p><code>$x is ClockShape</code> is a <strong>shape guard</strong>, not PHP <code>instanceof</code> of a class. It emits <code>\Tyhp\Type::is(...)</code>. After a pass, <code>$x</code> is narrowed to the shape. <code>$x is User</code> when <code>User</code> is a real class still emits native <code>instanceof</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function fromObject(object $obj): void {
@@ -397,11 +416,11 @@ if (\class_exists&lt;__New&lt;Named&gt;&gt;($raw)) {
     }
 }
 </code></pre></div>
-<h2>Compiled PHP</h2>
+<h2 id="compiled-php">Compiled PHP</h2>
 <p>Shapes and <code>__New&lt;Shape&gt;</code> erase to <code>object</code>, or to nominal conjuncts from an intersection when those are legal PHP hints (<code>LoggerInterface &amp; ClockShape</code> → <code>LoggerInterface</code>). Generic bounds erase with other generics. The compiler never emits a PHP class for the alias. <code>$x is ClockShape</code> emits <code>\Tyhp\Type::is</code>. <code>typeof(ClockShape)</code> / a source-alias factory produces a <code>\Tyhp\Type</code> descriptor for matching; it does not construct instances.</p>
-<h2>Recovering an unnamed return</h2>
+<h2 id="recovering-an-unnamed-return">Recovering an unnamed return</h2>
 <p>If a tyhpdef function returns a shape without a hand-written alias name, <code>__FunctionReturnType&lt;'fn'&gt;</code> / <code>__MethodReturnType&lt;T, 'method'&gt;</code> is that return type. Harvest of PHP <code>return new class { … }</code> writes a generated shape alias so the return is not <code>object</code>.</p>
-<h2>Related</h2>
+<h2 id="related">Related</h2>
 <p>The three gradual PHP bases and their refinements:</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
@@ -430,12 +449,12 @@ if (\class_exists&lt;__New&lt;Named&gt;&gt;($raw)) {
 </tbody>
 </table></div>
 <ul>
-<li><a href="tyhp_0700_typeAliases.md">Type Aliases</a></li>
-<li><a href="tyhp_0150_newTypes.md">New and Changed Types</a> (<code>__ClassName</code>, <code>__New</code>, <code>__FunctionReturnType</code>, callable shapes)</li>
-<li><a href="tyhp_0200_typeNarrowingAndGuards.md">Type Narrowing and Guards</a></li>
-<li><a href="tyhp_2400_dynamicLanguageFeatures.md">Dynamic Language Features</a></li>
-<li><a href="cli_tyhpdefGeneration.md">Tyhpdef Generation</a> (anonymous-class harvest)</li>
-<li><a href="tyhp_0400_structs.md">Structs</a></li>
+<li><a href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+<li><a href="tyhp_0150_newTypes.html">New and Changed Types</a> (<code>__ClassName</code>, <code>__New</code>, <code>__FunctionReturnType</code>, callable shapes)</li>
+<li><a href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards</a></li>
+<li><a href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features</a></li>
+<li><a href="cli_tyhpdefGeneration.html">Tyhpdef Generation</a> (anonymous-class harvest)</li>
+<li><a href="tyhp_0400_structs.html">Structs</a></li>
 </ul>
 
 </section>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -292,7 +311,7 @@
 </div>
     </div>
 </div>
-<h2>Generic Classes</h2>
+<h2 id="generic-classes">Generic Classes</h2>
 <p>A class can declare one or more generic type parameters inside angle brackets after the class name. These type parameters can be used as types for properties, method parameters, and return types within the class.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -312,7 +331,7 @@ Box&lt;int&gt; $intBox = new Box&lt;int&gt;(42);
 int $val = $intBox-&gt;getValue();  // Type-safe: returns int
 </code></pre></div>
 <p>When the expected type of a <code>new</code> expression is a unique instantiation of the same generic, the type-argument list may be omitted. <code>Box&lt;int&gt; $intBox = new Box(42);</code> and <code>function make(): Box&lt;string&gt; { return new Box(&quot;x&quot;); }</code> infer <code>T</code> from the typed local / return type. Explicit arguments still win; a defaulted parameter still fills in when there is no unique expected instantiation.</p>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Generic type parameters are erased from PHP signatures. Unconstrained type parameters become <code>mixed</code>. Constrained type parameters use their constraint type as the PHP type hint.</p>
 <p>A generic-typed <strong>property</strong> (including a promoted constructor property) opts the class into runtime tracking (Mechanism C: <code>HasGenerics</code>, factory, set checks) unless the property or class carries <code>#[\Tyhp\EraseGeneric]</code>. Runtime-use constructs (<code>typeof(T)</code>, <code>default(T)</code>, <code>is T</code>, <code>new T()</code>, forwarded type arguments) also force tracking. Mixed mode is allowed: the class stays tracked while opted-out properties skip set checks.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -334,9 +353,10 @@ $intBox = \Box::new_Box__tyhpGeneric(\Tyhp\Type::int(), 42);
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$intBox = \Tyhp\Generic::bind(\Vendor\Box::class, \Tyhp\Type::int())(42);
 $result = \Tyhp\Generic::bind($h-&gt;identity(...), \Tyhp\Type::string())($value);
 </code></pre></div>
+<p>A first-class callable of a generic function (<code>identity(...)</code> or <code>identity&lt;string&gt;(...)</code>) keeps its type-binding identity, also when it needs <a href="tyhp_1600_operatorOverloads.html#conversions-on-first-class-callables">implicit conversions</a> for a parameter. The compiler wraps it with <code>\Tyhp\Generic::wrapCallable</code>, and <code>\Tyhp\Generic::bind</code> on that value binds the type arguments while the conversions still apply.</p>
 <p>PHP builtin and overlay generics that omit the stamp stay erased / inlined. Same-compilation erased classes (no remaining runtime use and no remaining generic-typed properties) emit a plain <code>new</code> / plain call, still stamped <code>erased: true</code>.</p>
 <p><code>#[\Tyhp\EraseGeneric]</code> is compile-only (<code>#[\Tyhp\NoEmit]</code>). It is legal on a class, a property, or a promoted constructor parameter. On a method or function it is an error. The attribute is not inherited; a tracked child of an erased generic parent does not call <code>parent::__initGenerics__</code>.</p>
-<h2>Generic Interfaces</h2>
+<h2 id="generic-interfaces">Generic Interfaces</h2>
 <p>Interfaces can declare generic type parameters. Classes that implement a generic interface must specify concrete type arguments, and the compiler validates that the implementing methods match the parameterized signatures.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -384,7 +404,7 @@ class UserRepository implements Repository {
     }
 }
 </code></pre></div>
-<h2>Generic Traits</h2>
+<h2 id="generic-traits">Generic Traits</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 trait Cacheable&lt;T&gt; {
@@ -403,7 +423,7 @@ class UserService {
     use Cacheable&lt;User&gt;;
 }
 </code></pre></div>
-<h2>Generic Enums</h2>
+<h2 id="generic-enums">Generic Enums</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 enum Result&lt;T&gt; {
@@ -415,8 +435,8 @@ enum Result&lt;T&gt; {
     }
 }
 </code></pre></div>
-<h2>Generic Functions and Methods</h2>
-<p>Standalone functions and class methods can declare their own generic type parameters. When calling a generic function, type arguments can be provided explicitly or inferred from the arguments.</p>
+<h2 id="generic-functions-and-methods">Generic Functions and Methods</h2>
+<p>Standalone functions and class methods can declare their own generic type parameters. When calling a generic function, type arguments can be provided explicitly or inferred from the arguments. A literal argument infers the widened type, so <code>boxOf('plain')</code> where <code>boxOf&lt;T&gt;(T $x): Box&lt;T&gt;</code> is <code>Box&lt;string&gt;</code>. Elements of <code>array&lt;Cell&lt;T&gt;&gt;</code> or a variadic <code>Cell&lt;T&gt; ...</code> are merged, so a <code>Cell&lt;int&gt;</code> and a <code>Cell&lt;string&gt;</code> infer <code>T</code> as <code>int|string</code>. When the arguments do not determine a type parameter, the type expected at the call is used, then the parameter's default. If none of those apply, the call is an error and the type argument must be written explicitly.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Generic standalone function
@@ -454,7 +474,7 @@ class Transformer {
     }
 }
 </code></pre></div>
-<h2>Constraints with extends</h2>
+<h2 id="constraints-with-extends">Constraints with extends</h2>
 <p>Type parameters can be constrained with the extends keyword. A constraint limits which types can be used as a type argument. The constraint can be a class, interface, or a union of types. When a type parameter has a constraint, the constraint type is used as the PHP type hint instead of mixed.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -491,12 +511,12 @@ function toNumber(int|float|string $value): float {
     return (float)$value;
 }
 </code></pre></div>
-<h2>Generic Type Parameter Defaults</h2>
+<h2 id="generic-type-parameter-defaults">Generic Type Parameter Defaults</h2>
 <p>Generic type parameters can have default types, specified with = after the optional constraint. When a consumer does not provide a type argument for a defaulted parameter, the default is used. This enables cleaner APIs where the common case requires no explicit parameterization. Defaults are supported on classes, interfaces, traits, enums, type aliases, functions, and methods.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Promise defaults TReturn to mixed (runtime: tyhp/async)
-class Promise&lt;TReturn extends void|mixed = mixed&gt; {
+class Promise&lt;TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;&gt; {
     // ...
 }
 
@@ -528,7 +548,7 @@ interface Repository&lt;TEntity, TId = int&gt; {
     public function find(TId $id): ?TEntity;
 }
 </code></pre></div>
-<h2>Default Must Satisfy Constraint</h2>
+<h2 id="default-must-satisfy-constraint">Default Must Satisfy Constraint</h2>
 <p>When a type parameter has both a constraint and a default, the default type must satisfy the constraint. The compiler reports an error if the default type is not assignable to the constraint.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -554,7 +574,7 @@ class Counter&lt;T extends Countable = array&gt; {
 </div>
     </div>
 </div>
-<h2>Trailing Rule for Defaults</h2>
+<h2 id="trailing-rule-for-defaults">Trailing Rule for Defaults</h2>
 <p>Defaulted type parameters must be trailing — a non-defaulted parameter cannot follow a defaulted one. This mirrors PHP function parameter defaults and prevents ambiguity in partial type argument application.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -578,7 +598,7 @@ class AllDefaults&lt;T = mixed&gt; {}
 </div>
     </div>
 </div>
-<h2>Type Inference Priority Over Defaults</h2>
+<h2 id="type-inference-priority-over-defaults">Type Inference Priority Over Defaults</h2>
 <p>When calling a generic function or method, type inference from arguments always takes priority over defaults. Defaults are only used when a type parameter cannot be inferred and is not explicitly provided. The resolution order is: explicit type arguments first, then type inference from arguments, then defaults as a last resort.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -602,7 +622,7 @@ wrap&lt;bool&gt;(true); // T = bool (explicit overrides everything)
 </div>
     </div>
 </div>
-<h2>Defaults Referencing Earlier Parameters</h2>
+<h2 id="defaults-referencing-earlier-parameters">Defaults Referencing Earlier Parameters</h2>
 <p>A default type can reference type parameters declared earlier in the same parameter list. This enables patterns where one parameter's default depends on another parameter's resolved type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -614,7 +634,7 @@ class Pair&lt;T, U = T&gt; {
 
 Pair&lt;int&gt; $p = new Pair&lt;int&gt;();  // U = int (from T&#039;s value)
 </code></pre></div>
-<h2>Generic Extends and Implements</h2>
+<h2 id="generic-extends-and-implements">Generic Extends and Implements</h2>
 <p>Generic arguments on extends and implements clauses provide compile-time type checking but are erased in PHP output.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -636,7 +656,7 @@ class StringCollection extends Collection {
 class UserRepo implements Repository {
 }
 </code></pre></div>
-<h2>Generic Import Aliases</h2>
+<h2 id="generic-import-aliases">Generic Import Aliases</h2>
 <p>You can create a use import alias with bound generic arguments. This creates a typed shortcut for a specific generic instantiation.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -645,7 +665,7 @@ use App\Collections\TypedList as IntList&lt;int&gt;;
 IntList $numbers = new IntList();
 $numbers-&gt;add(42);
 </code></pre></div>
-<h2>Constraint Violation Errors</h2>
+<h2 id="constraint-violation-errors">Constraint Violation Errors</h2>
 <p>The compiler reports an error when a type argument does not satisfy the constraint specified on the generic parameter.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -659,8 +679,72 @@ class SortedList&lt;T extends Comparable&gt; {
 // OK — User implements Comparable
 SortedList&lt;User&gt; $list = new SortedList&lt;User&gt;();
 </code></pre></div>
-<h2>Missing Type Argument Errors</h2>
-<p>When a generic type has required (non-defaulted) type parameters, omitting them produces an error.</p>
+<h2 id="generic-types-without-type-arguments">Generic Types Without Type Arguments</h2>
+<p>A generic class written without type arguments, such as <code>Box</code> for <code>class Box&lt;T&gt;</code>, is the same type as <code>Box&lt;mixed&gt;</code> when it is the <strong>source</strong> of an assignment (a variable assignment, an argument, or a return) to an instantiation of the same class. Each type parameter widens to its declared <code>extends</code> bound, or to <code>mixed</code> when it has none. Members read through that raw receiver use the same widened types (<code>$raw-&gt;value</code> is <code>mixed</code> for an unbounded <code>T</code>, or <code>int|string</code> when <code>T extends int|string</code>). Inside the class, <code>$this</code> still sees the class's own type parameters. The result is one-directional:</p>
+<ul>
+<li><code>Box</code> is <strong>not</strong> assignable to <code>Box&lt;int&gt;</code>, because its value could be anything.</li>
+<li><code>Box&lt;int&gt;</code> is assignable to <code>Box</code>.</li>
+<li><code>Box</code> is assignable to <code>Box&lt;mixed&gt;</code> and to <code>Box</code>.</li>
+</ul>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+class Box&lt;T&gt; {
+    public function __construct(public T $value) {}
+}
+
+function rawToMixed(Box $raw): Box&lt;mixed&gt; {
+    return $raw;                 // OK
+}
+
+function instantiationToRaw(Box&lt;int&gt; $box): Box {
+    return $box;                 // OK
+}
+
+function rawToInt(Box $raw): Box&lt;int&gt; {
+    return $raw;                 // Error: Box is not assignable to Box&lt;int&gt;
+}
+
+function takesInt(Box&lt;int&gt; $box): void {}
+
+function passRaw(Box $raw): void {
+    takesInt($raw);              // Error: Box is not assignable to Box&lt;int&gt;
+}
+</code></pre></div>
+<p>To get a <code>Box&lt;int&gt;</code>, construct one with the type argument (<code>new Box&lt;int&gt;(5)</code>) or let the constructor arguments infer it (<code>new Box(5)</code> in a <code>Box&lt;int&gt;</code> context).</p>
+<p>A parameter with a bound widens to that bound instead of <code>mixed</code>. The bound applies wherever the class is declared: later in the same file, in another file, or in a PHP stub or tyhpdef. A bound that refers to the parameter itself, such as <code>T extends Node&lt;T&gt;</code>, is valid.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+class Counter&lt;T extends int|string&gt; {
+    public function __construct(public T $value) {}
+}
+
+function rawToBound(Counter $raw): Counter&lt;int|string&gt; {
+    return $raw;                 // OK: T widens to int|string
+}
+
+function rawToNarrower(Counter $raw): Counter&lt;int&gt; {
+    return $raw;                 // Error
+}
+
+class Node&lt;T extends Node&lt;T&gt;&gt; {
+    public ?T $next = null;
+}
+
+function keep(Node $n): Node {
+    return $n;                   // OK
+}
+</code></pre></div>
+<p>Two cases behave differently:</p>
+<ul>
+<li>A redundant <code>instanceof</code> check keeps the more precise type. After <code>$box instanceof Box</code> on a value declared <code>Box&lt;int&gt;|null</code>, the variable is still <code>Box&lt;int&gt;</code>. An <code>instanceof Box</code> check on a <code>mixed</code> value yields the raw <code>Box</code>, which is not assignable to <code>Box&lt;int&gt;</code>.</li>
+<li>A bare <code>\Closure</code> stays assignable to any <code>\Closure&lt;…&gt;</code> instantiation.</li>
+</ul>
+<h2 id="type-argument-count-errors">Type Argument Count Errors</h2>
+<p>A type argument list must supply every type parameter that has no default. Supplying only some of them is an error (TYHP4036). Writing the class name with no argument list at all is the raw form described above.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Pair&lt;T, U&gt; {
@@ -668,16 +752,13 @@ class Pair&lt;T, U&gt; {
     public U $second;
 }
 
-// ERROR — Pair requires 2 type arguments, 0 provided
-// Pair $p = new Pair();
-
-// ERROR — Pair requires 2 type arguments, 1 provided
+// ERROR — Pair expects 2 type arguments, 1 provided
 // Pair&lt;int&gt; $p = new Pair&lt;int&gt;();
 
-// OK — all required type arguments provided
+// OK — all type arguments provided
 Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -710,7 +791,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use defaults on type parameters when there is a sensible common case (e.g., <code>Promise&lt;TReturn extends void|mixed = mixed&gt;</code>). This reduces boilerplate for callers.</p>
+        <div class="callout-content"><p>Use defaults on type parameters when there is a sensible common case (e.g., <code>Promise&lt;TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;&gt;</code>, where an omitted <code>TReturn</code> is <code>mixed</code>). This reduces boilerplate for callers.</p>
 </div>
     </div>
 </div>
@@ -738,7 +819,7 @@ Pair&lt;int, string&gt; $p = new Pair&lt;int, string&gt;();
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

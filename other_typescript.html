@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -278,9 +297,9 @@
     <h2 class="section-heading">TypeScript</h2>
     
     <p>TypeScript is the closest analogy to what Tyhp does and a direct inspiration for the project. TypeScript is a typed superset of JavaScript that compiles to JavaScript. Tyhp is a typed superset of the PHP language that compiles to PHP. TypeScript is not JavaScript; Tyhp is not PHP.</p>
-<h2>What TypeScript Is</h2>
+<h2 id="what-typescript-is">What TypeScript Is</h2>
 <p>TypeScript is a typed superset of JavaScript developed by Microsoft. It adds static type checking, interfaces, generics, type inference, and other type system features to JavaScript. TypeScript compiles (transpiles) to standard JavaScript, erasing all type information at compile time. Since its introduction in 2012, TypeScript has become one of the most widely adopted programming languages, demonstrating that a typed superset approach can succeed at massive scale.</p>
-<h2>Similarities</h2>
+<h2 id="similarities">Similarities</h2>
 <p>Tyhp follows the TypeScript model closely in philosophy and approach:</p>
 <ul>
 <li>Both are typed supersets of a dynamically typed language</li>
@@ -294,7 +313,7 @@
 <li>Both use declaration files for describing external libraries (TypeScript uses .d.ts files, Tyhp uses Tyhpdef files)</li>
 <li>TypeScript ships a mature Language Server; Tyhp provides <code>tyhp language_server</code> (LSP over stdin/stdout) and the Tyhp Language editor clients.</li>
 </ul>
-<h2>Differences</h2>
+<h2 id="differences">Differences</h2>
 <p>While Tyhp follows the TypeScript model, the differences between PHP and JavaScript lead to meaningful differences between Tyhp and TypeScript:</p>
 <ul>
 <li>Tyhp targets PHP, TypeScript targets JavaScript — different runtime environments, ecosystems, and deployment models.</li>
@@ -305,7 +324,7 @@
 <li>Tyhp supports PHP-specific constructs like traits, enums with backing types, namespaces, and the PHP standard library.</li>
 <li>TypeScript has a larger team and broader community. Tyhp is a smaller project focused specifically on the PHP ecosystem.</li>
 </ul>
-<h2>The TypeScript Model</h2>
+<h2 id="the-typescript-model">The TypeScript Model</h2>
 <p>TypeScript showed that a typed-superset approach can work when the tooling is usable, the migration path is gradual, and the output is readable. Tyhp applies that model to PHP’s runtime and ecosystem, not a feature-for-feature copy of TypeScript.</p>
 
 </section>

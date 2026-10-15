@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>The tyhp/parallel Package - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="The_tyhp_parallel_Package">
+    <h2 class="section-heading">The tyhp/parallel Package</h2>
+    
+    <p><code>tyhp/parallel</code> runs CPU-heavy work in separate PHP processes and gives you the result as a <code>Promise</code>. It is a <strong>process pool</strong>: each task runs in a worker process with its own memory, so a long calculation uses another CPU core instead of stalling your program. You <code>await</code> the result on the normal <a href="package_async.html">tyhp/async</a> event loop, so the rest of your async code keeps running while the worker is busy.</p>
+<p>Use it for work that keeps a CPU busy: hashing, compression, image or PDF rendering, parsing large files, number crunching, or calls into a blocking library that has no async API. For work that mostly <em>waits</em> on the network, a database, or the disk, use the non-blocking clients in <a href="package_io.html">tyhp/io</a> instead (see <em>Choosing between tyhp/parallel and tyhp/io</em> below).</p>
+<p>The pool lives in one of two places:</p>
+<ul>
+<li><strong>CLI programs</strong> (scripts, queue consumers, cron jobs) host the pool themselves. <code>Parallel::start()</code> forks the worker processes with <code>ext-pcntl</code>.</li>
+<li><strong>php-fpm applications</strong> cannot fork. They connect to a separate worker service that you run with <code>vendor/bin/tyhp-parallel serve</code>, and the <code>TYHP_PARALLEL_SOCKET</code> environment variable tells them where its Unix socket is.</li>
+</ul>
+<p>Your code is the same in both cases: you call <code>runAsync()</code>, <code>forAsync()</code>, <code>forEachAsync()</code>, or <code>invokeAsync()</code>.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Naming convention
+        </h4>
+        <div class="callout-content"><p>Methods whose names end in <code>Async</code> return a <code>Promise</code>. <code>await</code> them inside async code, or hand them to <code>Promise::run()</code> at a synchronous entry point. <code>start()</code>, <code>serve()</code>, <code>shutdown()</code>, and <code>isAvailable()</code> are ordinary synchronous calls. The same convention is used across <code>tyhp/async</code> and <code>tyhp/io</code>.</p>
+</div>
+    </div>
+</div>
+<h2 id="installation-and-requirements">Installation and requirements</h2>
+<p><code>tyhp/parallel</code> is not added by the compiler. Require it yourself:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require tyhp/parallel:804.0.*
+</code></pre></div>
+<p>Version pins follow the same <code>80N.X.Y</code> scheme as the other compiled <code>tyhp/*</code> helpers, where <code>80N</code> matches your <code>output.phpVersion</code> (<code>802</code> for PHP 8.2 through <code>805</code> for PHP 8.5) and <code>X.Y</code> is the package's own version (currently <code>0.1</code>, so the PHP 8.4 artifact is <code>804.0.1</code>). See <a href="project_composerPackages.html">Composer Runtime Packages</a> for how to pin compiled helpers.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PHP 8.2 or later (the artifact for your PHP target)</td>
+<td>Same baseline as the other runtime packages.</td>
+</tr>
+<tr>
+<td><code>ext-pcntl</code> and <code>ext-posix</code></td>
+<td>Forking and managing worker processes. Composer checks for them when it installs the package. The process that hosts the pool (a CLI program or the worker service) must have them loaded.</td>
+</tr>
+<tr>
+<td><code>tyhp/core</code>, <code>tyhp/async</code></td>
+<td>Installed automatically as dependencies. Results are delivered as <code>\Tyhp\Promise</code> values on the <code>tyhp/async</code> event loop.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only <code>tyhpdef/php</code> is needed to type-check code that uses the package. You do not need the pcntl or posix tyhpdefs in your project.</p>
+<h2 id="getting-started-a-cli-program">Getting started: a CLI program</h2>
+<p>A task is a class that implements <code>\Tyhp\ParallelTask&lt;T&gt;</code>. Its <code>run()</code> method does the work in a worker and returns a value of type <code>T</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Tasks;
+
+use Tyhp\ParallelTask;
+
+/** Counts the primes in [$from, $to). */
+final class CountPrimesTask implements ParallelTask&lt;int&gt; {
+    public function __construct(
+        private readonly int $from,
+        private readonly int $to,
+    ) {}
+
+    public function run(): int {
+        int $count = 0;
+        for (int $n = \max(2, $this-&gt;from); $n &lt; $this-&gt;to; $n++) {
+            bool $prime = true;
+            for (int $d = 2; $d * $d &lt;= $n; $d++) {
+                if ($n % $d === 0) {
+                    $prime = false;
+                    break;
+                }
+            }
+            if ($prime) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+}
+</code></pre></div>
+<p>The entry script starts a pool of four workers, splits the range into eight chunks, runs them with <code>forAsync()</code>, and adds up the results:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use App\Tasks\CountPrimesTask;
+use Tyhp\Parallel;
+use Tyhp\Promise;
+
+function countPrimes(int $limit, int $chunks): int {
+    int $chunkSize = \intdiv($limit, $chunks);
+
+    int $total = Promise::run(async function () use ($limit, $chunks, $chunkSize): int {
+        array&lt;int, int&gt; $counts = await Parallel::forAsync(
+            0,
+            $chunks,
+            fn(int $i): CountPrimesTask =&gt; new CountPrimesTask(
+                $i * $chunkSize,
+                $i === $chunks - 1 ? $limit : ($i + 1) * $chunkSize,
+            ),
+        );
+
+        int $sum = 0;
+        foreach ($counts as int $count) {
+            $sum += $count;
+        }
+        return $sum;
+    });
+    return $total;
+}
+
+function main(): void {
+    Parallel::start(4);
+    echo &#039;Primes below 8,000,000: &#039; . (string) countPrimes(8_000_000, 8) . &quot;\n&quot;;
+}
+
+main();
+</code></pre></div>
+<p>Build the project with <a href="cli_build.html"><code>tyhp build</code></a> and run the emitted entry script with the PHP CLI. The file has top-level code, so it is an entry point; set <code>build.entryPointAutoloader</code> so the emitted PHP loads Composer's autoloader (see <a href="tyhp_0300_includingFiles.html">Including Files</a>).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">Primes below 8,000,000: 539777
+</code></pre></div>
+<p>Things to notice:</p>
+<ul>
+<li><code>Parallel::start(4)</code> runs first, before the program opens database connections or loads large data. The workers are copies of your process at the moment they are forked.</li>
+<li>Eight tasks share four workers. Extra tasks wait in a queue and run as workers become free.</li>
+<li><code>forAsync()</code> returns the results keyed by index, in index order, no matter which task finished first.</li>
+<li><code>forAsync()</code> needs no type arguments: the result type <code>int</code> comes from <code>CountPrimesTask implements ParallelTask&lt;int&gt;</code>.</li>
+</ul>
+<h2 id="how-it-works">How it works</h2>
+<h3 id="where-the-workers-live">Where the workers live</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th></th>
+<th>CLI program</th>
+<th>php-fpm (or any non-CLI SAPI)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who owns the workers</td>
+<td>Your process forks them with <code>pcntl_fork()</code></td>
+<td>A separate <code>tyhp-parallel serve</code> process</td>
+</tr>
+<tr>
+<td>How you enable it</td>
+<td>Call <code>Parallel::start()</code> (or just call <code>runAsync()</code>, which starts 4 workers)</td>
+<td>Run the service, then set <code>TYHP_PARALLEL_SOCKET</code> to its socket path</td>
+</tr>
+<tr>
+<td>Who chooses the worker count</td>
+<td><code>Parallel::start($workers)</code></td>
+<td><code>--workers</code> on the service</td>
+</tr>
+<tr>
+<td>Where task classes must load</td>
+<td>Your process (workers are forks of it)</td>
+<td>The service process (its <code>vendor/autoload.php</code> and <code>--bootstrap</code> file)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The environment variable decides the mode in every SAPI. When <code>TYHP_PARALLEL_SOCKET</code> is set to a non-empty path, even a CLI program sends its tasks to that service instead of forking. When it is unset or empty, the process must be a CLI process with <code>ext-pcntl</code> and <code>ext-posix</code>.</p>
+<p>Many processes can share one worker service at the same time. Each connected process (for example each php-fpm worker) keeps one socket to the service, and all of their tasks share the service's pool.</p>
+<h3 id="the-life-of-a-task">The life of a task</h3>
+<ol>
+<li><strong>Snapshot.</strong> <code>runAsync()</code> serializes the task object with PHP's <code>serialize()</code> before it returns. Changing the object afterward does not affect the run.</li>
+<li><strong>Queue.</strong> The serialized task waits until a worker is free. Each worker runs one task at a time, in the order the tasks were queued.</li>
+<li><strong>Run.</strong> The worker unserializes its own copy of the task and calls <code>run()</code>. The copy shares nothing with your process: no objects, sockets, or database connections.</li>
+<li><strong>Return.</strong> The worker serializes the value <code>run()</code> returned and sends it back. Your process unserializes it, checks that it matches <code>T</code>, and resolves the promise. If <code>run()</code> threw, the promise rejects with a <code>ParallelException</code> that describes the worker's exception.</li>
+</ol>
+<p>A worker stays alive and runs more tasks after it finishes one. When a worker exits or crashes, or when a running task is cancelled, the pool removes that worker and starts a new one.</p>
+<h3 id="awaiting-results-on-the-event-loop">Awaiting results on the event loop</h3>
+<p>Workers report back over sockets that the <code>tyhp/async</code> event loop watches. While a task runs, your process is free: other fibers keep running, timers fire, and <code>tyhp/io</code> requests make progress. A promise from this package settles only while the event loop is running, which means inside async code, inside <code>Promise::run()</code>, or while something waits with <code>EventLoop::getInstance()-&gt;runUntilSettled()</code>. See <a href="tyhp_2600_asyncAndAwait.html">Async and Await</a> for how the loop starts.</p>
+<h2 id="writing-tasks">Writing tasks</h2>
+<h3 id="serialization-rules">Serialization rules</h3>
+<p>A task crosses a process boundary twice: the task object goes to the worker, and the result comes back. Both trips use <code>serialize()</code> and <code>unserialize()</code>, so both must contain only data that survives that round trip.</p>
+<p>These work well as task properties and results:</p>
+<ul>
+<li><code>int</code>, <code>float</code>, <code>string</code>, <code>bool</code>, <code>null</code>, and arrays of them</li>
+<li><a href="tyhp_0400_structs.html">structs</a>, which are arrays at run time</li>
+<li>enums</li>
+<li>objects of named classes whose properties follow these same rules, including classes with <code>__serialize()</code> / <code>__unserialize()</code></li>
+</ul>
+<p>These do not:</p>
+<ul>
+<li><strong>Closures</strong> and <strong>anonymous classes.</strong> <code>serialize()</code> throws, so <code>runAsync()</code> throws a <code>ParallelException</code> that starts with &quot;Parallel tasks must be serializable.&quot; Write a named task class instead.</li>
+<li><strong>Objects that refuse serialization</strong>, such as <code>PDO</code>. <code>runAsync()</code> throws the same way.</li>
+<li><strong>Resources</strong> (open files, sockets, cURL handles). PHP serializes a resource as the integer <code>0</code>, so the worker does not receive a usable handle. Pass a path or connection settings and open the resource inside <code>run()</code>.</li>
+</ul>
+<p>The serialized task and the serialized result are each limited to 16 MiB. A larger task makes <code>runAsync()</code> throw a <code>ParallelException</code>; a larger result rejects the promise. For big inputs, pass a file path, an ID, or a range and let the worker load the data itself.</p>
+<h3 id="autoloading-task-classes">Autoloading task classes</h3>
+<p>The process that runs the task must be able to load the task class, and your process must be able to load any class in the result.</p>
+<ul>
+<li><strong>CLI programs:</strong> workers are forks of your process, so every class your program can autoload (or has already loaded) is available to them.</li>
+<li><strong>Worker service:</strong> the service loads its own <code>vendor/autoload.php</code> and the optional <code>--bootstrap</code> file, and its workers are forked from it. Run it from the same application checkout as php-fpm so it autoloads the same classes. If a worker cannot load the task class, the promise rejects with a <code>ParallelException</code> whose message names the class (&quot;The worker could not load task class …&quot;).</li>
+</ul>
+<p>If a result contains an object of a class your process cannot load, the promise rejects with &quot;The task result is an object of a class this process cannot load.&quot;</p>
+<h3 id="what-a-task-can-rely-on">What a task can rely on</h3>
+<ul>
+<li><code>run()</code> is an ordinary synchronous method. It runs to completion in the worker.</li>
+<li>A task gets a fresh copy of its own properties. It does not see later changes to the original object, and changes it makes to itself are not sent back. Only the return value comes back.</li>
+<li>Open connections inside <code>run()</code>. A database connection, socket, or file handle from your process is not available in the worker.</li>
+<li>Workers are long-lived. Static properties and globals that one task sets stay set for the next task that lands on the same worker, and you cannot choose which worker that is. Do not rely on that state.</li>
+<li>Calling <code>exit()</code> or crashing the worker fails the task with a <code>ParallelException</code> whose <code>getRemoteError()</code> is <code>null</code>. The pool replaces the worker.</li>
+<li>Inside a task, <code>Parallel</code> is not usable: <code>Parallel::isAvailable()</code> returns <code>false</code>, and the other <code>Parallel</code> methods throw <code>ParallelUnavailableException</code>. Code in a task that uses <code>tyhp/io</code>'s <code>Offload</code>, <code>PdoConnection</code>, or <code>Dns</code> runs inline in that worker.</li>
+</ul>
+<h3 id="results-and-the-declared-result-type">Results and the declared result type</h3>
+<p><code>T</code> in <code>ParallelTask&lt;T&gt;</code> is checked at run time when the result comes back. If <code>run()</code> returned a value that does not match <code>T</code>, the promise rejects with &quot;The task returned …, which does not match its declared result type.&quot; A task declared as <code>ParallelTask&lt;void&gt;</code> resolves its promise with <code>null</code> when it finishes.</p>
+<h3 id="result-types-are-inferred">Result types are inferred</h3>
+<p>The checker infers <code>T</code> from the task class, so the awaited value has a precise type without any type arguments at the call site:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+int $count = await Parallel::runAsync(new CountPrimesTask(0, 1_000_000));
+
+array&lt;string, string&gt; $hashes = await Parallel::forEachAsync(
+    $files,
+    fn(string $path): Sha256FileTask =&gt; new Sha256FileTask($path),
+);
+</code></pre></div>
+<p>The same holds for <code>invokeAsync()</code> with an array of tasks, such as an <code>array&lt;int, ParallelTask&lt;int&gt;&gt;</code>. You can still write some type arguments yourself, for example <code>forEachAsync&lt;string, int&gt;(…)</code> for item type <code>string</code> and result type <code>int</code>; the remaining ones (here the key type) are inferred. See <a href="tyhp_0500_generics.html">Generics</a>.</p>
+<h2 id="api-reference">API reference</h2>
+<p>All classes are in the <code>tyhp/parallel</code> Composer package. <code>CancellationToken</code>, <code>Promise</code>, and <code>OperationCancelledException</code> come from <a href="package_async.html">tyhp/async</a>.</p>
+<h3 id="tyhpparallel"><code>\Tyhp\Parallel</code></h3>
+<p><code>final class Parallel</code> — static entry points for the pool. You never construct it.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function start(int $workers = 4): void</code></h4><br/><p>Prepares this process to run tasks. Calling it is optional, but recommended in CLI programs so that the workers are forked early and with the count you choose.</p>
+<p><strong>Without <code>TYHP_PARALLEL_SOCKET</code></strong> (pool in this process):</p>
+<ul>
+<li>Starts a pool of <code>$workers</code> worker processes. When called from the main script (not from inside async code), the workers are forked before <code>start()</code> returns. When called from inside an async function, they are forked on the next turn of the event loop.</li>
+<li>Calling it again with the same count does nothing. Calling it with a different count throws <code>\LogicException</code> (&quot;The parallel pool is already started with N workers.&quot;). This includes the 4-worker pool that <code>runAsync()</code> starts on its own when <code>start()</code> was not called first.</li>
+<li>After <code>shutdown()</code>, <code>start()</code> can start a new pool with any count.</li>
+<li>Registers a shutdown function that stops the workers when the script ends.</li>
+</ul>
+<p><strong>With <code>TYHP_PARALLEL_SOCKET</code></strong> (worker service):</p>
+<ul>
+<li>Connects to the service right away. The service chooses the worker count, so <code>$workers</code> is ignored.</li>
+<li>Use it as an early check that the service is up.</li>
+</ul>
+<p><strong>Throws</strong></p>
+<ul>
+<li><code>\InvalidArgumentException</code> — <code>$workers</code> is less than 1 (pool mode).</li>
+<li><code>\LogicException</code> — the pool is already running with a different count.</li>
+<li><code>ParallelUnavailableException</code> — called inside a worker; the process is not a CLI process and <code>TYHP_PARALLEL_SOCKET</code> is not set; <code>ext-pcntl</code> or <code>ext-posix</code> is missing; or the service is not accepting connections (the connection attempt waits up to one second).</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function serve(string $socketPath, int $workers = 4, int $socketMode = 0660): void</code></h4><br/><p>Runs a worker service: hosts a pool of <code>$workers</code> processes and accepts client connections on the Unix socket <code>$socketPath</code> until the process receives <code>SIGTERM</code> or <code>SIGINT</code>. It blocks for the life of the service. Most deployments call it through the <code>vendor/bin/tyhp-parallel serve</code> command (described below) instead of directly.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$socketPath</code></td>
+<td>Path of the Unix socket to create. At most 100 bytes. Clients set <code>TYHP_PARALLEL_SOCKET</code> to the same path.</td>
+</tr>
+<tr>
+<td><code>$workers</code></td>
+<td>Number of worker processes. At least 1.</td>
+</tr>
+<tr>
+<td><code>$socketMode</code></td>
+<td>Permissions applied to the socket file with <code>chmod()</code>, between <code>0</code> and <code>0777</code>. The default <code>0660</code> lets the owner and the owner's group connect.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Behavior:</p>
+<ul>
+<li>Requires the CLI SAPI with <code>ext-pcntl</code> and <code>ext-posix</code>. The service removes <code>TYHP_PARALLEL_SOCKET</code> from its own environment, so it always hosts its pool itself.</li>
+<li>If a socket file already exists at <code>$socketPath</code> and nothing answers on it, the stale file is deleted and replaced. If another service is listening there, <code>serve()</code> throws.</li>
+<li>Writes <code>tyhp-parallel listening on &lt;path&gt; with &lt;n&gt; workers</code> to standard error once it is ready.</li>
+<li>Run it as the php-fpm user, or as a user whose group the php-fpm user belongs to, so that php-fpm can open the socket with the default mode.</li>
+<li>Start it before it opens any database connections. Its workers are forked from it.</li>
+<li>The service forwards each task to a worker without unserializing it. The workers must be able to autoload every task class that clients send.</li>
+<li>When a client disconnects (for example, when a php-fpm request ends), its unfinished tasks are cancelled.</li>
+<li>On <code>SIGTERM</code> or <code>SIGINT</code> it stops accepting connections, closes client connections (their unfinished tasks fail), stops the workers, deletes the socket file, and returns.</li>
+</ul>
+<p><strong>Throws</strong></p>
+<ul>
+<li><code>\InvalidArgumentException</code> — <code>$workers</code> is less than 1, <code>$socketMode</code> is outside <code>0</code>–<code>0777</code>, or <code>$socketPath</code> is empty or longer than 100 bytes.</li>
+<li><code>\LogicException</code> — this process is already running a worker service.</li>
+<li><code>ParallelUnavailableException</code> — not a CLI process, <code>ext-pcntl</code> or <code>ext-posix</code> is missing, or called inside a worker.</li>
+<li><code>ParallelException</code> — another service is already listening on <code>$socketPath</code>, or the socket cannot be created (&quot;Could not listen on …&quot;).</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function shutdown(): void</code></h4><br/><p>Stops using parallel workers in this process and fails every task that has not finished.</p>
+<ul>
+<li><strong>Pool in this process:</strong> kills the worker processes and waits for them to exit. Queued tasks reject with <code>ParallelException</code> (&quot;The parallel pool shut down before the task ran.&quot;), and running tasks reject with &quot;The parallel pool shut down while the task was running.&quot;</li>
+<li><strong>Worker service client:</strong> closes this process's connection. In-flight tasks reject with <code>ParallelException</code> (&quot;The connection to the parallel worker service closed.&quot;). The service keeps running for its other clients and cancels this client's unfinished tasks.</li>
+</ul>
+<p>Safe to call more than once, and safe to call when nothing was started. The package already calls it from a shutdown function when the script ends, so you only need it to release workers early (for example in a long-running program that has finished its parallel phase) or in tests. A later <code>start()</code> or <code>runAsync()</code> starts again from scratch.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function isAvailable(): bool</code></h4><br/><p>Returns <code>true</code> when <code>runAsync()</code> can send work to another process:</p>
+<ul>
+<li><code>TYHP_PARALLEL_SOCKET</code> names a worker service, or</li>
+<li>this is a CLI process (<code>cli</code> or <code>phpdbg</code> SAPI) where <code>pcntl_fork()</code> and <code>posix_kill()</code> exist.</li>
+</ul>
+<p>Returns <code>false</code> inside a worker, in a non-CLI process without <code>TYHP_PARALLEL_SOCKET</code>, and in a CLI process that lacks either function (for example because <code>ext-pcntl</code> is not loaded or <code>pcntl_fork</code> is listed in <code>disable_functions</code>).</p>
+<p>It does not contact a configured service. A service that is down still makes <code>runAsync()</code> fail with <code>ParallelUnavailableException</code>. Call <code>start()</code> when you need to know that the service is reachable.</p>
+<p>Use it to choose between running a task in a worker and calling its <code>run()</code> method directly (see the password-hashing example under <em>Worked examples</em>).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public static function runAsync&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(ParallelTask&lt;T&gt; $task, ?CancellationToken $token = null): Promise&lt;T&gt;</code></h4><br/><p>Queues one task and returns a promise of its result. In a CLI program without <code>start()</code>, the first call starts a pool of 4 workers.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$task</code></td>
+<td>The task to run. It is serialized before this method returns.</td>
+</tr>
+<tr>
+<td><code>$token</code></td>
+<td>Optional cancellation. A token that is already cancelled returns a rejected promise without queueing anything. Cancelling later removes a queued task, or kills the worker running it and starts a replacement.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Returns</strong> <code>Promise&lt;T&gt;</code>, which resolves with the value <code>run()</code> returned.</p>
+<p><strong>Throws immediately</strong> (from the call itself):</p>
+<ul>
+<li><code>ParallelException</code> — the task cannot be serialized, or it is larger than 16 MiB once serialized.</li>
+<li><code>ParallelUnavailableException</code> — called inside a worker; no worker service is configured and this is not a CLI process with <code>ext-pcntl</code> and <code>ext-posix</code>; or the configured service is not accepting connections.</li>
+</ul>
+<p><strong>Rejects with:</strong></p>
+<ul>
+<li><code>ParallelException</code> with a remote error — <code>run()</code> threw. <code>getRemoteError()</code> describes the exception.</li>
+<li><code>ParallelException</code> without a remote error — the worker exited or crashed, the pool shut down, or the service connection closed.</li>
+<li><code>ParallelException</code> — the result does not match <code>T</code>, cannot be unserialized, or is an object of a class this process cannot load.</li>
+<li><code>OperationCancelledException</code> — <code>$token</code> was cancelled before the task finished.</li>
+</ul>
+<p>When you write <code>await Parallel::runAsync(...)</code> inside a <code>try</code> block, the immediate throws and the rejections are caught by the same <code>catch</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>async public static function forAsync&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(int $fromInclusive, int $toExclusive, callable(int): ParallelTask&lt;T&gt; $factory, ?CancellationToken $token = null): array&lt;int, T&gt;</code></h4><br/><p>Runs one task for every index from <code>$fromInclusive</code> up to, but not including, <code>$toExclusive</code>, and resolves with the results keyed by that index. The call returns <code>Promise&lt;array&lt;int, T&gt;&gt;</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$fromInclusive</code></td>
+<td>First index.</td>
+</tr>
+<tr>
+<td><code>$toExclusive</code></td>
+<td>One past the last index. When it equals <code>$fromInclusive</code>, the result is an empty array.</td>
+</tr>
+<tr>
+<td><code>$factory</code></td>
+<td>Builds the task for an index. It runs in your process, once per index in ascending order, before any task is queued.</td>
+</tr>
+<tr>
+<td><code>$token</code></td>
+<td>Optional cancellation for the whole run.</td>
+</tr>
+</tbody>
+</table></div>
+<p>The keys are the indices themselves, so <code>forAsync(1, 4, …)</code> resolves with keys <code>1</code>, <code>2</code>, and <code>3</code>. Use <code>\array_values()</code> if you need a list that starts at 0.</p>
+<p>Fails fast like <code>invokeAsync()</code>: the first task that fails cancels the others, and its exception is thrown.</p>
+<p><strong>Rejects with</strong> <code>\InvalidArgumentException</code> when <code>$fromInclusive</code> is greater than <code>$toExclusive</code>, any exception thrown by <code>$factory</code>, and everything listed for <code>invokeAsync()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>async public static function forEachAsync&lt;TItem, TResult extends __Awaited&lt;void|mixed&gt;, TKey extends int|string = int|string&gt;(array&lt;TKey, TItem&gt; $items, callable(TItem): ParallelTask&lt;TResult&gt; $factory, ?CancellationToken $token = null): array&lt;TKey, TResult&gt;</code></h4><br/><p>Builds one task per item and runs them on the pool. Resolves with the results under the same keys, in the same order, as <code>$items</code>. The call returns <code>Promise&lt;array&lt;TKey, TResult&gt;&gt;</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$items</code></td>
+<td>The inputs. List keys and string keys are both kept.</td>
+</tr>
+<tr>
+<td><code>$factory</code></td>
+<td>Builds the task for one item. It runs in your process, once per item in input order, before any task is queued. It receives the item, not the key.</td>
+</tr>
+<tr>
+<td><code>$token</code></td>
+<td>Optional cancellation for the whole run.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Fails fast like <code>invokeAsync()</code>.</p>
+<p><strong>Rejects with</strong> any exception thrown by <code>$factory</code>, and everything listed for <code>invokeAsync()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>async public static function invokeAsync&lt;T extends __Awaited&lt;void|mixed&gt;, TKey extends int|string = int|string&gt;(array&lt;TKey, ParallelTask&lt;T&gt;&gt; $tasks, ?CancellationToken $token = null): array&lt;TKey, T&gt;</code></h4><br/><p>Runs every task in <code>$tasks</code> and resolves with the results under the same keys, in the same order as the input. The call returns <code>Promise&lt;array&lt;TKey, T&gt;&gt;</code>. An empty array resolves with an empty array.</p>
+<p><strong>Fail-fast:</strong> when one task fails, the others are cancelled (queued ones are removed, running ones have their workers killed and replaced), and the first failure is thrown. Cancellations caused by that first failure are not reported in its place.</p>
+<p><strong>Cancellation:</strong> when <code>$token</code> is cancelled, every task is cancelled and <code>OperationCancelledException</code> is thrown. A token that is already cancelled throws before anything is queued.</p>
+<p><strong>Rejects with</strong> the first task failure (usually a <code>ParallelException</code>, see <code>runAsync()</code>), anything <code>runAsync()</code> throws immediately for one of the tasks (the tasks queued before it are cancelled), or <code>OperationCancelledException</code>.</p>
+</div>
+<h3 id="tyhpparalleltaskt"><code>\Tyhp\ParallelTask&lt;T&gt;</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>interface ParallelTask&lt;T extends void|mixed = mixed&gt;</code></h4><br/><p>One unit of work for a worker process. Implement it with a named, serializable class:</p>
+<ul>
+<li><code>runAsync()</code> serializes the object once, when the task is queued, and the worker runs an unserialized copy. Changing the object afterward does not affect that run.</li>
+<li>Its properties and the value <code>run()</code> returns must be serializable (see <em>Serialization rules</em> above).</li>
+<li>The process that runs it must be able to autoload the class (see <em>Autoloading task classes</em> above).</li>
+<li>The copy does not share the caller's objects, sockets, or database connections.</li>
+</ul>
+<p><code>T</code> is the result type. It defaults to <code>mixed</code>, and <code>void</code> is allowed for tasks that return nothing.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function run(): T</code></h4><br/><p>Does the work inside the worker and returns the result.</p>
+<ul>
+<li>When it returns, the caller's promise resolves with that value, after the result type check described in <em>Results and the declared result type</em>.</li>
+<li>When it throws, the promise rejects with a <code>ParallelException</code> whose <code>getRemoteError()</code> describes the exception.</li>
+<li>When it calls <code>exit()</code> or the worker crashes, the task fails with a <code>ParallelException</code> without a remote error, and the pool starts a new worker.</li>
+</ul>
+</div>
+<h3 id="tyhpparallelremoteerror"><code>\Tyhp\ParallelRemoteError</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>type ParallelRemoteError = struct { string $class = &#039;&#039;; string $message = &#039;&#039;; int $code = 0; string $file = &#039;&#039;; int $line = 0; string $trace = &#039;&#039;; }</code></h4><br/><p>A copy of an exception that was thrown inside a worker, returned by <code>ParallelException::getRemoteError()</code>. It is a <a href="tyhp_0400_structs.html">struct</a>: plain data, read with <code>$remote-&gt;class</code>, <code>$remote-&gt;trace</code>, and so on. In emitted PHP it is an array (<code>$remote['class']</code>).</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$class</code></td>
+<td>Fully qualified class name of the exception, from <code>get_class()</code>.</td>
+</tr>
+<tr>
+<td><code>$message</code></td>
+<td>The exception message, cut to 64 KiB.</td>
+</tr>
+<tr>
+<td><code>$code</code></td>
+<td>The exception code when it is an <code>int</code>; otherwise <code>0</code>. (For example, <code>PDOException</code> codes are strings and arrive as <code>0</code>.)</td>
+</tr>
+<tr>
+<td><code>$file</code></td>
+<td>File where the exception was created, in the worker.</td>
+</tr>
+<tr>
+<td><code>$line</code></td>
+<td>Line where the exception was created.</td>
+</tr>
+<tr>
+<td><code>$trace</code></td>
+<td>The worker's <code>getTraceAsString()</code>, cut to 32 KiB.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only the thrown exception itself is described. Its <code>getPrevious()</code> chain is not included.</p>
+</div>
+<h3 id="tyhpexceptionsparallelexception"><code>\Tyhp\Exceptions\ParallelException</code></h3>
+<p><code>class ParallelException extends \RuntimeException</code> — a task failed, or the pool could not deliver it. It is the base class of <code>ParallelUnavailableException</code>.</p>
+<p>The original exception object stays in the worker. What you receive is a <code>ParallelException</code> that describes it, so <code>catch (MyDomainException $e)</code> around <code>await</code> never matches a task's exception. Catch <code>ParallelException</code> and inspect <code>getRemoteClass()</code> or <code>getRemoteError()</code> instead.</p>
+<p>When the task threw, the message has the form <code>&lt;class&gt;: &lt;message&gt; in &lt;file&gt;:&lt;line&gt;</code> (for example <code>RuntimeException: boom in /app/src/Tasks/ImportTask.php:42</code>), and <code>getCode()</code> is <code>0</code>. Use <code>getRemoteError()-&gt;code</code> for the worker's exception code.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $message, ?ParallelRemoteError $remoteError = null, ?\Throwable $previous = null): void</code></h4><br/><p>Creates the exception. The package constructs it for you; constructing one yourself is mainly useful in tests, for example to fake a failed task. The exception code is always <code>0</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getRemoteError(): ?ParallelRemoteError</code></h4><br/><p>Returns the description of the exception thrown inside the worker. Returns <code>null</code> when the task did not throw: the worker exited or crashed, the pool shut down, the service connection failed, the task could not be serialized, or the result failed the type check.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>public function getRemoteClass(): string</code></h4><br/><p>Returns the class name of the exception thrown inside the worker (the <code>class</code> field of <code>getRemoteError()</code>), or <code>''</code> when there is no remote error. Compare it with <code>::class</code> constants to react to specific failures, for example <code>$e-&gt;getRemoteClass() === \JsonException::class</code>.</p>
+</div>
+<h3 id="tyhpexceptionsparallelunavailableexception"><code>\Tyhp\Exceptions\ParallelUnavailableException</code></h3>
+<p><code>final class ParallelUnavailableException extends ParallelException</code> — this process cannot run a parallel task right now. A CLI program needs <code>ext-pcntl</code> and <code>ext-posix</code>; any other SAPI needs <code>TYHP_PARALLEL_SOCKET</code> pointing at a running worker service. It is also thrown when <code>Parallel</code> is used inside a worker. <code>getRemoteError()</code> is always <code>null</code>.</p>
+<p>Catch it to fall back to running the work inline, or to show a &quot;try again later&quot; error while the service restarts.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function __construct(string $message): void</code></h4><br/><p>Creates the exception with a message and no remote error.</p>
+</div>
+<h3 id="the-tyhpparallelsocket-environment-variable">The <code>TYHP_PARALLEL_SOCKET</code> environment variable</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP_PARALLEL_SOCKET=&lt;path&gt;</code></h4><br/><p>When set to a non-empty value, <code>Parallel</code> sends tasks to the worker service listening on that Unix socket instead of forking a pool in this process. It is read with <code>getenv()</code> each time a <code>Parallel</code> method needs it, in every SAPI.</p>
+<ul>
+<li>Set it for php-fpm in the pool configuration with <code>env[TYHP_PARALLEL_SOCKET] = &lt;path&gt;</code>, or call <code>\putenv('TYHP_PARALLEL_SOCKET=&lt;path&gt;')</code> before the first <code>Parallel</code> call.</li>
+<li><code>tyhp-parallel serve</code> uses it as the default for <code>--socket</code>.</li>
+<li>The service removes it from its own environment, so it never connects to itself.</li>
+</ul>
+</div>
+<h3 id="command-line-vendorbintyhp-parallel">Command line: <code>vendor/bin/tyhp-parallel</code></h3>
+<div class="alert alert-secondary" role="alert"><h4><code>vendor/bin/tyhp-parallel serve [--socket=&lt;path&gt;] [--workers=&lt;n&gt;] [--mode=&lt;octal&gt;] [--bootstrap=&lt;file&gt;]</code></h4><br/><p>Starts the worker service for php-fpm and other processes that cannot fork. It loads Composer's <code>vendor/autoload.php</code> from the project that installed the package, then the optional bootstrap file, then calls <code>Parallel::serve()</code>. It runs in the foreground until it receives <code>SIGTERM</code> or <code>SIGINT</code>.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--socket=&lt;path&gt;</code></td>
+<td><code>TYHP_PARALLEL_SOCKET</code></td>
+<td>Socket path. Required when the environment variable is not set.</td>
+</tr>
+<tr>
+<td><code>--workers=&lt;n&gt;</code></td>
+<td><code>4</code></td>
+<td>Number of worker processes. Must be a positive integer.</td>
+</tr>
+<tr>
+<td><code>--mode=&lt;octal&gt;</code></td>
+<td><code>0660</code></td>
+<td>Socket file permissions, as three octal digits with an optional leading <code>0</code> (<code>660</code> or <code>0660</code>).</td>
+</tr>
+<tr>
+<td><code>--bootstrap=&lt;file&gt;</code></td>
+<td>none</td>
+<td>PHP file to <code>require</code> after the autoloader and before the workers start.</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>vendor/bin/tyhp-parallel --help</code> (also <code>-h</code> or <code>help</code>) prints the usage text and exits with status 0. A missing or unknown command, an unknown option, an invalid value, a missing bootstrap file, a missing <code>vendor/autoload.php</code>, or an error from <code>Parallel::serve()</code> prints a message to standard error and exits with status 1. After a clean stop on <code>SIGTERM</code> or <code>SIGINT</code> the command exits normally.</p>
+</div>
+<h2 id="cancellation">Cancellation</h2>
+<p>Every <code>Parallel</code> call that runs tasks takes an optional <code>CancellationToken</code> from <a href="package_async.html">tyhp/async</a>. Create a <code>CancellationTokenSource</code>, pass <code>$source-&gt;getToken()</code>, and call <code>$source-&gt;cancel()</code> (or pass a timeout in milliseconds to the source's constructor).</p>
+<p>What cancelling does depends on where the task is:</p>
+<ul>
+<li><strong>Not queued yet</strong> (the token was already cancelled): <code>runAsync()</code> returns a rejected promise and <code>invokeAsync()</code> throws before anything is queued.</li>
+<li><strong>Queued:</strong> the task is removed from the queue. No worker is affected.</li>
+<li><strong>Running:</strong> the worker running it is killed with <code>SIGKILL</code> and a new worker is started in its place. In service mode, the client tells the service to cancel, and the service does the same.</li>
+</ul>
+<p>In every case the promise rejects with <code>\Tyhp\Exceptions\OperationCancelledException</code>, without waiting for the task to finish.</p>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Warning
+        </h4>
+        <div class="callout-content"><p>A cancelled task gets no chance to clean up. Its <code>finally</code> blocks, destructors, and shutdown functions do not run, and a half-written file stays half-written. Design tasks so that being killed is harmless: write to a temporary file and rename it at the end, or do the final write in your own process with the returned data. A database transaction the task had open is rolled back by the database server when the killed worker's connection closes.</p>
+</div>
+    </div>
+</div>
+<p>A deadline for one task:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use App\Tasks\CountPrimesTask;
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\OperationCancelledException;
+use Tyhp\Parallel;
+
+/** Returns null when the count takes longer than two seconds. */
+async function countWithDeadline(int $limit): ?int {
+    $cts := new CancellationTokenSource(2000);
+    try {
+        return await Parallel::runAsync(new CountPrimesTask(0, $limit), $cts-&gt;getToken());
+    } catch (OperationCancelledException $e) {
+        return null;
+    }
+}
+</code></pre></div>
+<p><code>$cts := …</code> disposes the source when the function returns; see <a href="tyhp_2300_disposables.html">Disposables</a>.</p>
+<h2 id="fail-fast-and-key-preservation">Fail-fast and key preservation</h2>
+<p><code>forAsync()</code>, <code>forEachAsync()</code>, and <code>invokeAsync()</code> share the same rules.</p>
+<p><strong>They wait for every task.</strong> The promise resolves only when every task has succeeded.</p>
+<p><strong>They fail fast.</strong> As soon as one task fails, the remaining tasks are cancelled: queued tasks are dropped and running tasks have their workers killed and replaced. The first failure is what you catch. A failure is not hidden by the cancellations it caused. When you cancel the whole call with your own token, you get <code>OperationCancelledException</code> instead.</p>
+<p><strong>They keep keys and order.</strong> The result array has the same keys in the same order as the input, regardless of which task finished first:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Call</th>
+<th>Result keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>forAsync(1, 4, $factory)</code></td>
+<td><code>1</code>, <code>2</code>, <code>3</code></td>
+</tr>
+<tr>
+<td><code>forEachAsync([10, 20, 30], $factory)</code></td>
+<td><code>0</code>, <code>1</code>, <code>2</code></td>
+</tr>
+<tr>
+<td><code>forEachAsync(['a' =&gt; 1, 'b' =&gt; 2], $factory)</code></td>
+<td><code>'a'</code>, <code>'b'</code></td>
+</tr>
+<tr>
+<td><code>invokeAsync(['price' =&gt; $t1, 'weight' =&gt; $t2])</code></td>
+<td><code>'price'</code>, <code>'weight'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>If you want every outcome rather than the first failure, call <code>runAsync()</code> for each task and combine the promises with <code>Promise::allSettled()</code> from <a href="package_async.html">tyhp/async</a>.</p>
+<h2 id="error-reporting">Error reporting</h2>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>What happened</th>
+<th>What you see</th>
+<th><code>getRemoteError()</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>run()</code> threw</td>
+<td>Promise rejects with <code>ParallelException</code> (<code>&lt;class&gt;: &lt;message&gt; in &lt;file&gt;:&lt;line&gt;</code>)</td>
+<td>Describes the exception</td>
+</tr>
+<tr>
+<td>Worker could not load the task class</td>
+<td>Promise rejects with <code>ParallelException</code> (&quot;The worker could not load task class …&quot;)</td>
+<td>Describes the loading error</td>
+</tr>
+<tr>
+<td>Result not serializable, or larger than 16 MiB</td>
+<td>Promise rejects with <code>ParallelException</code></td>
+<td>Describes the error from the worker</td>
+</tr>
+<tr>
+<td><code>run()</code> called <code>exit()</code>, or the worker crashed</td>
+<td>Promise rejects with <code>ParallelException</code> (&quot;The worker exited before it finished the task.&quot;)</td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>Result does not match <code>T</code></td>
+<td>Promise rejects with <code>ParallelException</code> (&quot;The task returned …, which does not match its declared result type.&quot;)</td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>Result contains a class this process cannot load</td>
+<td>Promise rejects with <code>ParallelException</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>shutdown()</code> or script end while the task was queued or running</td>
+<td>Promise rejects with <code>ParallelException</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>Worker service connection closed</td>
+<td>Promise rejects with <code>ParallelException</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>Your cancellation token was cancelled</td>
+<td>Promise rejects with <code>OperationCancelledException</code></td>
+<td>not a <code>ParallelException</code></td>
+</tr>
+<tr>
+<td>Task not serializable, or larger than 16 MiB</td>
+<td><code>runAsync()</code> throws <code>ParallelException</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>No way to run tasks (not CLI and no socket, missing extensions, service down, or inside a worker)</td>
+<td><code>runAsync()</code> throws <code>ParallelUnavailableException</code></td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>A typical handler logs the worker's details and rethrows:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+try {
+    array&lt;string, ColumnStats&gt; $stats = await Parallel::invokeAsync($tasks);
+} catch (ParallelException $e) {
+    ?ParallelRemoteError $remote = $e-&gt;getRemoteError();
+    if ($remote !== null) {
+        \error_log(
+            &#039;A stats task threw &#039; . $remote-&gt;class . &#039; at &#039; . $remote-&gt;file . &#039;:&#039; . (string) $remote-&gt;line
+            . &quot;\n&quot; . $remote-&gt;trace
+        );
+    } else {
+        \error_log(&#039;A stats task did not finish: &#039; . $e-&gt;getMessage());
+    }
+    throw $e;
+}
+</code></pre></div>
+<p>The file and line in a remote error point at the emitted PHP that ran in the worker.</p>
+<h2 id="running-under-php-fpm-the-worker-service">Running under php-fpm: the worker service</h2>
+<p>php-fpm workers do not fork. Instead, a long-running CLI process hosts the pool, and each php-fpm worker connects to it over a Unix socket. Application code does not change: requests call the same <code>Parallel</code> methods and <code>await</code> the results.</p>
+<h3 id="1-start-the-service">1. Start the service</h3>
+<p>From the application's root directory (the one that contains <code>vendor/</code>):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">vendor/bin/tyhp-parallel serve --socket=/run/tyhp-parallel/app.sock --workers=8
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp-parallel listening on /run/tyhp-parallel/app.sock with 8 workers
+</code></pre></div>
+<p>Choose <code>--workers</code> from the number of CPU cores you want to give to background work. Tasks from every connected php-fpm worker share this pool, so the number of tasks running at once never exceeds <code>--workers</code>. Additional tasks wait in the queue.</p>
+<p>The directory of the socket must exist and be writable by the service user. Keep the path at 100 bytes or less.</p>
+<h3 id="2-point-php-fpm-at-the-socket">2. Point php-fpm at the socket</h3>
+<p>Set the environment variable in the php-fpm pool configuration and reload php-fpm:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">; for example /etc/php/8.4/fpm/pool.d/www.conf
+env[TYHP_PARALLEL_SOCKET] = /run/tyhp-parallel/app.sock
+</code></pre></div>
+<p>Alternatively, call <code>\putenv('TYHP_PARALLEL_SOCKET=/run/tyhp-parallel/app.sock')</code> in your front controller before any <code>Parallel</code> call.</p>
+<h3 id="3-permissions">3. Permissions</h3>
+<p>The socket is created with mode <code>0660</code>, so only its owner and group can connect. Either run the service as the php-fpm user (for example <code>www-data</code>), or run it as a user whose group the php-fpm user belongs to. Use <code>--mode</code> only if you need different permissions.</p>
+<div class="callout-block callout-block-danger me-1">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+            Danger
+        </h4>
+        <div class="callout-content"><p>Anyone who can connect to the socket can make the workers unserialize arbitrary data and run any task class the service can autoload, with the service user's permissions. Keep the socket in a directory that only the application can reach, and do not make it world-writable.</p>
+</div>
+    </div>
+</div>
+<h3 id="4-bootstrap-file-optional">4. Bootstrap file (optional)</h3>
+<p><code>--bootstrap=&lt;file&gt;</code> requires one PHP file after Composer's autoloader and before the workers are forked, so everything it sets up is inherited by every worker. Use it to register an autoloader that Composer does not know about, set <code>ini</code> values, or set the default time zone. Do not open database connections in it. Give an absolute path; a relative path is resolved against the service's working directory.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+// /var/www/app/config/parallel-bootstrap.php
+
+\date_default_timezone_set(&#039;UTC&#039;);
+\ini_set(&#039;memory_limit&#039;, &#039;512M&#039;);
+
+\spl_autoload_register(static function (string $class): void {
+    $file = __DIR__ . &#039;/../legacy/&#039; . \str_replace(&#039;\\&#039;, &#039;/&#039;, $class) . &#039;.php&#039;;
+    if (\is_file($file)) {
+        require $file;
+    }
+});
+</code></pre></div>
+<h3 id="5-keep-it-running">5. Keep it running</h3>
+<p>The service runs in the foreground and stops cleanly on <code>SIGTERM</code> or <code>SIGINT</code>, so any process supervisor can manage it. Run it from the same checkout that php-fpm serves, and restart it when you deploy new code so its workers load the new task classes.</p>
+<p>A systemd unit:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs"># /etc/systemd/system/tyhp-parallel.service
+[Unit]
+Description=Tyhp parallel worker service
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/app
+RuntimeDirectory=tyhp-parallel
+ExecStart=/usr/bin/php /var/www/app/vendor/bin/tyhp-parallel serve --socket=/run/tyhp-parallel/app.sock --workers=8 --bootstrap=/var/www/app/config/parallel-bootstrap.php
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+</code></pre></div>
+<p><code>RuntimeDirectory=</code> creates <code>/run/tyhp-parallel</code> owned by the service user. systemd stops services with <code>SIGTERM</code> by default.</p>
+<p>A Supervisor program (create the socket directory yourself, owned by <code>www-data</code>):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">; /etc/supervisor/conf.d/tyhp-parallel.conf
+[program:tyhp-parallel]
+command=/usr/bin/php /var/www/app/vendor/bin/tyhp-parallel serve --socket=/run/tyhp-parallel/app.sock --workers=8
+directory=/var/www/app
+user=www-data
+autostart=true
+autorestart=true
+stopsignal=TERM
+redirect_stderr=true
+stdout_logfile=/var/log/tyhp-parallel.log
+</code></pre></div>
+<p>You can also host the service from your own CLI script by calling <code>Parallel::serve()</code> after loading the autoloader.</p>
+<h3 id="how-requests-use-the-service">How requests use the service</h3>
+<ul>
+<li>Each php-fpm request that uses <code>Parallel</code> opens one connection to the service and reuses it for all of its tasks.</li>
+<li>When the request ends, the connection closes and the service cancels any of that request's tasks that are still queued or running. Await the results you need before the response is sent; for work that must outlive the request, use a job queue and a CLI consumer.</li>
+<li>If the service is down or restarting, <code>runAsync()</code> throws <code>ParallelUnavailableException</code>, and in-flight tasks fail with <code>ParallelException</code>. Call <code>Parallel::start()</code> early in the request when you want to detect this before doing anything else:</li>
+</ul>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use Tyhp\Exceptions\ParallelUnavailableException;
+use Tyhp\Parallel;
+
+function serviceIsUp(): bool {
+    try {
+        Parallel::start();
+        return true;
+    } catch (ParallelUnavailableException $e) {
+        \error_log($e-&gt;getMessage());
+        return false;
+    }
+}
+</code></pre></div>
+<h2 id="worked-examples">Worked examples</h2>
+<p>These examples reuse <code>CountPrimesTask</code> from <em>Getting started</em> and define the other task classes they need.</p>
+<h3 id="hashing-passwords-during-a-bulk-import">Hashing passwords during a bulk import</h3>
+<p>bcrypt is deliberately slow, so hashing a few hundred passwords one after another can take a minute. This import runs the hashes on the pool when one is available and falls back to hashing inline when it is not, for example in a php-fpm process without <code>TYHP_PARALLEL_SOCKET</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Tasks;
+
+use Tyhp\ParallelTask;
+
+/** Hashes one password with bcrypt. */
+final class HashPasswordTask implements ParallelTask&lt;string&gt; {
+    public function __construct(
+        private readonly string $password,
+        private readonly int $cost = 12,
+    ) {}
+
+    public function run(): string {
+        return \password_hash($this-&gt;password, \PASSWORD_BCRYPT, [&#039;cost&#039; =&gt; $this-&gt;cost]);
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use App\Tasks\HashPasswordTask;
+use Tyhp\Parallel;
+use Tyhp\Promise;
+
+/** Keys are e-mail addresses; values are plain-text passwords. */
+async function hashPasswords(array&lt;string, string&gt; $passwords): array&lt;string, string&gt; {
+    if (!Parallel::isAvailable()) {
+        array&lt;string, string&gt; $hashes = [];
+        foreach ($passwords as string $email =&gt; string $password) {
+            $hashes[$email] = (new HashPasswordTask($password))-&gt;run();
+        }
+        return $hashes;
+    }
+
+    return await Parallel::forEachAsync(
+        $passwords,
+        fn(string $password): HashPasswordTask =&gt; new HashPasswordTask($password),
+    );
+}
+
+function importUsers(array&lt;string, string&gt; $passwords): array&lt;string, string&gt; {
+    return Promise::run(async fn(): array&lt;string, string&gt; =&gt; await hashPasswords($passwords));
+}
+</code></pre></div>
+<p>The result keeps the e-mail keys, so <code>$hashes[$email]</code> lines up with the input without any bookkeeping. Calling <code>run()</code> directly is a convenient fallback because a task is an ordinary object.</p>
+<h3 id="checksumming-files-with-string-keys">Checksumming files with string keys</h3>
+<p>Pass paths, not file contents: each worker reads its own file, so only a short string crosses the process boundary in each direction.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Tasks;
+
+use Tyhp\ParallelTask;
+
+/** Returns the SHA-256 checksum of one file. */
+final class Sha256FileTask implements ParallelTask&lt;string&gt; {
+    public function __construct(private readonly string $path) {}
+
+    public function run(): string {
+        string|false $hash = @\hash_file(&#039;sha256&#039;, $this-&gt;path);
+        if ($hash === false) {
+            throw new \RuntimeException(&#039;Cannot read &#039; . $this-&gt;path);
+        }
+        return $hash;
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use App\Tasks\Sha256FileTask;
+use Tyhp\Parallel;
+
+/** Keys are display names; values are paths. Resolves with display name =&gt; checksum. */
+async function checksums(array&lt;string, string&gt; $files): array&lt;string, string&gt; {
+    return await Parallel::forEachAsync(
+        $files,
+        fn(string $path): Sha256FileTask =&gt; new Sha256FileTask($path),
+    );
+}
+</code></pre></div>
+<p>If one file cannot be read, the whole call rejects with a <code>ParallelException</code> whose remote error is the <code>RuntimeException</code>, and the other checksums are cancelled.</p>
+<h3 id="summarizing-csv-columns-with-a-struct-result">Summarizing CSV columns with a struct result</h3>
+<p>Each task reads the same CSV file and summarizes one column. The result type is a struct, which travels back as an array and is checked against <code>ColumnStats</code> when it arrives.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Tasks;
+
+use Tyhp\ParallelTask;
+
+type ColumnStats = struct {
+    int $count = 0;
+    float $min = 0.0;
+    float $max = 0.0;
+    float $mean = 0.0;
+};
+
+/** Reads one numeric column of a CSV file and summarizes it. */
+final class ColumnStatsTask implements ParallelTask&lt;ColumnStats&gt; {
+    public function __construct(
+        private readonly string $csvPath,
+        private readonly int $column,
+    ) {}
+
+    public function run(): ColumnStats {
+        $handle = @\fopen($this-&gt;csvPath, &#039;r&#039;);
+        if ($handle === false) {
+            throw new \RuntimeException(&#039;Cannot open &#039; . $this-&gt;csvPath);
+        }
+
+        int $count = 0;
+        float $sum = 0.0;
+        float $min = \INF;
+        float $max = -\INF;
+        try {
+            mixed $row = \fgetcsv($handle, null, &#039;,&#039;, &#039;&quot;&#039;, &#039;\\&#039;);
+            while (\is_array($row)) {
+                mixed $cell = $row[$this-&gt;column] ?? null;
+                if (\is_numeric($cell)) {
+                    float $value = (float) $cell;
+                    $count++;
+                    $sum += $value;
+                    $min = \min($min, $value);
+                    $max = \max($max, $value);
+                }
+                $row = \fgetcsv($handle, null, &#039;,&#039;, &#039;&quot;&#039;, &#039;\\&#039;);
+            }
+        } finally {
+            \fclose($handle);
+        }
+
+        if ($count === 0) {
+            return new ColumnStats();
+        }
+        return new ColumnStats() with [
+            count =&gt; $count,
+            min =&gt; $min,
+            max =&gt; $max,
+            mean =&gt; $sum / $count,
+        ];
+    }
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use App\Tasks\ColumnStats;
+use App\Tasks\ColumnStatsTask;
+use Tyhp\Exceptions\ParallelException;
+use Tyhp\Parallel;
+use Tyhp\ParallelRemoteError;
+use Tyhp\ParallelTask;
+
+async function summarize(string $csvPath): array&lt;string, ColumnStats&gt; {
+    array&lt;string, ParallelTask&lt;ColumnStats&gt;&gt; $tasks = [
+        &#039;price&#039; =&gt; new ColumnStatsTask($csvPath, 2),
+        &#039;quantity&#039; =&gt; new ColumnStatsTask($csvPath, 3),
+        &#039;weight&#039; =&gt; new ColumnStatsTask($csvPath, 5),
+    ];
+
+    try {
+        return await Parallel::invokeAsync($tasks);
+    } catch (ParallelException $e) {
+        ?ParallelRemoteError $remote = $e-&gt;getRemoteError();
+        if ($remote !== null) {
+            \error_log(
+                &#039;A stats task threw &#039; . $remote-&gt;class . &#039; at &#039; . $remote-&gt;file . &#039;:&#039; . (string) $remote-&gt;line
+                . &quot;\n&quot; . $remote-&gt;trace
+            );
+        } else {
+            \error_log(&#039;A stats task did not finish: &#039; . $e-&gt;getMessage());
+        }
+        throw $e;
+    }
+}
+</code></pre></div>
+<p><code>$stats['price']-&gt;mean</code> is available as soon as the promise resolves. See <a href="tyhp_2200_withKeyword.html">The with Keyword</a> for building struct values.</p>
+<h3 id="doing-other-work-while-a-task-runs">Doing other work while a task runs</h3>
+<p>A running task does not block your process. This program prints a progress dot every half second until the result arrives:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use App\Tasks\CountPrimesTask;
+use Tyhp\Parallel;
+use Tyhp\Promise;
+
+async function countWithProgress(): int {
+    Promise&lt;int&gt; $work = Parallel::runAsync(new CountPrimesTask(0, 4_000_000));
+    while (!$work-&gt;isCompleted()) {
+        echo &#039;.&#039;;
+        await Promise::delay(500);
+    }
+    echo &quot;\n&quot;;
+    return await $work;
+}
+</code></pre></div>
+<p>It prints about one dot per half second of waiting, then <code>283146</code>. The same applies to real work: while the worker counts, the loop can serve <code>tyhp/io</code> HTTP requests, database queries, or other fibers. <code>Promise::delay()</code> keeps the loop running; PHP's <code>\sleep()</code> or <code>\usleep()</code> would block it, and the result could not be delivered until the sleep ends.</p>
+<h3 id="releasing-workers-early">Releasing workers early</h3>
+<p>A long-running CLI program that has a parallel phase followed by a long single-threaded phase can release its workers when the parallel phase ends:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Usage;
+
+use App\Tasks\CountPrimesTask;
+use Tyhp\Parallel;
+use Tyhp\Promise;
+
+function shutdownExample(): void {
+    Parallel::start(2);
+    try {
+        int $n = Promise::run(async fn(): int =&gt; await Parallel::runAsync(new CountPrimesTask(0, 1000)));
+        echo (string) $n . &quot;\n&quot;;
+    } finally {
+        Parallel::shutdown();
+    }
+}
+</code></pre></div>
+<h3 id="calling-from-php">Calling from PHP</h3>
+<p>Compiled code and plain PHP use the same static methods. In PHP, drive the event loop yourself and read the remote error as an array:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+use Tyhp\EventLoop;
+use Tyhp\Exceptions\ParallelException;
+use Tyhp\Parallel;
+
+Parallel::start(2);
+
+try {
+    $result = EventLoop::getInstance()-&gt;runUntilSettled(
+        Parallel::runAsync(new \App\Tasks\CountPrimesTask(0, 1_000_000))
+    );
+    echo $result, &quot;\n&quot;;
+} catch (ParallelException $e) {
+    $remote = $e-&gt;getRemoteError();
+    echo $remote === null ? $e-&gt;getMessage() : $remote[&#039;class&#039;] . &#039;: &#039; . $remote[&#039;message&#039;], &quot;\n&quot;;
+}
+</code></pre></div>
+<h2 id="choosing-between-tyhpparallel-and-tyhpio">Choosing between tyhp/parallel and tyhp/io</h2>
+<p>Both packages let other work continue while something slow happens. They solve different problems.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Your code is slow because…</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>It waits on HTTP, Redis, PostgreSQL, MySQL, sockets, files, or child processes</td>
+<td><a href="package_io.html">tyhp/io</a>. Its clients wait without blocking, inside your process, with no serialization and no extra processes.</td>
+</tr>
+<tr>
+<td>It keeps a CPU busy (hashing, compression, parsing, rendering, math)</td>
+<td><code>tyhp/parallel</code>. Only a separate process can use another core.</td>
+</tr>
+<tr>
+<td>It calls a blocking library that has no async version</td>
+<td><code>tyhp/io</code>'s <code>Offload</code> (which runs the job in a <code>tyhp/parallel</code> worker when <code>Parallel::isAvailable()</code> is true and inline otherwise), or a <code>ParallelTask</code> of your own. <code>tyhp/io</code>'s <code>PdoConnection</code> and <code>Dns</code> work the same way.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Every task pays for serialization, a trip over a socket, and unserialization in each direction. Give each task enough work to make that worthwhile (a chunk of rows or a range of numbers rather than a single item), and keep inputs and results small.</p>
+<h2 id="gotchas">Gotchas</h2>
+<ul>
+<li><strong>Start the pool early.</strong> In a CLI program, call <code>Parallel::start()</code> before you open database connections or load large data sets. Workers are copies of your process at the moment they are forked. Replacement workers (after a crash, an <code>exit()</code>, or a cancellation) are forked from your process as it is at that later moment.</li>
+<li><strong>Choose the worker count first.</strong> <code>runAsync()</code> starts 4 workers when <code>start()</code> was not called. Calling <code>start(8)</code> afterward throws <code>\LogicException</code>.</li>
+<li><strong>Tasks are snapshots.</strong> The task is serialized when you call <code>runAsync()</code> (or when <code>forAsync()</code>, <code>forEachAsync()</code>, or <code>invokeAsync()</code> queue it). Later changes to the object are not seen by the worker, and changes the worker makes are not sent back. Only the return value comes back.</li>
+<li><strong>Named classes only.</strong> Closures and anonymous classes cannot be serialized. Resources arrive as the integer <code>0</code>.</li>
+<li><strong>Exceptions arrive as descriptions.</strong> A task's exception is reported as a <code>ParallelException</code>. Check <code>getRemoteClass()</code> rather than catching the original class around <code>await</code>.</li>
+<li><strong>Cancelled and failed-fast tasks are killed.</strong> Their <code>finally</code> blocks and destructors do not run. Make tasks safe to interrupt.</li>
+<li><strong>Workers keep state between tasks.</strong> Static properties and globals persist on a worker from one task to the next. Worker processes also run with PHP's cycle garbage collector turned off; a task that builds large reference cycles can call <code>\gc_collect_cycles()</code> before it returns.</li>
+<li><strong>Results need a running event loop.</strong> Results arrive only while the <code>tyhp/async</code> loop runs. Waiting with <code>\sleep()</code> blocks the loop.</li>
+<li><strong>Unfinished work is cancelled at the end.</strong> When a CLI script ends, its workers are stopped and unfinished tasks fail. When a php-fpm request ends, the service cancels that request's unfinished tasks. Neither is a background job queue.</li>
+<li><strong>No nesting.</strong> A task cannot start more parallel tasks; inside a worker, <code>Parallel</code> throws <code>ParallelUnavailableException</code>.</li>
+<li><strong>16 MiB per direction.</strong> A serialized task and a serialized result are each limited to 16 MiB.</li>
+<li><strong>Output goes to the worker.</strong> <code>echo</code> in a task writes to the worker process's standard output. Under the worker service that is the service's log, not the HTTP response. Return data instead of printing it.</li>
+</ul>
+<h2 id="related-pages">Related pages</h2>
+<ul>
+<li><a href="tyhp_2600_asyncAndAwait.html">Async and Await</a> — <code>async</code>, <code>await</code>, <code>Promise::run()</code>, and the event loop</li>
+<li><a href="package_async.html">The tyhp/async Package</a> — <code>Promise</code>, <code>CancellationTokenSource</code>, <code>OperationCancelledException</code></li>
+<li><a href="package_io.html">The tyhp/io Package</a> — non-blocking I/O and <code>Offload</code></li>
+<li><a href="package_intro.html">Runtime Packages Overview</a></li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> — versions and pins for compiled <code>tyhp/*</code> helpers</li>
+<li><a href="tyhp_0500_generics.html">Generics</a> — type arguments such as <code>ParallelTask&lt;int&gt;</code></li>
+<li><a href="tyhp_0400_structs.html">Structs</a> — struct results such as <code>ParallelRemoteError</code></li>
+<li><a href="tyhp_2300_disposables.html">Disposables</a> — <code>:=</code> for <code>CancellationTokenSource</code></li>
+<li><a href="tyhp_0300_includingFiles.html">Including Files</a> — entry points and <code>build.entryPointAutoloader</code></li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_io.html">&larr; The tyhp/io Package</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_compiler.html">The tyhp/compiler Package &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

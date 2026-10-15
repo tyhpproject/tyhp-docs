@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,8 +299,8 @@
     <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The <code>overlay</code> action copies a tyhpdef declaration into a <strong>hand-written</strong> overlay file and writes <code>// @overlay-against:</code> stamps that record the Layer 1 baseline the overlay was written against.</p>
-<p>Overlays themselves — <code>include</code> vs <code>overlay</code>, last wins, brace <code>partial</code>, header-only <code>partial class Foo&lt;T&gt;;</code>, overlay <code>partial function</code>, <code>omit</code> — are documented in <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a>.</p>
-<h2>Usage</h2>
+<p>Overlays themselves — <code>include</code> vs <code>overlay</code>, last wins, brace <code>partial</code>, header-only <code>partial class Foo&lt;T&gt;;</code>, overlay <code>partial function</code>, <code>omit</code> — are documented in <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a>.</p>
+<h2 id="usage">Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp overlay create &lt;FQN&gt;
 tyhp overlay stamp
 tyhp overlay stamp &lt;FQN&gt;
@@ -291,7 +310,7 @@ tyhp overlay stamp
 tyhp overlay stamp \Iterator
 tyhp overlay --help
 </code></pre></div>
-<h2><code>create &lt;FQN&gt;</code></h2>
+<h2 id="create-fqn"><code>create &lt;FQN&gt;</code></h2>
 <p>Looks up the fully-qualified Tyhp name in the current compilation (after overlays already in the package have been applied) and copies that declaration into a hand-written overlay file under <code>_tyhpdef/overlays/</code> (not <code>overlays/stubs/</code>).</p>
 <p>Use this (or a file under the project <code>&quot;overlay&quot;</code> glob, <code>./tyhpdef/**/*.tyhpdef</code> after <code>tyhp init</code>) for lasting fixes to types that <code>--vendor</code> generated into <code>vendor-tyhpdef/</code>. Do not edit those generated files.</p>
 <ul>
@@ -299,22 +318,22 @@ tyhp overlay --help
 <li>If that package’s <code>composer.json</code> has <code>extra.tyhp.package</code>, <code>create</code> appends the hand-written overlay glob at the <strong>end</strong> of <code>extra.tyhp.package.overlay</code> when it is not already listed. It never inserts that glob before stub entries.</li>
 <li>Missing FQN is <code>TYHP7901</code>. An <code>extern</code> type is <code>TYHP7904</code> (create is for replacing a real declaration; it does not copy the placeholder into a hollow <code>class { }</code> overlay). Invalid extra arguments are <code>TYHP7900</code>. Write / manifest failures are <code>TYHP7903</code> / <code>TYHP7902</code>.</li>
 </ul>
-<h2><code>stamp</code> [<code>&lt;FQN&gt;</code>]</h2>
+<h2 id="stamp-fqn"><code>stamp</code> [<code>&lt;FQN&gt;</code>]</h2>
 <p>Rewrites <code>// @overlay-against:</code> comments on <strong>stub and hand-written</strong> overlay files from the <strong>Layer 1</strong> baseline (include, overlays not applied). With an FQN, only that declaration is stamped; without one, every overlay file is stamped. Stamping an <code>extern</code> declaration is a no-op.</p>
 <p>Stamp runs one pass per PHP version Tyhp manages (8.2, 8.3, 8.4, and 8.5 today; a later version is included when it is added to that managed set). Each pass downloads or reuses the managed PHP runtime for that version — the same cache as <code>generate_tyhpdef</code>, with its own ini, separate from whatever <code>php</code> is on <code>PATH</code> — and binds Layer 1 at that runtime's full version. A declaration is stamped on a pass when its <code>declare(php=…)</code> and <code>#[\Tyhp\Php(…)]</code> gates are satisfied by that version. Constraints use the same Composer syntax as the compiler (<code>&gt;=8.4</code>, exact <code>8.3</code>, and the other forms the compiler already parses). A declaration with neither gate is stamped on every pass. A declaration whose gate does not match is left unchanged, including another overload of the same name. If the managed runtime for a version cannot be obtained, or it reports a different minor, that pass fails with <code>TYHP7905</code> and is not stamped from another PHP version.</p>
 <p>The comment text is the compact Layer 1 signature for the declarations active at that version. A stamp that later disagrees with Layer 1 is warning <code>TYHP8021</code> at compile time; the overlay is still applied. <code>--strict</code> / <code>build.strictMode</code> elevates that warning to an error.</p>
-<h2>Options</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li><code>--help</code> — Show this help (same as <code>tyhp help --subject=overlay</code>).</li>
 <li><code>--strict</code> — Treat overlay stamp mismatches as errors when compiling.</li>
 </ul>
-<h2>Related</h2>
+<h2 id="related">Related</h2>
 <ul>
-<li><a href="tyhpdef_overlays.md">Tyhpdef Overlays</a> — load order, brace <code>partial</code>, header <code>;</code>, overlay <code>partial function</code>, <code>omit</code>, stamps</li>
-<li><a href="cli_symbolTree.md">CLI: Symbol Tree</a> — dump bound Tyhp names after overlays</li>
-<li><a href="tyhpdef_extern.md">Extern Types</a> — name-only placeholders; <code>create</code> refuses <code>extern</code></li>
-<li><a href="cli_tyhpdefGeneration.md">CLI: Tyhpdef Generation</a> — Layer 1 regen, <code>--vendor</code>, and <code>--verify</code></li>
-<li><a href="diagnostics_reference.md">Diagnostic Code Reference</a> — <code>TYHP7900</code>–<code>TYHP7904</code>, <code>TYHP8017</code>–<code>TYHP8022</code>, <code>TYHP8030</code>–<code>TYHP8035</code></li>
+<li><a href="tyhpdef_overlays.html">Tyhpdef Overlays</a> — load order, brace <code>partial</code>, header <code>;</code>, overlay <code>partial function</code>, <code>omit</code>, stamps</li>
+<li><a href="cli_symbolTree.html">CLI: Symbol Tree</a> — dump bound Tyhp names after overlays</li>
+<li><a href="tyhpdef_extern.html">Extern Types</a> — name-only placeholders; <code>create</code> refuses <code>extern</code></li>
+<li><a href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a> — Layer 1 regen, <code>--vendor</code>, and <code>--verify</code></li>
+<li><a href="diagnostics_reference.html">Diagnostic Code Reference</a> — <code>TYHP7900</code>–<code>TYHP7904</code>, <code>TYHP8017</code>–<code>TYHP8022</code>, <code>TYHP8030</code>–<code>TYHP8035</code></li>
 </ul>
 
 </section>

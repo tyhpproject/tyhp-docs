@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,9 +299,9 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp introduces several new types and enhances existing PHP types with generic support. This page covers generic PHP types, new Tyhp-specific types, and internal compiler types. Built-in types are registered in the compiler; runtime types such as <code>\Tyhp\Type</code> and <code>Promise&lt;T&gt;</code> come from the <code>tyhp/core</code> and <code>tyhp/async</code> packages.</p>
-<h2>Generic PHP Types</h2>
+<h2 id="generic-php-types">Generic PHP Types</h2>
 <p>Tyhp adds generic type parameters to many built-in PHP types. The non-generic versions remain available for backward compatibility, but the generic versions are preferred for maximum type safety.</p>
-<h2>The <code>array&lt;TKey, TValue&gt;</code> and <code>iterable&lt;TKey, TValue&gt;</code> Types</h2>
+<h2 id="the-arraytkey-tvalue-and-iterabletkey-tvalue-types">The <code>array&lt;TKey, TValue&gt;</code> and <code>iterable&lt;TKey, TValue&gt;</code> Types</h2>
 <p>The <code>array</code> and <code>iterable</code> types from PHP now have additional generic signatures that allow for precise element type control.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>array&lt;TKey extends string|int, TValue&gt;</code></h4><br/><p>A typed array with 2 generic parameters. The first is the key type (must be <code>string</code>, <code>int</code>, or <code>string|int</code>), and the second is the value type.</p>
 </div>
@@ -307,27 +326,27 @@ function processItems(iterable&lt;string&gt; $items): void {
     }
 }
 </code></pre></div>
-<h2>The <code>\Traversable&lt;TKey, TValue&gt;</code> Type</h2>
+<h2 id="the-traversabletkey-tvalue-type">The <code>\Traversable&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\Traversable</code> interface from PHP gains optional generic parameters for the key and value types.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Traversable&lt;TKey, TValue&gt;</code></h4><br/><p>A typed traversable with 2 generic parameters. The <code>iterable&lt;TKey, TValue&gt;</code> built-in is equivalent to <code>array&lt;TKey, TValue&gt;|\Traversable&lt;TKey, TValue&gt;</code>.</p>
 </div>
 <p><code>\Traversable</code> is an engine interface. Only <code>\Iterator</code> and <code>\IteratorAggregate</code> (in <code>tyhpdef/php</code>) may <code>extends \Traversable</code>. User classes, enums, interfaces, and traits must not list <code>\Traversable</code> in <code>implements</code> or <code>extends</code> — implement <code>\Iterator</code> or <code>\IteratorAggregate</code> instead (Traversable is inherited). Listing both (<code>implements \Iterator, \Traversable</code>) is <strong>TYHP4326</strong>. Harvested <code>.tyhpdef</code> stubs may still list both; the checker does not flag those shells.</p>
-<h2>The <code>\Iterator&lt;TKey, TValue&gt;</code> Type</h2>
+<h2 id="the-iteratortkey-tvalue-type">The <code>\Iterator&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\Iterator</code> interface extends <code>\Traversable</code> and gains generic parameters. <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code> instead of <code>mixed</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Iterator&lt;TKey, TValue&gt;</code></h4><br/><p>A generic iterator where <code>current()</code> returns <code>TValue</code> and <code>key()</code> returns <code>TKey</code>. Extends <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
 </div>
-<h2>The <code>\IteratorAggregate&lt;TKey, TValue&gt;</code> Type</h2>
+<h2 id="the-iteratoraggregatetkey-tvalue-type">The <code>\IteratorAggregate&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\IteratorAggregate</code> interface extends <code>\Traversable</code> and gains generic parameters. The <code>getIterator()</code> method returns <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\IteratorAggregate&lt;TKey, TValue&gt;</code></h4><br/><p>A generic iterable aggregate where <code>getIterator()</code> returns <code>\Traversable&lt;TKey, TValue&gt;</code>. Extends <code>\Traversable&lt;TKey, TValue&gt;</code>.</p>
 </div>
-<h2>The <code>\ArrayAccess&lt;TKey, TValue&gt;</code> Type</h2>
+<h2 id="the-arrayaccesstkey-tvalue-type">The <code>\ArrayAccess&lt;TKey, TValue&gt;</code> Type</h2>
 <p>The <code>\ArrayAccess</code> interface gains generic parameters for homogeneous array-like access: every offset has the same value type.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\ArrayAccess&lt;TKey, TValue&gt;</code></h4><br/><p><code>$obj[$k]</code> is <code>TValue</code> when <code>$k</code> is assignable to <code>TKey</code>. <code>$obj[$k] = $v</code> writes a <code>TValue</code>. <code>$obj[] = $v</code> is <code>offsetSet(null, $v)</code> (<code>null|TKey</code> on <code>offsetSet</code>). <code>isset</code> / <code>empty</code> / <code>unset</code> on offsets use <code>offsetExists</code> / <code>offsetUnset</code>. <code>list()</code> / <code>[]</code> destructure (positional and named keys) is the same <code>offsetGet</code> read as <code>$obj[$k]</code>: each bound key is <code>TValue</code> when the key is assignable to <code>TKey</code>. A receiver that is not an array, string, or <code>ArrayAccess</code> cannot be destructured (<strong>TYHP4094</strong>).</p>
 </div>
 <p><code>TKey</code> must be a legal PHP offset (<code>int</code>, <code>string</code>, <code>int|string</code>, or an object key such as <code>\WeakMap</code>). A struct or <code>array</code> as <code>TKey</code> is <strong>TYHP4330</strong> — structs erase to arrays, and PHP cannot use arrays as offsets. Per-key maps over a struct are <a href="#the-tyhpcontractsarrayaccessshapetstruct-type"><code>ArrayAccessShape</code></a>, not <code>ArrayAccess&lt;SomeStruct&gt;</code>.</p>
 <p>A receiver that is not an <code>array</code>, <code>string</code>, or <code>ArrayAccess</code> cannot be indexed (<strong>TYHP4093</strong>). <code>foreach</code> does not use ArrayAccess; it needs <code>\Traversable</code> / <code>\Iterator</code> / <code>\IteratorAggregate</code>.</p>
 <p>PHP’s <code>ArrayAccess</code> methods are <code>mixed</code> (contravariant parameters). Implementors emit <code>offsetExists</code> / <code>offsetGet</code> / <code>offsetSet</code> / <code>offsetUnset</code> with PHP <code>mixed</code> parameters, and <code>offsetGet</code> with a PHP <code>mixed</code> return, as if <code>#[\Tyhp\PhpType('mixed')]</code> were present. Checker types stay <code>TKey</code> / <code>TValue</code>.</p>
-<h2>The <code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct&gt;</code> Type</h2>
+<h2 id="the-tyhpcontractsarrayaccessshapetstruct-type">The <code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct&gt;</code> Type</h2>
 <p>Per-key indexing over a struct schema. <code>$obj['host']</code> is that field’s type; <code>$obj['port']</code> can be a different type. Canonical source: <code>tyhp/core</code> (<code>\Tyhp\Contracts\ArrayAccessShape</code>).</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Tyhp\Contracts\ArrayAccessShape&lt;TStruct extends struct&gt;</code></h4><br/><p>Extends <code>\ArrayAccess&lt;__IndexKeys&lt;TStruct&gt;, __IndexValueTypes&lt;TStruct&gt;&gt;</code>. <code>offsetGet</code> / <code>offsetSet</code> use a method generic <code>TKey extends __IndexKeys&lt;T&gt;</code> so the value type is <code>__IndexValueType&lt;T, TKey&gt;</code>.</p>
 </div>
@@ -350,7 +369,7 @@ function hostOf(\Tyhp\Contracts\ArrayAccessShape&lt;ConfigMap&gt; $o): string {
 <p>A wide <code>string</code> / <code>int</code> / <code>mixed</code> key at the call site is <strong>TYHP4331</strong> — use a key literal or assert with <code>as</code> (<code>$o[$s as 'host']</code>). Append (<code>$obj[] =</code>) is <strong>TYHP4332</strong>. <code>offsetExists</code> on a schema key is <code>bool</code> (the map may be sparse).</p>
 <p>For <code>offsetGet</code> / <code>offsetSet</code> bodies, when <code>TKey</code> is a finite literal union the checker instantiates once per key. A key is covered only by a reachable value <code>return</code> (<code>offsetGet</code>) or a typed write of <code>$value</code> (<code>offsetSet</code>). <code>throw</code> / <code>never</code> does not cover a key (<strong>TYHP4333</strong>). <code>match</code> is sufficient, not required. Infinite key types (<code>string</code>) get one envelope check against <code>__IndexValueTypes&lt;T&gt;</code>.</p>
 <p><code>TStruct</code> is invariant. A value typed only as <code>ArrayAccess&lt;…&gt;</code> is the homogeneous envelope (key union, value union). <code>#[\Tyhp\PhpType('mixed')]</code> on the interface members is inherited by implementors.</p>
-<h2>The <code>\Closure&lt;TCallableShape, TThis, TScope&gt;</code> Type</h2>
+<h2 id="the-closuretcallableshape-tthis-tscope-type">The <code>\Closure&lt;TCallableShape, TThis, TScope&gt;</code> Type</h2>
 <p><code>\Closure</code> is PHP’s closure <strong>class</strong>. It is generic over the callable shape plus bound <code>$this</code> and visibility scope. It is not a second <code>callable</code> spelling: argument and return types go on <code>callable(…): R</code>, then that shape is the first type argument of <code>\Closure</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Closure&lt;TCallableShape extends callable, TThis extends __ClosureThis = __ClosureThis, TScope extends __ClosureScope&lt;TThis&gt; = __ClosureScope&lt;TThis&gt;&gt;</code></h4><br/><p><code>TCallableShape</code> is the <code>__invoke</code> signature. <code>TThis</code> is the bound <code>$this</code> (<code>object|null</code>; default <code>__ClosureThis</code>). <code>TScope</code> is the stored visibility scope (an object type, a class-name string of that type or a parent, or <code>null</code>; default <code>__ClosureScope&lt;TThis&gt;</code>). Bare <code>\Closure</code> stays gradual. <code>\Closure&lt;callable(int): string&gt;</code> fills <code>TThis</code> / <code>TScope</code> from the defaults.</p>
 </div>
@@ -365,7 +384,7 @@ callable(int): string $also = $parser;  // Closure is callable via __invoke
 // Zero-parameter void callback
 \Closure&lt;callable(): void&gt; $ping;
 </code></pre></div>
-<h3><code>callable</code> vs <code>\Closure</code></h3>
+<h3 id="callable-vs-closure"><code>callable</code> vs <code>\Closure</code></h3>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
 <tr>
@@ -386,7 +405,7 @@ callable(int): string $also = $parser;  // Closure is callable via __invoke
 </table></div>
 <p>Every Closure is callable. Not every callable is a Closure — wrap the rest with <code>fromCallable</code>. An invokable class is not a <code>\Closure</code>; <code>fromCallable</code> stores the <code>__invoke</code> arity intersection as <code>TCallableShape</code> and drops the class type. Untyped <code>callable</code> is not assignable to a parameterized <code>\Closure&lt;…&gt;</code>.</p>
 <p><code>TThis</code> and <code>TScope</code> are <strong>invariant</strong>. Callable variance applies to <code>TCallableShape</code> (and thus to assigning a Closure to <code>callable</code> / that facet). Optional parameters on <code>__invoke</code> still produce an intersection of arity facets on the object (see <a href="#optional-parameters-and-arity-facets">Optional parameters</a>).</p>
-<h3>Inference</h3>
+<h3 id="inference">Inference</h3>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
 <tr>
@@ -430,12 +449,12 @@ callable(int): string $also = $parser;  // Closure is callable via __invoke
 </tbody>
 </table></div>
 <p><code>fromCallable</code> copies <code>$this</code> and scope from <strong><code>$callback</code></strong>, not from the caller. If the checker can see that <code>$callback</code> is not callable from <code>__CurrentScope</code> (for example another class’s <code>private</code> method), that is a compile error.</p>
-<h3><code>bind</code> / <code>bindTo</code> / <code>call</code> and <code>'static'</code></h3>
+<h3 id="bind--bindto--call-and-static"><code>bind</code> / <code>bindTo</code> / <code>call</code> and <code>'static'</code></h3>
 <p><code>'static'</code> on <code>bind</code> / <code>bindTo</code> means “keep the old stored <code>TScope</code>”. It is not a class-name string and must not appear as a Closure type argument (<strong>TYHP4335</strong>). Omitting <code>$newScope</code> is the same keep-old-scope overload. After <code>'static'</code> / omitted scope, <code>$newThis</code> must still be an instance of the leftover scope (<strong>TYHP4334</strong>). An explicit object <code>$newScope</code> requires <code>TNewThis</code> to be a subtype of that object’s type; a string <code>$newScope</code> must be <code>__SuperTypeName&lt;TNewThis&gt;</code> (an ancestor name).</p>
 <p><code>call($newThis, …)</code> is a temporary bind: <code>$newThis</code> must be a non-null object (<code>TNewThis extends object</code>) compatible the same way. Arrow functions, some first-class callables, and internal-class <code>$newThis</code> / <code>$newScope</code> cannot be rebound (<strong>TYHP4336</strong>). Gradual <code>TThis</code> (<code>object|null</code> / bare <code>\Closure</code>) does not prove a bind error.</p>
-<h3>Generic shapes and <code>as</code></h3>
+<h3 id="generic-shapes-and-as">Generic shapes and <code>as</code></h3>
 <p>Generic arguments are compile-time. Assert a specific Closure (or Fiber) shape with <code>as</code>, for example <code>$fn as \Closure&lt;callable(int): string&gt;</code>. <code>instanceof</code> / <code>is</code> test the PHP class (<code>\Closure</code> / <code>\Fiber</code>).</p>
-<h2>The <code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code> Type</h2>
+<h2 id="the-generatortkey-tvalue-tsend-treturn-type">The <code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code> Type</h2>
 <p>A function that contains <code>yield</code> is a generator. The <strong>declared</strong> return type is what a <strong>call</strong> returns — a Generator object — not the value of <code>return</code> inside the body. That inner <code>return</code> is <code>TReturn</code>, available as <code>$g-&gt;getReturn()</code> after the generator is exhausted.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Generator&lt;TKey, TValue, TSend, TReturn&gt;</code></h4><br/><p><code>TKey</code> is the yield key type, <code>TValue</code> is the yield value type, <code>TSend</code> is the type accepted by <code>send()</code> (the value of a <code>yield</code> <strong>expression</strong>), and <code>TReturn</code> is <code>getReturn()</code>.</p>
 </div>
@@ -468,17 +487,17 @@ callable(int): string $also = $parser;  // Closure is callable via __invoke
 <p><code>function foo(): string { yield 1; }</code> is <strong>TYHP4087</strong>. Async functions must not return Generator.</p>
 <p><strong>Body inference:</strong> <code>TValue</code> is the union of <code>yield $v</code> / <code>yield $k =&gt; $v</code> values. <code>TKey</code> is the union of explicit keys; a key-less <code>yield $v</code> contributes <code>int</code>. <code>TReturn</code> is the union of <code>return $x</code> values, plus <code>null</code> if any path falls off without <code>return</code>. Unused <code>yield $v;</code> leaves <code>TSend</code> as <code>mixed</code>. A typed target (<code>int $x = yield</code>, or <code>foo(yield)</code> with <code>foo(int $x)</code>) constrains <code>TSend</code>. Several typed targets are <strong>intersected</strong>; an empty intersection is <strong>TYHP4328</strong>. Untyped <code>$x = yield</code> keeps <code>TSend</code> and <code>$x</code> as <code>mixed</code> — narrow before use.</p>
 <p><code>yield from $inner</code> must be iterable or a Generator (<strong>TYHP4089</strong>). Inner <code>TKey</code> / <code>TValue</code> merge; outer <code>TSend</code> must be a legal <code>send()</code> into the inner. The <code>yield from</code> expression is the inner <code>TReturn</code> (arrays and non-Generator Traversables evaluate to <code>null</code>).</p>
-<h2>The <code>\Fiber&lt;TResume, TCallableShape&gt;</code> Type</h2>
+<h2 id="the-fibertresume-tcallableshape-type">The <code>\Fiber&lt;TResume, TCallableShape&gt;</code> Type</h2>
 <p><code>\Fiber</code> is generic over the resume protocol and the callback shape.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\Fiber&lt;TResume = mixed, TCallableShape extends callable = callable&gt;</code></h4><br/><p><code>TResume</code> types the argument of <code>$fiber-&gt;resume($value)</code> only. <code>TCallableShape</code> is the callback passed to <code>new Fiber</code>. <code>start(…)</code>, <code>throw(…)</code>, and <code>Fiber::suspend()</code> <strong>return</strong> <code>mixed|null</code>. <code>getReturn()</code> is <code>__CallableReturnType&lt;TCallableShape&gt;</code>. <code>Fiber::getCurrent()</code> is <code>?\Fiber&lt;mixed, callable&gt;</code>.</p>
 </div>
 <p><code>Fiber::suspend()</code> is static: it suspends whichever fiber is running, including helpers shared by many fibers. Its argument and return are <code>mixed</code> at every call site. Narrow from <code>mixed</code> before use. Assert a tighter Fiber shape with <code>as</code> (same rule as Closure).</p>
-<h2>The <code>#[\Tyhp\PhpType]</code> Attribute</h2>
+<h2 id="the-tyhpphptype-attribute">The <code>#[\Tyhp\PhpType]</code> Attribute</h2>
 <p><code>#[\Tyhp\PhpType('mixed')]</code> (constructor argument: a PHP type-hint spelling) replaces the <strong>emitted PHP type</strong> of the declaration it sits on. Checker types are unchanged. Usages and the <code>PhpType</code> class itself are omitted from emitted PHP because the class is tagged <code>#[\Tyhp\NoEmit]</code>.</p>
 <p>Legal sites: parameter (function, method, closure, property-hook <code>set</code>), function or method <strong>return</strong> (attribute on the function/method), property (including hooked and constructor-promoted), typed constant (class / interface / trait / enum). Constructor promotion: one attribute covers both the parameter and the property.</p>
 <p>Implementing a method or property <strong>inherits</strong> <code>PhpType</code> from the interface or abstract member it satisfies.</p>
 <p>Invalid spelling (<code>int[]</code>, <code>?mixed</code>, missing argument) is <strong>TYHP4329</strong>. Illegal targets — class / interface / trait / enum (including enum backing type), enum cases, catch types, local variables, property <code>get</code>/<code>set</code> hooks — are <strong>TYHP4327</strong>. Put the attribute on the property or on the <code>set</code> parameter instead of on the hook.</p>
-<p>This is not <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]</code> (that is a <a href="tyhp_0320_phpVersionGating.md">PHP version gate</a>).</p>
+<p>This is not <code>#[\Tyhp\Php(&quot;&gt;=8.4&quot;)]</code> (that is a <a href="tyhp_0320_phpVersionGating.html">PHP version gate</a>).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 #[\Tyhp\PhpType(&#039;mixed&#039;)]
@@ -487,24 +506,24 @@ function offsetGet(#[\Tyhp\PhpType(&#039;mixed&#039;)] string $offset): User {
 }
 </code></pre></div>
 <p>The checker still sees <code>string</code> / <code>User</code>. The emitted PHP is <code>function offsetGet(mixed $offset): mixed</code>.</p>
-<h2>The <code>\WeakReference&lt;T&gt;</code> Type</h2>
+<h2 id="the-weakreferencet-type">The <code>\WeakReference&lt;T&gt;</code> Type</h2>
 <p>The <code>\WeakReference</code> class gains a generic parameter for the referenced object type. The <code>get()</code> method returns <code>?T</code> instead of <code>?object</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\WeakReference&lt;T&gt;</code></h4><br/><p>A weak reference to an object of type <code>T</code>. <code>get()</code> returns <code>?T</code>.</p>
 </div>
-<h2>The <code>\WeakMap&lt;TKey extends object, TValue&gt;</code> Type</h2>
+<h2 id="the-weakmaptkey-extends-object-tvalue-type">The <code>\WeakMap&lt;TKey extends object, TValue&gt;</code> Type</h2>
 <p>The <code>\WeakMap</code> class gains generic parameters for the key type (constrained to <code>object</code>) and value type.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\WeakMap&lt;TKey extends object, TValue&gt;</code></h4><br/><p>A type-safe weak object-keyed map. Keys are weakly referenced and do not prevent garbage collection.</p>
 </div>
-<h2>The <code>\UnitEnum</code> and <code>\BackedEnum&lt;TValue&gt;</code> Types</h2>
+<h2 id="the-unitenum-and-backedenumtvalue-types">The <code>\UnitEnum</code> and <code>\BackedEnum&lt;TValue&gt;</code> Types</h2>
 <p>The <code>\UnitEnum</code> interface remains as-is. <code>\BackedEnum</code> gains a generic parameter <code>TValue extends string|int</code> for the backing value type. The <code>from()</code> and <code>tryFrom()</code> methods use <code>TValue</code> for their parameter and return types.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\BackedEnum&lt;TValue extends string|int&gt;</code></h4><br/><p>A backed enum where <code>from(TValue): static</code> and <code>tryFrom(TValue): ?static</code> use the backing type parameter.</p>
 </div>
 <p>Every enumeration is <code>\UnitEnum</code> without a written <code>implements</code>. A backed enumeration is also <code>\BackedEnum</code>. <code>cases()</code> resolves on every enum; backed enums also have <code>from()</code> / <code>tryFrom()</code>. User classes, interfaces, and traits must not list <code>\UnitEnum</code> or <code>\BackedEnum</code> in <code>implements</code> or <code>extends</code> (<strong>TYHP4337</strong>). User enums must not list those interfaces either, and must not redeclare <code>cases</code>, <code>from</code>, or <code>tryFrom</code> (<strong>TYHP4338</strong>). Only the engine <code>\BackedEnum</code> declaration may extend <code>\UnitEnum</code>. Harvested <code>.tyhpdef</code> stubs may still list <code>\UnitEnum</code> / <code>\BackedEnum</code>; the checker does not flag those shells.</p>
-<h2>The <code>\SensitiveParameterValue&lt;T&gt;</code> Type</h2>
+<h2 id="the-sensitiveparametervaluet-type">The <code>\SensitiveParameterValue&lt;T&gt;</code> Type</h2>
 <p>The <code>\SensitiveParameterValue</code> class gains a generic parameter <code>T</code> so <code>getValue()</code> returns <code>T</code> instead of <code>mixed</code>.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>\SensitiveParameterValue&lt;T&gt;</code></h4><br/><p>Wraps a sensitive parameter value. <code>getValue()</code> returns <code>T</code>.</p>
 </div>
-<h2>Generic SPL Types</h2>
+<h2 id="generic-spl-types">Generic SPL Types</h2>
 <p>Many SPL (Standard PHP Library) classes and interfaces gain generic type parameters in Tyhp. The following is a comprehensive list of SPL types with generic support:</p>
 <ul>
 <li><code>\OuterIterator&lt;TKey, TValue&gt;</code> -- extends <code>\Iterator&lt;TKey, TValue&gt;</code></li>
@@ -534,7 +553,7 @@ function offsetGet(#[\Tyhp\PhpType(&#039;mixed&#039;)] string $offset): User {
 <li><code>\RegexIterator&lt;TKey, TValue&gt;</code> -- extends <code>\FilterIterator&lt;TKey, TValue&gt;</code></li>
 <li>All <code>Recursive*</code> variants of the above iterators also gain the same generic parameters</li>
 </ul>
-<h2>The <code>callable(…): R</code> Type</h2>
+<h2 id="the-callable-r-type">The <code>callable(…): R</code> Type</h2>
 <p>Bare <code>callable</code> is “invokable, signature unknown.” A <strong>callable shape</strong> adds a PHP-style parameter list and a return type. Names are optional. <code>=</code> marks a parameter as optional; a written default expression is parsed and discarded, so <code>bool $b = false</code> and <code>bool $b =</code> are the same shape.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -566,7 +585,7 @@ callable(int $x): ?string $nullRet;  // int → string|null
 </div>
     </div>
 </div>
-<h3>Optional parameters and arity facets</h3>
+<h3 id="optional-parameters-and-arity-facets">Optional parameters and arity facets</h3>
 <p>Trailing parameters with default values expand into an <strong>intersection of arity siblings</strong> (not a subtype chain). The same model applies to a Closure’s <code>__invoke</code> facet (<code>TCallableShape</code>), not to <code>\Closure</code>’s class type arguments.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -583,7 +602,7 @@ Greeter $either;
 </code></pre></div>
 <p>Each facet is an independent arity: <code>callable(string, int): void</code> does <strong>not</strong> imply <code>callable(string): void</code> by itself — only the intersection (or a value inferred with defaults) is assignable to both. A one-argument <code>callable(int): bool</code> is not assignable to the zero-argument facet <code>callable(): bool</code>. A function whose parameters all have defaults still assigns to <code>callable(): bool</code>, because inference includes a zero-argument arity sibling.</p>
 <p>A trailing variadic never produces infinite facets. <code>function joinAll(string ...$parts): void</code> is typed <code>(callable(): void) &amp; (callable(string): void)</code> — the prefix facets plus one that accepts a single variadic argument. Calls with more arguments than any facet are left unchecked rather than rejected.</p>
-<h3>Any-arity <code>callable(...): TReturn</code></h3>
+<h3 id="any-arity-callable-treturn">Any-arity <code>callable(...): TReturn</code></h3>
 <p><code>callable(...): TReturn</code> pins the return type without pinning the parameter list. The ellipsis is the <strong>only</strong> thing in the parameter list — a wildcard arity, not a rest parameter.</p>
 <p>It is a generic bound, not a value type. Constrain a type parameter and take that parameter:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -597,7 +616,7 @@ function demo(): void {
 </code></pre></div>
 <p>Do not write <code>callable(...): bool $callback</code> as a parameter, property, or return type, and do not call a value of that type. A concrete <code>callable(int): bool</code> or <code>callable(string, int): bool</code> is assignable to the bound when the return type is assignable to <code>bool</code>. The any-arity bound is not assignable to a known-arity facet such as <code>callable(): bool</code> or <code>callable(int): bool</code>.</p>
 <p><code>callable(): bool</code> remains a zero-parameter callable that returns bool. <code>callable(...): bool</code> is a different type.</p>
-<h3>Parameter packs in callable shapes</h3>
+<h3 id="parameter-packs-in-callable-shapes">Parameter packs in callable shapes</h3>
 <p>A <strong>pack</strong> is an ordered list of types, not a union and not <code>array</code>. <code>__CallableParametersRest&lt;TCallable&gt;</code> is a pack of that callable’s parameters. Inside a callable-shape parameter list, a pack <strong>splices</strong> into ordinary parameters — no extra punctuation:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -614,7 +633,7 @@ callable(__Nullable&lt;__CallableParametersRest&lt;callable(int, string): mixed&
 <p><code>__Nullable&lt;int&gt;</code> stays <code>int|null</code>. <code>__Nullable</code> on a pack maps each member (<code>?P0, ?P1, …</code>). <code>__NonNullable</code> maps a pack by stripping <code>null</code> from each member.</p>
 <p>Value position is unchanged: <code>Rest&lt;T&gt; ...$args</code> unpacks at the call. <code>Rest&lt;T&gt; $x</code> (non-variadic) stays one wrapper.</p>
 <p>Postfix <code>...</code> on a pack is an error (<code>callable(Rest&lt;T&gt; ...): R</code>). Packs splice automatically. Prefix <code>...Pack</code> is also an error.</p>
-<h3>Trailing <code>T...</code> (PHP variadic)</h3>
+<h3 id="trailing-t-php-variadic">Trailing <code>T...</code> (PHP variadic)</h3>
 <p><code>callable(P1, …, Pk, T ...): R</code> is a trailing PHP variadic: prefix parameters, then <code>T ...$values</code>, then return. Homogeneous <code>T ...</code> is only valid as the <strong>last parameter</strong> on a callable shape.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -631,7 +650,7 @@ $join(1, true, &#039;a&#039;, &#039;b&#039;);
 </ul>
 <p><code>callable(mixed ...): R</code> is not the any-arity wildcard: every used slot must accept <code>mixed</code>. Keep <code>callable(...): R</code> for unknown arity.</p>
 <p>Reject <code>callable(): int...</code> (missing return), <code>callable(string ..., int): bool</code> (<code>...</code> not last before return), and postfix <code>...</code> on <code>array&lt;&gt;</code>, <code>\Closure&lt;&gt;</code>, or user generics.</p>
-<h3><code>__CallableParametersSlice</code></h3>
+<h3 id="callableparametersslice"><code>__CallableParametersSlice</code></h3>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">__CallableParametersSlice&lt;TCallable extends callable, TStart extends int = 0, TMin extends int = 0&gt;
 </code></pre></div>
 <p><code>TStart</code> / <code>TMin</code> are non-negative int literal types.</p>
@@ -668,42 +687,53 @@ function array_map&lt;TZip extends callable&gt;(
 ): array&lt;int, __CallableReturnType&lt;TZip&gt;&gt;;
 </code></pre></div>
 <p><code>TZip</code> is the non-null schema (array element types), not the callback’s type. <code>__Nullable&lt;Rest&lt;TZip&gt;&gt;</code> splices to <code>?P0, ?P1, …</code>. Extra arrays use <code>TMin = 1</code> so a one-array call stays on the key-preserving overload.</p>
-<h2>New Tyhp-Specific Types</h2>
-<h2>The <code>decimal</code> Type</h2>
-<p>Tyhp introduces a <code>decimal</code> type for precise arithmetic calculations. In the compiled PHP, a <code>decimal</code> value is an instance of the <code>\Tyhp\Decimal</code> wrapper class that handles all arithmetic operations using bcmath, gmp, or a pure-PHP fallback (configurable in <code>tyhp.json</code>). There is no <code>19.99d</code> suffix. Construct decimals with <code>\Tyhp\decimal('19.99')</code> or <code>new \Tyhp\Decimal(...)</code>.</p>
+<h2 id="new-tyhp-specific-types">New Tyhp-Specific Types</h2>
+<h2 id="the-decimal-type">The <code>decimal</code> Type</h2>
+<p>Tyhp introduces a <code>decimal</code> type for precise arithmetic calculations. In the compiled PHP, a <code>decimal</code> value is an instance of the <code>\Tyhp\Decimal</code> wrapper class that handles all arithmetic operations using the best extension that PHP has loaded (<code>ext-decimal</code>, <code>ext-bcmath</code>, or <code>ext-gmp</code>) or a pure-PHP fallback. <code>decimal</code> and <code>\Tyhp\Decimal</code> are the same type, and <code>decimal</code> needs no import in namespaced files. See <a href="package_decimal.html">The tyhp/decimal Package</a> for the backends, scale, and rounding. Construct decimals with <code>\Tyhp\decimal('19.99')</code>, <code>new \Tyhp\Decimal(...)</code>, or a <code>(decimal)</code> cast.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 decimal $price = \Tyhp\decimal(&#039;19.99&#039;);
 decimal $tax = \Tyhp\decimal(&#039;2.00&#039;);
-decimal $total = $price + $tax;  // Precise arithmetic
+decimal $total = $price + $tax;  // 21.99, precise arithmetic
 
 class Invoice {
-    public decimal $amount;
-    public decimal $taxRate;
+    public function __construct(
+        public decimal $amount,
+        public decimal $taxRate,
+    ) {}
 
     public function calculateTotal(): decimal {
         return $this-&gt;amount * (\Tyhp\decimal(&#039;1&#039;) + $this-&gt;taxRate);
     }
 }
 </code></pre></div>
-<p>The <code>decimal</code> type supports all standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code>), comparison operators (<code>==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>), unary negation (<code>-$val</code>), and casts to <code>int</code>, <code>float</code>, and <code>string</code>. These compile to static method calls on <code>\Tyhp\Decimal</code> (for example <code>\Tyhp\Decimal::__add($a, $b)</code>).</p>
-<h2>The <code>(decimal)</code> Cast</h2>
-<p>Tyhp provides a <code>(decimal)</code> cast operator for converting values to the <code>decimal</code> type, similar to PHP's built-in casts like <code>(int)</code> and <code>(float)</code>.</p>
+<p>The <code>decimal</code> type supports the arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>**</code>), unary <code>-</code> and <code>+</code>, the comparison operators (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;=&gt;</code>), the compound assignments (<code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>, <code>**=</code>), and casts to <code>int</code>, <code>float</code>, and <code>string</code>. The operators accept a <code>string</code>, <code>int</code>, or <code>float</code> as the other operand, on either side (<code>$price * 3</code>, <code>100 - $price</code>); only <code>**</code> requires a <code>decimal</code> base and an <code>int</code> exponent. The results have type <code>decimal</code>, <code>bool</code> (comparisons), or <code>int</code> (<code>&lt;=&gt;</code>); unary <code>+</code> gives a <code>float</code>. The operators compile to static method calls on <code>\Tyhp\Decimal</code> (for example <code>\Tyhp\Decimal::__add($a, $b)</code>).</p>
+<h2 id="the-decimal-cast">The <code>(decimal)</code> Cast</h2>
+<p>The <code>(decimal) $expr</code> cast converts a <code>string</code>, <code>int</code>, or <code>float</code> expression (or a union of those) to <code>decimal</code>, in the same way the <code>(int)</code> and <code>(float)</code> casts convert to their types. The result is a <code>decimal</code> that can be assigned, passed, or used as an operand. The cast compiles to <code>\Tyhp\Decimal::__from($expr)</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 float $price = 19.99;
-decimal $precisePrice = (decimal) $price;
+decimal $precisePrice = (decimal) $price;   // 19.98999999999999843681 (a float keeps its binary error)
 
 string $amount = &quot;99.95&quot;;
-decimal $parsed = (decimal) $amount;
+decimal $parsed = (decimal) $amount;        // 99.95
+decimal $withTax = (decimal) $amount * &#039;1.2&#039;;  // 119.94
 </code></pre></div>
-<h2>Compiled PHP Output for <code>decimal</code></h2>
+<p>A string that is not a valid decimal number throws <code>\InvalidArgumentException</code> when the cast runs; prefer strings (or integers) for exact values. Casting any other type is an error (<strong>TYHP4008</strong>), including <code>bool</code>, <code>null</code>, arrays, nullable types such as <code>?string</code>, and objects that implement <code>\Tyhp\Contracts\DecimalConvertible</code>; use <code>\Tyhp\decimal($value)</code> for a <code>DecimalConvertible</code> object. Casting an expression that is already <code>decimal</code> changes nothing and reports the warning <strong>TYHP4205</strong>.</p>
+<p>Without a cast, the compiler converts a <code>string</code>, <code>int</code>, or <code>float</code> to <code>decimal</code> only for call arguments and <code>return</code> values. A plain assignment such as <code>decimal $x = '2.5';</code> is an error (<strong>TYHP4008</strong>).</p>
+<h2 id="compiled-php-output-for-decimal">Compiled PHP Output for <code>decimal</code></h2>
 <p>The <code>decimal</code> type compiles to <code>\Tyhp\Decimal</code> instances. Arithmetic operations become static method calls:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 decimal $a = \Tyhp\decimal(&#039;10.5&#039;);
 decimal $b = \Tyhp\decimal(&#039;3.2&#039;);
 decimal $result = $a + $b;
+if ($a &gt; $b) {
+    $a += 1;
+}
+decimal $left = 100 - $a;
+decimal $parsed = (decimal) &#039;99.95&#039;;
+int $whole = (int) $a;
 </code></pre></div>
 <p>Compiles to:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
@@ -712,21 +742,27 @@ declare(strict_types=1);
 $a = \Tyhp\decimal(&#039;10.5&#039;);
 $b = \Tyhp\decimal(&#039;3.2&#039;);
 $result = \Tyhp\Decimal::__add($a, $b);
+if (\Tyhp\Decimal::__isGreaterThan($a, $b)) {
+    $a = \Tyhp\Decimal::__add($a, 1);
+}
+$left = \Tyhp\Decimal::__subtract(100, $a);
+$parsed = \Tyhp\Decimal::__from(&#039;99.95&#039;);
+$whole = $a-&gt;__toInt();
 </code></pre></div>
-<h2>The <code>struct</code> Base Type</h2>
+<h2 id="the-struct-base-type">The <code>struct</code> Base Type</h2>
 <p>The <code>struct</code> base type is the parent of every struct shape: named aliases (<code>type Point = struct { … };</code>) and inline <code>struct { … }</code> in type position. At the PHP level a struct compiles to an associative <code>array</code>, with typed properties, schema-based typing, and value-type semantics. See the Structs documentation page for aliases, inline types, and the <code>with</code> keyword.</p>
-<h2>The <code>void</code> Type</h2>
+<h2 id="the-void-type">The <code>void</code> Type</h2>
 <p>The <code>void</code> type in Tyhp is treated as a first-class keyword with its own lexer token (<code>T_TYHP_VOID</code>). It can be used in more type expression contexts than in PHP, including in type alias definitions, generic type arguments (where the generic parameter opts in via its constraint), and as part of callable/closure return types.</p>
-<h2>The <code>never</code> Type</h2>
+<h2 id="the-never-type">The <code>never</code> Type</h2>
 <p>The <code>never</code> type from PHP is retained in Tyhp with the same semantics: it indicates that a function never returns (it always throws, calls <code>exit()</code>, or enters an infinite loop). Like <code>void</code>, it is a restricted type that can only appear as a generic type argument when the constraint explicitly allows it.</p>
-<h2>The <code>mixed</code> Type</h2>
+<h2 id="the-mixed-type">The <code>mixed</code> Type</h2>
 <p>The <code>mixed</code> type from PHP is available in Tyhp but is discouraged. Prefer specific types or union types instead. There is no compiler setting that disallows <code>mixed</code>. See the dedicated Mixed Type documentation page for more details.</p>
-<h2>Template String Types</h2>
+<h2 id="template-string-types">Template String Types</h2>
 <p>Tyhp supports template (encaps) string types in type position: a double-quoted pattern with <code>${T}</code> holes and optional quantifiers right after <code>}</code> (<code>?</code> = 0–1, <code>+</code> = 1+, <code>*</code> = 0+). Examples: <code>&quot;${string}*&quot;</code>, <code>&quot;api/${string}/items&quot;</code>. They erase to <code>string</code>. See Type Aliases for a short usage note.</p>
-<h2>The <code>self</code> / <code>static</code> / <code>parent</code> Relative Class Types</h2>
+<h2 id="the-self--static--parent-relative-class-types">The <code>self</code> / <code>static</code> / <code>parent</code> Relative Class Types</h2>
 <p>Tyhp supports relative class types with and without generic type arguments. The rules differ for<br />
 bare vs parameterized forms, and for instance vs static methods.</p>
-<h3>Bare <code>self</code> / bare <code>static</code> (no type-argument list)</h3>
+<h3 id="bare-self--bare-static-no-type-argument-list">Bare <code>self</code> / bare <code>static</code> (no type-argument list)</h3>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
 <tr>
@@ -753,7 +789,7 @@ defaults.” Defaults apply only when the class reference is under-specified the
 <code>Foo</code> / <code>Foo::</code> would elsewhere: if every omitted parameter has a default, apply them; otherwise<br />
 error. Inside the open generic’s own body, <code>$this</code> / bare <code>self</code> stay in terms of the class’s own<br />
 parameters (do not silently default to <code>mixed</code>).</p>
-<h3>Parameterized <code>self&lt;…&gt;</code> / <code>parent&lt;…&gt;</code></h3>
+<h3 id="parameterized-self--parent">Parameterized <code>self&lt;…&gt;</code> / <code>parent&lt;…&gt;</code></h3>
 <p>Allowed — explicit instantiation of a declaration whose arity is known at the spelling site:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -771,24 +807,24 @@ class TypedList&lt;T&gt; extends Collection&lt;T&gt; {
     }
 }
 </code></pre></div>
-<h3>Parameterized <code>static&lt;…&gt;</code> — forbidden</h3>
+<h3 id="parameterized-static--forbidden">Parameterized <code>static&lt;…&gt;</code> — forbidden</h3>
 <p><code>static&lt;…&gt;</code> is <strong>not allowed</strong> in any scope (including <code>final</code> classes). Late-static binding must<br />
 not invent or rebind type arguments. Prefer bare <code>static</code>, or explicit <code>DeclaringClass&lt;…&gt;</code> /<br />
 <code>self&lt;…&gt;</code> / <code>parent&lt;…&gt;</code> when an instantiation must be written. The checker reports<br />
 <strong>TYHP4168</strong> (<code>CheckerParameterizedStaticForbidden</code>).</p>
-<h3>Factories that stamp a method generic onto the class</h3>
+<h3 id="factories-that-stamp-a-method-generic-onto-the-class">Factories that stamp a method generic onto the class</h3>
 <p>Use <code>: self&lt;T&gt;</code> or the declaring class name (<code>: Promise&lt;T&gt;</code>), <strong>not</strong> <code>: static&lt;T&gt;</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-final class Promise&lt;TReturn extends void|mixed = mixed&gt; {
-    public static function _async&lt;T extends void|mixed&gt;(callable(): T $fn): self&lt;T&gt; {
-        return new self&lt;T&gt;($fn);
+final class Promise&lt;TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;&gt; {
+    public static function _async&lt;T extends void|mixed&gt;(callable(): T $fn): self&lt;__Awaited&lt;T&gt;&gt; {
+        return new self&lt;__Awaited&lt;T&gt;&gt;($fn);
     }
 }
 </code></pre></div>
 <p>On a <code>final</code> class, bare <code>self</code> and bare <code>static</code> remain interchangeable for <em>non-parameterized</em><br />
 returns; parameterized returns use <code>self&lt;…&gt;</code> or the class name.</p>
-<h3>Fluent inheritance</h3>
+<h3 id="fluent-inheritance">Fluent inheritance</h3>
 <p>A non-generic parent may return bare <code>static</code> without knowing whether a child is generic. Call<br />
 sites with <code>GenericBuilder&lt;int&gt; $b</code> get <code>GenericBuilder&lt;int&gt;</code> back from inherited fluent methods —<br />
 parent declaration sites never name the child’s type parameters:</p>
@@ -808,7 +844,7 @@ function demo(GenericBuilder&lt;int&gt; $b): GenericBuilder&lt;int&gt; {
     return $b-&gt;tap();
 }
 </code></pre></div>
-<h3><code>static</code> as a checked type (return / assignability)</h3>
+<h3 id="static-as-a-checked-type-return--assignability"><code>static</code> as a checked type (return / assignability)</h3>
 <p>Bare <code>static</code> is a first-class late-bound type. A value is valid where <code>static</code> is expected only<br />
 when it is <strong>verifiably</strong> that late-bound type, for example:</p>
 <ul>
@@ -820,13 +856,14 @@ when it is <strong>verifiably</strong> that late-bound type, for example:</p>
 <p>Ordinary <code>self</code> / declaring-class instances (including <code>new self()</code>) are <strong>not</strong> assignable to<br />
 <code>static</code> without such a proof. At call sites, a <code>: static</code> return expands to the receiver /<br />
 call-site class reference (including its type arguments).</p>
-<h2>The <code>Promise&lt;T&gt;</code> Type</h2>
-<p>Tyhp provides a <code>Promise&lt;T&gt;</code> type for async/await support. The <code>Promise</code> class is defined as <code>Promise&lt;TReturn extends void|mixed = mixed&gt;</code> where <code>TReturn</code> is the fulfillment value type (default <code>mixed</code>). The constraint allows <code>Promise&lt;void&gt;</code> for async functions that do not return a value. A bare <code>Promise</code> is <code>Promise&lt;mixed&gt;</code>, not <code>Promise&lt;void&gt;</code>.</p>
+<h2 id="the-promiset-type">The <code>Promise&lt;T&gt;</code> Type</h2>
+<p>Tyhp provides a <code>Promise&lt;T&gt;</code> type for async/await support. The <code>Promise</code> class is declared as <code>Promise&lt;TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;&gt;</code>, where <code>TReturn</code> is the fulfillment value type. A bare <code>Promise</code> is <code>Promise&lt;mixed&gt;</code>, not <code>Promise&lt;void&gt;</code>; <code>Promise&lt;void&gt;</code> is the type of async functions that do not return a value.</p>
+<p>The <code>__Awaited&lt;void|mixed&gt;</code> bound means a promise always carries a <em>settled</em> type: <code>Promise&lt;Promise&lt;int&gt;&gt;</code>, a union with a promise member such as <code>Promise&lt;int|Promise&lt;string&gt;&gt;</code>, and <code>Promise&lt;T&gt;</code> for an unconstrained type parameter <code>T</code> (which could itself be a promise) are rejected with TYHP4373. See <a href="#type-utility-types"><code>__Awaited&lt;T&gt;</code></a> below.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// An async function returns a Promise
+// An async function returns a Promise of its declared return type
 async function fetchUser(int $id): User {
-    // The actual return type is Promise&lt;User&gt;
+    // A call has type Promise&lt;User&gt;; awaiting it gives a User
     $response = await \httpGet(&quot;/users/{$id}&quot;);
     return User::fromJson($response);
 }
@@ -835,12 +872,12 @@ async function fetchUser(int $id): User {
 Promise&lt;User&gt; $userPromise = fetchUser(42);
 User $user = await $userPromise;
 </code></pre></div>
-<p>Key <code>Promise</code> methods include static combinators (<code>all&lt;T&gt;</code>, <code>race&lt;T&gt;</code>, <code>resolved&lt;T&gt;</code>, <code>rejected&lt;T&gt;</code>, <code>delay</code>, <code>timeout&lt;T&gt;</code>, <code>batch&lt;TItem, TResult&gt;</code>, <code>run&lt;T&gt;</code>), instance methods (<code>then&lt;TResult&gt;</code>, <code>catch&lt;TResult&gt;</code>, <code>finally</code>), and the internal <code>_async</code>/<code>_await</code> methods that the <code>async</code>/<code>await</code> keywords desugar to. <code>async { ... }</code> is a block expression that evaluates to <code>Promise&lt;T&gt;</code> (not a callable). See the Async/Await documentation for full details.</p>
-<h2>Internal Compiler Types</h2>
+<p>Key <code>Promise</code> methods include static combinators (<code>all&lt;T&gt;</code>, <code>race&lt;T&gt;</code>, <code>resolved&lt;T&gt;</code>, <code>rejected&lt;T&gt;</code>, <code>delay</code>, <code>timeout&lt;T&gt;</code>, <code>batch&lt;TItem, TBatchReturn&gt;</code>, <code>run&lt;T&gt;</code>), instance methods (<code>then</code>, <code>catch</code>, <code>finally</code>), and the internal <code>_async</code>/<code>_await</code> methods that the <code>async</code>/<code>await</code> keywords desugar to. <code>async { ... }</code> is a block expression that evaluates to <code>Promise&lt;T&gt;</code> (not a callable). See the <a href="tyhp_2600_asyncAndAwait.html">Async/Await documentation</a> and the <a href="package_async.html#the-promise-class"><code>tyhp/async</code> package reference</a> for full details.</p>
+<h2 id="internal-compiler-types">Internal Compiler Types</h2>
 <p>The following types are part of Tyhp's internal type system. They are used by the compiler for type checking and type manipulation. Most are prefixed with <code>__</code> to indicate they are internal.</p>
-<h2>The <code>__TyhpInternal&lt;TType&gt;</code> Type</h2>
+<h2 id="the-tyhpinternalttype-type">The <code>__TyhpInternal&lt;TType&gt;</code> Type</h2>
 <p>The foundational internal wrapper type. A variable with a <code>__TyhpInternal&lt;T&gt;</code> type resolves to <code>T</code> but cannot be directly assigned by the developer. It can only be set via the return value of a function/method or via a type guard. Nearly all <code>__</code>-prefixed types are defined in terms of <code>__TyhpInternal&lt;&gt;</code>.</p>
-<h2>Symbol Name Types</h2>
+<h2 id="symbol-name-types">Symbol Name Types</h2>
 <p>These types represent string values that the compiler knows refer to specific symbols in scope. They enable Tyhp's type-safe dynamic language features. Each is obtained by using the corresponding type guard function (e.g., <code>\class_exists()</code> narrows a string to <code>__ClassName</code>).</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__VarName</code></h4><br/><p>A <code>string</code> representing a variable name valid in the current scope. Obtained via <code>variable_exists($count)</code> or <code>variable_exists('count')</code> — the argument is the variable itself or a string literal. Alias for <code>__TypedVarName&lt;mixed&gt;</code>. (<code>$$var</code> is prohibited: TYHP4133.)</p>
 </div>
@@ -850,7 +887,7 @@ User $user = await $userPromise;
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__ClassName</code></h4><br/><p>A <code>string</code> representing a class name in scope. Obtained via <code>\class_exists()</code> as a type guard.<br />
 Bare <code>__ClassName</code> is equivalent to <code>__ClassName&lt;object&gt;</code>; <code>\class_exists&lt;T&gt;($n)</code> narrows to <code>__ClassName&lt;T&gt;</code>.<br />
-Parametric <code>__ClassName&lt;T&gt;</code> is invariant in <code>T</code> when <code>T</code> is a nominal class (exact class name). When <code>T</code> is an object-shape alias, <code>__ClassName&lt;Shape&gt;</code> is a string naming some class whose instances match <code>Shape</code> (not an exact-name brand). <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> names a concrete, public-<code>new</code>-able class matching that shape; <code>new $cls(...)</code> is allowed with the shape’s constructor arguments. See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.<br />
+Parametric <code>__ClassName&lt;T&gt;</code> is invariant in <code>T</code> when <code>T</code> is a nominal class (exact class name). When <code>T</code> is an object-shape alias, <code>__ClassName&lt;Shape&gt;</code> is a string naming some class whose instances match <code>Shape</code> (not an exact-name brand). <code>__ClassName&lt;__New&lt;Shape&gt;&gt;</code> names a concrete, public-<code>new</code>-able class matching that shape; <code>new $cls(...)</code> is allowed with the shape’s constructor arguments. See <a href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a>.<br />
 For &quot;name of <code>T</code> or a descendant&quot;, use <code>__CompatibleTypeName&lt;T&gt;</code>. For &quot;name of <code>T</code> or a parent&quot;, use <code>__SuperTypeName&lt;T&gt;</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__InterfaceName</code></h4><br/><p>A <code>string</code> representing an interface name in scope. Obtained via <code>\interface_exists()</code> as a type guard.<br />
@@ -885,7 +922,7 @@ Accepts string literals naming a subtype of <code>T</code>, and branded <code>__
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__EnumCaseName&lt;T&gt;</code></h4><br/><p>The name of a specific enum case on the given enum <code>T</code>. Extends <code>__ObjectConstName</code>.</p>
 </div>
-<h2>Type Name String Types</h2>
+<h2 id="type-name-string-types">Type Name String Types</h2>
 <p>These types represent string representations of types themselves, used for dynamic type reflection and compile-time type manipulation.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__BaseTypeName</code></h4><br/><p>A string literal union of all single type names: <code>'int'</code>, <code>'float'</code>, <code>'bool'</code>, <code>'array'</code>, <code>'string'</code>, <code>'null'</code>, <code>'mixed'</code>, <code>'self'</code>, <code>'parent'</code>, <code>'static'</code>, <code>'callable'</code>, <code>'iterable'</code>, <code>'object'</code>, plus <code>__StructName</code>, <code>__ClassName</code>, <code>__EnumName</code>, and <code>__InterfaceName</code>.</p>
 </div>
@@ -901,7 +938,7 @@ Accepts string literals naming a subtype of <code>T</code>, and branded <code>__
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__NonMatchingStringType</code></h4><br/><p>A special string type with a constant value that is un-matchable except to itself. Acts as a bottom/never-matching string type, used as a fallback in type computations.</p>
 </div>
-<h2>Struct Utility Types</h2>
+<h2 id="struct-utility-types">Struct Utility Types</h2>
 <p>These types provide compile-time operations on struct types.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__StructRecord&lt;TStructType, TKey&gt;</code></h4><br/><p>Represents a single record (key-value pair) within a struct type.</p>
 </div>
@@ -919,7 +956,7 @@ Accepts string literals naming a subtype of <code>T</code>, and branded <code>__
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__IndexValueTypes&lt;T&gt;</code></h4><br/><p>Union of every field type of struct <code>T</code>. Used as the value envelope when indexing <code>T</code> without a specific key. Erases to <code>mixed</code>.</p>
 </div>
-<h2>Type Utility Types</h2>
+<h2 id="type-utility-types">Type Utility Types</h2>
 <p>These types provide compile-time type manipulation capabilities, similar to utility types in TypeScript.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>__Partial&lt;T&gt;</code></h4><br/><p>Object/struct patch type: every property becomes optional and nullable. Distinct from <code>__StructPartial</code>, which selects keys of a struct.</p>
 </div>
@@ -935,9 +972,28 @@ Accepts string literals naming a subtype of <code>T</code>, and branded <code>__
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__Extract&lt;T, U&gt;</code></h4><br/><p>Keeps only members of union <code>T</code> that are assignable to <code>U</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__Awaited&lt;T&gt;</code></h4><br/><p>Recursively unwraps <code>Promise&lt;T&gt;</code> (and nested promises) to the resolved type.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__Awaited&lt;T&gt;</code></h4><br/><p>The type a value has once every <code>\Tyhp\Promise</code> layer around it has settled. It unwraps only <code>\Tyhp\Promise</code> (a user class that merely has &quot;Promise&quot; in its name is left alone), repeatedly and member by member over unions: <code>__Awaited&lt;Promise&lt;Promise&lt;int&gt;&gt;&gt;</code> is <code>int</code>, and <code>__Awaited&lt;Promise&lt;int&gt;|string&gt;</code> is <code>int|string</code>. <code>Promise&lt;void&gt;</code> settles to <code>void</code>; a bare <code>Promise</code>, <code>Promise&lt;mixed&gt;</code>, and <code>mixed</code> settle to <code>mixed</code>; every other type is unchanged.</p>
+<p>While <code>T</code> is an open type parameter, <code>__Awaited&lt;T&gt;</code> stays deferred, because <code>T</code> could itself be a <code>Promise&lt;X&gt;</code> whose awaited type is <code>X</code>. A deferred <code>__Awaited&lt;T&gt;</code> is an opaque type: only <code>__Awaited&lt;T&gt;</code> (and <code>never</code>) is assignable to it, so a function body cannot return a <code>T</code> value or a <code>mixed</code> value as <code>__Awaited&lt;T&gt;</code>. Narrow the value with <code>$value is __Awaited&lt;T&gt;</code> instead. Once <code>T</code> is bound, by argument inference or by an explicit type argument as in <code>Promise::run&lt;User&gt;(…)</code>, the utility resolves to the settled type.</p>
+<p>Constrain your own type parameters with <code>extends __Awaited&lt;X&gt;</code> when they must hold a settled type: <code>T</code> then satisfies <code>X</code> and is already its own awaited type, so <code>Promise&lt;T&gt;</code> and <code>__Awaited&lt;T&gt;</code> agree. Supplying a promise, a union with a promise member, or an unconstrained type parameter for such a parameter reports TYHP4373. <code>Promise&lt;TReturn&gt;</code> itself is declared this way.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+use Tyhp\Promise;
+
+function settleAll&lt;T extends __Awaited&lt;void|mixed&gt;&gt;(array&lt;Promise&lt;T&gt;&gt; $promises): Promise&lt;array&lt;T&gt;&gt; {
+    return async {
+        array&lt;T&gt; $values = [];
+        foreach ($promises as $promise) {
+            $values[] = await $promise;
+        }
+        return $values;
+    };
+}
+</code></pre></div>
+<p><code>__Awaited</code> never appears in emitted PHP: type hints use the settled type, and runtime type tests (<code>is</code>, <code>typeof</code>) reify it through <code>\Tyhp\Type::awaited()</code>.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>__New&lt;T&gt;</code></h4><br/><p>Constructability constraint on an object-shape alias <code>T</code>. Values are instances that match <code>T</code> whose class is concrete and public-<code>new</code>-able as the shape’s <code>__construct</code> (or the PHP default zero-argument constructor when the shape has no <code>__construct</code>). <code>T</code> must be an object-shape alias. <code>new T(...)</code> is allowed when a type parameter is bounded by <code>__New&lt;Shape&gt;</code>. Erases like the shape (<code>object</code>, or nominal conjuncts from an intersection). See <a href="tyhp_3400_newTypeConstraint.md">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>__New&lt;T&gt;</code></h4><br/><p>Constructability constraint on an object-shape alias <code>T</code>. Values are instances that match <code>T</code> whose class is concrete and public-<code>new</code>-able as the shape’s <code>__construct</code> (or the PHP default zero-argument constructor when the shape has no <code>__construct</code>). <code>T</code> must be an object-shape alias. <code>new T(...)</code> is allowed when a type parameter is bounded by <code>__New&lt;Shape&gt;</code>. Erases like the shape (<code>object</code>, or nominal conjuncts from an intersection). See <a href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__Properties&lt;T&gt;</code></h4><br/><p>A synthetic struct whose keys are the instance property names of object type <code>T</code>, or the record keys of struct type <code>T</code>, and whose values are those members’ types. Every member is optional (same as a struct field with a default), so <code>[]</code> is a valid value and a literal may supply any subset of keys. Extra keys and value-type mismatches are errors. <code>T</code> must be an object type (class, interface, struct, or a type parameter bounded by <code>object</code>). Erases to <code>array</code>. An unbound type parameter stays deferred until it is inferred at a call site (for example <code>clone($object, $withProperties)</code>).</p>
 </div>
@@ -997,7 +1053,7 @@ function call_user_func_array&lt;TCallable extends callable&gt;(
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>__AsNullableTypeName&lt;T&gt;</code></h4><br/><p>Converts a type name string to its nullable version.</p>
 </div>
-<h2>Compiled PHP Output for Generic Types</h2>
+<h2 id="compiled-php-output-for-generic-types">Compiled PHP Output for Generic Types</h2>
 <p>All generic type parameters are erased in the compiled PHP output. The base type is preserved, but the generic arguments are stripped:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -1017,7 +1073,7 @@ function getNames(array $items): array {
 
 $cache = new \WeakMap();
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -1066,7 +1122,7 @@ $cache = new \WeakMap();
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

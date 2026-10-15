@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>The tyhp/io Package - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_bref.html">Bref</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="The_tyhp_io_Package">
+    <h2 class="section-heading">The tyhp/io Package</h2>
+    
+    <p><code>tyhp/io</code> gives Tyhp programs non-blocking I/O on the <code>tyhp/async</code> event loop. It covers HTTP requests, external processes, local files, TCP, TLS, and Unix-domain sockets, Redis, PostgreSQL, MySQL/MariaDB, any PDO driver, DNS lookups, and a general way to move blocking work out of the way. While one fiber waits for a response, a query, or a child process, every other fiber keeps running.</p>
+<p>Everything lives under the <code>Tyhp\Io</code> namespace. You write ordinary sequential code with <code>await</code>, and you combine independent operations with <code>Promise::all()</code> or <code>Promise::batch()</code> from <code>tyhp/async</code>. This page is the reference for the package API. The language features it relies on are covered in <a href="tyhp_2600_asyncAndAwait.html">Async and Await</a>, <a href="tyhp_0400_structs.html">Structs</a>, and <a href="tyhp_0500_generics.html">Generics</a>.</p>
+<h2 id="overview">Overview</h2>
+<h3 id="the-async-naming-convention">The <code>Async</code> naming convention</h3>
+<p>Every public method that returns a <code>Promise</code> ends in <code>Async</code>, for example <code>HttpClient::getAsync()</code>, <code>File::linesAsync()</code>, and <code>DbConnection::queryAsync()</code>. When you see the suffix, the call starts work and hands back a <code>Promise&lt;T&gt;</code>: <code>await</code> it inside async code to get the <code>T</code>, or collect several and await them together. Methods without the suffix (<code>close()</code>, <code>isClosed()</code>, <code>header()</code>, <code>rowsAs()</code>, <code>Offload::usesWorkers()</code>, and so on) return their value directly.</p>
+<p>Methods that implement an interface contract keep the contract's name. <code>OffloadJob::run()</code> is the blocking method you write for <code>Offload::runAsync()</code>, and the iterator returned by <code>File::linesAsync()</code> uses the standard <code>AsyncIterator</code> methods <code>next()</code> and <code>current()</code>, which <code>foreach (await ...)</code> calls for you.</p>
+<div class="callout-block callout-block-info">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-info-circle"></i>
+            </span>
+            Note
+        </h4>
+        <div class="callout-content"><p>The signatures on this page show what a caller receives. A method shown as returning <code>Promise&lt;T&gt;</code> may be declared <code>async</code> with return type <code>T</code> in the package source; the two are the same to the caller. Static methods are marked <code>static</code>.</p>
+</div>
+    </div>
+</div>
+<h3 id="what-is-in-the-package">What is in the package</h3>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Area</th>
+<th>Namespace</th>
+<th>Main types</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP client</td>
+<td><code>Tyhp\Io\Http</code></td>
+<td><code>HttpClient</code>, <code>HttpRequest</code>, <code>HttpResponse</code></td>
+<td><code>ext-curl</code></td>
+</tr>
+<tr>
+<td>Processes</td>
+<td><code>Tyhp\Io\Process</code></td>
+<td><code>Process</code>, <code>ProcessOptions</code>, <code>ProcessResult</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Files</td>
+<td><code>Tyhp\Io\File</code></td>
+<td><code>File</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Sockets</td>
+<td><code>Tyhp\Io\Socket</code></td>
+<td><code>Socket</code>, <code>SocketConnection</code></td>
+<td><code>ext-openssl</code> for <code>tls://</code></td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><code>Tyhp\Io\Redis</code></td>
+<td><code>RedisClient</code>, <code>RedisOptions</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Databases</td>
+<td><code>Tyhp\Io\Db</code></td>
+<td><code>DbConnection</code>, <code>DbResult</code>, <code>DbStatement</code>, <code>DbValue</code>, <code>PostgresConnection</code>, <code>MySqlConnection</code>, <code>MySqlOptions</code>, <code>PdoConnection</code>, <code>PdoOptions</code></td>
+<td><code>ext-pgsql</code>, <code>ext-mysqli</code>, or <code>ext-pdo</code> plus a PDO driver</td>
+</tr>
+<tr>
+<td>Blocking work</td>
+<td><code>Tyhp\Io</code></td>
+<td><code>Offload</code>, <code>OffloadJob</code></td>
+<td><code>tyhp/parallel</code> (optional)</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td><code>Tyhp\Io\Dns</code></td>
+<td><code>Dns</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Errors</td>
+<td><code>Tyhp\Io\Exceptions</code></td>
+<td><code>IoException</code> and its subclasses</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="how-each-area-waits">How each area waits</h3>
+<p>PHP does not offer non-blocking versions of every kind of I/O, so the package uses the best mechanism available for each area. This table tells you what still blocks the event loop.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Area</th>
+<th>How it waits</th>
+<th>What can still block the loop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HttpClient</code></td>
+<td>One curl multi handle per client, driven from the event loop</td>
+<td>Nothing during transfers</td>
+</tr>
+<tr>
+<td><code>Process</code></td>
+<td>Non-blocking stdin/stdout/stderr pipes</td>
+<td>Nothing while the command runs</td>
+</tr>
+<tr>
+<td><code>File</code></td>
+<td>Reads and writes in 256 KiB chunks and yields to other fibers between chunks</td>
+<td>Each single chunk, briefly</td>
+</tr>
+<tr>
+<td><code>Socket</code> / <code>SocketConnection</code></td>
+<td>Non-blocking streams registered with the event loop</td>
+<td>Host-name resolution inside PHP's socket connect call</td>
+</tr>
+<tr>
+<td><code>RedisClient</code></td>
+<td>A <code>SocketConnection</code></td>
+<td>Same as sockets</td>
+</tr>
+<tr>
+<td><code>PostgresConnection</code></td>
+<td>libpq's asynchronous connect and query API</td>
+<td>Nothing</td>
+</tr>
+<tr>
+<td><code>MySqlConnection</code></td>
+<td><code>MYSQLI_ASYNC</code> queries polled from the event loop</td>
+<td>The connection handshake</td>
+</tr>
+<tr>
+<td><code>PdoConnection</code>, <code>Dns</code>, <code>Offload</code></td>
+<td>A <code>tyhp/parallel</code> worker process when available</td>
+<td>The whole call, when no worker is available</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="installation">Installation</h2>
+<p><code>tyhp/io</code> is a compiled runtime package. The compiler does not add it for you; require it explicitly:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require tyhp/io
+</code></pre></div>
+<p>Version pins follow the same <code>80N.X.Y</code> scheme as the other compiled <code>tyhp/*</code> helpers, where <code>80N</code> is the PHP version your project targets (<code>output.phpVersion</code>) and <code>X.Y</code> is the package's own version (currently <code>0.1</code>). A project targeting PHP 8.4 therefore pins <code>&quot;tyhp/io&quot;: &quot;804.0.1&quot;</code> or <code>&quot;804.0.*&quot;</code>. See <a href="project_composerPackages.html">Composer Runtime Packages</a> for how these versions work. The package requires PHP 8.2 or later, <code>tyhp/core</code>, and <code>tyhp/async</code>.</p>
+<h3 id="php-extensions">PHP extensions</h3>
+<p>The package installs without any optional extension. Each component checks for the extension it needs when you first use it and fails with <code>IoUnavailableException</code> when it is missing:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Component</th>
+<th>Extension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HttpClient</code></td>
+<td><code>ext-curl</code></td>
+</tr>
+<tr>
+<td><code>PostgresConnection</code></td>
+<td><code>ext-pgsql</code></td>
+</tr>
+<tr>
+<td><code>MySqlConnection</code></td>
+<td><code>ext-mysqli</code></td>
+</tr>
+<tr>
+<td><code>PdoConnection</code></td>
+<td><code>ext-pdo</code> and the driver for your DSN (for example <code>pdo_sqlite</code>, <code>pdo_mysql</code>, <code>pdo_pgsql</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>tls://</code> sockets and <code>RedisOptions::$tls</code> use PHP's OpenSSL stream support.</p>
+<p>The package's public API uses only its own types and builtins, so you do not need any <code>tyhpdef/php-ext-*</code> package to call it. Add one only when your own code calls that extension directly, for example <code>tyhpdef/php-ext-pdo</code> to write <code>\PDO::ATTR_TIMEOUT</code> in <code>PdoOptions::$attributes</code>.</p>
+<h3 id="optional-tyhpparallel">Optional: <code>tyhp/parallel</code></h3>
+<p><code>tyhp/parallel</code> is not required. When it is installed and <code>\Tyhp\Parallel::isAvailable()</code> returns <code>true</code>, <code>Offload</code>, <code>PdoConnection</code>, and <code>Dns</code> run their blocking work in worker processes and the event loop stays free. Without it, the same calls run in your process and block the loop until they finish. Your code does not change either way. See <a href="#with-and-without-tyhpparallel">With and without tyhp/parallel</a> below.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require tyhp/parallel
+</code></pre></div>
+<h2 id="getting-started">Getting started</h2>
+<p>An application entry script can use <code>await</code> at the top level; the compiler starts the event loop for it. Put the work in an <code>async</code> function and await it:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Io\File\File;
+use Tyhp\Io\Http\HttpClient;
+
+type Release = struct {
+    string $tag_name = &#039;&#039;;
+    string $published_at = &#039;&#039;;
+};
+
+async function mainAsync(): void {
+    HttpClient $github = new HttpClient([&#039;User-Agent&#039; =&gt; &#039;release-watch/1.0&#039;]);
+
+    Release $release = await $github-&gt;getJsonAsync&lt;Release&gt;(
+        &#039;https://api.github.com/repos/composer/composer/releases/latest&#039;
+    );
+
+    await File::writeAsync(__DIR__ . &#039;/latest-release.txt&#039;, $release-&gt;tag_name . &#039; &#039; . $release-&gt;published_at . &quot;\n&quot;);
+    echo &#039;Latest Composer release: &#039; . $release-&gt;tag_name . &quot;\n&quot;;
+}
+
+await mainAsync();
+</code></pre></div>
+<p><code>getJsonAsync&lt;Release&gt;()</code> sends the request, requires a 2xx status, and decodes the JSON body into the <code>Release</code> struct. <code>File::writeAsync()</code> writes the file without holding up other fibers. If any step fails, the exception is thrown at its <code>await</code>, exactly like a synchronous call.</p>
+<p>From synchronous code, such as a framework controller, a console command, or a library function, run a promise to completion with the event loop:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Console;
+
+use Tyhp\EventLoop;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+
+final class StatusCommand {
+    public function execute(string $url): int {
+        HttpResponse $response = EventLoop::getInstance()-&gt;run(HttpClient::shared()-&gt;getAsync($url));
+        echo $url . &#039; answered &#039; . $response-&gt;status . &quot;\n&quot;;
+        return $response-&gt;isSuccess() ? 0 : 1;
+    }
+}
+</code></pre></div>
+<p><code>EventLoop::run()</code> blocks until the promise settles and returns its value, or throws its error. To run several awaits in one go, wrap them in an <code>async</code> closure and pass it to <code>Promise::run()</code>, which returns the closure's settled value (the type argument is inferred from the closure):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Console;
+
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+use Tyhp\Promise;
+
+function statusOf(string $url): int {
+    HttpResponse $response = Promise::run(async fn(): HttpResponse =&gt; await HttpClient::shared()-&gt;getAsync($url));
+    return $response-&gt;status;
+}
+</code></pre></div>
+<h2 id="concepts">Concepts</h2>
+<h3 id="awaiting-and-running-work-concurrently">Awaiting and running work concurrently</h3>
+<p>Awaiting one call after another runs them in sequence. To run independent operations at the same time, start them all and await the combined promise:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Dashboard;
+
+use Tyhp\Io\Db\DbResult;
+use Tyhp\Io\Db\PostgresConnection;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+use Tyhp\Promise;
+
+async function loadDashboardAsync(HttpClient $api, PostgresConnection $db, int $userId): string {
+    // All three start immediately; await waits for the slowest one.
+    Promise&lt;HttpResponse&gt; $profile = $api-&gt;getAsync(&#039;https://api.example.com/users/&#039; . $userId);
+    Promise&lt;HttpResponse&gt; $notices = $api-&gt;getAsync(&#039;https://api.example.com/users/&#039; . $userId . &#039;/notices&#039;);
+    Promise&lt;DbResult&gt; $orders = $db-&gt;queryAsync(&#039;SELECT id, total FROM orders WHERE user_id = $1&#039;, [$userId]);
+
+    HttpResponse $profileResponse = await $profile;
+    HttpResponse $noticesResponse = await $notices;
+    DbResult $orderRows = await $orders;
+
+    return $profileResponse-&gt;body . $noticesResponse-&gt;body . $orderRows-&gt;count();
+}
+</code></pre></div>
+<p><code>Promise::all()</code> collects many promises of the same type, and <code>Promise::batch()</code> limits how many run at once, which matters when you fan out over hundreds of URLs, files, or commands. Both come from <code>tyhp/async</code>; see <a href="tyhp_2600_asyncAndAwait.html#promise-combinators">Promise Combinators</a>.</p>
+<p>Concurrency has limits inside some components:</p>
+<ul>
+<li>One <code>HttpClient</code> runs any number of requests at once.</li>
+<li>One <code>RedisClient</code> pipelines commands from every fiber over its single connection.</li>
+<li>One <code>DbConnection</code> runs <strong>one statement at a time</strong>, in call order. Open several connections to run queries in parallel.</li>
+<li>One <code>SocketConnection</code> allows one pending read at a time; writes may overlap and are sent in call order.</li>
+</ul>
+<h3 id="cancellation-and-timeouts">Cancellation and timeouts</h3>
+<p>Most <code>Async</code> methods take an optional trailing <code>?CancellationToken $token</code>. Create the token with a <code>CancellationTokenSource</code> from <code>tyhp/async</code>, optionally with an automatic deadline in milliseconds. When the token is cancelled, the operation stops and its promise rejects with <code>Tyhp\Exceptions\OperationCancelledException</code>. A token that is already cancelled when you make the call rejects right away.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Deadline;
+
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\OperationCancelledException;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+use Tyhp\Promise;
+
+async function fetchBothAsync(HttpClient $client): ?array&lt;HttpResponse&gt; {
+    // One deadline for the whole operation: cancelled automatically after 3 seconds.
+    $cts := new CancellationTokenSource(3000);
+    try {
+        array&lt;HttpResponse&gt; $responses = await Promise::all([
+            $client-&gt;getAsync(&#039;https://a.example.com/&#039;, [], $cts-&gt;getToken()),
+            $client-&gt;getAsync(&#039;https://b.example.com/&#039;, [], $cts-&gt;getToken()),
+        ]);
+        return $responses;
+    } catch (OperationCancelledException $e) {
+        return null;
+    }
+}
+</code></pre></div>
+<p>What cancellation does depends on the component:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Component</th>
+<th>On cancellation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HttpClient</code></td>
+<td>Aborts the transfer</td>
+</tr>
+<tr>
+<td><code>Process</code></td>
+<td>Kills the command (signal 9), then rejects</td>
+</tr>
+<tr>
+<td><code>File</code></td>
+<td>Stops at the next 256 KiB chunk; an interrupted write or copy leaves a partial file</td>
+</tr>
+<tr>
+<td><code>Socket::connectAsync()</code></td>
+<td>Closes the half-open connection</td>
+</tr>
+<tr>
+<td><code>SocketConnection</code> reads and writes</td>
+<td>Stops waiting; data already buffered stays buffered</td>
+</tr>
+<tr>
+<td><code>RedisClient::connectAsync()</code></td>
+<td>Stops connecting (commands themselves take no token)</td>
+</tr>
+<tr>
+<td><code>PostgresConnection</code></td>
+<td>Sends a cancel request for the running statement, waits for the server to stop it</td>
+</tr>
+<tr>
+<td><code>MySqlConnection</code></td>
+<td>Runs <code>KILL QUERY</code> on a second, short-lived connection</td>
+</tr>
+<tr>
+<td><code>PdoConnection</code>, <code>Dns</code>, <code>Offload</code></td>
+<td>With a worker: stops that worker. Without: checked only before the work starts</td>
+</tr>
+</tbody>
+</table></div>
+<p>Timeouts are separate settings that reject with <code>Tyhp\Exceptions\TimeoutException</code> (which has <code>getTimeoutMs()</code>): <code>HttpRequest::$timeoutMs</code> and <code>$connectTimeoutMs</code>, <code>ProcessOptions::$timeoutMs</code>, the <code>$timeoutMs</code> argument of <code>Socket::connectAsync()</code>, <code>RedisOptions::$connectTimeoutMs</code>, and <code>MySqlOptions::$connectTimeoutSeconds</code>. For anything without its own timeout, wrap the promise in <code>Promise::timeout()</code> or pass a token from <code>new CancellationTokenSource($ms)</code>.</p>
+<h3 id="errors">Errors</h3>
+<p>All package-specific failures extend <code>Tyhp\Io\Exceptions\IoException</code>, which extends <code>\RuntimeException</code>. The subclasses tell you which component failed and carry extra data: <code>HttpStatusException::getResponse()</code>, <code>ProcessFailedException::getResult()</code>, and <code>DbException::getSqlState()</code>. The full list is in <a href="#exceptions-tyhpioexceptions">Exceptions</a>.</p>
+<p>A few errors come from outside the package and do <strong>not</strong> extend <code>IoException</code>:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Exception</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tyhp\Exceptions\TimeoutException</code> (<code>tyhp/async</code>)</td>
+<td>A configured timeout elapsed</td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\OperationCancelledException</code> (<code>tyhp/async</code>)</td>
+<td>The token was cancelled</td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\IncompatibleTypeException</code> (<code>tyhp/core</code>)</td>
+<td>Decoded JSON or a database row did not match the requested struct</td>
+</tr>
+<tr>
+<td><code>\JsonException</code></td>
+<td>Invalid JSON in <code>json()</code>, <code>getJsonAsync()</code>, <code>readJsonAsync()</code>, or an unencodable <code>postJsonAsync()</code> payload</td>
+</tr>
+<tr>
+<td><code>\InvalidArgumentException</code></td>
+<td>Invalid input: unsupported URL or address scheme, a header containing a line break, an empty command, an unknown hash algorithm, a placeholder count mismatch, an empty PDO DSN</td>
+</tr>
+<tr>
+<td><code>\LogicException</code></td>
+<td>A second read started on a <code>SocketConnection</code> while one is pending</td>
+</tr>
+<tr>
+<td><code>Tyhp\Exceptions\ParallelException</code> (<code>tyhp/parallel</code>)</td>
+<td>An <code>Offload</code> job threw inside a worker process</td>
+</tr>
+</tbody>
+</table></div>
+<p>Failures are reported by rejecting the returned promise, so they are thrown where you <code>await</code>. Two calls throw immediately instead: <code>HttpClient::postJsonAsync()</code> throws <code>\JsonException</code> before returning when the payload cannot be encoded, and the <code>PdoConnection</code> constructor throws <code>\InvalidArgumentException</code> for an empty DSN.</p>
+<h3 id="with-and-without-tyhpparallel">With and without tyhp/parallel</h3>
+<p><code>Offload::runAsync()</code> sends work to <code>tyhp/parallel</code> when two things are true: the <code>Tyhp\Parallel</code> class exists (the package is installed) and <code>Parallel::isAvailable()</code> returns <code>true</code>. That is the case in a CLI process with <code>ext-pcntl</code> and <code>ext-posix</code>, or in any process (such as php-fpm) whose <code>TYHP_PARALLEL_SOCKET</code> environment variable names a running worker service. <code>Offload::usesWorkers()</code> reports the result. <code>PdoConnection</code> and <code>Dns</code> go through <code>Offload</code>, so they follow the same rule.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th></th>
+<th>With workers</th>
+<th>Without workers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where the job runs</td>
+<td>A worker process</td>
+<td>This process</td>
+</tr>
+<tr>
+<td>Event loop while it runs</td>
+<td>Free; other fibers keep running</td>
+<td>Blocked until the job returns</td>
+</tr>
+<tr>
+<td>A job that throws</td>
+<td>Rejects with <code>ParallelException</code> (the original class is in <code>getRemoteClass()</code>)</td>
+<td>Rejects with the original exception</td>
+</tr>
+<tr>
+<td>Cancellation</td>
+<td>Stops the worker running the job</td>
+<td>Checked once, before the job starts</td>
+</tr>
+<tr>
+<td>Job requirements</td>
+<td>Serializable job object and result; the worker must be able to autoload the job class</td>
+<td>None beyond <code>OffloadJob</code></td>
+</tr>
+<tr>
+<td><code>PdoConnection</code> connections</td>
+<td>One connection per worker for each DSN, user, and password</td>
+<td>One cached connection in this process</td>
+</tr>
+</tbody>
+</table></div>
+<p>In a CLI program that never calls <code>Parallel::start()</code>, the first offloaded job starts a pool of four worker processes. Those workers are forked from your process, so start the pool before you open long-lived connections. See <a href="package_parallel.html">The tyhp/parallel Package</a>.</p>
+<h2 id="http-client-tyhpiohttp">HTTP client (<code>Tyhp\Io\Http</code>)</h2>
+<p><code>HttpClient</code> sends HTTP and HTTPS requests through <code>ext-curl</code>. Every request made through one client shares a curl multi handle, so any number of requests run at the same time on the event loop. Every response status resolves normally, including 4xx and 5xx; call <code>ensureSuccess()</code> (or use <code>getJsonAsync()</code>) when a non-2xx status should be an error.</p>
+<p>Only <code>http://</code> and <code>https://</code> URLs are accepted, including on redirects. Compressed responses are decoded automatically, so <code>HttpResponse::$body</code> is always the plain body.</p>
+<h3 id="httpclient">HttpClient</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Http;
+
+final class HttpClient { /* ... */ }
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpClient::__construct(array&lt;string, string&gt; $defaultHeaders = [])</code></h4><br/><p>Creates a client with its own curl multi handle.</p>
+<ul>
+<li><code>$defaultHeaders</code> — headers sent with every request. A request that sets the same header name (compared case-insensitively) replaces the default.</li>
+</ul>
+<p>Create one client per set of default headers (for example one per API you talk to) and reuse it. Requests on a client run concurrently.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static HttpClient::shared(): HttpClient</code></h4><br/><p>Returns a process-wide client with no default headers, creating it on first use. Use it for one-off requests where you do not need default headers.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpClient::sendAsync(HttpRequest $request, ?CancellationToken $token = null): Promise&lt;HttpResponse&gt;</code></h4><br/><p>Starts the request described by <code>$request</code> and resolves with the response once the whole body has arrived.</p>
+<ul>
+<li><code>$request</code> — an <a href="#httprequest"><code>HttpRequest</code></a> struct. <code>url</code> is required.</li>
+<li><code>$token</code> — cancelling it aborts the transfer.</li>
+</ul>
+<p><strong>Resolves with</strong> an <code>HttpResponse</code> for any HTTP status.</p>
+<p><strong>Rejects with</strong></p>
+<ul>
+<li><code>\InvalidArgumentException</code> — the URL is not <code>http://</code> or <code>https://</code>, or a header name or value contains a line break.</li>
+<li><code>IoUnavailableException</code> — <code>ext-curl</code> is not loaded.</li>
+<li><code>HttpException</code> — the request failed before a response arrived: DNS, connection, TLS, too many redirects, or a transfer error. <code>getCode()</code> is the curl error number.</li>
+<li><code>TimeoutException</code> — <code>timeoutMs</code> elapsed, or <code>connectTimeoutMs</code> elapsed before the connection was established. The message says <code>timed out connecting after {connectTimeoutMs}ms</code> in the second case, and <code>getTimeoutMs()</code> returns the limit that expired.</li>
+<li><code>OperationCancelledException</code> — <code>$token</code> was cancelled.</li>
+</ul>
+<p>How the method and body are sent:</p>
+<ul>
+<li><code>HEAD</code> sends no body and receives none.</li>
+<li><code>GET</code> with an empty body is a plain GET.</li>
+<li>Any other method, or a <code>GET</code> with a body, sends <code>body</code> as the request body with that method.</li>
+</ul>
+<p>Request headers are merged over the client's default headers. The client sends an empty <code>Expect</code> header unless you set one, so curl does not wait for <code>100 Continue</code> before sending a body. A header whose value is <code>''</code> is sent as <code>Name:</code>, which tells curl to drop that header. When you send a body, set <code>Content-Type</code> yourself; <code>postJsonAsync()</code> does it for you.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpClient::getAsync(string $url, array&lt;string, string&gt; $headers = [], ?CancellationToken $token = null): Promise&lt;HttpResponse&gt;</code></h4><br/><p>Sends a <code>GET</code> request with the default <code>HttpRequest</code> settings (30 s timeout, 10 s connect timeout, up to 5 redirects, TLS verification on). Resolves and rejects like <code>sendAsync()</code>.</p>
+<ul>
+<li><code>$headers</code> — extra headers for this request.</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpClient::postAsync(string $url, string $body, array&lt;string, string&gt; $headers = [], ?CancellationToken $token = null): Promise&lt;HttpResponse&gt;</code></h4><br/><p>Sends a <code>POST</code> request with <code>$body</code> as the request body and the default <code>HttpRequest</code> settings. Resolves and rejects like <code>sendAsync()</code>.</p>
+<p>Set a <code>Content-Type</code> header that describes <code>$body</code>, for example <code>'Content-Type' =&gt; 'application/x-www-form-urlencoded'</code> for <code>\http_build_query()</code> output.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpClient::postJsonAsync(string $url, mixed $payload, array&lt;string, string&gt; $headers = [], ?CancellationToken $token = null): Promise&lt;HttpResponse&gt;</code></h4><br/><p>Encodes <code>$payload</code> with <code>\json_encode()</code> and sends it as a <code>POST</code> body with <code>Content-Type: application/json</code>. Structs and arrays encode as JSON objects or arrays. Resolves and rejects like <code>sendAsync()</code>.</p>
+<p><strong>Throws</strong> <code>\JsonException</code> immediately, before a promise is returned, when <code>$payload</code> cannot be encoded.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpClient::getJsonAsync&lt;T extends struct&gt;(string $url, array&lt;string, string&gt; $headers = [], ?CancellationToken $token = null): Promise&lt;T&gt;</code></h4><br/><p>Sends a <code>GET</code> request, requires a 2xx status, and decodes the JSON body into the struct type <code>T</code>. Adds <code>Accept: application/json</code> unless <code>$headers</code> contains an <code>Accept</code> header; the name is matched case-insensitively, so <code>accept</code> also counts.</p>
+<p><code>T</code> must be a struct type, and the decoded value is checked against it the same way as <code>\Tyhp\Json::decode&lt;T&gt;()</code>.</p>
+<p><strong>Rejects with</strong> everything <code>sendAsync()</code> can reject with, plus:</p>
+<ul>
+<li><code>HttpStatusException</code> — the status is outside 200–299.</li>
+<li><code>\JsonException</code> — the body is not valid JSON.</li>
+<li><code>IncompatibleTypeException</code> — the JSON does not match <code>T</code>.</li>
+</ul>
+</div>
+<h3 id="httprequest">HttpRequest</h3>
+<p><code>HttpRequest</code> is a struct describing one request for <code>sendAsync()</code>. Build it with <code>new HttpRequest() with [...]</code> and set only the fields you need.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Http;
+
+type HttpRequest = struct {
+    string $url = &#039;&#039;;
+    string $method = &#039;GET&#039;;
+    array&lt;string, string&gt; $headers = [];
+    string $body = &#039;&#039;;
+    int $timeoutMs = 30000;
+    int $connectTimeoutMs = 10000;
+    bool $followRedirects = true;
+    int $maxRedirects = 5;
+    bool $verifyTls = true;
+};
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>Absolute <code>http://</code> or <code>https://</code> URL. Required.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td><code>string</code></td>
+<td><code>'GET'</code></td>
+<td>HTTP method, case-insensitive.</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td><code>array&lt;string, string&gt;</code></td>
+<td><code>[]</code></td>
+<td>Header name ⇒ value. Merged over the client's default headers.</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>Request body. A non-empty body is sent with any method except <code>HEAD</code>.</td>
+</tr>
+<tr>
+<td><code>timeoutMs</code></td>
+<td><code>int</code></td>
+<td><code>30000</code></td>
+<td>Limit for the whole transfer in milliseconds. <code>0</code> means no limit.</td>
+</tr>
+<tr>
+<td><code>connectTimeoutMs</code></td>
+<td><code>int</code></td>
+<td><code>10000</code></td>
+<td>Limit for establishing the connection in milliseconds. <code>0</code> uses curl's built-in default.</td>
+</tr>
+<tr>
+<td><code>followRedirects</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Follow <code>3xx</code> responses. When <code>false</code>, the redirect response itself resolves.</td>
+</tr>
+<tr>
+<td><code>maxRedirects</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td>Most redirects to follow before failing with <code>HttpException</code>.</td>
+</tr>
+<tr>
+<td><code>verifyTls</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Verify the server certificate and host name. Turn off only for local testing.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="httpresponse">HttpResponse</h3>
+<p><code>HttpResponse</code> is the completed response. After redirects, <code>headers</code> and <code>url</code> describe the final response.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpResponse::__construct(int $status, array&lt;string, array&lt;int, string&gt;&gt; $headers, string $body, string $url)</code></h4><br/><p>Creates a response. The client builds responses for you; the public constructor is useful for test doubles. Pass header names in lower case so <code>header()</code> and <code>headerValues()</code> find them.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly int HttpResponse::$status</code></h4><br/><p>The HTTP status code of the final response, for example <code>200</code> or <code>404</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly array&lt;string, array&lt;int, string&gt;&gt; HttpResponse::$headers</code></h4><br/><p>Response headers keyed by lower-case name. Each name maps to every value received for it, in order, so repeated headers such as <code>set-cookie</code> keep all their values.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly string HttpResponse::$body</code></h4><br/><p>The response body, already decompressed. Empty for <code>HEAD</code> requests.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly string HttpResponse::$url</code></h4><br/><p>The URL that produced this response, after any redirects.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpResponse::isSuccess(): bool</code></h4><br/><p>Returns <code>true</code> when <code>status</code> is between 200 and 299.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpResponse::header(string $name): ?string</code></h4><br/><p>Returns the first value of header <code>$name</code> (case-insensitive), or <code>null</code> when the response does not have it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpResponse::headerValues(string $name): array&lt;int, string&gt;</code></h4><br/><p>Returns every value of header <code>$name</code> (case-insensitive) in the order received, or <code>[]</code> when absent.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpResponse::json&lt;T extends struct&gt;(): T</code></h4><br/><p>Decodes <code>body</code> as JSON into the struct type <code>T</code>. JSON objects decode to struct-shaped arrays.</p>
+<p><strong>Throws</strong> <code>\JsonException</code> for invalid JSON and <code>IncompatibleTypeException</code> when the value does not match <code>T</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpResponse::ensureSuccess(): HttpResponse</code></h4><br/><p>Returns the same response when the status is 2xx, so you can chain it: <code>$response-&gt;ensureSuccess()-&gt;json&lt;User&gt;()</code>.</p>
+<p><strong>Throws</strong> <code>HttpStatusException</code> for any other status. <code>getCode()</code> is the status and <code>getResponse()</code> returns this response.</p>
+</div>
+<h3 id="http-examples">HTTP examples</h3>
+<p>Calling a JSON API with default headers and typed responses:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Billing;
+
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+
+type Invoice = struct {
+    string $id = &#039;&#039;;
+    int $amount_due = 0;
+    string $status = &#039;&#039;;
+};
+
+final class BillingApi {
+    private HttpClient $http;
+
+    public function __construct(private readonly string $baseUrl, string $apiKey) {
+        $this-&gt;http = new HttpClient([
+            &#039;Authorization&#039; =&gt; &#039;Bearer &#039; . $apiKey,
+            &#039;User-Agent&#039; =&gt; &#039;shop-backend/2.3&#039;,
+        ]);
+    }
+
+    public async function invoiceAsync(string $id): Invoice {
+        return await $this-&gt;http-&gt;getJsonAsync&lt;Invoice&gt;($this-&gt;baseUrl . &#039;/invoices/&#039; . \rawurlencode($id));
+    }
+
+    public async function createInvoiceAsync(string $customerId, int $amountCents): Invoice {
+        HttpResponse $response = await $this-&gt;http-&gt;postJsonAsync(
+            $this-&gt;baseUrl . &#039;/invoices&#039;,
+            [&#039;customer&#039; =&gt; $customerId, &#039;amount&#039; =&gt; $amountCents],
+            [&#039;Idempotency-Key&#039; =&gt; \bin2hex(\random_bytes(16))]
+        );
+        return $response-&gt;ensureSuccess()-&gt;json&lt;Invoice&gt;();
+    }
+}
+</code></pre></div>
+<p>Building a custom request and telling the failure modes apart:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Sync;
+
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Io\Exceptions\HttpException;
+use Tyhp\Io\Exceptions\HttpStatusException;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpRequest;
+use Tyhp\Io\Http\HttpResponse;
+
+async function putDocumentAsync(HttpClient $client, string $url, string $json): bool {
+    HttpRequest $request = new HttpRequest() with [
+        url =&gt; $url,
+        method =&gt; &#039;PUT&#039;,
+        headers =&gt; [&#039;Content-Type&#039; =&gt; &#039;application/json&#039;],
+        body =&gt; $json,
+        timeoutMs =&gt; 5000,
+        followRedirects =&gt; false,
+    ];
+
+    try {
+        HttpResponse $response = await $client-&gt;sendAsync($request);
+        $response-&gt;ensureSuccess();
+        return true;
+    } catch (HttpStatusException $e) {
+        // The server answered, but not with 2xx.
+        HttpResponse $failed = $e-&gt;getResponse();
+        \error_log(&#039;PUT &#039; . $url . &#039; returned &#039; . $failed-&gt;status . &#039;: &#039; . $failed-&gt;body);
+        return false;
+    } catch (TimeoutException $e) {
+        \error_log(&#039;PUT &#039; . $url . &#039; timed out after &#039; . $e-&gt;getTimeoutMs() . &#039;ms&#039;);
+        return false;
+    } catch (HttpException $e) {
+        // No response at all: DNS, connect, TLS, or transfer failure.
+        \error_log(&#039;PUT &#039; . $url . &#039; failed (curl error &#039; . $e-&gt;getCode() . &#039;): &#039; . $e-&gt;getMessage());
+        return false;
+    }
+}
+</code></pre></div>
+<p><code>HttpStatusException</code> extends <code>HttpException</code>, so catch it first when you handle both.</p>
+<h2 id="processes-tyhpioprocess">Processes (<code>Tyhp\Io\Process</code>)</h2>
+<p><code>Process</code> runs external commands without blocking the event loop. The command is an argument list passed straight to the program, with no shell in between, so arguments never need quoting and cannot be interpreted as shell syntax. stdout and stderr are collected in full and returned when the command exits.</p>
+<h3 id="process">Process</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Process;
+
+final class Process { /* ... */ }
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>static Process::runAsync(array&lt;int, string&gt; $command, ?ProcessOptions $options = null, ?CancellationToken $token = null): Promise&lt;ProcessResult&gt;</code></h4><br/><p>Starts <code>$command</code> and resolves with a <a href="#processresult"><code>ProcessResult</code></a> once it exits, <strong>whatever its exit code</strong>. Check <code>exitCode</code> yourself, or use <code>mustRunAsync()</code>.</p>
+<ul>
+<li><code>$command</code> — the program followed by its arguments, for example <code>['git', 'log', '-1', '--format=%H']</code>. The program is looked up on <code>PATH</code> unless it is a path.</li>
+<li><code>$options</code> — working directory, environment, stdin, and timeout. <code>null</code> uses the defaults.</li>
+<li><code>$token</code> — cancelling it kills the command.</li>
+</ul>
+<p><strong>Rejects with</strong></p>
+<ul>
+<li><code>\InvalidArgumentException</code> — <code>$command</code> is empty.</li>
+<li><code>IoException</code> — the command could not start, for example because the program does not exist.</li>
+<li><code>TimeoutException</code> — <code>timeoutMs</code> elapsed. The command is killed first.</li>
+<li><code>OperationCancelledException</code> — <code>$token</code> was cancelled. The command is killed first.</li>
+</ul>
+<p>Commands run concurrently: start several and await them together. Both output streams are read as they are produced, so a command that writes a lot of output does not stall.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static Process::mustRunAsync(array&lt;int, string&gt; $command, ?ProcessOptions $options = null, ?CancellationToken $token = null): Promise&lt;ProcessResult&gt;</code></h4><br/><p>Like <code>runAsync()</code>, but rejects with <code>ProcessFailedException</code> when the exit code is not <code>0</code>. The exception's message includes the command, the exit code, and the trimmed stderr; <code>getCode()</code> is the exit code and <code>getResult()</code> returns the full <code>ProcessResult</code>.</p>
+<p>Use it for commands whose failure should stop your program, such as build or deploy steps.</p>
+</div>
+<h3 id="processoptions">ProcessOptions</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Process;
+
+type ProcessOptions = struct {
+    ?string $cwd;
+    ?array&lt;string, string&gt; $env;
+    string $input = &#039;&#039;;
+    int $timeoutMs = 0;
+};
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cwd</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td>Working directory for the command. <code>null</code> uses this process's working directory.</td>
+</tr>
+<tr>
+<td><code>env</code></td>
+<td><code>?array&lt;string, string&gt;</code></td>
+<td><code>null</code></td>
+<td>The command's complete environment. <code>null</code> inherits this process's environment. A non-null array <strong>replaces</strong> the environment, so include variables such as <code>PATH</code> or <code>HOME</code> if the command needs them.</td>
+</tr>
+<tr>
+<td><code>input</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>Written to the command's stdin, which is then closed. With <code>''</code>, stdin is closed immediately.</td>
+</tr>
+<tr>
+<td><code>timeoutMs</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td>Kill the command and reject with <code>TimeoutException</code> after this many milliseconds. <code>0</code> means no limit.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="processresult">ProcessResult</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Process;
+
+type ProcessResult = struct {
+    array&lt;int, string&gt; $command = [];
+    int $exitCode = 0;
+    int $signal = 0;
+    string $stdout = &#039;&#039;;
+    string $stderr = &#039;&#039;;
+};
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command</code></td>
+<td><code>array&lt;int, string&gt;</code></td>
+<td>The command that ran.</td>
+</tr>
+<tr>
+<td><code>exitCode</code></td>
+<td><code>int</code></td>
+<td>The exit code. When a signal ended the command, this is <code>128 + signal</code>, as a shell reports it.</td>
+</tr>
+<tr>
+<td><code>signal</code></td>
+<td><code>int</code></td>
+<td>The number of the signal that ended the command, or <code>0</code> when it exited normally.</td>
+</tr>
+<tr>
+<td><code>stdout</code></td>
+<td><code>string</code></td>
+<td>Everything the command wrote to stdout.</td>
+</tr>
+<tr>
+<td><code>stderr</code></td>
+<td><code>string</code></td>
+<td>Everything the command wrote to stderr.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="process-examples">Process examples</h3>
+<p>Running a command in a directory, with a timeout, and treating failure as an error:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Git;
+
+use Tyhp\Io\Process\Process;
+use Tyhp\Io\Process\ProcessOptions;
+use Tyhp\Io\Process\ProcessResult;
+
+async function currentCommitAsync(string $repoDir): string {
+    ProcessResult $result = await Process::mustRunAsync(
+        [&#039;git&#039;, &#039;rev-parse&#039;, &#039;HEAD&#039;],
+        new ProcessOptions() with [cwd =&gt; $repoDir, timeoutMs =&gt; 5000]
+    );
+    return \trim($result-&gt;stdout);
+}
+</code></pre></div>
+<p>Feeding stdin and distinguishing the ways a command can fail:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Json;
+
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Io\Exceptions\IoException;
+use Tyhp\Io\Exceptions\ProcessFailedException;
+use Tyhp\Io\Process\Process;
+use Tyhp\Io\Process\ProcessOptions;
+use Tyhp\Io\Process\ProcessResult;
+
+async function prettyPrintAsync(string $json): string {
+    try {
+        ProcessResult $result = await Process::mustRunAsync(
+            [&#039;jq&#039;, &#039;.&#039;],
+            new ProcessOptions() with [input =&gt; $json, timeoutMs =&gt; 2000]
+        );
+        return $result-&gt;stdout;
+    } catch (ProcessFailedException $e) {
+        ProcessResult $failed = $e-&gt;getResult();
+        throw new \RuntimeException(&#039;jq exited with &#039; . $failed-&gt;exitCode . &#039;: &#039; . $failed-&gt;stderr, 0, $e);
+    } catch (TimeoutException $e) {
+        throw new \RuntimeException(&#039;jq did not finish within 2 seconds.&#039;, 0, $e);
+    } catch (IoException $e) {
+        // ProcessFailedException is also an IoException, so it is caught above first.
+        throw new \RuntimeException(&#039;Could not start jq: &#039; . $e-&gt;getMessage(), 0, $e);
+    }
+}
+</code></pre></div>
+<p>Running many commands with bounded concurrency:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Lint;
+
+use Tyhp\Io\Process\Process;
+use Tyhp\Io\Process\ProcessResult;
+use Tyhp\Promise;
+
+async function lintFilesAsync(array&lt;int, string&gt; $files): int {
+    // At most four `php -l` processes at a time.
+    array&lt;int, ProcessResult&gt; $results = await Promise::batch(
+        $files,
+        fn(string $file): Promise&lt;ProcessResult&gt; =&gt; Process::runAsync([\PHP_BINARY, &#039;-l&#039;, $file]),
+        4
+    );
+
+    int $failures = 0;
+    foreach ($results as $result) {
+        if ($result-&gt;exitCode !== 0) {
+            $failures++;
+            echo $result-&gt;stdout . $result-&gt;stderr;
+        }
+    }
+    return $failures;
+}
+</code></pre></div>
+<h2 id="files-tyhpiofile">Files (<code>Tyhp\Io\File</code>)</h2>
+<p>PHP has no non-blocking file I/O, so <code>File</code> reads and writes in 256 KiB chunks and lets other fibers, timers, and sockets run between chunks. Each chunk still blocks briefly, but a large file no longer freezes your server while it is read or written. A cancelled token stops the operation at the next chunk; a write or copy stopped that way leaves a partial file.</p>
+<p>Every method fails with <code>IoException</code> when a file cannot be opened, read, or written; the message includes the path and PHP's reason.</p>
+<h3 id="file">File</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\File;
+
+final class File { /* ... */ }
+</code></pre></div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::readAsync(string $path, ?CancellationToken $token = null): Promise&lt;string&gt;</code></h4><br/><p>Reads the whole file and resolves with its contents.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> when the file cannot be opened or read, and <code>OperationCancelledException</code> when <code>$token</code> is cancelled.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::readJsonAsync&lt;T extends struct&gt;(string $path, ?CancellationToken $token = null): Promise&lt;T&gt;</code></h4><br/><p>Reads the file and decodes it as JSON into the struct type <code>T</code>.</p>
+<p><strong>Rejects with</strong> everything <code>readAsync()</code> can, plus <code>\JsonException</code> for invalid JSON and <code>IncompatibleTypeException</code> when the value does not match <code>T</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::writeAsync(string $path, string $contents, ?CancellationToken $token = null): Promise&lt;void&gt;</code></h4><br/><p>Creates the file, or truncates it if it exists, then writes <code>$contents</code>. A token that is already cancelled rejects before the file is touched.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> and <code>OperationCancelledException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::appendAsync(string $path, string $contents, ?CancellationToken $token = null): Promise&lt;void&gt;</code></h4><br/><p>Appends <code>$contents</code> to the file, creating it if it does not exist.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> and <code>OperationCancelledException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::copyAsync(string $from, string $to, ?CancellationToken $token = null): Promise&lt;void&gt;</code></h4><br/><p>Copies <code>$from</code> to <code>$to</code>, replacing <code>$to</code> when it exists. The source is opened first, so a missing source fails without touching <code>$to</code>.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> and <code>OperationCancelledException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::hashAsync(string $path, string $algorithm = &#039;sha256&#039;, ?CancellationToken $token = null): Promise&lt;string&gt;</code></h4><br/><p>Resolves with the lower-case hex digest of the file. <code>$algorithm</code> may be any name returned by <code>\hash_algos()</code>, such as <code>'sha256'</code>, <code>'sha1'</code>, <code>'md5'</code>, or <code>'xxh128'</code>.</p>
+<p><strong>Rejects with</strong> <code>\InvalidArgumentException</code> for an unknown algorithm, plus <code>IoException</code> and <code>OperationCancelledException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static File::linesAsync(string $path): AsyncIterable&lt;string&gt;</code></h4><br/><p>Returns an async iterable over the file's lines, without loading the whole file. Iterate it with <code>foreach (await ...)</code> inside async code:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">foreach (await File::linesAsync($path) as string $line) { /* ... */ }
+</code></pre></div>
+<ul>
+<li>Lines are split on <code>&quot;\n&quot;</code>; the trailing <code>&quot;\n&quot;</code> or <code>&quot;\r\n&quot;</code> is removed. An empty line yields <code>''</code>, and a final line without a newline is still yielded.</li>
+<li>The call itself does not open the file. It opens when iteration starts, so a missing file throws <code>IoException</code> from the <code>foreach</code>, and it closes when iteration reaches the end.</li>
+<li>Each new iteration over the returned value reads the file again from the start.</li>
+<li>Other fibers run every 1,000 lines or 256 KiB, whichever comes first.</li>
+</ul>
+<p>There is no token parameter. To stop early, check a token in the loop body or <code>break</code>.</p>
+</div>
+<h3 id="file-examples">File examples</h3>
+<p>Loading a typed configuration file:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Config;
+
+use Tyhp\Io\File\File;
+
+type AppConfig = struct {
+    string $name = &#039;&#039;;
+    bool $debug = false;
+    array&lt;string, string&gt; $database = [];
+};
+
+async function loadConfigAsync(string $path): AppConfig {
+    return await File::readJsonAsync&lt;AppConfig&gt;($path);
+}
+</code></pre></div>
+<p>Scanning a large log file line by line, with cancellation:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Logs;
+
+use Tyhp\CancellationToken;
+use Tyhp\Io\File\File;
+
+async function countErrorsAsync(string $logPath, ?CancellationToken $token = null): int {
+    int $errors = 0;
+    foreach (await File::linesAsync($logPath) as string $line) {
+        $token?-&gt;throwIfCancellationRequested();
+        if (\str_contains($line, &#039; ERROR &#039;)) {
+            $errors++;
+        }
+    }
+    return $errors;
+}
+</code></pre></div>
+<p>Backing up a file under a content-addressed name and recording it:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Backup;
+
+use Tyhp\Io\File\File;
+
+async function backupAsync(string $path): string {
+    string $digest = await File::hashAsync($path);
+    string $target = $path . &#039;.&#039; . \substr($digest, 0, 12) . &#039;.bak&#039;;
+    await File::copyAsync($path, $target);
+    await File::appendAsync($path . &#039;.log&#039;, \date(&#039;c&#039;) . &#039; backed up to &#039; . $target . &quot;\n&quot;);
+    return $target;
+}
+</code></pre></div>
+<h2 id="sockets-tyhpiosocket">Sockets (<code>Tyhp\Io\Socket</code>)</h2>
+<p><code>Socket::connectAsync()</code> opens a client connection over TCP, TLS, or a Unix-domain socket and returns a <code>SocketConnection</code> whose reads and writes wait on the event loop. Use it to speak line-based or framed protocols that have no dedicated client in this package.</p>
+<h3 id="socket">Socket</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>static Socket::connectAsync(string $address, int $timeoutMs = 10000, ?CancellationToken $token = null): Promise&lt;SocketConnection&gt;</code></h4><br/><p>Connects to <code>$address</code> and resolves with an open <code>SocketConnection</code>.</p>
+<ul>
+<li><code>$address</code> — <code>tcp://host:port</code>, <code>tls://host:port</code>, or <code>unix:///path/to/socket</code>.</li>
+<li><code>$timeoutMs</code> — limit for establishing the TCP connection. <code>0</code> means no limit.</li>
+<li><code>$token</code> — cancelling it abandons the attempt and closes the half-open connection.</li>
+</ul>
+<p><code>tls://</code> connects over TCP and then performs a TLS handshake that verifies the server certificate against <code>host</code>, using PHP's default OpenSSL trust settings. The <code>$timeoutMs</code> limit applies to the connection itself; to bound the TLS handshake as well, pass a token from <code>new CancellationTokenSource($ms)</code>.</p>
+<p><strong>Rejects with</strong></p>
+<ul>
+<li><code>\InvalidArgumentException</code> — the address does not start with <code>tcp://</code>, <code>tls://</code>, or <code>unix://</code>.</li>
+<li><code>IoException</code> — the connection was refused or failed, or the TLS handshake failed.</li>
+<li><code>TimeoutException</code> — <code>$timeoutMs</code> elapsed.</li>
+<li><code>OperationCancelledException</code> — <code>$token</code> was cancelled.</li>
+</ul>
+<p>Host names in <code>tcp://</code> and <code>tls://</code> addresses are resolved by PHP's socket connect call, which blocks briefly. For <code>tcp://</code>, you can resolve the name first with <a href="#dns-tyhpiodns"><code>Dns::resolveAsync()</code></a> and connect to an IP address.</p>
+</div>
+<h3 id="socketconnection">SocketConnection</h3>
+<p>A connected, non-blocking stream. You get instances from <code>Socket::connectAsync()</code>; there is no public constructor.</p>
+<p>One read may be pending at a time. Data that arrives beyond what a read returns stays in an internal buffer for the next read, so you can mix <code>readLineAsync()</code>, <code>readExactlyAsync()</code>, and <code>readAsync()</code> freely. Writes may overlap; they are sent in the order you called <code>writeAsync()</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>SocketConnection::readAsync(int $maxBytes = 65536, ?CancellationToken $token = null): Promise&lt;string&gt;</code></h4><br/><p>Resolves with up to <code>$maxBytes</code> bytes, waiting until at least one byte is available. Resolves with <code>''</code> once the peer has closed the connection and the buffer is empty, which is how you detect end of stream.</p>
+<p><strong>Rejects with</strong> <code>\LogicException</code> when another read is pending, <code>IoException</code> when the connection is closed locally while waiting, and <code>OperationCancelledException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>SocketConnection::readLineAsync(int $maxBytes = 1048576, ?CancellationToken $token = null): Promise&lt;?string&gt;</code></h4><br/><p>Resolves with the next line without its <code>&quot;\n&quot;</code> or <code>&quot;\r\n&quot;</code>. At end of stream it resolves with the final unterminated line, if any, and then with <code>null</code>.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> when more than <code>$maxBytes</code> bytes arrive without a newline, plus the errors of <code>readAsync()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>SocketConnection::readExactlyAsync(int $length, ?CancellationToken $token = null): Promise&lt;string&gt;</code></h4><br/><p>Resolves with exactly <code>$length</code> bytes. Use it for length-prefixed frames and fixed-size headers.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> when the connection closes before <code>$length</code> bytes arrive (the bytes already received stay buffered), plus the errors of <code>readAsync()</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>SocketConnection::writeAsync(string $data, ?CancellationToken $token = null): Promise&lt;void&gt;</code></h4><br/><p>Resolves once every byte of <code>$data</code> has been handed to the operating system. Large writes are sent in pieces as the socket accepts them. Writes started while an earlier one is still sending wait their turn, so bytes from separate calls never interleave.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> when the connection is closed or the write fails, and <code>OperationCancelledException</code> (part of <code>$data</code> may already have been sent).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>SocketConnection::close(): void</code></h4><br/><p>Closes the connection. A read or write that is waiting rejects with <code>IoException</code>. Calling <code>close()</code> again does nothing.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>SocketConnection::isClosed(): bool</code></h4><br/><p>Returns <code>true</code> after <code>close()</code> has been called.</p>
+</div>
+<h3 id="socket-examples">Socket examples</h3>
+<p>A request/response exchange over a line protocol (here, memcached's <code>version</code> command):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Memcached;
+
+use Tyhp\Io\Exceptions\IoException;
+use Tyhp\Io\Socket\Socket;
+use Tyhp\Io\Socket\SocketConnection;
+
+async function memcachedVersionAsync(string $host, int $port = 11211): string {
+    SocketConnection $conn = await Socket::connectAsync(&#039;tcp://&#039; . $host . &#039;:&#039; . $port, 2000);
+    try {
+        await $conn-&gt;writeAsync(&quot;version\r\n&quot;);
+        ?string $line = await $conn-&gt;readLineAsync();
+        if ($line === null || !\str_starts_with($line, &#039;VERSION &#039;)) {
+            throw new IoException(&#039;Unexpected reply: &#039; . ($line ?? &#039;(connection closed)&#039;));
+        }
+        return \substr($line, 8);
+    } finally {
+        $conn-&gt;close();
+    }
+}
+</code></pre></div>
+<p>Reading length-prefixed frames (a 4-byte big-endian length followed by the payload):</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Frames;
+
+use Tyhp\Io\Socket\SocketConnection;
+
+async function readFrameAsync(SocketConnection $conn): string {
+    string $header = await $conn-&gt;readExactlyAsync(4);
+    int $length = (\ord($header[0]) &lt;&lt; 24) | (\ord($header[1]) &lt;&lt; 16) | (\ord($header[2]) &lt;&lt; 8) | \ord($header[3]);
+    return await $conn-&gt;readExactlyAsync($length);
+}
+
+async function readUntilClosedAsync(SocketConnection $conn): string {
+    string $all = &#039;&#039;;
+    string $chunk = await $conn-&gt;readAsync();
+    while ($chunk !== &#039;&#039;) {
+        $all .= $chunk;
+        $chunk = await $conn-&gt;readAsync();
+    }
+    return $all;
+}
+</code></pre></div>
+<h2 id="redis-tyhpioredis">Redis (<code>Tyhp\Io\Redis</code>)</h2>
+<p><code>RedisClient</code> speaks the RESP2 protocol over one connection. Commands from concurrent fibers are <strong>pipelined</strong>: each is written as soon as you call it, without waiting for earlier replies, and each promise resolves with its own reply in order. A single client can therefore serve a whole application.</p>
+<p>An error reply from Redis (for example <code>WRONGTYPE</code> or <code>ERR value is not an integer</code>) rejects only that command with <code>RedisException</code>; the connection stays usable. A transport failure, such as the server closing the connection, rejects every pending command and closes the client.</p>
+<h3 id="redisoptions">RedisOptions</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Redis;
+
+type RedisOptions = struct {
+    string $host = &#039;127.0.0.1&#039;;
+    int $port = 6379;
+    bool $tls = false;
+    ?string $username;
+    ?string $password;
+    int $database = 0;
+    int $connectTimeoutMs = 10000;
+};
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>host</code></td>
+<td><code>string</code></td>
+<td><code>'127.0.0.1'</code></td>
+<td>Server host name or IP address.</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td><code>int</code></td>
+<td><code>6379</code></td>
+<td>Server port.</td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Connect with TLS and verify the server certificate against <code>host</code>.</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td>ACL user name. Used only together with <code>password</code>.</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td>When set, the client sends <code>AUTH password</code>, or <code>AUTH username password</code> when <code>username</code> is also set.</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td>When not <code>0</code>, the client sends <code>SELECT database</code> after connecting.</td>
+</tr>
+<tr>
+<td><code>connectTimeoutMs</code></td>
+<td><code>int</code></td>
+<td><code>10000</code></td>
+<td>Limit for opening the connection, in milliseconds. <code>0</code> means no limit.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="redisclient">RedisClient</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>static RedisClient::connectAsync(?RedisOptions $options = null, ?CancellationToken $token = null): Promise&lt;RedisClient&gt;</code></h4><br/><p>Opens the connection, then sends <code>AUTH</code> and <code>SELECT</code> when the options ask for them. <code>null</code> options connect to <code>127.0.0.1:6379</code> without authentication.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> when the connection fails, <code>TimeoutException</code> after <code>connectTimeoutMs</code>, <code>OperationCancelledException</code> when <code>$token</code> is cancelled, and <code>RedisException</code> when <code>AUTH</code> or <code>SELECT</code> is refused (the client is closed in that case).</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::commandAsync(string $name, string|int|float ...$arguments): Promise&lt;mixed&gt;</code></h4><br/><p>Sends any Redis command and resolves with its decoded reply. Arguments are converted to strings.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Redis reply</th>
+<th>Resolves with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Simple string (<code>+OK</code>) or bulk string</td>
+<td><code>string</code></td>
+</tr>
+<tr>
+<td>Integer</td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td>Nil bulk string or nil array</td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td>Array</td>
+<td><code>array&lt;int, mixed&gt;</code>, decoded recursively; an error reply nested inside becomes a <code>RedisException</code> value in the array</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>rejects with <code>RedisException</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Every command must produce exactly one reply. Do not send <code>SUBSCRIBE</code>, <code>PSUBSCRIBE</code>, or <code>MONITOR</code> through this client.</p>
+<p><strong>Rejects with</strong> <code>RedisException</code> for an error reply, a closed client, or a transport failure.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::pingAsync(): Promise&lt;string&gt;</code></h4><br/><p>Sends <code>PING</code> and resolves with the reply, normally <code>'PONG'</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::getAsync(string $key): Promise&lt;?string&gt;</code></h4><br/><p>Sends <code>GET</code> and resolves with the value, or <code>null</code> when the key does not exist. Rejects with <code>RedisException</code> when the key holds a non-string type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::setAsync(string $key, string $value, int $ttlMs = 0): Promise&lt;void&gt;</code></h4><br/><p>Sends <code>SET</code>. A positive <code>$ttlMs</code> makes the key expire after that many milliseconds (<code>SET key value PX ttlMs</code>); <code>0</code> stores it without expiry.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::delAsync(string $key, string ...$keys): Promise&lt;int&gt;</code></h4><br/><p>Deletes one or more keys and resolves with how many of them existed.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::existsAsync(string $key): Promise&lt;bool&gt;</code></h4><br/><p>Resolves with <code>true</code> when <code>$key</code> exists.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::incrAsync(string $key, int $by = 1): Promise&lt;int&gt;</code></h4><br/><p>Increments the integer stored at <code>$key</code> by <code>$by</code> (<code>INCRBY</code>) and resolves with the new value. A missing key counts as <code>0</code>. Rejects with <code>RedisException</code> when the value is not an integer.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::expireAsync(string $key, int $seconds): Promise&lt;bool&gt;</code></h4><br/><p>Sets a time-to-live of <code>$seconds</code> on <code>$key</code>. Resolves with <code>false</code> when the key does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::hSetAsync(string $key, array&lt;string, string&gt; $fields): Promise&lt;int&gt;</code></h4><br/><p>Sets the given hash fields (<code>HSET</code>) and resolves with how many of them were new.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::hGetAsync(string $key, string $field): Promise&lt;?string&gt;</code></h4><br/><p>Resolves with one hash field's value, or <code>null</code> when the field or key does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::hGetAllAsync(string $key): Promise&lt;array&lt;string, string&gt;&gt;</code></h4><br/><p>Resolves with every field and value of the hash, or <code>[]</code> when the key does not exist.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::lPushAsync(string $key, string $value, string ...$values): Promise&lt;int&gt;</code></h4><br/><p>Prepends one or more values to a list (<code>LPUSH</code>) and resolves with the new list length.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::rPushAsync(string $key, string $value, string ...$values): Promise&lt;int&gt;</code></h4><br/><p>Appends one or more values to a list (<code>RPUSH</code>) and resolves with the new list length.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::lRangeAsync(string $key, int $start = 0, int $stop = -1): Promise&lt;array&lt;int, string&gt;&gt;</code></h4><br/><p>Resolves with the list elements from <code>$start</code> to <code>$stop</code>, both inclusive (<code>LRANGE</code>). Negative indexes count from the end; the defaults return the whole list.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::publishAsync(string $channel, string $message): Promise&lt;int&gt;</code></h4><br/><p>Publishes <code>$message</code> on <code>$channel</code> and resolves with the number of subscribers that received it.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::close(): void</code></h4><br/><p>Closes the connection. Commands still waiting for a reply reject with <code>RedisException</code>, and later commands reject immediately.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisClient::isClosed(): bool</code></h4><br/><p>Returns <code>true</code> after <code>close()</code>, or after a transport failure closed the client.</p>
+</div>
+<h3 id="redis-examples">Redis examples</h3>
+<p>Using the typed helpers and falling back to <code>commandAsync()</code> for anything else:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Cache;
+
+use Tyhp\Io\Exceptions\RedisException;
+use Tyhp\Io\Redis\RedisClient;
+use Tyhp\Io\Redis\RedisOptions;
+
+async function sessionDemoAsync(string $password): void {
+    RedisClient $redis = await RedisClient::connectAsync(new RedisOptions() with [
+        host =&gt; &#039;cache.internal&#039;,
+        password =&gt; $password,
+        database =&gt; 2,
+    ]);
+    try {
+        await $redis-&gt;hSetAsync(&#039;session:abc&#039;, [&#039;user&#039; =&gt; &#039;42&#039;, &#039;role&#039; =&gt; &#039;admin&#039;]);
+        await $redis-&gt;expireAsync(&#039;session:abc&#039;, 1800);
+
+        array&lt;string, string&gt; $session = await $redis-&gt;hGetAllAsync(&#039;session:abc&#039;);
+        echo &#039;User &#039; . ($session[&#039;user&#039;] ?? &#039;?&#039;) . &quot;\n&quot;;
+
+        mixed $ttl = await $redis-&gt;commandAsync(&#039;TTL&#039;, &#039;session:abc&#039;);
+        if (\is_int($ttl)) {
+            echo &#039;Expires in &#039; . $ttl . &quot; seconds\n&quot;;
+        }
+
+        try {
+            await $redis-&gt;incrAsync(&#039;session:abc&#039;);
+        } catch (RedisException $e) {
+            // WRONGTYPE: the connection is still usable afterwards.
+            echo &#039;Redis refused: &#039; . $e-&gt;getMessage() . &quot;\n&quot;;
+        }
+    } finally {
+        $redis-&gt;close();
+    }
+}
+</code></pre></div>
+<p>A fixed-window rate limiter:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\RateLimit;
+
+use Tyhp\Io\Redis\RedisClient;
+
+async function allowRequestAsync(RedisClient $redis, string $clientId, int $limitPerMinute): bool {
+    string $key = &#039;rate:&#039; . $clientId . &#039;:&#039; . \intdiv(\time(), 60);
+    int $count = await $redis-&gt;incrAsync($key);
+    if ($count === 1) {
+        await $redis-&gt;expireAsync($key, 120);
+    }
+    return $count &lt;= $limitPerMinute;
+}
+</code></pre></div>
+<h2 id="databases-tyhpiodb">Databases (<code>Tyhp\Io\Db</code>)</h2>
+<p>The database layer has one interface, <code>DbConnection</code>, and three implementations:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Class</th>
+<th>Driver</th>
+<th>Placeholders</th>
+<th>Non-blocking?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PostgresConnection</code></td>
+<td><code>ext-pgsql</code>, libpq's asynchronous API</td>
+<td><code>$1</code>, <code>$2</code>, …</td>
+<td>Connect and statements</td>
+</tr>
+<tr>
+<td><code>MySqlConnection</code></td>
+<td><code>ext-mysqli</code> with <code>MYSQLI_ASYNC</code></td>
+<td><code>?</code></td>
+<td>Statements; the connection handshake blocks</td>
+</tr>
+<tr>
+<td><code>PdoConnection</code></td>
+<td>Any PDO driver, run through <code>Offload</code></td>
+<td><code>?</code></td>
+<td>Only with <code>tyhp/parallel</code> workers</td>
+</tr>
+</tbody>
+</table></div>
+<p>All three share these rules:</p>
+<ul>
+<li>Statements on one connection run <strong>one at a time</strong>, in the order you call them. Calls made while a statement is running queue up. Open more connections to run queries concurrently.</li>
+<li>Each <code>queryAsync()</code> runs <strong>one</strong> SQL statement. Use <code>transactionAsync()</code> to run several together.</li>
+<li>Parameters are positional <code>DbValue</code>s: <code>int</code>, <code>float</code>, <code>string</code>, <code>bool</code>, or <code>null</code>.</li>
+<li>Failures reject with <code>DbException</code>, whose <code>getSqlState()</code> returns the five-character SQLSTATE (for example <code>23505</code> for a unique violation in PostgreSQL) when the driver reports one.</li>
+</ul>
+<h3 id="dbconnection">DbConnection</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Db;
+
+interface DbConnection { /* ... */ }
+</code></pre></div>
+<p>Type your services against <code>DbConnection</code> when they do not care which driver is behind it. The placeholder syntax still differs between drivers.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>DbConnection::queryAsync(string $sql, array&lt;int, DbValue&gt; $params = [], ?CancellationToken $token = null): Promise&lt;DbResult&gt;</code></h4><br/><p>Runs one statement with positional parameters and resolves with its <a href="#dbresult"><code>DbResult</code></a>.</p>
+<p><strong>Rejects with</strong> <code>DbException</code> when the statement fails (and, for <code>PostgresConnection</code> and <code>MySqlConnection</code>, when the connection has been closed), <code>OperationCancelledException</code> when <code>$token</code> is cancelled, and <code>\InvalidArgumentException</code> (<code>MySqlConnection</code>) when the number of <code>?</code> placeholders does not match <code>$params</code>.</p>
+<p>A cancelled token on a call that is still queued behind another statement takes effect when that call's turn comes.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbConnection::transactionAsync(array&lt;int, DbStatement&gt; $statements, ?CancellationToken $token = null): Promise&lt;array&lt;int, DbResult&gt;&gt;</code></h4><br/><p>Runs <code>$statements</code> inside one transaction and resolves with one <code>DbResult</code> per statement, in order. The first failure rolls the transaction back and rejects with that error, so either every statement takes effect or none does.</p>
+<p>No other statement on the same connection can run between the statements of the transaction.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbConnection::close(): void</code></h4><br/><p>Releases the connection. For <code>PostgresConnection</code> and <code>MySqlConnection</code>, this closes the server connection, later statements reject with <code>DbException</code>, and calling it again does nothing. For <code>PdoConnection</code>, see <a href="#pdoconnection">its <code>close()</code></a>.</p>
+</div>
+<h3 id="dbvalue">DbValue</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>type DbValue = int|float|string|bool|null</code></h4><br/><p>A value bound to a statement parameter. <code>bool</code> binds as the database's boolean (or <code>1</code>/<code>0</code> where there is none) and <code>null</code> binds as SQL <code>NULL</code>.</p>
+</div>
+<h3 id="dbstatement">DbStatement</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Db;
+
+type DbStatement = struct {
+    string $sql = &#039;&#039;;
+    array&lt;int, DbValue&gt; $params = [];
+};
+</code></pre></div>
+<p>One statement for <code>transactionAsync()</code>. <code>params</code> use the connection's placeholder style.</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sql</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>One SQL statement.</td>
+</tr>
+<tr>
+<td><code>params</code></td>
+<td><code>array&lt;int, DbValue&gt;</code></td>
+<td><code>[]</code></td>
+<td>Positional parameter values.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="dbresult">DbResult</h3>
+<p>The rows and counts from one statement.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>DbResult::__construct(array&lt;int, array&lt;string, mixed&gt;&gt; $rows = [], int $affectedRows = 0, ?string $lastInsertId = null)</code></h4><br/><p>Creates a result. The connections build results for you; the public constructor is useful for test doubles.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly array&lt;int, array&lt;string, mixed&gt;&gt; DbResult::$rows</code></h4><br/><p>The returned rows, each keyed by column name. Empty for statements that return no rows.</p>
+<p>How column values are typed depends on the driver:</p>
+<ul>
+<li><strong>PostgreSQL</strong>: <code>int2</code>, <code>int4</code>, <code>int8</code>, and <code>oid</code> columns arrive as <code>int</code>; <code>float4</code> and <code>float8</code> as <code>float</code>; <code>bool</code> as <code>bool</code>; every other type (including <code>numeric</code>, dates, and <code>json</code>) as <code>string</code>.</li>
+<li><strong>MySQL</strong>: integer and floating-point columns arrive as <code>int</code> and <code>float</code>; other columns, including <code>DECIMAL</code>, as <code>string</code>. MySQL's <code>BOOLEAN</code> is <code>TINYINT(1)</code>, so it arrives as <code>int</code>.</li>
+<li><strong>PDO</strong>: whatever the PDO driver returns.</li>
+</ul>
+<p>SQL <code>NULL</code> is always <code>null</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly int DbResult::$affectedRows</code></h4><br/><p>The number of rows the statement changed. <code>MySqlConnection</code> and <code>PdoConnection</code> set it to the number of returned rows for statements that return rows; <code>PostgresConnection</code> reports libpq's row count for the command.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>readonly ?string DbResult::$lastInsertId</code></h4><br/><p>The generated ID of the inserted row when the driver reports one: <code>MySqlConnection</code> for <code>AUTO_INCREMENT</code> columns, and <code>PdoConnection</code> when the driver's <code>lastInsertId()</code> returns one. <code>PostgresConnection</code> never sets it; add <code>RETURNING id</code> to the statement and read the returned row instead.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbResult::count(): int</code></h4><br/><p>Returns the number of rows in <code>rows</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbResult::first(): ?array&lt;string, mixed&gt;</code></h4><br/><p>Returns the first row, or <code>null</code> when there are none.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbResult::scalar(): mixed</code></h4><br/><p>Returns the first column of the first row, or <code>null</code> when there are no rows. Handy for <code>SELECT COUNT(*)</code> and <code>RETURNING id</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbResult::rowsAs&lt;T extends struct&gt;(): array&lt;int, T&gt;</code></h4><br/><p>Returns every row as the struct type <code>T</code>. Each row must have <code>T</code>'s properties with matching types; extra columns are allowed, and nullable properties may be missing.</p>
+<p><strong>Throws</strong> <code>IncompatibleTypeException</code> for the first row that does not match. Match the struct's property types to the driver's column types above; for example, a PostgreSQL <code>numeric</code> or <code>bigint</code> cast to text arrives as <code>string</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbResult::firstAs&lt;T extends struct&gt;(): ?T</code></h4><br/><p>Returns the first row as the struct type <code>T</code>, or <code>null</code> when there are no rows.</p>
+<p><strong>Throws</strong> <code>IncompatibleTypeException</code> when the row does not match <code>T</code>.</p>
+</div>
+<h3 id="postgresconnection">PostgresConnection</h3>
+<p>PostgreSQL over <code>ext-pgsql</code>'s asynchronous libpq API. Connecting, sending statements, and waiting for results all run on the event loop. Placeholders are <code>$1</code>, <code>$2</code>, …</p>
+<p>Parameters are sent as text and PostgreSQL infers their types from the statement. Where it cannot, such as a bare <code>SELECT $1</code>, add a cast like <code>$1::int</code>. A <code>bool</code> parameter is sent as <code>t</code>/<code>f</code>, and non-finite floats as <code>NaN</code>, <code>Infinity</code>, or <code>-Infinity</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>static PostgresConnection::connectAsync(string $connectionString, ?CancellationToken $token = null): Promise&lt;PostgresConnection&gt;</code></h4><br/><p>Opens a new connection using a libpq connection string, for example <code>&quot;host=127.0.0.1 port=5432 dbname=app user=app password=secret&quot;</code>. Every call opens a separate connection.</p>
+<p><strong>Rejects with</strong> <code>IoUnavailableException</code> when <code>ext-pgsql</code> is not loaded, <code>DbException</code> when the connection fails, and <code>OperationCancelledException</code> when <code>$token</code> is cancelled.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>PostgresConnection::queryAsync(string $sql, array&lt;int, DbValue&gt; $params = [], ?CancellationToken $token = null): Promise&lt;DbResult&gt;</code></h4><br/><p>Runs one statement. See <a href="#dbconnection"><code>DbConnection::queryAsync()</code></a>.</p>
+<p>Cancelling <code>$token</code> while the statement runs sends a cancel request to the server, waits for it to stop the statement, and then rejects with <code>OperationCancelledException</code>. The connection stays usable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>PostgresConnection::transactionAsync(array&lt;int, DbStatement&gt; $statements, ?CancellationToken $token = null): Promise&lt;array&lt;int, DbResult&gt;&gt;</code></h4><br/><p>Runs the statements between <code>BEGIN</code> and <code>COMMIT</code>, and sends <code>ROLLBACK</code> when any of them fails or is cancelled. See <a href="#dbconnection"><code>DbConnection::transactionAsync()</code></a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>PostgresConnection::close(): void</code></h4><br/><p>Closes the connection.</p>
+</div>
+<h3 id="mysqlconnection">MySqlConnection</h3>
+<p>MySQL and MariaDB over <code>ext-mysqli</code> with <code>MYSQLI_ASYNC</code> queries. The connection handshake blocks the event loop; statements do not.</p>
+<p>Placeholders are <code>?</code>. They are replaced on the client with escaped literals before the statement is sent: strings are escaped and quoted, <code>bool</code> becomes <code>1</code> or <code>0</code>, and <code>null</code> becomes <code>NULL</code>. A <code>?</code> inside a quoted string, a backtick-quoted identifier, or a comment (<code>#</code>, <code>-- </code>, <code>/* */</code>) is not a placeholder.</p>
+<h3 id="mysqloptions">MySqlOptions</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Db;
+
+type MySqlOptions = struct {
+    string $host = &#039;127.0.0.1&#039;;
+    int $port = 3306;
+    string $user = &#039;root&#039;;
+    string $password = &#039;&#039;;
+    string $database = &#039;&#039;;
+    string $charset = &#039;utf8mb4&#039;;
+    ?string $socket;
+    int $connectTimeoutSeconds = 10;
+};
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>host</code></td>
+<td><code>string</code></td>
+<td><code>'127.0.0.1'</code></td>
+<td>Server host name or IP address.</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td><code>int</code></td>
+<td><code>3306</code></td>
+<td>Server port.</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td><code>string</code></td>
+<td><code>'root'</code></td>
+<td>User name.</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>Password.</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>Default database. <code>''</code> selects none.</td>
+</tr>
+<tr>
+<td><code>charset</code></td>
+<td><code>string</code></td>
+<td><code>'utf8mb4'</code></td>
+<td>Connection character set.</td>
+</tr>
+<tr>
+<td><code>socket</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td>Unix socket path. <code>mysqli</code> uses it only when <code>host</code> is <code>localhost</code>; any other <code>host</code> connects over TCP and ignores it.</td>
+</tr>
+<tr>
+<td><code>connectTimeoutSeconds</code></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+<td>Connection timeout in seconds.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert alert-secondary" role="alert"><h4><code>static MySqlConnection::connectAsync(?MySqlOptions $options = null, ?CancellationToken $token = null): Promise&lt;MySqlConnection&gt;</code></h4><br/><p>Opens a new connection and sets its character set. <code>null</code> options use the defaults above. The handshake blocks the event loop until it completes or <code>connectTimeoutSeconds</code> elapses.</p>
+<p><strong>Rejects with</strong> <code>IoUnavailableException</code> when <code>ext-mysqli</code> is not loaded, <code>DbException</code> when the connection or <code>charset</code> fails, and <code>OperationCancelledException</code> when <code>$token</code> was already cancelled.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>MySqlConnection::queryAsync(string $sql, array&lt;int, DbValue&gt; $params = [], ?CancellationToken $token = null): Promise&lt;DbResult&gt;</code></h4><br/><p>Runs one statement. See <a href="#dbconnection"><code>DbConnection::queryAsync()</code></a>.</p>
+<p><strong>Rejects with</strong> <code>\InvalidArgumentException</code> when the number of <code>?</code> placeholders does not match <code>$params</code> or a float parameter is <code>NAN</code> or infinite, in addition to the common errors.</p>
+<p>Cancelling <code>$token</code> while the statement runs opens a second, short-lived connection with the same options, runs <code>KILL QUERY</code> for this connection's statement, and then rejects with <code>OperationCancelledException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>MySqlConnection::transactionAsync(array&lt;int, DbStatement&gt; $statements, ?CancellationToken $token = null): Promise&lt;array&lt;int, DbResult&gt;&gt;</code></h4><br/><p>Runs the statements between <code>START TRANSACTION</code> and <code>COMMIT</code>, and sends <code>ROLLBACK</code> when any of them fails or is cancelled. Use a transactional storage engine such as InnoDB. See <a href="#dbconnection"><code>DbConnection::transactionAsync()</code></a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>MySqlConnection::close(): void</code></h4><br/><p>Closes the connection.</p>
+</div>
+<h3 id="pdoconnection">PdoConnection</h3>
+<p>Any PDO driver, with each call run through <a href="#offloading-blocking-work-tyhpio"><code>Offload</code></a>. With <code>tyhp/parallel</code> workers available, statements run in a worker process that keeps one PDO connection per DSN, user name, and password, so the event loop stays free. Without workers, they run in this process and block the loop.</p>
+<p>Placeholders are <code>?</code>, bound in order: <code>null</code> as <code>PDO::PARAM_NULL</code>, <code>bool</code> as <code>PDO::PARAM_BOOL</code>, <code>int</code> as <code>PDO::PARAM_INT</code>, and anything else as a string. <code>PDO::ATTR_ERRMODE</code> is always <code>PDO::ERRMODE_EXCEPTION</code>, and every <code>\PDOException</code> is reported as <code>DbException</code> with the SQLSTATE from PDO's error info.</p>
+<h3 id="pdooptions">PdoOptions</h3>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace Tyhp\Io\Db;
+
+type PdoOptions = struct {
+    string $dsn = &#039;&#039;;
+    ?string $username;
+    ?string $password;
+    array&lt;int, int|string|bool&gt; $attributes = [];
+};
+</code></pre></div>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dsn</code></td>
+<td><code>string</code></td>
+<td><code>''</code></td>
+<td>PDO data source name, for example <code>'sqlite:/var/lib/app/app.sqlite'</code> or <code>'mysql:host=db;dbname=shop'</code>. Required.</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td>User name passed to <code>\PDO</code>.</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td>Password passed to <code>\PDO</code>.</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><code>array&lt;int, int|string|bool&gt;</code></td>
+<td><code>[]</code></td>
+<td>Driver attributes passed to the <code>\PDO</code> constructor, keyed by <code>\PDO::ATTR_*</code> constant.</td>
+</tr>
+</tbody>
+</table></div>
+<div class="alert alert-secondary" role="alert"><h4><code>PdoConnection::__construct(PdoOptions $options)</code></h4><br/><p>Creates the connection object. No connection is opened until the first statement runs.</p>
+<p><strong>Throws</strong> <code>\InvalidArgumentException</code> immediately when <code>dsn</code> is empty.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>PdoConnection::queryAsync(string $sql, array&lt;int, DbValue&gt; $params = [], ?CancellationToken $token = null): Promise&lt;DbResult&gt;</code></h4><br/><p>Prepares and runs one statement. See <a href="#dbconnection"><code>DbConnection::queryAsync()</code></a>.</p>
+<p>Each call may run in a different worker. Session state set by one call (for example <code>SET</code> variables, temporary tables, or <code>BEGIN</code> / <code>COMMIT</code>) is not guaranteed to be visible to the next one; use <code>transactionAsync()</code> for anything that must run on the same connection.</p>
+<p><strong>Rejects with</strong> <code>DbException</code> for any PDO error, <code>OperationCancelledException</code>, and, without workers, <code>IoUnavailableException</code> when <code>ext-pdo</code> is missing. With workers, a failure that is not a PDO error (such as a missing extension in the worker) rejects with <code>ParallelException</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>PdoConnection::transactionAsync(array&lt;int, DbStatement&gt; $statements, ?CancellationToken $token = null): Promise&lt;array&lt;int, DbResult&gt;&gt;</code></h4><br/><p>Runs the whole transaction in a single offloaded call: <code>beginTransaction()</code>, every statement, then <code>commit()</code>, with <code>rollBack()</code> on the first failure. See <a href="#dbconnection"><code>DbConnection::transactionAsync()</code></a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>PdoConnection::close(): void</code></h4><br/><p>Forgets this process's cached PDO connection for these options. Connections held by workers stay open for later calls with the same options. The object stays usable: a later statement opens a new connection.</p>
+</div>
+<h3 id="database-examples">Database examples</h3>
+<p>A repository that maps rows to structs, with a transaction:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Orders;
+
+use Tyhp\Io\Db\DbConnection;
+use Tyhp\Io\Db\DbResult;
+use Tyhp\Io\Db\DbStatement;
+use Tyhp\Io\Exceptions\DbException;
+
+type OrderRow = struct {
+    int $id = 0;
+    string $status = &#039;&#039;;
+    ?string $note;
+};
+
+final class OrderRepository {
+    public function __construct(private readonly DbConnection $db) {}
+
+    public async function openOrdersAsync(int $customerId): array&lt;int, OrderRow&gt; {
+        DbResult $result = await $this-&gt;db-&gt;queryAsync(
+            &#039;SELECT id, status, note FROM orders WHERE customer_id = $1 AND status &lt;&gt; $2 ORDER BY id&#039;,
+            [$customerId, &#039;closed&#039;]
+        );
+        return $result-&gt;rowsAs&lt;OrderRow&gt;();
+    }
+
+    public async function createAsync(int $customerId, string $note): int {
+        DbResult $result = await $this-&gt;db-&gt;queryAsync(
+            &#039;INSERT INTO orders (customer_id, status, note) VALUES ($1, $2, $3) RETURNING id&#039;,
+            [$customerId, &#039;open&#039;, $note]
+        );
+        mixed $id = $result-&gt;scalar();
+        return \is_int($id) ? $id : throw new \UnexpectedValueException(&#039;No id returned.&#039;);
+    }
+
+    public async function transferAsync(int $fromAccount, int $toAccount, int $cents): void {
+        try {
+            array&lt;int, DbResult&gt; $results = await $this-&gt;db-&gt;transactionAsync([
+                new DbStatement() with [
+                    sql =&gt; &#039;UPDATE accounts SET balance = balance - $1 WHERE id = $2 AND balance &gt;= $1&#039;,
+                    params =&gt; [$cents, $fromAccount],
+                ],
+                new DbStatement() with [
+                    sql =&gt; &#039;UPDATE accounts SET balance = balance + $1 WHERE id = $2&#039;,
+                    params =&gt; [$cents, $toAccount],
+                ],
+            ]);
+        } catch (DbException $e) {
+            if ($e-&gt;getSqlState() === &#039;40001&#039;) {
+                throw new \RuntimeException(&#039;Serialization failure; retry the transfer.&#039;, 0, $e);
+            }
+            throw $e;
+        }
+        if ($results[0]-&gt;affectedRows !== 1) {
+            throw new \DomainException(&#039;Insufficient funds.&#039;);
+        }
+    }
+}
+</code></pre></div>
+<p>Note that the insufficient-funds check runs after the transaction has committed both updates; in a real system, enforce the rule inside the database (for example with a <code>CHECK (balance &gt;= 0)</code> constraint) so a violation rolls the transaction back.</p>
+<p>Running queries in parallel on separate connections:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Reports;
+
+use Tyhp\Io\Db\DbResult;
+use Tyhp\Io\Db\PostgresConnection;
+use Tyhp\Promise;
+
+async function countsAsync(string $dsn): string {
+    PostgresConnection $a = await PostgresConnection::connectAsync($dsn);
+    PostgresConnection $b = await PostgresConnection::connectAsync($dsn);
+    try {
+        array&lt;DbResult&gt; $results = await Promise::all([
+            $a-&gt;queryAsync(&#039;SELECT count(*)::int FROM orders&#039;),
+            $b-&gt;queryAsync(&#039;SELECT count(*)::int FROM customers&#039;),
+        ]);
+        return &#039;orders=&#039; . (string) $results[0]-&gt;scalar() . &#039; customers=&#039; . (string) $results[1]-&gt;scalar();
+    } finally {
+        $a-&gt;close();
+        $b-&gt;close();
+    }
+}
+</code></pre></div>
+<p>MySQL and PDO use <code>?</code> placeholders and report generated IDs through <code>lastInsertId</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Catalog;
+
+use Tyhp\Io\Db\DbResult;
+use Tyhp\Io\Db\MySqlConnection;
+use Tyhp\Io\Db\MySqlOptions;
+use Tyhp\Io\Db\PdoConnection;
+use Tyhp\Io\Db\PdoOptions;
+
+async function addProductAsync(string $name, float $price): ?string {
+    MySqlConnection $db = await MySqlConnection::connectAsync(new MySqlOptions() with [
+        host =&gt; &#039;db.internal&#039;,
+        user =&gt; &#039;shop&#039;,
+        password =&gt; &#039;secret&#039;,
+        database =&gt; &#039;shop&#039;,
+    ]);
+    try {
+        DbResult $insert = await $db-&gt;queryAsync(
+            &#039;INSERT INTO products (name, price, active) VALUES (?, ?, ?)&#039;,
+            [$name, $price, true]
+        );
+        return $insert-&gt;lastInsertId;
+    } finally {
+        $db-&gt;close();
+    }
+}
+
+async function recordVisitAsync(string $path): void {
+    PdoConnection $db = new PdoConnection(new PdoOptions() with [dsn =&gt; &#039;sqlite:/var/lib/app/stats.sqlite&#039;]);
+    await $db-&gt;queryAsync(&#039;CREATE TABLE IF NOT EXISTS visits (path TEXT, at INTEGER)&#039;);
+    await $db-&gt;queryAsync(&#039;INSERT INTO visits (path, at) VALUES (?, ?)&#039;, [$path, \time()]);
+}
+</code></pre></div>
+<h2 id="offloading-blocking-work-tyhpio">Offloading blocking work (<code>Tyhp\Io</code>)</h2>
+<p>Some work blocks no matter what: CPU-heavy computation, a third-party SDK that uses blocking I/O, or a PHP extension without an asynchronous API. <code>Offload</code> runs that work in a <code>tyhp/parallel</code> worker process when one is available, so the event loop keeps serving other fibers. Without workers it runs the job in your process, so the same code works everywhere and only the blocking behavior changes. See <a href="#with-and-without-tyhpparallel">With and without tyhp/parallel</a>.</p>
+<h3 id="offloadjob">OffloadJob</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>interface OffloadJob&lt;T extends void|mixed = mixed&gt;</code></h4><br/><p>The blocking work for <code>Offload::runAsync()</code>. Implement it in a small class that holds the job's inputs as properties.</p>
+<p>When the job runs in a worker, it follows the rules of <code>ParallelTask</code> from <code>tyhp/parallel</code>: the job object and its result must be serializable, and the worker must be able to autoload the job's class. Keep inputs and results to plain data (scalars, arrays, structs, and simple value objects); do not capture open connections, resources, or closures.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>OffloadJob::run(): T</code></h4><br/><p>Does the work and returns its result. It runs synchronously, either in a worker or in your process. Exceptions it throws reject the <code>runAsync()</code> promise.</p>
+</div>
+<h3 id="offload">Offload</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>static Offload::runAsync&lt;T extends void|mixed&gt;(OffloadJob&lt;T&gt; $job, ?CancellationToken $token = null): Promise&lt;__Awaited&lt;T&gt;&gt;</code></h4><br/><p>Runs <code>$job-&gt;run()</code> and resolves with its result.</p>
+<ul>
+<li>With workers: the job is serialized and queued to the worker pool, and this process keeps running other fibers. Cancelling <code>$token</code> stops the worker running the job.</li>
+<li>Without workers: the job runs immediately in this process and blocks the event loop until it returns. <code>$token</code> is checked only before the job starts.</li>
+</ul>
+<p><code>T</code> is inferred from the job class, so <code>Offload::runAsync(new HashPasswordJob($password))</code> needs no type argument.</p>
+<p><strong>Rejects with</strong></p>
+<ul>
+<li><code>OperationCancelledException</code> — <code>$token</code> was cancelled.</li>
+<li>With workers: <code>ParallelException</code> when the job throws or the worker fails; <code>getRemoteClass()</code> and <code>getRemoteError()</code> describe the exception from the worker. <code>IoException</code> when the job's result does not match <code>T</code>.</li>
+<li>Without workers: whatever the job throws.</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>static Offload::usesWorkers(): bool</code></h4><br/><p>Returns <code>true</code> when <code>runAsync()</code> sends jobs to <code>tyhp/parallel</code> workers: the package is installed and <code>\Tyhp\Parallel::isAvailable()</code> is <code>true</code>. Use it for logging or to decide whether offloading a very small job is worth it.</p>
+</div>
+<h3 id="offload-example">Offload example</h3>
+<p>Hashing passwords without stalling other requests:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Auth;
+
+use Tyhp\Exceptions\ParallelException;
+use Tyhp\Io\Offload;
+use Tyhp\Io\OffloadJob;
+
+final class HashPasswordJob implements OffloadJob&lt;string&gt; {
+    public function __construct(private readonly string $password) {}
+
+    public function run(): string {
+        return \password_hash($this-&gt;password, \PASSWORD_BCRYPT, [&#039;cost&#039; =&gt; 12]);
+    }
+}
+
+async function hashPasswordAsync(string $password): string {
+    try {
+        return await Offload::runAsync(new HashPasswordJob($password));
+    } catch (ParallelException $e) {
+        \error_log(&#039;Hashing failed in worker (&#039; . $e-&gt;getRemoteClass() . &#039;): &#039; . $e-&gt;getMessage());
+        throw $e;
+    }
+}
+</code></pre></div>
+<h2 id="dns-tyhpiodns">DNS (<code>Tyhp\Io\Dns</code>)</h2>
+<h3 id="dns">Dns</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>static Dns::resolveAsync(string $host, ?CancellationToken $token = null): Promise&lt;array&lt;int, string&gt;&gt;</code></h4><br/><p>Resolves <code>$host</code> through the system resolver, run with <code>Offload</code>. Resolves with its IPv4 addresses (including <code>/etc/hosts</code> entries) followed by any IPv6 addresses from DNS, without duplicates. An IP address resolves to itself.</p>
+<p><strong>Rejects with</strong> <code>IoException</code> when nothing resolves and the lookup runs in this process. When <code>Offload</code> runs the lookup in a worker (see <code>Offload::usesWorkers()</code>), every failure, including nothing resolving, rejects with <code>ParallelException</code>; <code>getRemoteClass()</code> names <code>IoException</code> for that case.</p>
+<p>Without <code>tyhp/parallel</code> workers, the lookup blocks the event loop like any other blocking resolver call.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Net;
+
+use Tyhp\Io\Dns\Dns;
+
+async function printAddressesAsync(string $host): void {
+    array&lt;int, string&gt; $addresses = await Dns::resolveAsync($host);
+    foreach ($addresses as $address) {
+        echo $host . &#039; =&gt; &#039; . $address . &quot;\n&quot;;
+    }
+}
+</code></pre></div>
+<h2 id="exceptions-tyhpioexceptions">Exceptions (<code>Tyhp\Io\Exceptions</code>)</h2>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">\RuntimeException
+└── IoException
+    ├── IoUnavailableException
+    ├── HttpException
+    │   └── HttpStatusException
+    ├── ProcessFailedException
+    ├── DbException
+    └── RedisException
+</code></pre></div>
+<p>Catch <code>IoException</code> to handle any failure from this package in one place. Remember that timeouts, cancellation, JSON errors, and struct mismatches use the exception types listed under <a href="#errors">Errors</a>, which are not <code>IoException</code>s.</p>
+<h3 id="ioexception">IoException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>class IoException extends \RuntimeException</code></h4><br/><p>Base class for failures reported by <code>tyhp/io</code>. Thrown directly for file errors, socket errors, a command that cannot start, a failed DNS lookup, and an offloaded result of the wrong type.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>IoException::__construct(string $message, int $code = 0, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception. Useful when your own code wraps lower-level I/O failures.</p>
+</div>
+<h3 id="iounavailableexception">IoUnavailableException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class IoUnavailableException extends IoException</code></h4><br/><p>Thrown when this PHP process lacks the extension an operation needs, for example <code>HttpClient requires the PHP curl extension.</code></p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>IoUnavailableException::__construct(string $message, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception.</p>
+</div>
+<h3 id="httpexception">HttpException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>class HttpException extends IoException</code></h4><br/><p>Thrown when an HTTP request fails before a response arrives: DNS, connection, TLS, too many redirects, or transfer errors. <code>getCode()</code> is the curl error number.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpException::__construct(string $message, int $code = 0, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception.</p>
+</div>
+<h3 id="httpstatusexception">HttpStatusException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class HttpStatusException extends HttpException</code></h4><br/><p>Thrown by <code>HttpResponse::ensureSuccess()</code> (and therefore by <code>HttpClient::getJsonAsync()</code>) for a status outside 200–299. The message is <code>HTTP &lt;status&gt; from &lt;url&gt;</code> and <code>getCode()</code> is the status.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpStatusException::__construct(HttpResponse $response)</code></h4><br/><p>Creates the exception for <code>$response</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>HttpStatusException::getResponse(): HttpResponse</code></h4><br/><p>Returns the response that failed, so you can read its body and headers (for example an API's error document or a <code>retry-after</code> header).</p>
+</div>
+<h3 id="processfailedexception">ProcessFailedException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class ProcessFailedException extends IoException</code></h4><br/><p>Thrown by <code>Process::mustRunAsync()</code> when the command exits with a non-zero code. The message includes the command, the exit code, and the trimmed stderr; <code>getCode()</code> is the exit code.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>ProcessFailedException::__construct(ProcessResult $result)</code></h4><br/><p>Creates the exception for <code>$result</code>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>ProcessFailedException::getResult(): ProcessResult</code></h4><br/><p>Returns the finished command's result, including its complete stdout and stderr.</p>
+</div>
+<h3 id="dbexception">DbException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class DbException extends IoException</code></h4><br/><p>Thrown when a database connection or statement fails, or a statement is sent on a closed connection.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbException::__construct(string $message, string $sqlState = &#039;&#039;, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>DbException::getSqlState(): string</code></h4><br/><p>Returns the five-character SQLSTATE when the driver reports one (for example <code>23505</code> or <code>23000</code> for a duplicate key, <code>42601</code> for a syntax error), or <code>''</code>.</p>
+</div>
+<h3 id="redisexception">RedisException</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class RedisException extends IoException</code></h4><br/><p>Thrown for a Redis error reply, a command on a closed client, or a connection failure while commands are pending. Error replies nested in an array reply appear as <code>RedisException</code> values inside the array instead of being thrown.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>RedisException::__construct(string $message, ?\Throwable $previous = null)</code></h4><br/><p>Creates the exception.</p>
+</div>
+<h2 id="worked-examples">Worked examples</h2>
+<h3 id="checking-a-list-of-links">Checking a list of links</h3>
+<p>This command reads URLs from a file, checks them with at most eight requests in flight, stops everything after two minutes, and writes a report of broken links.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\LinkCheck;
+
+use Tyhp\CancellationToken;
+use Tyhp\CancellationTokenSource;
+use Tyhp\Exceptions\TimeoutException;
+use Tyhp\Io\Exceptions\HttpException;
+use Tyhp\Io\File\File;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpRequest;
+use Tyhp\Io\Http\HttpResponse;
+use Tyhp\Promise;
+
+type LinkStatus = struct {
+    string $url = &#039;&#039;;
+    int $status = 0;
+    string $error = &#039;&#039;;
+};
+
+async function checkLinkAsync(HttpClient $client, string $url, CancellationToken $token): LinkStatus {
+    HttpRequest $request = new HttpRequest() with [url =&gt; $url, method =&gt; &#039;HEAD&#039;, timeoutMs =&gt; 10_000];
+    try {
+        HttpResponse $response = await $client-&gt;sendAsync($request, $token);
+        return new LinkStatus() with [url =&gt; $url, status =&gt; $response-&gt;status];
+    } catch (TimeoutException $e) {
+        return new LinkStatus() with [url =&gt; $url, error =&gt; &#039;timed out&#039;];
+    } catch (HttpException $e) {
+        return new LinkStatus() with [url =&gt; $url, error =&gt; $e-&gt;getMessage()];
+    } catch (\InvalidArgumentException $e) {
+        return new LinkStatus() with [url =&gt; $url, error =&gt; &#039;not an http(s) URL&#039;];
+    }
+}
+
+async function checkLinksAsync(string $listPath, string $reportPath): int {
+    array&lt;int, string&gt; $urls = [];
+    foreach (await File::linesAsync($listPath) as string $line) {
+        string $url = \trim($line);
+        if ($url !== &#039;&#039; &amp;&amp; !\str_starts_with($url, &#039;#&#039;)) {
+            $urls[] = $url;
+        }
+    }
+
+    HttpClient $client = new HttpClient([&#039;User-Agent&#039; =&gt; &#039;link-checker/1.0&#039;]);
+    $cts := new CancellationTokenSource(120_000);
+    CancellationToken $token = $cts-&gt;getToken();
+
+    array&lt;int, LinkStatus&gt; $results = await Promise::batch(
+        $urls,
+        fn(string $url): Promise&lt;LinkStatus&gt; =&gt; checkLinkAsync($client, $url, $token),
+        8
+    );
+
+    string $report = &#039;&#039;;
+    int $broken = 0;
+    foreach ($results as $result) {
+        if ($result-&gt;error !== &#039;&#039; || $result-&gt;status &gt;= 400) {
+            $broken++;
+            $report .= $result-&gt;url . &quot;\t&quot; . ($result-&gt;error !== &#039;&#039; ? $result-&gt;error : (string) $result-&gt;status) . &quot;\n&quot;;
+        }
+    }
+    await File::writeAsync($reportPath, $report);
+    return $broken;
+}
+</code></pre></div>
+<p>If the two-minute deadline passes, the requests still in flight reject with <code>OperationCancelledException</code>, which <code>checkLinkAsync()</code> does not catch, so <code>checkLinksAsync()</code> fails with it as well.</p>
+<h3 id="a-cache-aside-repository-with-redis-and-postgresql">A cache-aside repository with Redis and PostgreSQL</h3>
+<p>Reads go to Redis first and fall back to PostgreSQL. Cache problems are logged and never fail the request, because the database remains the source of truth.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Products;
+
+use Tyhp\Io\Db\DbResult;
+use Tyhp\Io\Db\PostgresConnection;
+use Tyhp\Io\Exceptions\RedisException;
+use Tyhp\Io\Redis\RedisClient;
+use Tyhp\Json;
+
+type Product = struct {
+    int $id = 0;
+    string $name = &#039;&#039;;
+    int $price_cents = 0;
+};
+
+final class ProductRepository {
+    public function __construct(
+        private readonly PostgresConnection $db,
+        private readonly RedisClient $cache
+    ) {}
+
+    public async function findAsync(int $id): ?Product {
+        string $key = &#039;product:&#039; . $id;
+        try {
+            ?string $cached = await $this-&gt;cache-&gt;getAsync($key);
+            if ($cached !== null) {
+                return Json::decode&lt;Product&gt;($cached);
+            }
+        } catch (RedisException $e) {
+            \error_log(&#039;cache read failed: &#039; . $e-&gt;getMessage());
+        }
+
+        DbResult $result = await $this-&gt;db-&gt;queryAsync(
+            &#039;SELECT id, name, price_cents FROM products WHERE id = $1&#039;,
+            [$id]
+        );
+        ?Product $product = $result-&gt;firstAs&lt;Product&gt;();
+        if ($product !== null) {
+            try {
+                await $this-&gt;cache-&gt;setAsync($key, \json_encode($product, \JSON_THROW_ON_ERROR), 300_000);
+            } catch (RedisException $e) {
+                \error_log(&#039;cache write failed: &#039; . $e-&gt;getMessage());
+            }
+        }
+        return $product;
+    }
+}
+</code></pre></div>
+<p>Because <code>price_cents</code> is declared <code>int</code>, the column must be an integer type (<code>int4</code>, <code>int8</code>, …) for <code>firstAs&lt;Product&gt;()</code> to succeed; a <code>numeric</code> column would arrive as a string.</p>
+<h3 id="a-deploy-script">A deploy script</h3>
+<p>An application entry script that updates a checkout, installs PHP and JavaScript dependencies at the same time, and checks a health endpoint. Any failing step stops the script with a message that includes the command's stderr.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+use Tyhp\Io\Exceptions\ProcessFailedException;
+use Tyhp\Io\Http\HttpClient;
+use Tyhp\Io\Http\HttpResponse;
+use Tyhp\Io\Process\Process;
+use Tyhp\Io\Process\ProcessOptions;
+use Tyhp\Io\Process\ProcessResult;
+use Tyhp\Promise;
+
+async function deployAsync(string $repoDir, string $healthUrl): int {
+    ProcessOptions $inRepo = new ProcessOptions() with [cwd =&gt; $repoDir, timeoutMs =&gt; 300_000];
+    try {
+        await Process::mustRunAsync([&#039;git&#039;, &#039;pull&#039;, &#039;--ff-only&#039;], $inRepo);
+
+        array&lt;ProcessResult&gt; $steps = await Promise::all([
+            Process::mustRunAsync([&#039;composer&#039;, &#039;install&#039;, &#039;--no-dev&#039;, &#039;--no-interaction&#039;], $inRepo),
+            Process::mustRunAsync([&#039;npm&#039;, &#039;ci&#039;], $inRepo),
+        ]);
+        foreach ($steps as $step) {
+            echo \implode(&#039; &#039;, $step-&gt;command) . &quot; finished\n&quot;;
+        }
+    } catch (ProcessFailedException $e) {
+        echo &#039;Deploy step failed: &#039; . $e-&gt;getMessage() . &quot;\n&quot;;
+        return 1;
+    }
+
+    HttpResponse $health = await HttpClient::shared()-&gt;getAsync($healthUrl);
+    if (!$health-&gt;isSuccess()) {
+        echo &#039;Health check returned &#039; . $health-&gt;status . &quot;\n&quot;;
+        return 1;
+    }
+    echo &quot;Deploy complete\n&quot;;
+    return 0;
+}
+
+exit(await deployAsync(&#039;/srv/app&#039;, &#039;https://app.example.com/health&#039;));
+</code></pre></div>
+<h2 id="gotchas">Gotchas</h2>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Connections run one statement at a time
+        </h4>
+        <div class="callout-content"><p>A <code>DbConnection</code> queues statements, so <code>Promise::all()</code> over several queries on <strong>one</strong> connection runs them one after another. Open a connection per concurrent query (or keep a small pool of connections) when you need parallel database work.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Catching `IoException` does not catch timeouts or cancellation
+        </h4>
+        <div class="callout-content"><p><code>TimeoutException</code> and <code>OperationCancelledException</code> come from <code>tyhp/async</code> and extend <code>\RuntimeException</code> directly. Catch them separately, or catch <code>\Throwable</code> at the top of a request.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Everything a `RedisClient` does shares one connection
+        </h4>
+        <div class="callout-content"><p>Commands from every fiber are pipelined on the same connection, so connection state is shared. <code>SELECT</code>, <code>MULTI</code> / <code>EXEC</code>, and <code>WATCH</code> sent through <code>commandAsync()</code> affect, or are interleaved with, commands from other fibers. A blocking command such as <code>BLPOP</code> holds up every command queued behind it. Use a separate client for those.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Redis commands have no timeout or token
+        </h4>
+        <div class="callout-content"><p>Only <code>connectAsync()</code> takes a timeout and a token. To give a command a deadline, wrap it: <code>await Promise::timeout($redis-&gt;getAsync($key), 500)</code>. The command still completes on the server, and its reply is discarded.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            `PdoConnection` statements may run in different workers
+        </h4>
+        <div class="callout-content"><p>Do not split a transaction across <code>queryAsync()</code> calls (<code>BEGIN</code>, statements, <code>COMMIT</code>) or rely on session state between calls. Use <code>transactionAsync()</code>. Connections are cached per DSN, user name, and password, so two <code>PdoConnection</code> objects with the same values share a connection, and the <code>attributes</code> of the first one to connect apply.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Without `tyhp/parallel`, PDO, DNS, and `Offload` block
+        </h4>
+        <div class="callout-content"><p>They still work, but the event loop waits for each call. In a server that handles many requests in one process, install <code>tyhp/parallel</code> or prefer <code>PostgresConnection</code> / <code>MySqlConnection</code>, which do not need workers.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Fork the worker pool before opening connections
+        </h4>
+        <div class="callout-content"><p>In a CLI program, the <code>tyhp/parallel</code> pool is forked from your process the first time <code>Offload</code>, <code>PdoConnection</code>, or <code>Dns</code> needs a worker. Call <code>\Tyhp\Parallel::start()</code> at startup, before opening database, Redis, or socket connections, so the workers do not inherit them.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            HTTP error statuses resolve
+        </h4>
+        <div class="callout-content"><p><code>getAsync()</code>, <code>postAsync()</code>, <code>postJsonAsync()</code>, and <code>sendAsync()</code> resolve for 404 and 500 responses. Check <code>isSuccess()</code> or call <code>ensureSuccess()</code>. Only <code>getJsonAsync()</code> checks the status for you.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            `ProcessOptions::$env` replaces the environment
+        </h4>
+        <div class="callout-content"><p>Setting <code>env</code> gives the command exactly those variables. Start from <code>\getenv()</code> and add to it when the command needs the rest of your environment.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-warning">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-bullhorn"></i>
+            </span>
+            Entire command output is held in memory
+        </h4>
+        <div class="callout-content"><p><code>ProcessResult</code> contains the complete stdout and stderr. For commands that produce very large output, redirect it to a file with the command's own options and read that file with <code>File::linesAsync()</code>.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            Reuse clients
+        </h4>
+        <div class="callout-content"><p>Create one <code>HttpClient</code> per API and one <code>RedisClient</code> per Redis server for your whole process, and share them between fibers. Both are built for concurrent use.</p>
+</div>
+    </div>
+</div>
+<div class="callout-block callout-block-success">
+    <div class="content">
+        <h4 class="callout-title">
+            <span class="callout-icon-holder me-1">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            The struct-typed helpers need struct types
+        </h4>
+        <div class="callout-content"><p><code>getJsonAsync&lt;T&gt;()</code>, <code>json&lt;T&gt;()</code>, <code>readJsonAsync&lt;T&gt;()</code>, <code>rowsAs&lt;T&gt;()</code>, and <code>firstAs&lt;T&gt;()</code> accept a struct type for <code>T</code>. When an API returns a top-level JSON array, read the body with <code>HttpResponse::$body</code> and decode it yourself.</p>
+</div>
+    </div>
+</div>
+<h2 id="related-pages">Related pages</h2>
+<ul>
+<li><a href="tyhp_2600_asyncAndAwait.html">Async and Await</a> — <code>async</code>, <code>await</code>, <code>Promise</code> combinators, async iteration, and cancellation tokens.</li>
+<li><a href="package_async.html">The tyhp/async Package</a> — <code>Promise</code>, <code>EventLoop</code>, <code>CancellationTokenSource</code>, <code>TimeoutException</code>, and <code>OperationCancelledException</code>.</li>
+<li><a href="package_parallel.html">The tyhp/parallel Package</a> — worker pools, <code>Parallel::start()</code>, worker services for php-fpm, and <code>ParallelException</code>.</li>
+<li><a href="package_core.html">The tyhp/core Package</a> — <code>Json::decode()</code> and <code>IncompatibleTypeException</code>.</li>
+<li><a href="tyhp_0400_structs.html">Structs</a> and <a href="tyhp_2200_withKeyword.html">The With Keyword</a> — building <code>HttpRequest</code>, <code>ProcessOptions</code>, and the other option structs.</li>
+<li><a href="tyhp_0500_generics.html">Generics</a> — type arguments such as <code>getJsonAsync&lt;Invoice&gt;()</code>.</li>
+<li><a href="tyhp_2300_disposables.html">Disposables</a> — the <code>:=</code> operator used with <code>CancellationTokenSource</code>.</li>
+<li><a href="project_composerPackages.html">Composer Runtime Packages</a> — how <code>tyhp/*</code> package versions are published and pinned.</li>
+<li><a href="package_intro.html">Runtime packages overview</a> — every <code>tyhp/*</code> package at a glance.</li>
+</ul>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_lambda.html">&larr; The tyhp/lambda Package</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="package_parallel.html">The tyhp/parallel Package &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

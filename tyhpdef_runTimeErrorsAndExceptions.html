@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>While Tyhp performs extensive compile-time type checking, tyhpdef declarations describe external PHP code that the compiler cannot verify at compile time. If a tyhpdef declaration does not accurately reflect the actual PHP implementation, runtime errors can occur. This page covers how to declare exception classes, document throwable functions, and understand the runtime implications of tyhpdef mismatches.</p>
-<h2>Declaring Exception Classes</h2>
+<h2 id="declaring-exception-classes">Declaring Exception Classes</h2>
 <p>Exception and error classes from PHP libraries can be declared in tyhpdef just like any other class. Declaring them provides the compiler with the exception hierarchy for type checking in catch blocks.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -307,7 +326,7 @@ class \RuntimeException extends \Exception {
     ): void;
 }
 </code></pre></div>
-<h2>Declaring Custom Exception Hierarchies</h2>
+<h2 id="declaring-custom-exception-hierarchies">Declaring Custom Exception Hierarchies</h2>
 <p>When a PHP library defines its own exception classes, declare them with their full inheritance chain so the compiler can validate catch blocks and exception type narrowing.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -336,7 +355,7 @@ namespace Guzzle\Exception {
     class ServerException extends RequestException {}
 }
 </code></pre></div>
-<h2>Documenting Throwable Functions with @throws</h2>
+<h2 id="documenting-throwable-functions-with-throws">Documenting Throwable Functions with @throws</h2>
 <p>Use the @throws doc comment annotation on function and method declarations to document which exceptions a function can throw. Tyhp records these annotations for humans and for future tooling. This alpha does <strong>not</strong> require callers to catch or declare them — there is no checked-exception / throws-effect analysis yet.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -376,9 +395,9 @@ class DatabaseConnection {
     public function query(string $sql): \PDOStatement;
 }
 </code></pre></div>
-<h2>Variable and Constant Imports</h2>
+<h2 id="variable-and-constant-imports">Variable and Constant Imports</h2>
 <p>Tyhpdef global imports are type information only. Tyhpdef <code>??</code> records PHP's expected start value; it does not emit runtime <code>ErrorException</code> checks or assign the value. Handle missing PHP globals at the use site.</p>
-<h2>Class and Interface Mismatch Errors</h2>
+<h2 id="class-and-interface-mismatch-errors">Class and Interface Mismatch Errors</h2>
 <p>If a tyhpdef declaration says a class has certain methods, properties, or constants that the actual PHP class does not have, you may get runtime errors when the code attempts to access them. The compiler trusts tyhpdef declarations at compile time, so mismatches are only caught at runtime.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -395,7 +414,7 @@ class User {
 }
 </code></pre></div>
 <p>In this example, Tyhp code calling $user-&gt;getEmail() will compile without errors because the tyhpdef says the method exists. At runtime, PHP will throw: Fatal error: Call to undefined method User::getEmail().</p>
-<h2>Type Mismatch Errors</h2>
+<h2 id="type-mismatch-errors">Type Mismatch Errors</h2>
 <p>If a tyhpdef declares a function's return type differently from what the PHP function actually returns, the Tyhp compiler will accept the tyhpdef's type at compile time, but runtime behavior may differ.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -404,7 +423,7 @@ class User {
 function \file_get_contents(string $filename): string;
 </code></pre></div>
 <p>If the tyhpdef omits the false return type, the compiler will not require null/false checks at call sites, potentially leading to unhandled runtime failures.</p>
-<h2>Prevention Strategies</h2>
+<h2 id="prevention-strategies">Prevention Strategies</h2>
 <ol>
 <li>Keep tyhpdef declarations synchronized with the actual PHP code they describe (regenerate with <code>tyhp generate_tyhpdef</code> when the PHP API changes, then review overlays)</li>
 <li>Run <code>tyhp lint</code> so tyhpdef files parse and bind</li>
@@ -461,7 +480,7 @@ function \file_get_contents(string $filename): string;
 </div>
     </div>
 </div>
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <ul>
 <li>Exception classes are declared in tyhpdef like any other class, with their full inheritance chain</li>
 <li>Use <code>@throws</code> doc comment annotations to document which exceptions functions and methods can throw (documentation only in this alpha — the compiler does not enforce that callers handle them)</li>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -304,7 +323,7 @@
 </div>
     </div>
 </div>
-<h2>Basic Syntax</h2>
+<h2 id="basic-syntax">Basic Syntax</h2>
 <p>Use the ?-&gt; operator on the left-hand side of an assignment to conditionally set a property. If the object is null, the assignment is silently skipped. If the object is non-null, the assignment executes normally.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -324,7 +343,7 @@ $config?-&gt;theme = &#039;dark&#039;;
 //     $config-&gt;theme = &#039;dark&#039;;
 // }
 </code></pre></div>
-<h2>Compiled PHP Output</h2>
+<h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Null-conditional assignments compile to inline ternary expressions with null checks. The ?-&gt; operator is replaced with a regular -&gt; inside the true branch, since the null check has already verified the object is non-null.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
@@ -339,7 +358,7 @@ $config = loadConfig();
 // $config?-&gt;theme = &#039;dark&#039;;  compiles to:
 (($config !== null) ? ($config-&gt;theme = &#039;dark&#039;) : null);
 </code></pre></div>
-<h2>Chained Null-Conditional Assignment</h2>
+<h2 id="chained-null-conditional-assignment">Chained Null-Conditional Assignment</h2>
 <p>Multiple ?-&gt; operators can be chained. If any segment in the chain encounters null, the entire assignment becomes a no-op. Each ?-&gt; generates a nested ternary in the compiled output.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -371,7 +390,7 @@ declare(strict_types=1);
 // $company?-&gt;ceo?-&gt;address?-&gt;city = &#039;Munich&#039;;  compiles to:
 (($company !== null) ? (($company-&gt;ceo !== null) ? (($company-&gt;ceo-&gt;address !== null) ? ($company-&gt;ceo-&gt;address-&gt;city = &#039;Munich&#039;) : null) : null) : null);
 </code></pre></div>
-<h2>Mixed Chains</h2>
+<h2 id="mixed-chains">Mixed Chains</h2>
 <p>You can mix regular -&gt; and null-safe ?-&gt; in the same chain. Only the segments with ?-&gt; generate null checks. Regular -&gt; segments are emitted as-is.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -395,7 +414,7 @@ declare(strict_types=1);
 // $company-&gt;department?-&gt;manager-&gt;name = &#039;Alice&#039;;  compiles to:
 (($company-&gt;department !== null) ? ($company-&gt;department-&gt;manager-&gt;name = &#039;Alice&#039;) : null);
 </code></pre></div>
-<h2>All Assignment Operators</h2>
+<h2 id="all-assignment-operators">All Assignment Operators</h2>
 <p>Every assignment operator that works with regular -&gt; also works with ?-&gt;. The operator is preserved inside the ternary wrapper.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -432,7 +451,7 @@ declare(strict_types=1);
 (($obj !== null) ? ($obj-&gt;bits &lt;&lt;= 2) : null);
 (($obj !== null) ? ($obj-&gt;bits &gt;&gt;= 2) : null);
 </code></pre></div>
-<h2>Expression Value</h2>
+<h2 id="expression-value">Expression Value</h2>
 <p>A null-conditional assignment is also an expression. It evaluates to the assigned value when the object is non-null, or null when the object is null. The result type is always T|null, where T is the type the assignment would produce if the object were non-null.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -460,7 +479,7 @@ if ((($user !== null) ? ($user-&gt;name = &#039;Alice&#039;) : null) !== null) {
     echo &#039;Name was set&#039;;
 }
 </code></pre></div>
-<h2>Side-Effect Safety</h2>
+<h2 id="side-effect-safety">Side-Effect Safety</h2>
 <p>When the object expression has side effects (such as a function call), the compiler ensures it is evaluated only once by introducing a temporary variable. Simple variable accesses do not need a temporary variable.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -485,7 +504,7 @@ declare(strict_types=1);
 // Simple variable — no temp needed
 (($user !== null) ? ($user-&gt;name = &#039;Alice&#039;) : null);
 </code></pre></div>
-<h2>Null-Conditional with Null Coalesce Assignment</h2>
+<h2 id="null-conditional-with-null-coalesce-assignment">Null-Conditional with Null Coalesce Assignment</h2>
 <p>The ??= operator works naturally with null-conditional assignment. If the object is non-null, ??= sets the property only when its current value is null.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -504,7 +523,7 @@ declare(strict_types=1);
 
 (($config !== null) ? (($config-&gt;override !== null) ? ($config-&gt;override-&gt;fontSize ??= 14) : null) : null);
 </code></pre></div>
-<h2>No Type Narrowing After Null-Conditional Assignment</h2>
+<h2 id="no-type-narrowing-after-null-conditional-assignment">No Type Narrowing After Null-Conditional Assignment</h2>
 <p>A null-conditional assignment does not narrow the object variable's type. After the assignment, the object is still nullable because the assignment may or may not have executed. This is different from an explicit null check, which does narrow the type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -532,7 +551,7 @@ if ($user !== null) {
 </div>
     </div>
 </div>
-<h2>Struct Interaction</h2>
+<h2 id="struct-interaction">Struct Interaction</h2>
 <p>Null-conditional assignment works with Tyhp structs. Since structs are backed by arrays at runtime, struct property access compiles to array key access. The null-safe wrapper applies around the array assignment.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -550,7 +569,7 @@ declare(strict_types=1);
 // Struct property access emits as array key access
 (($p !== null) ? ($p[&#039;x&#039;] = 10) : null);
 </code></pre></div>
-<h2>Null-Safe on Non-Nullable Types</h2>
+<h2 id="null-safe-on-non-nullable-types">Null-Safe on Non-Nullable Types</h2>
 <p>Using ?-&gt; on a non-nullable object is syntactically valid and semantically safe — it is equivalent to using -&gt;. The compiler accepts it without error but may emit an informational hint suggesting you use -&gt; instead, since the null check is unnecessary.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -575,7 +594,7 @@ $user-&gt;name = &#039;Alice&#039;;
 </div>
     </div>
 </div>
-<h2>Practical Example: Optional Configuration</h2>
+<h2 id="practical-example-optional-configuration">Practical Example: Optional Configuration</h2>
 <p>Null-conditional assignment is particularly useful for optional configuration objects and builder patterns where the target may or may not exist.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -611,7 +630,7 @@ function applyOverrides(?DatabaseConfig $config, array $overrides): void {
     (($config !== null) ? (($config-&gt;replica !== null) ? ($config-&gt;replica-&gt;port = $overrides[&#039;replica_port&#039;] ?? 3306) : null) : null);
 }
 </code></pre></div>
-<h2>Compiler Error Examples</h2>
+<h2 id="compiler-error-examples">Compiler Error Examples</h2>
 <p>Null-conditional assignment reuses the same type checking as regular assignment. Type mismatches produce the same errors — the null-safe wrapper is transparent to error reporting.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -647,7 +666,7 @@ class User {
 </div>
     </div>
 </div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -708,7 +727,7 @@ class User {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

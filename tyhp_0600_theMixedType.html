@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 08</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The mixed type is the top type in Tyhp's type system. It represents any value — int, string, object, array, null, or any other type. While PHP allows mixed to be used freely, Tyhp adds compile-time safeguards: you must narrow a mixed value through a type guard before performing type-specific operations on it. This prevents runtime type errors that would otherwise go undetected.</p>
-<h2>What Mixed Means</h2>
+<h2 id="what-mixed-means">What Mixed Means</h2>
 <p>In Tyhp's type system, mixed is the supertype of everything. Any value is assignable to mixed, and mixed is the default type used when a generic type parameter has no constraint and its type argument is erased.</p>
 <ul>
 <li>mixed accepts any value — int, string, float, bool, array, object, callable, null, and all user-defined types.</li>
@@ -297,7 +316,7 @@ $value = [1, 2, 3];
 $value = null;
 $value = new SomeObject();
 </code></pre></div>
-<h2>Requiring Type Guards Before Use</h2>
+<h2 id="requiring-type-guards-before-use">Requiring Type Guards Before Use</h2>
 <p>Tyhp enforces that you narrow a mixed value to a specific type before performing type-specific operations. This is done through type guards: instanceof/is checks (<code>$x is string</code> emits <code>\is_string($x)</code> when that tyhpdef is marked <code>#[\Tyhp\NativeTypeTest]</code>; unmarked classes use <code>instanceof</code>; remaining forms use <code>\Tyhp\Type::is</code>), type-checking functions (<code>is_string</code>, <code>is_int</code>, etc.), null checks (<code>$item === null</code> / <code>$item !== null</code> / <code>$item is null</code>), and user-defined type guard functions.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -320,7 +339,64 @@ function processValue(mixed $value): string {
     return &#039;&#039;;
 }
 </code></pre></div>
-<h2>Automatic Smart Casts</h2>
+<h2 id="what-needs-narrowing">What Needs Narrowing</h2>
+<p>Anything is assignable <strong>to</strong> <code>mixed</code>, but a <code>mixed</code> value is assignable only to <code>mixed</code> until it is narrowed: passing it to an <code>int</code> parameter or assigning it to an <code>int</code> variable is an error (TYHP4010, TYHP4008). These uses of a <code>mixed</code> value report TYHP4160 or a more specific diagnostic until the value is narrowed:</p>
+<ul>
+<li>member access and method calls (<code>$m-&gt;name</code>, <code>$m-&gt;run()</code>), calling the value (<code>$m()</code>), and <code>$m::class</code>;</li>
+<li>indexing (<code>$m[0]</code>);</li>
+<li>arithmetic and the relational operators <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>;</li>
+<li>string concatenation, interpolation, <code>echo</code>, and <code>print</code>;</li>
+<li>spreading it (<code>[...$m]</code>, <code>f(...$m)</code>);</li>
+<li><code>$m-&gt;name ?? 1</code> and <code>$m-&gt;name ??= 1</code> on an instance member.</li>
+</ul>
+<p>Comparison with <code>===</code>, <code>isset()</code>, <code>$m ?? 1</code>, <code>$m['key'] ?? 1</code>, and an explicit cast such as <code>(int) $m</code> are not narrowing errors. A class constant declared <code>const mixed X</code> reads as <code>mixed</code> at every use.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function show(mixed $value): string {
+    // $value + 1;        // ERROR (TYHP4160)
+    // &quot;v={$value}&quot;;      // ERROR (TYHP4120)
+    // $value-&gt;name;      // ERROR (TYHP4160)
+    $count = (int) $value;  // explicit cast
+    return (string) $count;
+}
+</code></pre></div>
+<p>Narrowing with <code>||</code> and <code>&amp;&amp;</code> combines the guards of variables: after <code>if ($m is int || $m is string)</code> the variable is <code>int|string</code>, and <code>if ($m is int &amp;&amp; $m &gt; 0)</code> narrows before the comparison runs. A guard on a property (<code>$h-&gt;p is int</code>) narrows on its own, but guards on properties and index keys are not combined across <code>||</code>. After <code>$m instanceof User</code>, <code>$m</code> is <code>User</code>; a guard that is redundant for a variable that already has a precise type keeps the precise type. When an assignment narrows a variable, its right-hand side is checked first with the variable's previous type, so <code>$m = $m + 1;</code> on a <code>mixed</code> <code>$m</code> is an error.</p>
+<p>A null check alone does not narrow <code>mixed</code> to a specific type: after <code>$m !== null</code> the value is still <code>mixed</code>.</p>
+<h2 id="mixed-and-generic-arguments">Mixed and Generic Arguments</h2>
+<p>A <code>mixed</code> argument binds a type parameter to <code>mixed</code>. A parameter declared <code>T extends int|string</code> therefore rejects it (TYHP4035), while an unconstrained <code>T</code> binds to <code>mixed</code>. A nullable argument binds an unconstrained <code>T</code> to the nullable type: passing an <code>?int</code> to <code>T $v</code> gives <code>T = ?int</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function bounded&lt;T extends int|string&gt;(T $v): T { return $v; }
+function bare&lt;T&gt;(T $v): T { return $v; }
+
+function demo(mixed $m, ?int $n): void {
+    // bounded($m);          // ERROR (TYHP4035): `mixed` does not satisfy `int|string`
+    mixed $a = bare($m);     // T = mixed
+    ?int $b = bare($n);      // T = ?int
+}
+</code></pre></div>
+<p>A spread argument must be iterable, and its elements are checked against the parameters they fill: <code>f(...[1, 2])</code> for <code>f(string ...$s)</code> is rejected. A non-array argument to a generic builtin such as <code>\array_values(5)</code> is rejected rather than accepted as <code>mixed</code>.</p>
+<h2 id="members-that-do-not-exist">Members That Do Not Exist</h2>
+<p>Reading or calling a member that is not declared on a class, interface, or <code>object</code> type reports TYHP4101. A guard such as <code>\property_exists($f, 'name')</code> or <code>\method_exists($f, 'run')</code> makes the member available inside the guarded branch. A bare <code>object</code> has no members, so every access on it needs a narrowing check first.</p>
+<h2 id="mixed-and-generic-types-without-type-arguments">Mixed and Generic Types Without Type Arguments</h2>
+<p><code>mixed</code> is also what an unspecified type argument means. A generic class written without type arguments (<code>Box</code> for <code>class Box&lt;T&gt;</code>) is <code>Box&lt;mixed&gt;</code> when it is assigned to an instantiation of the same class, and each type parameter widens to its declared <code>extends</code> bound when it has one. Like a <code>mixed</code> value, it is not assignable to a more specific target: <code>Box</code> is not assignable to <code>Box&lt;int&gt;</code>, while <code>Box&lt;int&gt;</code> is assignable to <code>Box</code> and <code>Box</code> is assignable to <code>Box&lt;mixed&gt;</code>. See <a href="tyhp_0500_generics.html#generic-types-without-type-arguments">Generic Types Without Type Arguments</a>.</p>
+<p>An <code>instanceof</code> check on a <code>mixed</code> value narrows it to the raw class, so it is assignable to <code>Box&lt;mixed&gt;</code> but not to <code>Box&lt;int&gt;</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App;
+
+class Box&lt;T&gt; {
+    public function __construct(public T $value) {}
+}
+
+function unwrap(mixed $candidate): Box&lt;mixed&gt; {
+    if ($candidate instanceof Box) {
+        return $candidate;       // OK: Box is Box&lt;mixed&gt;
+    }
+    return new Box&lt;mixed&gt;(null);
+}
+</code></pre></div>
+<h2 id="automatic-smart-casts">Automatic Smart Casts</h2>
 <p>After a type guard narrows the type, the compiler automatically tracks the narrower type within the guard's scope. No explicit casts or re-declarations are needed. This works with instanceof/is checks, null checks, built-in type-checking functions, and user-defined type guard functions.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -360,7 +436,7 @@ function describe(mixed $item): string {
 </div>
     </div>
 </div>
-<h2>When Mixed Is Acceptable</h2>
+<h2 id="when-mixed-is-acceptable">When Mixed Is Acceptable</h2>
 <p>There are legitimate use cases for mixed:</p>
 <ul>
 <li>Deserialization functions that return data of unknown shape (e.g., JSON decoding).</li>
@@ -381,7 +457,7 @@ function logValue(string $label, mixed $value): void {
     echo $label . &#039;: &#039; . \var_export($value, true);
 }
 </code></pre></div>
-<h2>Compiler Errors with Mixed</h2>
+<h2 id="compiler-errors-with-mixed">Compiler Errors with Mixed</h2>
 <p>The compiler produces errors when mixed values are used in type-specific operations without narrowing.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -399,7 +475,7 @@ function badExample(mixed $value): void {
     // $item = $value[0];
 }
 </code></pre></div>
-<h2>There Is No Escape Hatch, By Design</h2>
+<h2 id="there-is-no-escape-hatch-by-design">There Is No Escape Hatch, By Design</h2>
 <p>Narrowing is not optional and there is no compiler setting that relaxes it. Tyhp has exactly one top type, and it is always strict: a mixed value must be narrowed to a specific type before you can do anything type-specific with it. There is no second, permissive top type to fall back on.</p>
 <p>If you know TypeScript, mixed behaves like TypeScript's unknown, and Tyhp deliberately has no equivalent of TypeScript's any. TypeScript ships both only for historical reasons — any predates unknown and could not be made strict without breaking existing code, so unknown was added alongside it as the safe alternative. Tyhp starts from the strict semantics instead, so the unsafe variant never needs to exist.</p>
 <div class="callout-block callout-block-info">
@@ -415,7 +491,7 @@ function badExample(mixed $value): void {
     </div>
 </div>
 <p>When narrowing feels impossible, that is a signal the type is wrong rather than a reason for an escape hatch. Prefer a union type when you know the accepted types, generics when the type varies with a caller, or a user-defined type guard when the check is genuinely a runtime one.</p>
-<h2>Mixed in Generic Erasure</h2>
+<h2 id="mixed-in-generic-erasure">Mixed in Generic Erasure</h2>
 <p>When generics are erased for PHP output, unconstrained type parameters become mixed. Constrained type parameters use their constraint type instead. This means generic code in PHP output uses mixed where the original Tyhp code was type-safe through generics.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -442,7 +518,7 @@ function countItems(Countable $items): int {
     return \count($items);
 }
 </code></pre></div>
-<h2>Prefer Generics or Union Types Over Mixed</h2>
+<h2 id="prefer-generics-or-union-types-over-mixed">Prefer Generics or Union Types Over Mixed</h2>
 <p>When you know the range of types a value can hold, use generics or union types instead of mixed. Generics preserve type information across calls, and union types make the accepted types explicit.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -465,7 +541,7 @@ function wrap&lt;T&gt;(T $value): array&lt;T&gt; {
     return [$value];
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -514,7 +590,7 @@ function wrap&lt;T&gt;(T $value): array&lt;T&gt; {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

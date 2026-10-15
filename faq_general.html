@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link active" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="faq_general.html">FAQ: General</a></li>
@@ -277,30 +296,30 @@
 				<section class="docs-section" id="FAQ_General">
     <h2 class="section-heading">FAQ: General</h2>
     
-    <h2>What is Tyhp?</h2>
+    <h2 id="what-is-tyhp">What is Tyhp?</h2>
 <p>Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP. It adds required types, generics, type guards, structs, operator overloads, extension methods, async/await, and similar constructs. The usual comparison is TypeScript’s relationship to JavaScript. Tyhp is not PHP.</p>
-<h2>Is Tyhp a new language or a PHP extension?</h2>
+<h2 id="is-tyhp-a-new-language-or-a-php-extension">Is Tyhp a new language or a PHP extension?</h2>
 <p>Tyhp is a language: a typed superset of the PHP language. It is not PHP, not a PHP extension, and not affiliated with the PHP Group. <code>.php</code> files in a Tyhp project are passed through unchanged. <code>&lt;?tyhp</code> source adds type requirements and extra syntax. The compiler is a standalone tool that reads that source and writes standard PHP. No PHP extensions or runtime modifications are required.</p>
-<h2>Does Tyhp work with existing PHP code?</h2>
+<h2 id="does-tyhp-work-with-existing-php-code">Does Tyhp work with existing PHP code?</h2>
 <p>Yes. Tyhp is designed for gradual adoption. You can include <code>.php</code> files alongside <code>.tyhp</code> files in the same project. PHP files are passed through to the output unchanged. To get type-checking benefits when calling into existing PHP code, you write tyhpdef files that describe the PHP code's types to the compiler.</p>
-<h2>What PHP versions does Tyhp support?</h2>
+<h2 id="what-php-versions-does-tyhp-support">What PHP versions does Tyhp support?</h2>
 <p>Tyhp currently supports targeting PHP 8.0 through 8.5. The target version is set via the <code>output.phpVersion</code> option in <code>tyhp.json</code>. If that key is omitted, the compiler defaults to <code>&quot;8.2&quot;</code> and emits warning <strong>TYHP4306</strong> once per compilation. The compiled output uses only features available in the targeted PHP version. Version-gated declarations (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) are filtered to that same target; the <code>tyhpdef/php</code> stubs package covers 8.2–8.5.</p>
-<h2>Is Tyhp free and open source?</h2>
+<h2 id="is-tyhp-free-and-open-source">Is Tyhp free and open source?</h2>
 <p>Yes. Tyhp is an open-source project. The compiler, runtime packages, and documentation are all freely available.</p>
-<h2>Does Tyhp add runtime overhead?</h2>
+<h2 id="does-tyhp-add-runtime-overhead">Does Tyhp add runtime overhead?</h2>
 <p>Most Tyhp features are compile-time only. Types, generics, and type guards are erased from PHP signatures. Source type aliases expand in hints and also emit a <code>\Tyhp\Type</code> factory function or static method for PHP interop. Compiled Tyhp libraries stamp <code>#[\Tyhp\GenericRuntime]</code> on every emitted generic class, method, and function. Same-compilation Tyhp uses factories/binders when tracked; foreign sites use <code>\Tyhp\Generic::bind</code>. Overlay tyhpdefs that omit the stamp keep erase / inline emit. Property hooks on PHP below 8.4, <code>async</code>/<code>await</code>, structs-as-arrays, remaining <code>\Tyhp\Type::is</code>, decimal arithmetic, and <code>\Tyhp\Type</code> compile to Tyhp-runtime PHP via <code>tyhp/core</code>, <code>tyhp/decimal</code>, and <code>tyhp/async</code>, which are added as Composer dependencies when needed.</p>
-<h2>How does Tyhp compare to PHP static analyzers like PHPStan or Psalm?</h2>
+<h2 id="how-does-tyhp-compare-to-php-static-analyzers-like-phpstan-or-psalm">How does Tyhp compare to PHP static analyzers like PHPStan or Psalm?</h2>
 <p>PHPStan and Psalm analyze existing PHP code using annotations (PHPDoc comments) to find type errors. Tyhp is a separate language — a superset of PHP — with type syntax in the grammar, not comments. It can also add constructs (generics, structs, operator overloads, async/await) that a PHP analyzer cannot, because those tools cannot change PHP’s syntax. Tyhp’s compile-time checking is mandatory; you cannot ignore type errors the way you can with analyzer baselines.</p>
-<h2>Can I use Composer packages with Tyhp?</h2>
+<h2 id="can-i-use-composer-packages-with-tyhp">Can I use Composer packages with Tyhp?</h2>
 <p>Yes. Since Tyhp compiles to standard PHP, Composer packages work exactly as they do in PHP. To get type-checking for a Composer package, provide tyhpdef files that describe the package's types. After <code>composer install</code>, <code>tyhp generate_tyhpdef --vendor</code> (also run from <code>post-autoload-dump</code>) prefers published <code>tyhpdef/*</code> companions and otherwise writes stubs into <code>vendor-tyhpdef/</code>. You can also generate a single package with <code>--package-path=…</code>, or write the members you call by hand as overlays. PHP builtins come from the <code>tyhpdef/php</code> package.</p>
-<p>Tyhp's own runtime packages (<code>tyhp/core</code>, <code>tyhpdef/php</code>, …) version independently of the compiler. Compiled <code>tyhp/*</code> helpers use Packagist MAJOR as the PHP target (<code>804.x</code> means PHP 8.4). <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>. The compiler itself installs as <code>composer require --dev tyhp/compiler</code>. See the Composer Runtime Packages page and <a href="intro_installation.md">Installing Tyhp</a>.</p>
-<h2>What editor or IDE support is available?</h2>
-<p><code>tyhp language_server</code> speaks the Language Server Protocol over stdin/stdout (diagnostics, completion, hover, go-to-definition, find references, rename, and related features). The Tyhp Language extension for VS Code / Cursor and the PhpStorm plugin start it for you. You can also point any LSP client at <code>tyhp language_server</code>. See <a href="cli_languageServer.md">CLI: Language Server</a>.</p>
-<p>For debugging <code>.tyhp</code> sources, set <code>build.generateSourcemap</code> to <code>true</code>, run <code>tyhp build</code>, then <code>tyhp xdebug_proxy</code>. See <a href="cli_sourcemapGeneration.md">CLI: Source Map Generation</a> and <a href="cli_xdebugProxy.md">CLI: XDebug Proxy</a>. You can still use <code>tyhp lint</code> and <code>tyhp build</code> from the CLI.</p>
+<p>Tyhp's own runtime packages (<code>tyhp/core</code>, <code>tyhpdef/php</code>, …) version independently of the compiler. Compiled <code>tyhp/*</code> helpers use Packagist MAJOR as the PHP target (<code>804.x</code> means PHP 8.4). <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>. The compiler itself installs as <code>composer require --dev tyhp/compiler</code>. See the Composer Runtime Packages page and <a href="intro_installation.html">Installing Tyhp</a>.</p>
+<h2 id="what-editor-or-ide-support-is-available">What editor or IDE support is available?</h2>
+<p><code>tyhp language_server</code> speaks the Language Server Protocol over stdin/stdout (diagnostics, completion, hover, go-to-definition, find references, rename, and related features). The Tyhp Language extension for VS Code / Cursor and the PhpStorm plugin start it for you. You can also point any LSP client at <code>tyhp language_server</code>. See <a href="cli_languageServer.html">CLI: Language Server</a>.</p>
+<p>For debugging <code>.tyhp</code> sources, set <code>build.generateSourcemap</code> to <code>true</code>, run <code>tyhp build</code>, then <code>tyhp xdebug_proxy</code>. See <a href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a> and <a href="cli_xdebugProxy.html">CLI: XDebug Proxy</a>. You can still use <code>tyhp lint</code> and <code>tyhp build</code> from the CLI.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
-    <div class="docs-prev"><a class="btn btn-outline-primary" href="project_optionsList.html">&larr; Project Options List</a></div>
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="package_compiler.html">&larr; The tyhp/compiler Package</a></div>
     <div class="docs-next"><a class="btn btn-outline-primary" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax &rarr;</a></div>
 </nav>
 

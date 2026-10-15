@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 01</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The Tyhp compiler uses a structured diagnostic system to report errors, warnings, and informational messages during compilation. Every diagnostic has a unique code, a severity level, and a human-readable message that includes the source file location. This page explains how to read and interpret compiler diagnostics.</p>
-<h2>Diagnostic Format</h2>
+<h2 id="diagnostic-format">Diagnostic Format</h2>
 <p>Each diagnostic message follows a consistent format that includes the file path, line and column numbers, severity, diagnostic code, and a descriptive message:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">filename(line,column): severity TYHPXXXX: message
 </code></pre></div>
@@ -295,7 +314,7 @@
 <li><code>TYHP4008</code> -- the unique diagnostic code</li>
 <li><code>Cannot assign type 'string' to type 'int'</code> -- a human-readable description of the problem</li>
 </ul>
-<h2>Severity Levels</h2>
+<h2 id="severity-levels">Severity Levels</h2>
 <p>The Tyhp compiler uses three severity levels for diagnostics:</p>
 <div class="alert alert-secondary" role="alert"><h4><code>Error</code></h4><br/><p>A problem that prevents successful compilation. The build will fail and no PHP output will be produced. Errors must be fixed before the code can compile. Examples include type mismatches, missing return statements, and unresolved symbols.</p>
 </div>
@@ -303,7 +322,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>Info</code></h4><br/><p>An informational message or style suggestion. These do not affect compilation and are purely advisory. Examples include unnecessary null-safe operator usage and eval() detection.</p>
 </div>
-<h2>Diagnostic Code Numbering Scheme</h2>
+<h2 id="diagnostic-code-numbering-scheme">Diagnostic Code Numbering Scheme</h2>
 <p>Every diagnostic code follows the pattern <code>TYHPXXXX</code> where the first digit identifies the compiler phase that produced the diagnostic. This makes it easy to understand where in the compilation pipeline an issue was detected:</p>
 <div class="alert alert-secondary" role="alert"><h4><code>1000-1999: Parser/Lexer Errors</code></h4><br/><p>Errors from the ANTLR4 parsing phase. These occur when the source code contains syntax that the parser cannot understand -- missing semicolons, unmatched braces, invalid token sequences, etc. Parser errors prevent AST construction for the affected file.</p>
 </div>
@@ -323,7 +342,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>9000-9999: Internal Compiler Errors (Reserved)</code></h4><br/><p>Reserved for internal compiler errors that indicate bugs in the compiler itself. If you encounter an error in this range, please report it as a bug.</p>
 </div>
-<h2>Example Error Output</h2>
+<h2 id="example-error-output">Example Error Output</h2>
 <p>Here is an example of what a typical build output looks like when there are errors and warnings:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">src/Models/User.tyhp(15,10): error TYHP3003: Symbol &#039;InvalidUser&#039; not found
 src/Models/User.tyhp(42,5): error TYHP4008: Cannot assign type &#039;string&#039; to type &#039;int&#039;
@@ -337,7 +356,7 @@ Build failed with 3 errors and 1 warning.
   Errors:    3
   Warnings:  1
 </code></pre></div>
-<h2>Enhanced Error Messages</h2>
+<h2 id="enhanced-error-messages">Enhanced Error Messages</h2>
 <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 14</span><span class="badge bg-secondary">Complete</span>
 </p>
@@ -351,7 +370,7 @@ Build failed with 3 errors and 1 warning.
 <p>Diagnostic messages follow a consistent style: present tense, the offending symbol or type named in backticks, and &quot;expected X, found Y&quot; framing. A build-time consistency gate enforces that every diagnostic code has conforming message text and vice versa.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp --explain TYHP4008
 </code></pre></div>
-<h2>How the Compilation Pipeline Works</h2>
+<h2 id="how-the-compilation-pipeline-works">How the Compilation Pipeline Works</h2>
 <p>Understanding the compilation pipeline helps in diagnosing errors. The Tyhp compiler processes your code through these sequential phases:</p>
 <ol>
 <li>Parse -- The ANTLR4 lexer and parser read your source files and produce parse trees. Syntax errors (TYHP1xxx) are detected here. Parsing continues for other files even if one file has syntax errors.</li>
@@ -362,7 +381,7 @@ Build failed with 3 errors and 1 warning.
 <li>Write -- The generated PHP files are written to disk. File system errors (TYHP7xxx) may occur at this stage.</li>
 </ol>
 <p>If errors occur in an earlier phase, the compiler may skip later phases. For example, if there are parser errors in a file, that file will not proceed through binding and checking. However, other files in the project continue to be processed, so you can see as many errors as possible in a single build.</p>
-<h2>Common Error Categories and How to Fix Them</h2>
+<h2 id="common-error-categories-and-how-to-fix-them">Common Error Categories and How to Fix Them</h2>
 <p>Here are the most common categories of errors you will encounter and general strategies for resolving them:</p>
 <div class="alert alert-secondary" role="alert"><h4><code>Type Mismatch Errors (TYHP4008-4010)</code></h4><br/><p>These are the most common checker errors. They occur when you try to assign, return, or pass a value of an incompatible type. Fix by ensuring the types align: add type casts where appropriate, change the declared type, or update the value. Check union types and nullable types carefully.</p>
 </div>
@@ -374,7 +393,7 @@ Build failed with 3 errors and 1 warning.
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>Modifier Errors (TYHP4002-4007)</code></h4><br/><p>These occur when visibility or member modifiers are used incorrectly. Examples: two visibility keywords on the same member, <code>static</code> on an interface method, or an accessor that is more visible than its property. Fix by correcting the modifier combinations.</p>
 </div>
-<h2>Tips for Debugging Compiler Errors</h2>
+<h2 id="tips-for-debugging-compiler-errors">Tips for Debugging Compiler Errors</h2>
 <ol>
 <li>Fix errors in order -- Earlier-phase errors (parser, binder) can cause cascading false positives in later phases. Fix TYHP1xxx and TYHP3xxx errors first, then rebuild to see if TYHP4xxx errors remain.</li>
 <li>Use the lint command for faster feedback -- Run <code>tyhp lint</code> instead of <code>tyhp build</code> when you only need to check for errors. Lint skips the emit and write phases, making it faster.</li>
@@ -384,7 +403,7 @@ Build failed with 3 errors and 1 warning.
 <li>Use strict mode judiciously -- The <code>--strict</code> flag treats warnings as errors. This is useful for CI pipelines but may be noisy during active development.</li>
 <li>Check the target PHP version -- Some features depend on <code>output.phpVersion</code> (e.g., property hooks emit native syntax at PHP 8.4+ and a polyfill below 8.4; readonly properties require PHP 8.1+). Verify your <code>output.phpVersion</code> in <code>tyhp.json</code>.</li>
 </ol>
-<h2>JSON Output Format</h2>
+<h2 id="json-output-format">JSON Output Format</h2>
 <p>For CI/CD integration, the <code>tyhp lint</code> command supports JSON output via the <code>--format json</code> flag. Each diagnostic is serialized as a JSON object:</p>
 <p>JSON <code>range</code> coordinates are <strong>0-based lines</strong> (text diagnostics are 1-based). Column is 0-based in both. Line 42 in text output is <code>&quot;line&quot;: 41</code> here:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{

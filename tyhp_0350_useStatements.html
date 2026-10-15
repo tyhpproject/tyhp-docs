@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp supports all standard PHP use statement forms and adds Tyhp-specific extensions: generic arguments on import aliases, <code>use extension</code> for importing extension method providers, and <code>global use</code> (compilation-wide, like C# <code>global using</code> — <strong>not</strong> PHP <code>global $var</code>). Use statements work the same in Tyhp as they do in PHP -- they create aliases for fully-qualified class, function, and constant names.</p>
-<h2>Standard Use Statements</h2>
+<h2 id="standard-use-statements">Standard Use Statements</h2>
 <p>All PHP use statement forms are supported in Tyhp. These behave identically to PHP -- they create namespace aliases for the current file.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -296,7 +315,8 @@ use function App\Helpers\formatDate;
 // Import a constant
 use const App\Config\MAX_RETRIES;
 </code></pre></div>
-<h2>Group Use Declarations</h2>
+<p>A <code>use const</code> name is always read from the global namespace, whatever namespace the importing file declares. In <code>namespace Demo9;</code>, <code>use const Demo9\Util\LIMIT;</code> makes <code>LIMIT</code> compile to <code>\Demo9\Util\LIMIT</code>, and an alias (<code>use const Demo9\Util\LIMIT as CAP;</code>) or a group member resolves the same way.</p>
+<h2 id="group-use-declarations">Group Use Declarations</h2>
 <p>Group use declarations import multiple symbols from the same namespace prefix in a single statement.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -310,7 +330,7 @@ use App\Services\{
     const MAX_LOGIN_ATTEMPTS
 };
 </code></pre></div>
-<h2>Compiled PHP Output for Standard Use Statements</h2>
+<h2 id="compiled-php-output-for-standard-use-statements">Compiled PHP Output for Standard Use Statements</h2>
 <p>Standard use statements pass through to PHP largely unchanged. The emitter automatically prunes unused imports and sorts them alphabetically:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 declare(strict_types=1);
@@ -323,7 +343,7 @@ use App\Services\{
     const MAX_LOGIN_ATTEMPTS
 };
 </code></pre></div>
-<h2>Generic Import Aliases</h2>
+<h2 id="generic-import-aliases">Generic Import Aliases</h2>
 <p>Tyhp allows generic type arguments on import aliases. This lets you create a local alias for a specific instantiation of a generic class. The generic arguments are compile-time only -- they are erased from the PHP output. The alias becomes a regular PHP use statement without the generic arguments.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -365,8 +385,8 @@ $users-&gt;set(&#039;admin&#039;, new User(&#039;Admin&#039;));
 </div>
     </div>
 </div>
-<h2>Use Extension Statements</h2>
-<p>The <code>use extension</code> statement imports extension method providers into the current scope. Extension methods allow adding methods to existing types without modifying them. When you import an extension, its methods become available on the extended type within the importing file.</p>
+<h2 id="use-extension-statements">Use Extension Statements</h2>
+<p>The <code>use extension</code> statement imports extension method providers into the current scope. Extension methods allow adding methods to existing types without modifying them. When you import an extension, its methods become available on the extended type within the importing file. An extension declared in a file is already in scope in that file. In a file that neither declares nor imports an extension (and where no <code>global use extension</code> covers it), calling one of its methods reports <strong>TYHP4101</strong>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Import an extension -- its methods are now available on the extended type
@@ -376,7 +396,7 @@ use extension App\Extensions\StringHelpers;
 string $name = &#039;hello_world&#039;;
 string $camel = $name-&gt;toCamelCase();  // &#039;helloWorld&#039;
 </code></pre></div>
-<p>Use extension statements also support trait-like adaptation syntax. This allows you to rename methods with <code>as</code>, exclude them with postfix <code>hide</code>, and pick a winner with <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_2100_extensions.md#importing-extensions-with-use-extension">Extensions</a> and <a href="tyhp_1600_operatorOverloads.md#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
+<p>Use extension statements also support trait-like adaptation syntax. This allows you to rename methods with <code>as</code>, exclude them with postfix <code>hide</code>, and pick a winner with <code>insteadof</code>. <code>as</code> on operators is an error (<code>TYHP4170</code>). See <a href="tyhp_2100_extensions.html#importing-extensions-with-use-extension">Extensions</a> and <a href="tyhp_1600_operatorOverloads.html#hiding-and-preferring-extension-operators">Operator overloads</a>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // Import extension with adaptations
@@ -388,7 +408,7 @@ use extension App\Extensions\StringHelpers {
 string $name = &#039;hello_world&#039;;
 string $camel = $name-&gt;toCC();  // Uses the renamed method
 </code></pre></div>
-<h2>Global use</h2>
+<h2 id="global-use">Global use</h2>
 <p><code>global</code> prefixes any <code>use</code> / <code>use function</code> / <code>use const</code> / <code>use extension</code> and applies to the <strong>entire compilation</strong> that loaded that file. This is C# <code>global using</code>, <strong>not</strong> PHP <code>global $var</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -399,7 +419,7 @@ global use extension \Tyhp\StringExtensions;
 </code></pre></div>
 <p>When a <strong>loaded tyhpdef</strong> contains <code>global use extension X</code>, every <code>.tyhp</code> file in that compilation sees <code>X</code> as imported. <code>tyhp/core</code> does this for <code>\Tyhp\StringExtensions</code>, <code>\Tyhp\ArrayExtensions</code>, <code>\Tyhp\IntExtensions</code>, <code>\Tyhp\FloatExtensions</code>, <code>\Tyhp\BoolExtensions</code>, and <code>\Tyhp\ClosureExtensions</code>, so <code>$s-&gt;length()</code> works with no per-file import. A compiled library that authored in-package <code>global use</code> / <code>global use extension</code> copies those statements into <code>package.tyhpdef</code>. File-level <code>use</code> is not copied. Libraries that did not author <code>global use</code> stay opt-in.</p>
 <p>Same-file Tyhp <code>extension { }</code> stays in scope in that file without an import.</p>
-<h3>Local <code>use</code> overlaying <code>global use</code></h3>
+<h3 id="local-use-overlaying-global-use">Local <code>use</code> overlaying <code>global use</code></h3>
 <p>A non-<code>global</code> <code>use</code> in a file (or braced namespace) may re-import a globally included symbol <strong>in order to mutate it for that scope</strong>:</p>
 <ul>
 <li>An <code>as</code> alias that changes the short name (<code>use App\Models\User as UserModel</code>, <code>use extension StringExtensions as SE</code>)</li>
@@ -423,7 +443,7 @@ use extension \Tyhp\StringExtensions {
     StringExtensions::toUpper as toCC;
 };                                              // OK — scope-local hide / rename
 </code></pre></div>
-<h2>Compiled PHP Output for Use Extension</h2>
+<h2 id="compiled-php-output-for-use-extension">Compiled PHP Output for Use Extension</h2>
 <p>Extension method calls compile to static method calls on the extension class. The <code>use extension</code> statement itself is removed from the output (resolved at compile time) and replaced with a standard <code>use</code> import for the extension class:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -439,7 +459,7 @@ declare(strict_types=1);
 $name = &#039;hello_world&#039;;
 $camel = \StringHelpers::toCamelCase($name);
 </code></pre></div>
-<h2>Tyhpdef Use Statements</h2>
+<h2 id="tyhpdef-use-statements">Tyhpdef Use Statements</h2>
 <p>In tyhpdef files, use statements serve the same purpose -- importing type symbols into the current scope. Tyhpdef files describe external PHP library signatures for the Tyhp compiler. The same use statement forms (including group use, typed use, <code>use extension</code>, and <code>global use</code>) are supported in tyhpdef files.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -451,7 +471,7 @@ use const Some\External\Library\SOME_CONSTANT;
 // Tyhpdef can also declare type aliases
 type StringOrNull = string|null;
 </code></pre></div>
-<h2>Importing Type Aliases</h2>
+<h2 id="importing-type-aliases">Importing Type Aliases</h2>
 <p>Import a source type alias with a plain <code>use</code>, the same as a class. That import binds the name for type position and for factory calls (<code>UserId()</code>). Tyhp source does not need a second <code>use function</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -464,10 +484,10 @@ function f(UserId $id): void { }
 Optional(typeof(int));
 </code></pre></div>
 <p>When the factory is used by short name, emitted PHP rewrites the import to <code>use function App\Types\UserId;</code>. Hints-only usage still drops the import. Mixed groups split: <code>use App\Types\{ User, UserId }</code> emits a class <code>use</code> for <code>User</code> and <code>use function</code> for <code>UserId</code> when the factory is used.</p>
-<h2>Import Pruning</h2>
+<h2 id="import-pruning">Import Pruning</h2>
 <p>During compilation, the emitter automatically prunes unused use statements from the PHP output. If a use statement is declared but never referenced in the emitted code, it is removed. The emitter also sorts remaining imports alphabetically and groups them by type (classes, functions, constants) following PHP community conventions.</p>
 <p>Imports for Tyhp-only constructs that are erased during emission (generic type parameters, struct types) are automatically removed since they have no PHP equivalent. A <code>use</code> of a source type alias stays class-kind in Tyhp. When emitted PHP references the alias factory by short name (<code>UserId()</code>, <code>typeof(UserId)</code>, <code>$x is UserId</code>), that import is rewritten to <code>use function</code>. Hints-only usage of an alias is still pruned. Check-only tyhpdef aliases (no <code>#[\Tyhp\GenericRuntime(aliasFactory: …)]</code>) never emit a factory, so their imports stay erased. Compiled-library aliases that stamp <code>aliasFactory</code> follow the same factory import rewrite as source aliases. Class and method <code>GenericRuntime</code> stamps are independent of <code>aliasFactory</code> and do not require helpers.</p>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -528,7 +548,7 @@ Optional(typeof(int));
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -561,7 +581,7 @@ Optional(typeof(int));
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't import struct names in PHP interop code — struct declarations are erased and do not exist at runtime. Source type aliases exist in PHP as functions or static methods returning <code>\Tyhp\Type</code>; call <code>UserId()</code> / <code>Optional(\Tyhp\Type::int())</code> / <code>UserService::NameType()</code>, not as PHP types. See <a href="tyhp_0700_typeAliases.md">Type Aliases</a>.</p>
+        <div class="callout-content"><p>Don't import struct names in PHP interop code — struct declarations are erased and do not exist at runtime. Source type aliases exist in PHP as functions or static methods returning <code>\Tyhp\Type</code>; call <code>UserId()</code> / <code>Optional(\Tyhp\Type::int())</code> / <code>UserService::NameType()</code>, not as PHP types. See <a href="tyhp_0700_typeAliases.html">Type Aliases</a>.</p>
 </div>
     </div>
 </div>
@@ -577,7 +597,7 @@ Optional(typeof(int));
 </div>
     </div>
 </div>
-<h2>Compiler Error Examples</h2>
+<h2 id="compiler-error-examples">Compiler Error Examples</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 // ERROR: Generic arguments require an alias

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -279,232 +298,306 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 1 · Story 11</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Tyhp provides deterministic resource management through the IsDisposable and AsyncIsDisposable interfaces, the := (using assignment) operator, and the using block syntax. These features ensure that resources like database connections, file handles, and network sockets are properly cleaned up when they are no longer needed.</p>
-<h2>The IsDisposable Interface</h2>
-<p>Any class that manages resources should implement <code>\Tyhp\Contracts\IsDisposable</code> (provided by the <code>tyhp/core</code> package). This interface requires a single dispose() method that performs cleanup.</p>
+    <p>Tyhp provides deterministic resource management through the <code>IsDisposable</code> and <code>AsyncIsDisposable</code> interfaces, the <code>:=</code> (using assignment) operator, and the <code>using</code> block. These features make sure resources such as database connections, file handles, and network sockets are cleaned up when you are finished with them.</p>
+<h2 id="the-isdisposable-interface">The IsDisposable Interface</h2>
+<p>Any class that manages a resource should implement <code>\Tyhp\Contracts\IsDisposable</code> (provided by the <code>tyhp/core</code> package). The interface requires a single <code>dispose()</code> method that performs cleanup.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-class DatabaseConnection implements \Tyhp\Contracts\IsDisposable {
-    private mixed $handle;
+use Tyhp\Contracts\IsDisposable;
 
-    public function __construct(string $dsn): void {
-        $this-&gt;handle = \pg_connect($dsn);
-    }
+class DatabaseConnection implements IsDisposable {
+    public function __construct(private readonly string $name) {}
 
-    public function query(string $sql): mixed {
-        return \pg_query($this-&gt;handle, $sql);
+    public function query(string $sql): string {
+        return &quot;{$this-&gt;name}: {$sql}&quot;;
     }
 
     public function dispose(): void {
-        \pg_close($this-&gt;handle);
+        echo &quot;closed {$this-&gt;name}\n&quot;;
     }
 }
 </code></pre></div>
-<h2>The AsyncIsDisposable Interface</h2>
-<p>For resources that require asynchronous cleanup (e.g., closing a connection over the network), implement <code>\Tyhp\Contracts\AsyncIsDisposable</code> (provided by the <code>tyhp/async</code> package). This interface requires a disposeAsync() method that returns a Promise.</p>
+<h2 id="the-asyncisdisposable-interface">The AsyncIsDisposable Interface</h2>
+<p>For resources that need asynchronous cleanup (for example, closing a connection over the network), implement <code>\Tyhp\Contracts\AsyncIsDisposable</code> (provided by the <code>tyhp/async</code> package). The interface requires a <code>disposeAsync()</code> method that returns a promise.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-class AsyncConnection implements \Tyhp\Contracts\AsyncIsDisposable {
+use Tyhp\Contracts\AsyncIsDisposable;
+use Tyhp\Promise;
+
+class AsyncConnection implements AsyncIsDisposable {
+    public function __construct(private readonly string $name) {}
+
+    public async function fetch(string $path): string {
+        await Promise::delay(5);
+        return &quot;{$this-&gt;name}{$path}&quot;;
+    }
+
     public async function disposeAsync(): void {
-        await $this-&gt;sendCloseCommand();
-        await $this-&gt;waitForAcknowledgement();
+        await Promise::delay(5);
+        echo &quot;async closed {$this-&gt;name}\n&quot;;
     }
 }
 </code></pre></div>
-<h2>The := Operator (Using Assignment)</h2>
-<p>The := operator declares a variable as disposable. When the variable leaves scope, its dispose() method is called automatically. This is the simplest way to ensure resources are cleaned up.</p>
+<h2 id="the--operator-using-assignment">The := Operator (Using Assignment)</h2>
+<p><code>:=</code> assigns a disposable value to a variable and registers it for disposal. The resource is disposed automatically when the enclosing scope ends, whether it ends normally or by an exception: the function's return for a <code>:=</code> at function level, or the end of the block for a <code>:=</code> inside a nested block (see <a href="#nested-blocks">Nested Blocks</a>). The value on the right must be an object of a class that implements <code>IsDisposable</code> or <code>AsyncIsDisposable</code>; any other type is rejected with <strong>TYHP4030</strong>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function processData(): void {
-    // := marks $db as disposable — it is disposed when it leaves scope
-    $db := new DatabaseConnection(&#039;host=localhost dbname=mydb&#039;);
-
-    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
-    // ... process result ...
-
-    // $db-&gt;dispose() is called automatically when the function returns
+function scoped(): void {
+    // := registers $db for disposal when the function returns
+    $db := new DatabaseConnection(&#039;scoped&#039;);
+    echo $db-&gt;query(&#039;SELECT 1&#039;), &quot;\n&quot;;
 }
+
+// scoped() prints:
+// scoped: SELECT 1
+// closed scoped
 </code></pre></div>
-<h2>Compiled PHP Output — DisposableScope</h2>
-<p>The := operator compiles to a <code>\Tyhp\DisposableScope</code> pattern from the <code>tyhp/async</code> package. A scope variable is created and resources are registered with it via <code>$__scope_0-&gt;using()</code>. When the scope variable goes out of scope, PHP's __destruct() fires and disposes all registered resources in reverse order.</p>
+<p>In an async function, an <code>AsyncIsDisposable</code> value declared with <code>:=</code> has <code>disposeAsync()</code> awaited when the function finishes:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+async function asyncScoped(): void {
+    $conn := new AsyncConnection(&#039;scoped-async&#039;);
+    string $data = await $conn-&gt;fetch(&#039;/api/data&#039;);
+    echo $data, &quot;\n&quot;;
+}
+
+// await asyncScoped() prints:
+// scoped-async/api/data
+// async closed scoped-async
+</code></pre></div>
+<h2 id="compiled-php-output--disposablescope">Compiled PHP Output — DisposableScope</h2>
+<p><code>:=</code> compiles to a <code>\Tyhp\DisposableScope</code> from the <code>tyhp/async</code> package. The compiler creates one scope object per scope that declares disposables and registers each resource with <code>$scope-&gt;using(...)</code>. When PHP destroys the scope object as the function returns, its <code>__destruct()</code> disposes every registered resource.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-function processData(): void {
+function scoped(): void
+{
     $__scope_0 = \Tyhp\DisposableScope::create();
-    $db = $__scope_0-&gt;using(new DatabaseConnection(&#039;host=localhost dbname=mydb&#039;));
-
-    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
-    // ... process result ...
-
-    // When $__scope_0 goes out of scope, __destruct() fires
-    // and calls $db-&gt;dispose() automatically
+    $db = $__scope_0-&gt;using(new DatabaseConnection(&#039;scoped&#039;));
+    echo $db-&gt;query(&#039;SELECT 1&#039;), &quot;\n&quot;;
 }
 </code></pre></div>
-<h2>Multiple Disposable Resources</h2>
-<p>Multiple disposable resources in the same scope share a single DisposableScope. Resources are disposed in reverse order of registration (LIFO — Last In, First Out), matching the behavior of C#'s using statement.</p>
+<h2 id="multiple-disposable-resources">Multiple Disposable Resources</h2>
+<p>Resources declared with <code>:=</code> in the same scope share one <code>DisposableScope</code> and are disposed in reverse order of registration (LIFO), like C#'s <code>using</code> declarations.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function transferData(): void {
-    $source := new DatabaseConnection($sourceDsn);
-    $target := new DatabaseConnection($targetDsn);
-    $logger := new FileLogger(&#039;/var/log/transfer.log&#039;);
-
-    // ... transfer data ...
-
-    // Disposed in reverse order: $logger, $target, $source
+function multiScope(): void {
+    $source := new DatabaseConnection(&#039;source&#039;);
+    $target := new DatabaseConnection(&#039;target&#039;);
+    $logger := new DatabaseConnection(&#039;logger&#039;);
+    echo &quot;working\n&quot;;
 }
+
+// Prints:
+// working
+// closed logger
+// closed target
+// closed source
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-function transferData(): void {
-    $__scope_0 = \Tyhp\DisposableScope::create();
-    $source = $__scope_0-&gt;using(new DatabaseConnection($sourceDsn));
-    $target = $__scope_0-&gt;using(new DatabaseConnection($targetDsn));
-    $logger = $__scope_0-&gt;using(new FileLogger(&#039;/var/log/transfer.log&#039;));
-
-    // ... transfer data ...
-
-    // $__scope_0-&gt;__destruct() disposes: $logger, $target, $source
+function multiScope(): void
+{
+    $__scope_1 = \Tyhp\DisposableScope::create();
+    $source = $__scope_1-&gt;using(new DatabaseConnection(&#039;source&#039;));
+    $target = $__scope_1-&gt;using(new DatabaseConnection(&#039;target&#039;));
+    $logger = $__scope_1-&gt;using(new DatabaseConnection(&#039;logger&#039;));
+    echo &quot;working\n&quot;;
 }
 </code></pre></div>
-<h2>Nested Disposable Scopes</h2>
-<p>Each nested scope that contains disposable resources gets its own DisposableScope with a unique suffix (<code>$__scope_0</code>, <code>$__scope_1</code>, …). Inner scopes dispose independently of outer scopes.</p>
+<h2 id="nested-blocks">Nested Blocks</h2>
+<p>A resource declared with <code>:=</code> inside a nested block (an <code>if</code>, loop, or similar block) is disposed when that block ends, and again for each loop iteration. The compiler wraps the block's statements in <code>try</code>/<code>finally</code>, so the resource is also disposed when the block exits through <code>return</code>, <code>break</code>, or an exception. Resources declared with <code>:=</code> at function level are disposed when the function returns, after any nested-block resources.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-function process(): void {
-    $outer := new ResourceA();
-
+function nested(bool $condition): void {
+    $outer := new DatabaseConnection(&#039;outer&#039;);
     if ($condition) {
-        $inner := new ResourceB();
-        // $inner is disposed when this if-block exits
+        $inner := new DatabaseConnection(&#039;inner&#039;);
+        echo &quot;in block\n&quot;;
     }
-
-    // $outer is disposed when the function returns
+    echo &quot;after block\n&quot;;
 }
+
+// nested(true) prints:
+// in block
+// closed inner
+// after block
+// closed outer
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-function process(): void {
-    $__scope_0 = \Tyhp\DisposableScope::create();
-    $outer = $__scope_0-&gt;using(new ResourceA());
-
+function nested(bool $condition): void
+{
+    $__scope_2 = \Tyhp\DisposableScope::create();
+    $outer = $__scope_2-&gt;using(new DatabaseConnection(&#039;outer&#039;));
     if ($condition) {
-        $__scope_1 = \Tyhp\DisposableScope::create();
-        $inner = $__scope_1-&gt;using(new ResourceB());
-        // $__scope_1-&gt;__destruct() fires here
+        $inner = null;
+        try {
+            $inner = new DatabaseConnection(&#039;inner&#039;);
+            echo &quot;in block\n&quot;;
+        } finally {
+            if ($inner instanceof \Tyhp\Contracts\IsDisposable) {
+                $inner-&gt;dispose();
+            }
+        }
     }
-
-    // $__scope_0-&gt;__destruct() fires here
+    echo &quot;after block\n&quot;;
 }
 </code></pre></div>
-<h2>The using Block Syntax</h2>
-<p>For guaranteed deterministic disposal regardless of circular references or GC behavior, Tyhp provides the using block syntax. Unlike the := operator which uses DisposableScope and __destruct(), the using block always compiles to a try/finally block.</p>
+<p>A <a href="#the-using-block-syntax"><code>using</code> block</a> states the same intent explicitly and also works for several resources at once.</p>
+<h2 id="the-using-block-syntax">The using Block Syntax</h2>
+<p>A <code>using</code> block disposes its resources when the block ends, regardless of how it ends. It always compiles to <code>try</code>/<code>finally</code>, so it does not depend on reference counting or garbage collection. The resource variables belong to the block.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-// Single resource using block
-using ($db = new DatabaseConnection($dsn)) {
-    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
-    // $db-&gt;dispose() is guaranteed in the finally block
+function usingSingle(): void {
+    using ($db = new DatabaseConnection(&#039;single&#039;)) {
+        echo $db-&gt;query(&#039;SELECT 2&#039;), &quot;\n&quot;;
+    }
 }
+
+// Resource variables may carry a type
+function usingTyped(): void {
+    using (DatabaseConnection $db = new DatabaseConnection(&#039;typed&#039;)) {
+        echo $db-&gt;query(&#039;SELECT 3&#039;), &quot;\n&quot;;
+    }
+}
+
+// usingSingle() prints:
+// single: SELECT 2
+// closed single
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// Single resource compiles to try/finally
-$db = new \DatabaseConnection($dsn);
-try {
-    $result = $db-&gt;query(&#039;SELECT * FROM users&#039;);
-} finally {
-    if ($db instanceof \Tyhp\Contracts\IsDisposable) {
-        $db-&gt;dispose();
+// A single resource compiles to try/finally
+function usingSingle(): void
+{
+    $db = new DatabaseConnection(&#039;single&#039;);
+    try {
+        echo $db-&gt;query(&#039;SELECT 2&#039;), &quot;\n&quot;;
+    } finally {
+        if ($db instanceof \Tyhp\Contracts\IsDisposable) {
+            $db-&gt;dispose();
+        }
     }
 }
 </code></pre></div>
-<h2>Multiple Resources in a using Block</h2>
-<p>Multiple resources in a using block compile to a flat try/finally with null initialization and error collection. Disposal errors are caught individually and aggregated into an AggregateException, ensuring all resources are disposed even if one fails.</p>
+<h2 id="multiple-resources-in-a-using-block">Multiple Resources in a using Block</h2>
+<p>A <code>using</code> block can declare several resources separated by commas. They are initialized in order and disposed in reverse order in a single <code>finally</code>. Each <code>dispose()</code> call is isolated, so an exception from one does not prevent the others from running; the collected exceptions are then thrown together as an <code>AggregateException</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-using ($db = new DatabaseConnection($dsn), $cache = new CacheConnection()) {
-    // both are disposed in reverse order in finally
+function usingMultiple(): void {
+    using ($db = new DatabaseConnection(&#039;db&#039;), $cache = new DatabaseConnection(&#039;cache&#039;)) {
+        echo &quot;working\n&quot;;
+    }
 }
+
+// Prints:
+// working
+// closed cache
+// closed db
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-$db = null;
-$cache = null;
-try {
-    $db = new \DatabaseConnection($dsn);
-    $cache = new \CacheConnection();
-    // body
-} finally {
-    $__disposeErrors = [];
-    if ($cache instanceof \Tyhp\Contracts\IsDisposable) {
-        try { $cache-&gt;dispose(); } catch (\Throwable $__e) { $__disposeErrors[] = $__e; }
-    }
-    if ($db instanceof \Tyhp\Contracts\IsDisposable) {
-        try { $db-&gt;dispose(); } catch (\Throwable $__e) { $__disposeErrors[] = $__e; }
-    }
-    if (!empty($__disposeErrors)) {
-        throw new \Tyhp\Exceptions\AggregateException($__disposeErrors, &#039;One or more errors during disposal&#039;);
+function usingMultiple(): void
+{
+    $db = null;
+    $cache = null;
+    try {
+        $db = new DatabaseConnection(&#039;db&#039;);
+        $cache = new DatabaseConnection(&#039;cache&#039;);
+        echo &quot;working\n&quot;;
+    } finally {
+        $__disposeErrors = [];
+        if ($cache instanceof \Tyhp\Contracts\IsDisposable) {
+            try {
+                $cache-&gt;dispose();
+            }
+            catch (\Throwable $__e) {
+                $__disposeErrors[] = $__e;
+            }
+        }
+        if ($db instanceof \Tyhp\Contracts\IsDisposable) {
+            try {
+                $db-&gt;dispose();
+            }
+            catch (\Throwable $__e) {
+                $__disposeErrors[] = $__e;
+            }
+        }
+        if (!empty($__disposeErrors)) {
+            throw new \Tyhp\Exceptions\AggregateException($__disposeErrors, &#039;One or more errors during disposal&#039;);
+        }
     }
 }
 </code></pre></div>
-<h2>Reverse Order Disposal</h2>
-<p>Both := and using dispose resources in reverse order (LIFO — Last In, First Out). This ensures that resources are cleaned up in the opposite order they were acquired, which is important when resources depend on each other (e.g., a query depends on a connection).</p>
-<h2>Choosing := vs using Block</h2>
-<p>Both approaches achieve automatic disposal, but they differ in guarantees and syntax:</p>
-<div class="alert alert-secondary" role="alert"><h4><code>:= operator</code></h4><br/><p>Uses DisposableScope + __destruct(). Lighter syntax, works anywhere. Relies on PHP's reference counting for timely disposal. May be delayed by circular references.</p>
+<p>With a single resource, an exception thrown by <code>dispose()</code> propagates unchanged.</p>
+<h2 id="reverse-order-disposal">Reverse Order Disposal</h2>
+<p>Both <code>:=</code> and <code>using</code> dispose resources in reverse order (last in, first out), so resources are released in the opposite order they were acquired. This matters when resources depend on each other, such as a query that depends on a connection.</p>
+<h2 id="choosing--vs-using-block">Choosing := vs using Block</h2>
+<div class="alert alert-secondary" role="alert"><h4><code>:= operator</code></h4><br/><p>Disposes when the function returns. Lighter syntax, works anywhere in a function. Relies on PHP reference counting to run the scope's destructor, so a reference cycle can delay disposal (see <a href="#circular-reference-mitigation">Circular Reference Mitigation</a>). A disposal error is reported as a PHP warning, not thrown.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>using block</code></h4><br/><p>Uses try/finally. Deterministic disposal guaranteed regardless of circular references or GC behavior. Scopes the resource to the block body.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>using block</code></h4><br/><p>Disposes when the block ends, through <code>try</code>/<code>finally</code>. Deterministic regardless of reference cycles or garbage collection. Disposal errors are thrown.</p>
 </div>
-<h2>Async Disposal</h2>
-<p>When disposing async resources, DisposableScope waits for <code>disposeAsync()</code> to settle:</p>
+<h2 id="async-disposal">Async Disposal</h2>
+<p>When <code>DisposableScope</code> disposes an <code>AsyncIsDisposable</code>, it waits for <code>disposeAsync()</code> to settle:</p>
 <ul>
-<li>If the promise is already settled, it observes the result immediately (this also works from a synchronous EventLoop callback).</li>
-<li>Inside a Fiber, it uses <code>Promise::_await()</code> so the running loop can resume that Fiber.</li>
-<li>Outside a Fiber with the loop idle, it uses <code>Promise::wait()</code> (block until <em>this</em> promise settles). It does not call <code>EventLoop::run()</code>, which would keep draining unrelated queued work after settlement.</li>
-<li>A <em>pending</em> async dispose from a synchronous callback while the loop is already running cannot be waited on (re-entrant <code>run()</code> is forbidden, and there is no Fiber to suspend). That throws <code>AsyncContextException</code>. Prefer <code>using await</code> or dispose from async code.</li>
+<li>If the promise has already settled, it observes the result immediately (this also works from a synchronous event-loop callback).</li>
+<li>Inside a fiber, it suspends the fiber with <code>Promise::_await()</code> so the running loop can continue.</li>
+<li>Outside a fiber with the loop idle, it blocks with <code>Promise::wait()</code> until this promise settles. It does not run unrelated queued work.</li>
+<li>A <em>pending</em> async disposal from a synchronous callback while the loop is running cannot be waited on, and throws <code>AsyncContextException</code>. Prefer <code>using await</code>, or dispose from async code.</li>
 </ul>
-<p>The <code>using await</code> syntax provides explicit async disposal in the finally block. There is no dedicated diagnostic for <code>using await</code> outside an async function — TYHP4028 (<code>CheckerAwaitOutsideAsync</code>) applies to <code>await</code> expressions. The emitter still emits <code>Promise::_await</code> in the <code>using await</code> finally block.</p>
+<p><code>using await</code> disposes its resources asynchronously in the <code>finally</code> block. It is only allowed inside async functions, closures, and blocks; elsewhere it reports <strong>TYHP4028</strong>. A resource that implements <code>AsyncIsDisposable</code> has <code>disposeAsync()</code> awaited; one that implements only <code>IsDisposable</code> has <code>dispose()</code> called.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
-async function fetchData(): void {
-    $conn := new AsyncConnection($url);
-    $data = await $conn-&gt;fetch(&#039;/api/data&#039;);
-    // $conn-&gt;disposeAsync() is awaited when scope exits
-}
-
-// using await for explicit async disposal
-using await ($conn = new AsyncConnection($url)) {
-    $data = await $conn-&gt;fetch(&#039;/api/data&#039;);
-}
-</code></pre></div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-
-// using await compiles to try/finally with async dispose
-$conn = new \AsyncConnection($url);
-try {
-    $data = \Tyhp\Promise::_await($conn-&gt;fetch(&#039;/api/data&#039;));
-} finally {
-    if ($conn instanceof \Tyhp\Contracts\AsyncIsDisposable) {
-        \Tyhp\Promise::_await($conn-&gt;disposeAsync());
+async function usingAwait(): void {
+    using await ($conn = new AsyncConnection(&#039;using-await&#039;)) {
+        string $data = await $conn-&gt;fetch(&#039;/api/data&#039;);
+        echo $data, &quot;\n&quot;;
     }
 }
+
+// await usingAwait() prints:
+// using-await/api/data
+// async closed using-await
 </code></pre></div>
-<h2>Circular Reference Mitigation</h2>
-<p>The DisposableScope relies on PHP's __destruct() for disposal, which requires reference counting to work. The compiler handles the most common circular reference pattern automatically: closures that capture $this and are stored as properties on the same object are rewritten to use WeakReference-based captures.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
-// Instead of this (creates circular reference):
-$this-&gt;onReady = function() {
+// using await compiles to try/finally with an awaited async dispose
+function usingAwait(): \Tyhp\Promise
+{
+    return \Tyhp\Promise::_async(function (): void {
+        $conn = new AsyncConnection(&#039;using-await&#039;);
+        try {
+            $data = \Tyhp\Promise::_await($conn-&gt;fetch(&#039;/api/data&#039;));
+            echo $data, &quot;\n&quot;;
+        } finally {
+            if ($conn instanceof \Tyhp\Contracts\AsyncIsDisposable) {
+                \Tyhp\Promise::_await($conn-&gt;disposeAsync());
+            }
+            elseif ($conn instanceof \Tyhp\Contracts\IsDisposable) {
+                $conn-&gt;dispose();
+            }
+        }
+    });
+}
+</code></pre></div>
+<p>The <code>tyhp/async</code> package also provides <a href="package_async.html#disposablehelper"><code>DisposableHelper::dispose()</code></a> for disposing several resources from async code without a <code>using</code> block.</p>
+<h2 id="circular-reference-mitigation">Circular Reference Mitigation</h2>
+<p><code>DisposableScope</code> relies on PHP's <code>__destruct()</code>, which only runs promptly when no reference cycle keeps the scope alive. The compiler handles the most common cycle automatically: a closure that captures <code>$this</code> and is stored in a property of the same object is rewritten to capture a <code>WeakReference</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
+
+// Instead of this (creates a reference cycle):
+$this-&gt;onReady = function (): void {
     $this-&gt;emit(&#039;ready&#039;);
 };
 
-// The compiler generates this (breaks the cycle):
-$__weakSelf = \WeakReference::create($this);
-$this-&gt;onReady = function() use ($__weakSelf) {
-    $__weakSelf-&gt;get()?-&gt;emit(&#039;ready&#039;);
+// the compiler generates this (the variable name carries a numeric suffix):
+$__weakSelf_1 = \WeakReference::create($this);
+$this-&gt;onReady = function () use ($__weakSelf_1): void {
+    $__weakSelf_1-&gt;get()?-&gt;emit(&#039;ready&#039;);
 };
 </code></pre></div>
+<p>When the compiler finds <code>:=</code> variables that reference each other (for example <code>$parent-&gt;peer = $child; $child-&gt;peer = $parent;</code>), it cannot rely on reference counting. It reports warning TYHP4212 and compiles that scope to <code>try</code>/<code>finally</code> instead of <code>DisposableScope</code>, disposing the resources in reverse order when the function exits.</p>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -513,20 +606,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>When the compiler detects unresolvable circular references between disposable objects (e.g., bidirectional parent-child object graphs), it falls back to try/finally for that specific scope and emits a warning.</p>
-</div>
-    </div>
-</div>
-<h2>Best Practices</h2>
-<div class="callout-block callout-block-success">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-thumbs-up"></i>
-            </span>
-            Tip
-        </h4>
-        <div class="callout-content"><p>Use := for resources that should be auto-disposed when leaving scope — it is the simplest and most concise approach for most cases.</p>
+        <div class="callout-content"><p>Use <code>:=</code> for resources that should be disposed when the function finishes — it is the simplest and most concise approach for most cases.</p>
 </div>
     </div>
 </div>
@@ -538,7 +618,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Use the using block when you need guaranteed deterministic disposal, especially in code with complex object graphs or circular references.</p>
+        <div class="callout-content"><p>Use a <code>using</code> block when a resource must be disposed at the end of a specific block, when disposal errors must be thrown, or when the object graph contains reference cycles.</p>
 </div>
     </div>
 </div>
@@ -550,7 +630,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Implement IsDisposable on any class that manages external resources like database connections, file handles, or network sockets.</p>
+        <div class="callout-content"><p>Implement <code>IsDisposable</code> on any class that manages an external resource such as a database connection, file handle, or network socket.</p>
 </div>
     </div>
 </div>
@@ -562,7 +642,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Implement AsyncIsDisposable for resources that require async cleanup (e.g., closing a network connection that requires a server acknowledgement).</p>
+        <div class="callout-content"><p>Implement <code>AsyncIsDisposable</code> for resources that need async cleanup, such as closing a network connection that waits for a server acknowledgement.</p>
 </div>
     </div>
 </div>
@@ -574,11 +654,11 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Tip
         </h4>
-        <div class="callout-content"><p>Make dispose() calls idempotent — safe to call multiple times without side effects.</p>
+        <div class="callout-content"><p>Make <code>dispose()</code> idempotent, so calling it more than once is harmless.</p>
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -587,7 +667,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not use := with types that don't implement IsDisposable — the compiler reports an error.</p>
+        <div class="callout-content"><p>Do not call <code>dispose()</code> yourself on a <code>:=</code> variable. The scope disposes the resource again when the function returns, so <code>dispose()</code> runs twice.</p>
 </div>
     </div>
 </div>
@@ -599,7 +679,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not manually call dispose() on := variables — disposal is automatic and calling it manually can result in double-disposal.</p>
+        <div class="callout-content"><p>Do not declare the same resource with both <code>:=</code> and <code>using</code>. Pick one approach per resource.</p>
 </div>
     </div>
 </div>
@@ -611,7 +691,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not mix := operator and using block syntax for the same resource — pick one approach per scope.</p>
+        <div class="callout-content"><p>Do not use <code>:=</code>, <code>using</code>, or <code>using await</code> with a class that does not implement <code>IsDisposable</code> (or <code>AsyncIsDisposable</code>). The compiler rejects it with <strong>TYHP4030</strong>.</p>
 </div>
     </div>
 </div>
@@ -623,7 +703,7 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not create circular references between disposable objects without the compiler's WeakReference mitigation — this can delay __destruct() calls.</p>
+        <div class="callout-content"><p>Do not create reference cycles between disposable objects held in <code>:=</code> variables unless you accept the <code>try</code>/<code>finally</code> fallback described above.</p>
 </div>
     </div>
 </div>
@@ -635,30 +715,10 @@ $this-&gt;onReady = function() use ($__weakSelf) {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Do not forget that disposal errors are collected into an AggregateException in using blocks — handle them appropriately.</p>
+        <div class="callout-content"><p>Remember that a <code>using</code> block with several resources reports disposal errors as one <code>AggregateException</code>; catch and handle it where the block runs.</p>
 </div>
     </div>
 </div>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-
-class NotDisposable {
-    public string $value;
-}
-
-// ERROR: Right-hand side does not implement IsDisposable
-// $x := new NotDisposable();
-
-// ERROR: Do not manually call dispose on := variables
-// function bad(): void {
-//     $db := new DatabaseConnection($dsn);
-//     $db-&gt;dispose();  // Wrong! dispose() will be called again automatically
-// }
-</code></pre></div>
-<h2>Compiler Errors</h2>
-<ul>
-<li>Using := with a type that does not implement IsDisposable or AsyncIsDisposable.</li>
-<li>Using using block with a non-disposable type.</li>
-</ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">

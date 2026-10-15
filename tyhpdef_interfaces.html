@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,7 +299,7 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 02</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhpdef lets you describe existing PHP interfaces to the Tyhp compiler. When importing an interface, you provide fully typed method signatures, constants, and property declarations. Hooked properties use the same bodyless <code>{ get; set; }</code> form as on classes. You only need to declare the members you intend to use in your Tyhp code — the compiler treats undeclared members as nonexistent.</p>
-<h2>Basic Interface Declaration</h2>
+<h2 id="basic-interface-declaration">Basic Interface Declaration</h2>
 <p>Consider a PHP interface that you want to use from Tyhp:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
 
@@ -299,8 +318,8 @@ interface Logger {
     public function debug(string $message, array&lt;string, mixed&gt; $context = []): void;
 }
 </code></pre></div>
-<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.md#reserved-word-type-names">Reserved-word type names</a>.</p>
-<h2>Interface Constants</h2>
+<p>A reserved-word short name is written fully qualified. See <a href="tyhpdef_classes.html#reserved-word-type-names">Reserved-word type names</a>.</p>
+<h2 id="interface-constants">Interface Constants</h2>
 <p>Interfaces can declare typed constants. The constant type and name are specified, but the value itself is not included since Tyhpdef is declaration-only. An implementing class that redeclares the same constant must keep that type (or omit the type and inherit it).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -312,7 +331,7 @@ interface Cacheable {
     public function getTtl(): int;
 }
 </code></pre></div>
-<h2>Interface Inheritance</h2>
+<h2 id="interface-inheritance">Interface Inheritance</h2>
 <p>Interfaces can extend one or more other interfaces using the extends keyword, matching PHP's interface inheritance model.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -329,9 +348,9 @@ interface Stream extends Readable, Writable {
     public function isOpen(): bool;
 }
 </code></pre></div>
-<h2>Partial interfaces</h2>
-<p><code>partial</code> on a tyhpdef interface follows the same rules as on classes. In include files, brace <code>partial interface Foo { … }</code> <strong>adds</strong> members (<code>TYHP8002</code> on a duplicate, <code>TYHP8014</code> if the type is missing). Overlay brace <code>partial</code> replaces listed members. Overlay <code>partial interface Foo&lt;T&gt;;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.md">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.md#partial-types-base--include">Classes in Tyhpdef</a>.</p>
-<h2>Generic Interfaces</h2>
+<h2 id="partial-interfaces">Partial interfaces</h2>
+<p><code>partial</code> on a tyhpdef interface follows the same rules as on classes. In include files, brace <code>partial interface Foo { … }</code> <strong>adds</strong> members (<code>TYHP8002</code> on a duplicate, <code>TYHP8014</code> if the type is missing). Overlay brace <code>partial</code> replaces listed members. Overlay <code>partial interface Foo&lt;T&gt;;</code> replaces written header clauses and keeps unlisted members (overlay-only, <code>TYHP8034</code>). See <a href="tyhpdef_overlays.html">Tyhpdef Overlays</a> and <a href="tyhpdef_classes.html#partial-types-base--include">Classes in Tyhpdef</a>.</p>
+<h2 id="generic-interfaces">Generic Interfaces</h2>
 <p>Interfaces support generic type parameters with optional constraints. This lets you describe PHP interfaces that work with different types while maintaining type safety in Tyhp.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -349,8 +368,8 @@ interface SortableCollection&lt;T extends \Comparable&gt; {
     public function first(): ?T;
 }
 </code></pre></div>
-<p>Harvested <code>@template</code> bounds on interfaces follow the same FQCN and missing-argument rules as <a href="tyhpdef_classes.md#generic-classes">classes</a>.</p>
-<h2>Generic Interface Inheritance</h2>
+<p>Harvested <code>@template</code> bounds on interfaces follow the same FQCN and missing-argument rules as <a href="tyhpdef_classes.html#generic-classes">classes</a>.</p>
+<h2 id="generic-interface-inheritance">Generic Interface Inheritance</h2>
 <p>Generic interfaces can extend other generic interfaces, passing through or constraining type parameters.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -364,7 +383,7 @@ interface UserRepository extends Repository&lt;\App\Models\User&gt; {
     public function findByEmail(string $email): ?\App\Models\User;
 }
 </code></pre></div>
-<h2>Method Overloads</h2>
+<h2 id="method-overloads">Method Overloads</h2>
 <p>Tyhpdef supports method overloads on interfaces. You declare multiple signatures for the same method name with different parameter types and return types. Tyhp uses these overloads to narrow return types based on how the method is called.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -383,7 +402,7 @@ interface Person {
     public function getFullName(bool $asStruct = false): string|PersonName;
 }
 </code></pre></div>
-<h2>Async Methods</h2>
+<h2 id="async-methods">Async Methods</h2>
 <p>Interface methods can be marked as async. An async method returns a Promise of the declared return type.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -393,7 +412,7 @@ interface AsyncRepository&lt;T&gt; {
     async public function save(T $entity): void;
 }
 </code></pre></div>
-<h2>Deprecated and Obsolete Interfaces</h2>
+<h2 id="deprecated-and-obsolete-interfaces">Deprecated and Obsolete Interfaces</h2>
 <p>Interfaces themselves can be marked <code>deprecated</code> or <code>obsolete</code> (top-level). Member-level markers on interface methods are parsed but not enforced in this alpha.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
 
@@ -406,7 +425,7 @@ interface ModernLogger {
     public function log(string $level, string $message): void;
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">

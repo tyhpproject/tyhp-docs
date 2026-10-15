@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -278,8 +297,8 @@
     <h2 class="section-heading">How New Syntax is Created in Tyhp</h2>
     
     <p>Tyhp is a typed superset of the PHP language and uses PHP syntax first. To support generics, structs, and required types, Tyhp adds syntax on top of PHP. This page explains how new syntax is designed, how the compiler pipeline processes it, and how conflicts with future PHP versions are handled.</p>
-<p>Compiler versioning (MAJOR encodes the PHP ceiling; MINOR carries Tyhp language change) is described on the <a href="release_planning.md">Release Planning</a> page. This page is the public mirror of the syntax-conflict and rollout sections of <code>VERSIONING.md</code> in the compiler repository.</p>
-<h2>Design Principles for New Syntax</h2>
+<p>Compiler versioning (MAJOR encodes the PHP ceiling; MINOR carries Tyhp language change) is described on the <a href="release_planning.html">Release Planning</a> page. This page is the public mirror of the syntax-conflict and rollout sections of <code>VERSIONING.md</code> in the compiler repository.</p>
+<h2 id="design-principles-for-new-syntax">Design Principles for New Syntax</h2>
 <p>When creating new syntax in Tyhp, the following principles are followed in order of priority:</p>
 <ol>
 <li>Match existing PHP syntax wherever possible — if PHP has a similar construct, Tyhp mirrors its patterns</li>
@@ -287,7 +306,7 @@
 <li>Ensure compatibility with existing PHP syntax — new Tyhp syntax must not break valid PHP code</li>
 <li>Maintain a PHP-like feel — even novel syntax should feel natural to PHP developers</li>
 </ol>
-<h2>The Compiler Pipeline</h2>
+<h2 id="the-compiler-pipeline">The Compiler Pipeline</h2>
 <p>Understanding how the Tyhp compiler processes code helps explain how new features are added. The compiler uses a multi-phase pipeline:</p>
 <ol>
 <li>Lexer — The ANTLR4-based lexer tokenizes .tyhp source files into a token stream. Tyhp extends the PHP lexer grammar with new tokens for Tyhp-specific keywords and operators.</li>
@@ -297,7 +316,7 @@
 <li>Checker — The type checker validates the bound AST against the type system rules: type compatibility, null safety, generic constraints, visibility, and more. It performs type inference and control-flow-aware type narrowing.</li>
 <li>Emitter — The emitter transforms the validated AST into PHP output. Tyhp-specific constructs are converted to their PHP equivalents: generics are erased, structs become arrays, extension methods become static calls, and so on.</li>
 </ol>
-<h2>Adding a New Feature</h2>
+<h2 id="adding-a-new-feature">Adding a New Feature</h2>
 <p>Adding a new language feature to Tyhp involves changes at each pipeline stage:</p>
 <ul>
 <li>Grammar modification — New tokens and parser rules are added to TyhpLexer.g4 and TyhpParser.g4 (which extend PhpLexer.g4 and PhpParser.g4)</li>
@@ -307,7 +326,7 @@
 <li>Checker rules — Type checking rules are added to validate correct usage</li>
 <li>Emitter output — The emitter learns to transform the new construct into equivalent PHP code</li>
 </ul>
-<h2>PHP syntax conflict resolution</h2>
+<h2 id="php-syntax-conflict-resolution">PHP syntax conflict resolution</h2>
 <p>Because Tyhp builds on PHP's syntax first and only adds new syntax when necessary, a future PHP version can introduce syntax that conflicts with, or overlaps, a Tyhp syntax. When that happens Tyhp works through the following, in order (usually spread across one or more releases):</p>
 <ol>
 <li><strong>Integrate and detect.</strong> Try to adopt PHP's change while detecting each syntax (PHP's and Tyhp's) at compile time so both can coexist. Not always practical or possible, but always the preferred first step. Usually a MINOR change. If the conflict arrives with a new PHP minor, a MAJOR bump may ship in the same train because the PHP ceiling moved — the Tyhp syntax work is still MINOR.</li>
@@ -316,7 +335,7 @@
 <li><strong>PHP adds new functionality that does not affect any Tyhp syntax.</strong> Adopt the new PHP syntax at the next feasible release. Tyhp tracks PHP dev releases and roadmaps to anticipate this. MINOR, or MAJOR only if that PHP version is also a new ceiling.</li>
 </ol>
 <p>Tyhp-only language evolution does not wait for a PHP version bump and is not scheduled as &quot;the next MAJOR.&quot; MAJOR only changes when the highest supported PHP minor changes.</p>
-<h2>Rollout plan for incompatible changes</h2>
+<h2 id="rollout-plan-for-incompatible-changes">Rollout plan for incompatible changes</h2>
 <p>This plan applies whether the incompatibility comes from a new PHP version or from Tyhp changing its own syntax. Removal and default-flips are MINOR work. They are not held for the next MAJOR, because MAJOR only moves when the PHP ceiling does.</p>
 <ul>
 <li><strong>a. [immediate]</strong> Alert developers (via this website) about the incompatibility.</li>
@@ -325,7 +344,7 @@
 <li><strong>d. [later MINOR]</strong> The old syntaxes are removed in favor of the new ones, and the compile options from (b) and (c) are removed. This can be <code>805.N.0</code> on the same PHP ceiling; it does not require <code>806.0.0</code>.</li>
 </ul>
 <p>If the conflict is introduced by a new PHP minor, (b)–(d) may ship on the new MAJOR (<code>806.x</code>) because that release is the one that claims support for that PHP. The version <em>part</em> that carries the Tyhp syntax change is still MINOR.</p>
-<h2>Community Feature Proposals</h2>
+<h2 id="community-feature-proposals">Community Feature Proposals</h2>
 <p>The Tyhp language is open to community-driven feature proposals. If you have an idea for a new language feature or syntax improvement:</p>
 <ol>
 <li>Open an issue on <a href="https://github.com/tyhpproject/tyhp/issues">tyhpproject/tyhp</a> describing the proposed feature, its syntax, and its use cases</li>

@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -291,7 +310,7 @@
 </div>
 <p>Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP. If you know PHP, most of the syntax is already familiar; Tyhp adds required types, null safety, generics, structs, and a handful of other constructs. The usual comparison is TypeScript’s relationship to JavaScript: a superset language that compiles to the original runtime’s language. Tyhp is not PHP, and it is not affiliated with the PHP Group.</p>
 <p>All type checking in Tyhp happens at compile time. Tyhp-only type syntax is erased from PHP hints. Some constructs compile to Tyhp-runtime PHP: property hooks when <code>output.phpVersion</code> is below 8.4, <code>async</code>/<code>await</code> (<code>Promise::_async</code> / <code>_await</code>), structs (PHP <code>array</code>, no runtime shape check), and remaining <code>$x is T</code> checks (<code>\Tyhp\Type::is</code>). Compiled programs that use those features depend on small Composer packages (<code>tyhp/core</code>, <code>tyhp/async</code>, <code>tyhp/decimal</code>, <code>tyhp/lambda</code>). PHP builtins are described via <code>tyhpdef/php</code>.</p>
-<h2>Key Features</h2>
+<h2 id="key-features">Key Features</h2>
 <ul>
 <li>Compile-time type checking and type inference — types are non-nullable by default</li>
 <li>Generics — type-checked at compile time; PHP is a normal class or function unless <code>T</code> is tracked</li>
@@ -307,7 +326,7 @@
 <li>Tyhpdef files — type definition files for describing external PHP libraries, similar to TypeScript's .d.ts files</li>
 <li>Parsable lambdas / expression trees — capture <code>fn</code> expressions as data for query builders and similar APIs</li>
 </ul>
-<h2>Why Tyhp</h2>
+<h2 id="why-tyhp">Why Tyhp</h2>
 <p>Tyhp does not replace the PHP runtime. You compile Tyhp to PHP, then deploy on the PHP you already run. The compiler checks types, nullability, and generic constraints before that output is written.</p>
 <ul>
 <li>Types are compile-time — hints erase; hooks, async, structs, and remaining <code>Type::is</code> still emit Tyhp-runtime PHP</li>
@@ -316,7 +335,7 @@
 <li>Readable output — emitted PHP is meant to be readable</li>
 <li>Familiar syntax — if you know PHP, you already know most of Tyhp</li>
 </ul>
-<h2>How It Works</h2>
+<h2 id="how-it-works">How It Works</h2>
 <p>The Tyhp compiler processes your source files through a multi-phase pipeline: parsing, binding (symbol and scope resolution), type checking, and emission. Each phase catches different categories of errors. The emitter lowers Tyhp-specific constructs into PHP: structs become arrays, <code>async</code>/<code>await</code> become <code>Promise::_async</code> / <code>_await</code>, property hooks polyfill when the target is below PHP 8.4, and the rest maps to ordinary PHP or small <code>\Tyhp\</code> helpers. The output runs on a standard PHP runtime.</p>
 <div class="callout-block callout-block-info">
     <div class="content">

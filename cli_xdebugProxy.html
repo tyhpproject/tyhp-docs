@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,17 +299,17 @@
     <span class="badge bg-primary me-1">Tier 2 · Story 18</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>The xdebug_proxy action starts a proxy server that sits between your IDE's debugger and PHP's XDebug extension. It uses source maps to translate between compiled PHP file paths and line numbers and their corresponding Tyhp source locations, allowing you to debug your original .tyhp source files while PHP executes the compiled output.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp xdebug_proxy [options]
 </code></pre></div>
-<h2>How It Works</h2>
+<h2 id="how-it-works">How It Works</h2>
 <p>The XDebug proxy operates as a bidirectional message relay using the DBGp protocol. It opens two TCP listening ports:</p>
 <ul>
 <li>IDE port (default 9003) — Your IDE's debug adapter connects here instead of connecting directly to XDebug.</li>
 <li>XDebug port (default 9004) — XDebug connects here when a PHP script starts a debug session.</li>
 </ul>
 <p>When both sides connect, the proxy pairs them into a debug session and relays all DBGp messages between them. For each message, it inspects the content and translates file paths and line numbers using the source maps generated during tyhp build.</p>
-<h2>Translation Details</h2>
+<h2 id="translation-details">Translation Details</h2>
 <p>The proxy performs the following translations:</p>
 <ul>
 <li>Breakpoints — When you set a breakpoint on line 42 of User.tyhp, the proxy translates it to the corresponding line in User.php before forwarding to XDebug.</li>
@@ -299,19 +318,19 @@
 <li>Breakpoint responses — All breakpoint-related responses are translated so your IDE shows Tyhp file paths and line numbers.</li>
 </ul>
 <p>Files without source maps (such as third-party PHP libraries) pass through untranslated — their paths and line numbers appear as-is from XDebug.</p>
-<h2>Debugger display of values</h2>
+<h2 id="debugger-display-of-values">Debugger display of values</h2>
 <p>The proxy also rewrites some variable and property trees before they reach the IDE:</p>
 <ul>
 <li><code>\Tyhp\Decimal</code> — the proxy surfaces the inner <code>$value</code> string so the watch window shows the decimal rather than the wrapper object.</li>
 <li><code>#[\SensitiveParameter]</code> arguments — these appear as <code>\SensitiveParameterValue</code> objects. The proxy leaves that wrapper in place and does not unwrap <code>$value</code> the way it does for <code>\Tyhp\Decimal</code>. Nested properties that are already <code>\SensitiveParameterValue</code> (including stack-frame arguments and eval / <code>debug_backtrace</code> results) stay wrapped the same way.</li>
 </ul>
-<h2>Prerequisites</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>XDebug PHP extension installed and configured on your PHP runtime</li>
 <li>A built Tyhp project with source maps enabled (set <code>build.generateSourcemap</code> to true in tyhp.json, then run <code>tyhp build</code>)</li>
 <li>An IDE with XDebug debugging support (VS Code with PHP Debug extension, PhpStorm, etc.)</li>
 </ul>
-<h2>Options</h2>
+<h2 id="options">Options</h2>
 <ul>
 <li><code>--ide-port=&lt;port&gt;</code> — Port for IDE debug adapter connections (default: 9003).</li>
 <li><code>--xdebug-port=&lt;port&gt;</code> — Port for XDebug connections (default: 9004).</li>
@@ -321,9 +340,9 @@
 <li><code>--pid-file=&lt;path&gt;</code> — Write the process id to this file while the proxy is running. Opt-in; nothing is written by default.</li>
 <li><code>--help</code> — Show help (same as <code>tyhp help --subject=xdebug_proxy</code>).</li>
 </ul>
-<h2>Setup</h2>
+<h2 id="setup">Setup</h2>
 <p>To use the XDebug proxy, configure XDebug to connect to the proxy's XDebug port instead of directly to your IDE, and configure your IDE to connect to the proxy's IDE port.</p>
-<h2>Step 1: Build with Source Maps</h2>
+<h2 id="step-1-build-with-source-maps">Step 1: Build with Source Maps</h2>
 <p>Enable source map generation in your tyhp.json and build your project:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;build&quot;: {
@@ -333,14 +352,14 @@
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp build
 </code></pre></div>
-<h2>Step 2: Configure XDebug</h2>
+<h2 id="step-2-configure-xdebug">Step 2: Configure XDebug</h2>
 <p>In your php.ini or xdebug.ini, point XDebug at the proxy's XDebug port:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">xdebug.mode = debug
 xdebug.client_host = 127.0.0.1
 xdebug.client_port = 9004
 xdebug.idekey = tyhp
 </code></pre></div>
-<h2>Step 3: Start the Proxy</h2>
+<h2 id="step-3-start-the-proxy">Step 3: Start the Proxy</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">tyhp xdebug_proxy --sourcemap-dir=./build/
 </code></pre></div>
 <p>The proxy displays the listening ports and the number of source map files loaded:</p>
@@ -352,7 +371,7 @@ xdebug.idekey = tyhp
   IDE key:       (any)
 </code></pre></div>
 <p>If no sourcemaps are found, the proxy still starts and warns you to build with <code>build.generateSourcemap</code> enabled first.</p>
-<h2>Step 4: Configure Your IDE</h2>
+<h2 id="step-4-configure-your-ide">Step 4: Configure Your IDE</h2>
 <p>Configure your IDE's debugger to connect to the proxy's IDE port (9003 by default). For VS Code, add a launch.json configuration:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;name&quot;: &quot;Debug Tyhp (via proxy)&quot;,
@@ -361,7 +380,7 @@ xdebug.idekey = tyhp
     &quot;port&quot;: 9003
 }
 </code></pre></div>
-<h2>tyhp.json Configuration</h2>
+<h2 id="tyhpjson-configuration">tyhp.json Configuration</h2>
 <p>Proxy settings can also be configured in the <code>xdebugProxy</code> section of tyhp.json. CLI flags override these keys.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;xdebugProxy&quot;: {
@@ -377,7 +396,7 @@ xdebug.idekey = tyhp
     }
 }
 </code></pre></div>
-<p>When <code>sourceMapDir</code> is omitted, the proxy uses the project's <code>output.path</code>. When <code>ideKey</code> is omitted, every XDebug idekey is accepted. <code>sourceMapDir</code>, <code>tyhpSourceRoot</code>, and <code>phpOutputRoot</code> support the same <code>{name}</code>-style interpolation as other path keys in <code>tyhp.json</code>. See <a href="project_optionsList.md#string-interpolation">String interpolation</a>.</p>
+<p>When <code>sourceMapDir</code> is omitted, the proxy uses the project's <code>output.path</code>. When <code>ideKey</code> is omitted, every XDebug idekey is accepted. <code>sourceMapDir</code>, <code>tyhpSourceRoot</code>, and <code>phpOutputRoot</code> support the same <code>{name}</code>-style interpolation as other path keys in <code>tyhp.json</code>. See <a href="project_optionsList.html#string-interpolation">String interpolation</a>.</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">

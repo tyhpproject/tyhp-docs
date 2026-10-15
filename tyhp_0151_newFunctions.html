@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -280,9 +299,9 @@
     <span class="badge bg-primary me-1">Tier 0 · Story 04</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp introduces new functions, changes the behavior of some existing PHP functions, and gives many built-in functions generic type signatures for better type safety. This page covers guard functions, generic built-in function signatures, compile-time functions, and user-defined extension methods.</p>
-<h2>Guard / Type Narrowing Functions</h2>
+<h2 id="guard--type-narrowing-functions">Guard / Type Narrowing Functions</h2>
 <p>Many existing PHP functions act as type guards in Tyhp. When used in conditional checks (<code>if</code>, <code>while</code>, ternary, <code>match</code>), they narrow the type of a variable within the guarded scope. See the Type Narrowing and Guards page for full details on how narrowing works.</p>
-<h2>Scalar Type Guards</h2>
+<h2 id="scalar-type-guards">Scalar Type Guards</h2>
 <p>These PHP type-checking functions narrow a variable to the corresponding scalar type when used in a conditional:</p>
 <ul>
 <li><code>\is_string($val)</code> -- narrows <code>$val</code> to <code>string</code></li>
@@ -311,7 +330,7 @@ function format(string|int|float $value): string {
     }
 }
 </code></pre></div>
-<h2>Dynamic Guard Functions</h2>
+<h2 id="dynamic-guard-functions">Dynamic Guard Functions</h2>
 <p>These PHP reflection/existence functions act as type guards that narrow string values to Tyhp's symbol name types:</p>
 <ul>
 <li><code>\function_exists($name)</code> -- narrows <code>$name</code> to <code>__FunctionName</code></li>
@@ -336,9 +355,9 @@ function callIfExists(string $funcName, string $arg): mixed {
     return null;
 }
 </code></pre></div>
-<h2>Generic Built-in Function Signatures</h2>
+<h2 id="generic-built-in-function-signatures">Generic Built-in Function Signatures</h2>
 <p>Many PHP built-in functions are given generic type signatures in Tyhp. This means the compiler can infer precise return types based on the input types, providing much stronger type safety than PHP's native type declarations.</p>
-<h2>Array Functions</h2>
+<h2 id="array-functions">Array Functions</h2>
 <p>Signatures come from the shipped PHP tyhpdefs. Some functions are generic; many are not. Do not assume a generic form unless the tyhpdef declares it.</p>
 <ul>
 <li><code>\array_map&lt;TValue = mixed, TResult extends void|never|mixed = mixed&gt;(?callable(TValue): TResult $callback, array&lt;TValue&gt; $array, array ...$arrays): array&lt;TResult&gt;</code></li>
@@ -360,11 +379,11 @@ array&lt;int&gt; $lengths = \array_map(fn(string $name): int =&gt; \strlen($name
 // Return type preserves the element type
 array&lt;string&gt; $filtered = \array_filter($names, fn(string $n): bool =&gt; \strlen($n) &gt; 3);
 </code></pre></div>
-<h2>Other Generic Functions</h2>
+<h2 id="other-generic-functions">Other Generic Functions</h2>
 <p>Many other PHP standard library functions also receive generic signatures. The tyhpdef files that ship with the compiler contain the full set of generic signatures for all PHP extensions.</p>
-<h2>Compile-Time Functions</h2>
+<h2 id="compile-time-functions">Compile-Time Functions</h2>
 <p>Tyhp provides four compile-time functions that are evaluated during compilation and replaced with their computed values in the PHP output. These are language constructs with dedicated lexer tokens and grammar rules, available only in <code>&lt;?tyhp</code> blocks.</p>
-<h2><code>nameof(expr)</code></h2>
+<h2 id="nameofexpr"><code>nameof(expr)</code></h2>
 <p>Returns the string name of a symbol at compile time. The argument must be a valid symbol reference (a variable, function, class, method, property, or constant). The result is a string literal in the compiled PHP output. This is invaluable for refactoring-safe string references -- when you rename a symbol, <code>nameof()</code> references update automatically.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -410,8 +429,8 @@ function validate(string $field, mixed $value): void {
 }
 validate(&#039;email&#039;, $emailInput);
 </code></pre></div>
-<h2><code>typeof(Type)</code></h2>
-<p>Returns a <code>\Tyhp\Type</code> instance for a type expression. Scalars emit <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc. Declared classes emit <code>\Tyhp\Type::fromClassName(...)</code>. Structs emit <code>\Tyhp\Type::struct(...)</code> with the property schema. Source type aliases emit a factory call (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>). <code>\Tyhp\Type::of($value)</code> is a <strong>runtime</strong> helper that inspects a value — it is not what <code>typeof()</code> compiles to.</p>
+<h2 id="typeoftype"><code>typeof(Type)</code></h2>
+<p>Returns a <code>\Tyhp\Type</code> instance for a type expression. Scalars emit <code>\Tyhp\Type::int()</code> / <code>::string()</code> / etc. Declared classes emit <code>\Tyhp\Type::fromClassName(...)</code> with the fully-qualified class name. Structs emit <code>\Tyhp\Type::struct(...)</code> with the property schema. Source type aliases emit a factory call (<code>UserId()</code>, <code>Optional(\Tyhp\Type::int())</code>). <code>\Tyhp\Type::of($value)</code> is a <strong>runtime</strong> helper that inspects a value — it is not what <code>typeof()</code> compiles to.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 use App\Models\User;
@@ -435,14 +454,14 @@ use function App\Types\Optional;
 use function App\Types\UserId;
 
 $type = \Tyhp\Type::string();
-$userType = \Tyhp\Type::fromClassName(User::class);
+$userType = \Tyhp\Type::fromClassName(\User::class);
 $unionType = \Tyhp\Type::union(\Tyhp\Type::int(), \Tyhp\Type::string());
 $idType = UserId();
 $optType = Optional(\Tyhp\Type::int());
 $also = Optional(\Tyhp\Type::int());
 </code></pre></div>
 <p><code>typeof(Optional&lt;int&gt;)</code> and <code>Optional(typeof(int))</code> are the two ways to get a Type value for a generic alias. <code>Optional&lt;int&gt;()</code> is invalid. PHP writes <code>Optional(\Tyhp\Type::int())</code>.</p>
-<h2><code>default(Type)</code></h2>
+<h2 id="defaulttype"><code>default(Type)</code></h2>
 <p>Returns the default value for a given type at compile time. The argument must be a type expression, not a value. Each type has a well-defined default value:</p>
 <ul>
 <li><code>default(int)</code> returns <code>0</code></li>
@@ -474,7 +493,7 @@ $items = [];
 $opt = null;
 $user = null;
 </code></pre></div>
-<h2><code>variable_exists(expr)</code></h2>
+<h2 id="variableexistsexpr"><code>variable_exists(expr)</code></h2>
 <p>Checks whether a variable exists in the current scope. The argument is the variable itself or a string literal: <code>variable_exists($count)</code> or <code>variable_exists('count')</code>. Unlike <code>isset()</code>, <code>variable_exists()</code> is about existence, not the value — a declared variable that holds <code>null</code> still counts as existing. When the compiler cannot fold the check to a boolean literal, it emits <code>\array_key_exists('name', \get_defined_vars())</code>, not <code>isset()</code>. It can narrow a name to <code>__VarName</code>. <code>$$var</code> is prohibited (TYHP4133).</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -525,7 +544,7 @@ if (\array_key_exists(&#039;count&#039;, \get_defined_vars())) {
 </div>
     </div>
 </div>
-<h2>Extension Methods</h2>
+<h2 id="extension-methods">Extension Methods</h2>
 <p>Tyhp lets you declare <code>extension</code> types that add methods to existing types, including scalars. The target is on the extension (<code>extension StringHelpers extends string</code>), and <code>$this</code> inside the member is that target. See Scalar Pseudo-Objects and Extensions for the full syntax.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -545,12 +564,12 @@ declare(strict_types=1);
 $name = &#039;hello_world&#039;;
 $camel = \StringHelpers::toCamelCase($name);
 </code></pre></div>
-<h2>Built-in Scalar Methods</h2>
+<h2 id="built-in-scalar-methods">Built-in Scalar Methods</h2>
 <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 2 · Story 21</span><span class="badge bg-secondary">Complete</span>
 </p>
-<p><code>tyhp/core</code> attaches methods on <code>string</code>, <code>array</code>, <code>int</code>, <code>float</code>, <code>bool</code>, and <code>\Closure</code> via <code>global use extension \Tyhp\StringExtensions</code> (and the matching catalogs). No per-file <code>use extension</code> is required. <code>$name-&gt;toUpper()</code> emits <code>\Tyhp\StringHelper::strtoupper($name)</code>, which uses <code>\mb_strtoupper</code> when mbstring is loaded. See <a href="tyhp_1000_scalarPseudoObjects.md">Scalar Pseudo-Objects</a>.</p>
-<h2><code>\Tyhp\Json::decode&lt;T&gt;</code></h2>
+<p><code>tyhp/core</code> attaches methods on <code>string</code>, <code>array</code>, <code>int</code>, <code>float</code>, <code>bool</code>, and <code>\Closure</code> via <code>global use extension \Tyhp\StringExtensions</code> (and the matching catalogs). No per-file <code>use extension</code> is required. <code>$name-&gt;toUpper()</code> emits <code>\Tyhp\StringHelper::strtoupper($name)</code>, which uses <code>\mb_strtoupper</code> when mbstring is loaded. See <a href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a>.</p>
+<h2 id="tyhpjsondecodet"><code>\Tyhp\Json::decode&lt;T&gt;</code></h2>
 <p><code>tyhp/core</code> also ships <code>\Tyhp\Json::decode&lt;T&gt;(string $json): T</code> and <code>\Tyhp\Json::tryDecode&lt;T&gt;(string $json, T &amp;$out): bool</code>. Both always decode JSON objects as associative arrays. <code>decode</code> throws <code>\JsonException</code> on invalid JSON and <code>\Tyhp\Exceptions\IncompatibleTypeException</code> when the value does not match <code>T</code>. <code>tryDecode</code> writes <code>$out</code> and returns <code>true</code> on success, or leaves <code>$out</code> unchanged and returns <code>false</code> for those failures. <code>\json_decode</code> stays a PHP builtin whose Layer 3 overlay returns <code>JsonAssoc</code> / <code>JsonObject</code> (or those plus <code>null</code>) from <code>$associative</code> and <code>JSON_THROW_ON_ERROR</code> literals.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -572,7 +591,7 @@ if ($json-&gt;jsonTryDecodeAs&lt;User&gt;($maybeFromString)) {
     // $maybeFromString is User
 }
 </code></pre></div>
-<h2>Best Practices</h2>
+<h2 id="best-practices">Best Practices</h2>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">
@@ -633,7 +652,7 @@ if ($json-&gt;jsonTryDecodeAs&lt;User&gt;($maybeFromString)) {
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">
@@ -682,7 +701,7 @@ if ($json-&gt;jsonTryDecodeAs&lt;User&gt;($maybeFromString)) {
 </div>
     </div>
 </div>
-<h2>Compiler Error Examples</h2>
+<h2 id="compiler-error-examples">Compiler Error Examples</h2>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 string|int $value = getValue();

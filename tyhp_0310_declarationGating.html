@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -288,11 +307,11 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>This page is about <strong>declaration gates</strong> in Tyhp source — wrapping a class, function, interface, trait, or enum so it is only declared when it does not already exist. That is separate from using <code>\class_exists($name)</code> / <code>\function_exists($name)</code> as <strong>type guards</strong> on string variables (see Type Narrowing and Guards), and separate from <strong>PHP version gates</strong> (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) and <strong>extension gates</strong> (<code>declare(ext=&quot;…&quot;)</code>) that keep or drop declarations while binding (see <a href="tyhp_0320_phpVersionGating.md">PHP Version Gating</a>). Package signatures for the same PHP pattern use <code>fallback function</code> and <code>fallback const</code> in <code>.tyhpdef</code> (see <a href="tyhpdef_functions.md#fallback-functions">Fallback functions</a>).</p>
+        <div class="callout-content"><p>This page is about <strong>declaration gates</strong> in Tyhp source — wrapping a class, function, interface, trait, or enum so it is only declared when it does not already exist. That is separate from using <code>\class_exists($name)</code> / <code>\function_exists($name)</code> as <strong>type guards</strong> on string variables (see Type Narrowing and Guards), and separate from <strong>PHP version gates</strong> (<code>declare(php=…)</code> / <code>#[\Tyhp\Php]</code>) and <strong>extension gates</strong> (<code>declare(ext=&quot;…&quot;)</code>) that keep or drop declarations while binding (see <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>). Package signatures for the same PHP pattern use <code>fallback function</code> and <code>fallback const</code> in <code>.tyhpdef</code> (see <a href="tyhpdef_functions.html#fallback-functions">Fallback functions</a>).</p>
 </div>
     </div>
 </div>
-<h2>The Pattern</h2>
+<h2 id="the-pattern">The Pattern</h2>
 <p>A declaration gate is a top-level <code>if</code> with a negated existence call and a single matching declaration in the then-branch (no <code>else</code>):</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -311,7 +330,7 @@ if (!\class_exists(&#039;\App\Payments\Money&#039;)) {
 }
 </code></pre></div>
 <p>The matching helpers are <code>\function_exists</code>, <code>\class_exists</code>, <code>\enum_exists</code>, <code>\interface_exists</code>, and <code>\trait_exists</code>. The helper must match the kind of declaration inside the block.</p>
-<h2>The Name Must Be Exact</h2>
+<h2 id="the-name-must-be-exact">The Name Must Be Exact</h2>
 <p>Inside a namespace, an unqualified or wrong name is not enough. The gate must check for the same symbol the block declares. Tyhp accepts:</p>
 <ul>
 <li>A string literal with the fully-qualified name (leading <code>\</code> optional), e.g. <code>'\App\Payments\formatMoney'</code></li>
@@ -361,7 +380,7 @@ if (!\function_exists(__NAMESPACE__ . &#039;\formatMoney&#039;)) {
 </div>
     </div>
 </div>
-<h2>When the Gate Is Correct</h2>
+<h2 id="when-the-gate-is-correct">When the Gate Is Correct</h2>
 <p>If the gate is valid (matching helper, single matching declaration, and a correct FQN / <code>__NAMESPACE__</code> argument):</p>
 <ul>
 <li>The checker accepts it — no TYHP4213</li>
@@ -391,7 +410,7 @@ if (!\function_exists(__NAMESPACE__ . &#039;\formatMoney&#039;)) {
 </div>
     </div>
 </div>
-<h2>Fallback Declarations</h2>
+<h2 id="fallback-declarations">Fallback Declarations</h2>
 <p><code>fallback</code> in front of a <code>function</code>, <code>class</code>, <code>interface</code>, <code>trait</code>, <code>enum</code>, or <code>const</code> declaration is shorthand for the matching existence gate. The declaration is only declared when nothing has declared that name already:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
@@ -422,8 +441,8 @@ fallback const int LIMIT = 13;
 }
 </code></pre></div>
 <p>In a namespace the name is written as <code>__NAMESPACE__ . '\LIMIT'</code>; in the global namespace it has no leading backslash, because <code>\define('\LIMIT', …)</code> would register a constant that plain <code>LIMIT</code> cannot find.</p>
-<p>A <code>fallback</code> declaration can sit inside <code>declare(php=…)</code> and <code>declare(ext=…)</code> blocks. The version and extension checks wrap the existence check. See <a href="tyhp_0320_phpVersionGating.md#extension-presence">PHP Version Gating</a>.</p>
-<h2>When the Gate Is Incorrect</h2>
+<p>A <code>fallback</code> declaration can sit inside <code>declare(php=…)</code> and <code>declare(ext=…)</code> blocks. The version and extension checks wrap the existence check. See <a href="tyhp_0320_phpVersionGating.html#extension-presence">PHP Version Gating</a>.</p>
+<h2 id="when-the-gate-is-incorrect">When the Gate Is Incorrect</h2>
 <p>If the shape looks like a declaration gate (negated <code>*_exists</code> wrapping a single declaration of the matching kind) but the argument does not name that declaration:</p>
 <ul>
 <li>The checker reports <strong>TYHP4213</strong> — Declaration existence gate must check for the expected fully-qualified name</li>
@@ -443,7 +462,7 @@ fallback const int LIMIT = 13;
 </div>
     </div>
 </div>
-<h2>Common Mistakes</h2>
+<h2 id="common-mistakes">Common Mistakes</h2>
 <div class="callout-block callout-block-danger me-1">
     <div class="content">
         <h4 class="callout-title">

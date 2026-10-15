@@ -254,6 +254,25 @@
 <li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
 
 
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
 <li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
 
 <li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
@@ -278,16 +297,16 @@
     <h2 class="section-heading">Bref</h2>
     
     <p>Bref is an open-source tool for running PHP applications on AWS Lambda. It is sometimes mentioned alongside Tyhp, but the two projects address entirely different concerns and are complementary rather than alternatives.</p>
-<h2>What Bref Is</h2>
+<h2 id="what-bref-is">What Bref Is</h2>
 <p>Bref provides PHP runtimes and tooling for deploying PHP applications as serverless functions on AWS Lambda. It handles the infrastructure layer — packaging PHP applications, providing Lambda-compatible PHP runtimes, integrating with API Gateway, SQS, and other AWS services, and managing deployment via the Serverless Framework or AWS SAM. Bref is a deployment and infrastructure tool, not a language or compiler.</p>
-<h2>Different Layers, Different Purposes</h2>
+<h2 id="different-layers-different-purposes">Different Layers, Different Purposes</h2>
 <p>Tyhp and Bref operate at completely different layers of the stack:</p>
 <ul>
 <li>Tyhp is a language and compiler: a typed superset of the PHP language. It operates at the source level and emits PHP.</li>
 <li>Bref is a deployment tool that runs PHP on serverless infrastructure. It operates at the infrastructure and runtime level.</li>
 <li>Tyhp compiles to standard PHP. Bref runs standard PHP. They do not overlap or conflict.</li>
 </ul>
-<h2>Using Tyhp with Bref</h2>
+<h2 id="using-tyhp-with-bref">Using Tyhp with Bref</h2>
 <p>Because Tyhp compiles to standard PHP, using Tyhp with Bref is straightforward:</p>
 <ol>
 <li>Write your application in Tyhp.</li>
