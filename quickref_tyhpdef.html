@@ -306,10 +306,11 @@ const string APP_NAME;
 function myPhpFunction(string $input): int;
 </code></pre></div>
 <h2 id="variables-and-constants">Variables and Constants</h2>
-<p>Declare global PHP variables and constants with types. Use <code>as</code> for aliasing. Top-level <code>deprecated</code>/<code>obsolete</code> work. Tyhpdef <code>??</code> records PHP's expected start value (the live value may differ); <code>&amp;</code> is not a tyhpdef form.</p>
+<p>Declare global PHP variables and constants with types. Use <code>as</code> to alias a constant. Top-level <code>deprecated</code>/<code>obsolete</code> work. Tyhpdef <code>??</code> records PHP's expected start value (the live value may differ); <code>&amp;</code> is not a tyhpdef form.</p>
 <p><a href="tyhpdef_variablesAndConstants.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">bool $debugMode;
-string $legacy_app_name as $appName;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+bool $debugMode;
+string $appName;
 
 const string APP_ENV;
 const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
@@ -317,9 +318,20 @@ const int \MAX_LOOPS_ALLOWED as MAX_LOOPS;
 <h2 id="functions">Functions</h2>
 <p>Declare function signatures with typed parameters (including optional, reference, and variadic), generic type parameters, async functions, function aliases, and extension functions. <code>fallback function</code> is a signature PHP defines only when that name is still empty; Composer <code>autoload.files</code> order chooses among packages. <code>declare(ext=&quot;name&quot;)</code> / <code>declare(ext=&quot;!name&quot;)</code> keeps a block when that extension's tyhpdef package is loaded or absent. Overlay <code>partial function</code> (optionally <code>as</code>) merges attributes or renames without restating the signature. Version-specific signatures use <code>#[\Tyhp\Php(&quot;…&quot;)]</code> or <code>declare(php=…)</code> in <code>.tyhpdef</code>.</p>
 <p><a href="tyhpdef_functions.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function \array_map&lt;T, U&gt;(callable(T): U $callback, array&lt;T&gt; $array): array&lt;U&gt;;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class UserData {
+    public int $id;
+}
+
+class Mapper {
+    public function map&lt;TValue, TResult extends void|never|mixed&gt;(
+        callable(TValue): TResult $callback,
+        array&lt;TValue&gt; $array
+    ): array&lt;TResult&gt;;
+}
+
 async function fetchUserData(int $userId): UserData;
-function \array_key_exists as keyExists(int|string $key, array $array): bool;
+function key_exists as keyExists(int|string $key, array $array): bool;
 function toCamelCase(extends string $str): string;
 
 #[\Tyhp\Php(&quot;&gt;=8.2 &lt;8.4&quot;)]
@@ -330,24 +342,37 @@ function example(string $v, bool $strict = false): string;
 <h2 id="extensions">Extensions</h2>
 <p>Attach Tyhp extension methods and operator overloads to PHP types. <strong>Standalone</strong> <code>extension Name extends Type { }</code> (or nested <code>extends Type { }</code> groups, with no header target) uses short <code>fn</code> / <code>operator</code> + <code>=&gt;</code> members; <code>$this</code> is the block target; return types required; empty <code>{}</code> is an error. Class-body <code>extension fn</code> / <code>extension operator</code> are <strong>thin mappings</strong> (<code>=&gt;</code> only, fully erased; PHP cannot call them; <code>$this</code> / <code>self</code> are the enclosing class). File-level <code>use extension</code> is opt-in unless <code>global use extension</code>. <code>tyhp/core</code> globally imports <code>\Tyhp\StringExtensions</code> and the other scalar catalogs. <code>use extension</code> on a tyhpdef class auto-activates that type’s attached surface. Bodyless <code>operator …;</code> is native PHP passthrough; bodyless <code>extension operator</code> is an error. <code>hide</code> / operator <code>insteadof</code> are allowed; <code>as</code> on operators is an error. <code>#[\Tyhp\Php]</code> is illegal on <code>extension { }</code> (<strong>TYHP4304</strong>); wrap with <code>declare(php=…)</code>. Multi-statement bodies live in <code>tyhp_src/</code> with <code>class PhpName as Name__tyhpExtensionBacker</code>.</p>
 <p><a href="tyhpdef_extensions.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">extension StringOperators extends string {
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class StringOperatorBacker {
+    public static function toUpper(string $value): string;
+    public static function multiply(string $left, int $right): string;
+}
+
+extension StringOperators extends string {
     fn toUpper(): string
-        =&gt; StringOperators__tyhpExtensionBacker::toUpper($this);
+        =&gt; StringOperatorBacker::toUpper($this);
     operator * (self $left, int $right): string
-        =&gt; StringOperators__tyhpExtensionBacker::__multiply($left, $right);
+        =&gt; StringOperatorBacker::multiply($left, $right);
 }
 
 class Money {
     public function plus(Money $other): Money;
+    public function __toString(): string;
 
     extension operator +(self $left, self $right): self =&gt; $left-&gt;plus($right);
 
     extension fn formatCurrency(string $locale = &quot;en_US&quot;): string
         =&gt; $locale . &quot; &quot; . $this-&gt;__toString();
+}
 
+extension MoneyFormatting extends Money {
+    fn format(): string =&gt; $this-&gt;__toString();
+}
+
+partial class Money {
     use extension MoneyFormatting {
         MoneyFormatting::format as formatExtended;
-    };
+    }
 }
 </code></pre></div>
 <h2 id="interfaces">Interfaces</h2>
@@ -383,7 +408,7 @@ class \Vendor\LongNamespace\SomeClass as ShortName {
 <p><code>extra.tyhp.package</code> <code>&quot;include&quot;</code> on <code>composer.json</code> is the baseline (duplicates error). <code>&quot;overlay&quot;</code> loads after, stubs then hand, last Tyhp name wins. Overlay brace <code>partial</code> replaces listed members (missing target = warning). Overlay <code>partial class Foo&lt;T&gt; implements …;</code> (also interface / trait / enum) replaces written header clauses and keeps unlisted members. Overlay <code>partial function</code> merges attributes onto an existing callable without restating the signature. <code>partial function X as Y;</code> and <code>partial class X as Y;</code> <strong>rename</strong> the current Tyhp name unless the same overlay file also keeps <code>X</code>. Match later overlays to the live Tyhp name. <code>omit</code> hides a symbol (overlay-only). <code>// @overlay-against:</code> stamps the Layer 1 signature. <code>tyhp overlay create</code> / <code>stamp</code>. <code>tyhp symbol_tree</code> dumps the bound names.</p>
 <p><a href="tyhpdef_overlays.html">See full documentation →</a></p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
-// @overlay-against: interface Iterator extends Traversable
+// @overlay-against: interface Iterator
 partial interface Iterator&lt;TKey = mixed, TValue = mixed&gt; extends \Traversable&lt;TKey, TValue&gt;;
 partial interface Iterator {
     public function current(): TValue;
@@ -429,13 +454,18 @@ enum Permission: int implements \Stringable {
 <h2 id="traits">Traits</h2>
 <p>Declare PHP traits with typed properties, methods, constants, abstract methods, and generic type parameters. Generic traits specify concrete type arguments when used in Tyhp code.</p>
 <p><a href="tyhpdef_traits.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">trait Collection&lt;T&gt; {
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+trait Collection&lt;T&gt; {
     public function add(T $item): void;
     public function getItems(): array&lt;T&gt;;
 }
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class User {}
 
-// in Tyhp code:
-use Collection&lt;User&gt;;
+class UserList {
+    use Collection&lt;User&gt;;
+}
 </code></pre></div>
 <h2 id="structs">Structs</h2>
 <p>Value types backed by PHP associative arrays. Named as <code>type Name = struct { … };</code>. Support required and optional properties, property aliases for non-identifier array keys, defaults, inheritance, nesting, generics, and inline <code>struct { … }</code> in type position.</p>
@@ -474,34 +504,53 @@ namespace EL {
 }
 </code></pre></div>
 <h2 id="import-aliases">Import Aliases</h2>
-<p>Alias nearly anything with <code>as</code> — functions, classes, interfaces, traits, enums, properties, methods, constants, variables, and enum cases. Only the aliased name is available in Tyhp.</p>
+<p>Alias a namespaced PHP class with <code>as</code> (<code>\Vendor\LegacyApi as Api</code>). Methods inside that declaration can be aliased the same way. Only the aliased name is available in Tyhp.</p>
 <p><a href="tyhpdef_importAliases.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class LegacyApi as Api {
-    public string $usr_nm as $username;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class User {
+    public int $id;
+}
+
+class \Vendor\LegacyApi as Api {
+    public string $usr_nm;
     public function get_usr as getUser(int $id): ?User;
 }
 </code></pre></div>
 <h2 id="overloaded-functions-and-methods">Overloaded Functions and Methods</h2>
 <p>Declare multiple signatures for the same function/method name to describe PHP functions with varying parameter types and return types. Supports static value type overloads, generic overloads, and async overloads.</p>
 <p><a href="tyhpdef_overloadedFunctions.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function \json_decode(string $json, true $assoc): JsonAssoc|null;
-function \json_decode(string $json, false $assoc): JsonObject|null;
-function \json_decode(string $json, null $assoc = null): JsonObject|null;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class DecodeObject {}
+class User {
+    public int $id;
+}
 
-public function find(int $id): ?User;
-public function find(string $uuid): ?User;
-public function find(array&lt;string, mixed&gt; $criteria): array&lt;User&gt;;
+type DecodeAssoc = array&lt;string, mixed&gt;;
+
+function decode_json(string $json, true $assoc): DecodeAssoc|null;
+function decode_json(string $json, false $assoc): DecodeObject|null;
+function decode_json(string $json, null $assoc = null): DecodeObject|null;
+
+class UserRepo {
+    public function find(int $id): ?User;
+    public function find(string $uuid): ?User;
+    public function find(array&lt;string, mixed&gt; $criteria): array&lt;User&gt;;
+}
 </code></pre></div>
 <h2 id="the-deprecated-and-obsolete-keywords">The <code>deprecated</code> and <code>obsolete</code> Keywords</h2>
 <p><code>deprecated</code> produces a compiler warning but still compiles. <code>obsolete</code> produces a compiler error and blocks compilation. Both must appear before all other modifiers. In this alpha they are enforced on <strong>top-level</strong> functions, classes, interfaces, traits, enums, constants, and variables — not on class/interface members or enum cases.</p>
 <p><a href="tyhpdef_deprecatedKeyword.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">deprecated function \mysql_connect(string $server, string $user, string $pass): \mysqli|false;
-obsolete function \md5(string $string, bool $binary = false): string;
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class \Vendor\Connection {}
+
+deprecated function \vendor_connect(string $server, string $user, string $pass): \Vendor\Connection|false;
+obsolete function \vendor_md5(string $string, bool $binary = false): string;
 </code></pre></div>
 <h2 id="runtime-errors-and-exceptions">Runtime Errors and Exceptions</h2>
 <p>When tyhpdef declarations don't match actual PHP code, runtime errors can occur. Declare exception hierarchies and document throws with <code>@throws</code> (documentation only in this alpha).</p>
 <p><a href="tyhpdef_runTimeErrorsAndExceptions.html">See full documentation →</a></p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">class \InvalidArgumentException extends \LogicException {
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhpdef
+class \Vendor\JsonException extends \Exception {
     public function __construct(
         string $message = &quot;&quot;,
         int $code = 0,
@@ -509,8 +558,8 @@ obsolete function \md5(string $string, bool $binary = false): string;
     ): void;
 }
 
-/** @throws \JsonException When JSON encoding fails */
-function \json_encode(mixed $value, int $flags = 0, int $depth = 512): string|false;
+/** @throws \Vendor\JsonException When encoding fails */
+function \vendor_encode(mixed $value): string|false;
 </code></pre></div>
 
 </section>
