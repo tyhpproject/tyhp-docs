@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto"> 
 <head>
-    <title>Bref - Tyhp</title>
+    <title>TypePHP (Swoole AOT) - Tyhp</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +87,7 @@
 
 <li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
 
-<li class="nav-item"><a class="nav-link active" href="other_bref.html">Bref</a></li>
+<li class="nav-item"><a class="nav-link active" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
@@ -293,28 +293,41 @@
 	    </div>
 	    <div class="docs-content">
 		    <div class="container">
-				<section class="docs-section" id="Bref">
-    <h2 class="section-heading">Bref</h2>
+				<section class="docs-section" id="TypePHP_Swoole_AOT_">
+    <h2 class="section-heading">TypePHP (Swoole AOT)</h2>
     
-    <p>Bref is an open-source tool for running PHP applications on AWS Lambda. It is sometimes mentioned alongside Tyhp, but the two projects address entirely different concerns and are complementary rather than alternatives.</p>
-<h2 id="what-bref-is">What Bref Is</h2>
-<p>Bref provides PHP runtimes and tooling for deploying PHP applications as serverless functions on AWS Lambda. It handles the infrastructure layer — packaging PHP applications, providing Lambda-compatible PHP runtimes, integrating with API Gateway, SQS, and other AWS services, and managing deployment via the Serverless Framework or AWS SAM. Bref is a deployment and infrastructure tool, not a language or compiler.</p>
-<h2 id="different-layers-different-purposes">Different Layers, Different Purposes</h2>
-<p>Tyhp and Bref operate at completely different layers of the stack:</p>
+    <p>TypePHP, formerly the Swoole AOT compiler, is an ahead-of-time compiler from the Swoole team that turns PHP-syntax source into native machine code. Tyhp and TypePHP both start from PHP syntax and add compile-time type information, but they produce very different output: Tyhp emits PHP, and TypePHP emits native binaries.</p>
+<h2 id="what-typephp-is">What TypePHP Is</h2>
+<p>TypePHP lowers PHP source to C++17 and then compiles it with GCC, Clang, or MSVC. A project can be built as a native executable, a loadable PHP extension, or a shared library. Compiled user code runs as machine code; built-in functions, extensions, and dynamic operations go through the Zend Engine, which is embedded in the output through Swoole's PHPX library. TypePHP adds native scalar storage, typed containers (<code>std::vector</code>, <code>std::map</code>, and others), <code>bigInt</code> / <code>decimal</code> / <code>bigFloat</code> numerics, and methods callable directly on primitive values. It supports a defined subset of PHP, so existing code usually needs changes before it compiles. The compiler is written in PHP and is self-hosting. It is open source under GPL-3.0.</p>
+<h2 id="similarities">Similarities</h2>
 <ul>
-<li>Tyhp is a language and compiler: a typed superset of the PHP language. It operates at the source level and emits PHP.</li>
-<li>Bref is a deployment tool that runs PHP on serverless infrastructure. It operates at the infrastructure and runtime level.</li>
-<li>Tyhp compiles to standard PHP. Bref runs standard PHP. They do not overlap or conflict.</li>
+<li>Both start from PHP syntax and add static type information checked at compile time</li>
+<li>Both use strict scalar typing rather than PHP's weak coercion</li>
+<li>Both let you call methods on values of types you do not own (Tyhp extension methods; TypePHP universal methods)</li>
+<li>Both offer exact decimal arithmetic (Tyhp through <code>tyhp/decimal</code>; TypePHP through its built-in <code>decimal</code> type)</li>
+<li>Both restrict some highly dynamic PHP features so the compiler can reason about the program</li>
+<li>Both work with Composer packages</li>
 </ul>
-<h2 id="using-tyhp-with-bref">Using Tyhp with Bref</h2>
-<p>Because Tyhp compiles to standard PHP, using Tyhp with Bref is straightforward:</p>
-<ol>
-<li>Write your application in Tyhp.</li>
-<li>Compile your Tyhp code to PHP using the Tyhp compiler.</li>
-<li>Deploy the compiled PHP code to AWS Lambda using Bref, exactly as you would deploy any PHP application.</li>
-<li>Optionally, describe Bref's PHP libraries in Tyhpdef files for type-safe usage within your Tyhp code.</li>
-</ol>
-<p>No special integration is required. Tyhp's compiled output is standard PHP, so any tool that runs PHP — including Bref — works without modification.</p>
+<h2 id="differences">Differences</h2>
+<h2 id="output-and-runtime">Output and Runtime</h2>
+<p>Tyhp emits readable PHP 8.2–8.5 that runs on a standard PHP runtime (php-fpm, CLI, or any SAPI). The compiled output performs like any other PHP code. TypePHP's goal is native performance: it ships machine code, and binary-mode executables start without the PHP CLI while still linking PHPX, <code>libphp</code>, and any configured native libraries.</p>
+<h2 id="build-and-deployment">Build and Deployment</h2>
+<p>A Tyhp deployment server needs only PHP and the Composer dependencies; the compiler runs at build time. TypePHP builds need PHP 8.4–8.5 with development headers and the embed library, a C++17 toolchain, CMake, and GMP/MPFR. Its deployment package carries the native binary and the libraries it links.</p>
+<h2 id="type-system-focus">Type System Focus</h2>
+<p>Tyhp's main feature is its type system: required types on every parameter, property, and return; non-nullable by default; generics; structs; type aliases; union and literal types; and Tyhpdef files for describing existing PHP libraries. TypePHP uses type information primarily to drive native code generation, such as mapping <code>int</code>, <code>float</code>, and <code>bool</code> to C++ scalars and specializing typed containers.</p>
+<h2 id="program-structure">Program Structure</h2>
+<p>Tyhp files can contain top-level statements, as PHP files can. In TypePHP, global scope is declaration-only, and binary mode requires a <code>main()</code> function.</p>
+<h2 id="readable-output-vs-source-protection">Readable Output vs. Source Protection</h2>
+<p>Tyhp output is ordinary PHP you can read and debug with Xdebug (through sourcemaps). TypePHP output is machine code, which also protects the shipped source.</p>
+<h2 id="implementation-and-license">Implementation and License</h2>
+<p>Tyhp's compiler is written in C# (.NET) and is licensed under Apache 2.0. TypePHP's compiler is written in PHP and is licensed under GPL-3.0.</p>
+<h2 id="when-to-choose-typephp">When to Choose TypePHP</h2>
+<p>TypePHP fits CPU-bound or numeric workloads, standalone executables, PHP extensions written in PHP syntax, and cases where shipping compiled binaries instead of source matters. Tyhp fits projects that want a stricter, richer type system while staying on standard PHP hosting and the existing PHP toolchain.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li>Website: <a href="https://swoole.com/aot/en/">swoole.com/aot</a></li>
+<li>Source: <a href="https://github.com/swoole/typephp">github.com/swoole/typephp</a></li>
+</ul>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
