@@ -327,8 +327,8 @@
 <li>Parsable lambdas / expression trees — capture <code>fn</code> expressions as data for query builders and similar APIs</li>
 </ul>
 <h2 id="why-tyhp">Why Tyhp</h2>
-<p>PHP checks type declarations when the code runs. Static analyzers such as PHPStan and Psalm catch more before that, but generics, array shapes, and similar types live in PHPDoc comments, and their findings can be ignored or baselined.</p>
-<p>Tyhp makes those types part of the language. The compiler checks types, nullability, and generic constraints, and does not emit PHP until the program type-checks. Tyhp does not replace the PHP runtime: you deploy the compiled output on the PHP you already run.</p>
+<p>PHP checks type declarations when the code runs. Static analyzers such as PHPStan and Psalm catch more before that, but generics, array shapes, and similar types live in PHPDoc comments.</p>
+<p>Tyhp makes those types part of the language. The compiler checks types, nullability, and generic constraints, and does not emit PHP until the program type-checks. Type errors in <code>.tyhp</code> files are compile errors, and you adopt Tyhp file by file instead of baselining existing issues. Tyhp does not replace the PHP runtime: you deploy the compiled output on the PHP you already run.</p>
 <ul>
 <li>Build-time errors — type and null errors are reported before the code runs</li>
 <li>Types in the syntax — generics, structs, and type aliases are part of the language, not PHPDoc comments</li>
