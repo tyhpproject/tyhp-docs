@@ -327,9 +327,11 @@
 <li>Parsable lambdas / expression trees — capture <code>fn</code> expressions as data for query builders and similar APIs</li>
 </ul>
 <h2 id="why-tyhp">Why Tyhp</h2>
-<p>Tyhp does not replace the PHP runtime. You compile Tyhp to PHP, then deploy on the PHP you already run. The compiler checks types, nullability, and generic constraints before that output is written.</p>
+<p>PHP checks type declarations when the code runs. Static analyzers such as PHPStan and Psalm catch more before that, but generics, array shapes, and similar types live in PHPDoc comments, and their findings can be ignored or baselined.</p>
+<p>Tyhp makes those types part of the language. The compiler checks types, nullability, and generic constraints, and does not emit PHP until the program type-checks. Tyhp does not replace the PHP runtime: you deploy the compiled output on the PHP you already run.</p>
 <ul>
-<li>Types are compile-time — hints erase; hooks, async, structs, and remaining <code>Type::is</code> still emit Tyhp-runtime PHP</li>
+<li>Build-time errors — type and null errors are reported before the code runs</li>
+<li>Types in the syntax — generics, structs, and type aliases are part of the language, not PHPDoc comments</li>
 <li>Gradual adoption — mix <code>.tyhp</code> and <code>.php</code> files in the same project</li>
 <li>PHP interop — Composer packages and PHP extensions via tyhpdef files</li>
 <li>Readable output — emitted PHP is meant to be readable</li>
@@ -337,6 +339,16 @@
 </ul>
 <h2 id="how-it-works">How It Works</h2>
 <p>The Tyhp compiler processes your source files through a multi-phase pipeline: parsing, binding (symbol and scope resolution), type checking, and emission. Each phase catches different categories of errors. The emitter lowers Tyhp-specific constructs into PHP: structs become arrays, <code>async</code>/<code>await</code> become <code>Promise::_async</code> / <code>_await</code>, property hooks polyfill when the target is below PHP 8.4, and the rest maps to ordinary PHP or small <code>\Tyhp\</code> helpers. The output runs on a standard PHP runtime.</p>
+<h2 id="how-tyhp-compares">How Tyhp Compares</h2>
+<p>Several projects add types to PHP in different ways:</p>
+<ul>
+<li><a href="faq_general.html">FAQ: General</a> — PHPStan and Psalm</li>
+<li><a href="other_hack.html">Hack / HHVM</a></li>
+<li><a href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
+<li><a href="other_pxp.html">PXP</a></li>
+<li><a href="other_reactphp.html">ReactPHP</a> — async</li>
+<li><a href="other_typescript.html">TypeScript</a></li>
+</ul>
 <div class="callout-block callout-block-info">
     <div class="content">
         <h4 class="callout-title">
