@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -344,7 +346,10 @@ Tyhp\Expression\ExpressionNode             abstract base: $type, $nodeType, acce
 ├── ArrayAccessExpression                  $u-&gt;tags[0]
 ├── CastExpression                         (string) $u-&gt;age
 ├── NewExpression                          new Address($u-&gt;city)
-└── InstanceofExpression                   $u-&gt;address is Address
+├── InstanceofExpression                   $u-&gt;address is Address
+├── NullSafeMethodCallExpression           $u-&gt;address?-&gt;format()
+├── ArrayExpression                        [&#039;id&#039; =&gt; $u-&gt;id, $u-&gt;name] (items are ArrayItem)
+└── LambdaExpression                       fn ($p) =&gt; $p-&gt;rating &gt; 3, nested in a body
 </code></pre></div>
 <p>Trees reach your code in one of four ways:</p>
 <ul>
@@ -892,6 +897,27 @@ $strict = Expression::of(User::class)-&gt;prop(&#039;address&#039;, nullSafe: tr
 <td><code>operand</code>, <code>targetType</code></td>
 <td><code>visitInstanceof</code></td>
 </tr>
+<tr>
+<td><code>NullSafeMethodCallExpression</code></td>
+<td><code>nullSafeMethodCall</code></td>
+<td><code>$x?-&gt;method(...)</code></td>
+<td><code>object</code>, <code>method</code>, <code>arguments</code></td>
+<td><code>visitNullSafeMethodCall</code></td>
+</tr>
+<tr>
+<td><code>ArrayExpression</code></td>
+<td><code>array</code></td>
+<td><code>[$a, 'k' =&gt; $b]</code>, <code>array(...)</code></td>
+<td><code>items</code> (<code>ArrayItem</code>: <code>key</code>, <code>value</code>)</td>
+<td><code>visitArray</code></td>
+</tr>
+<tr>
+<td><code>LambdaExpression</code></td>
+<td><code>lambda</code></td>
+<td>a nested arrow <code>fn</code></td>
+<td><code>parameters</code>, <code>body</code>, <code>returnType</code></td>
+<td><code>visitLambda</code></td>
+</tr>
 </tbody>
 </table></div>
 <p>Parentheses do not produce nodes. <code>($u-&gt;age + 1) * 2</code> is a <code>BinaryExpression</code> for <code>*</code> whose left child is the <code>BinaryExpression</code> for <code>+</code>.</p>
@@ -904,7 +930,7 @@ readonly public string $paramType;
 readonly public int $index;
 </code></pre></div>
 <p>A use of a lambda parameter. <code>$name</code> is the parameter name without <code>$</code>, <code>$paramType</code> is its type as a string, and <code>$index</code> is its zero-based position. <code>$type</code> equals <code>$paramType</code>.</p>
-<p>In compiler-built <code>Expression</code> trees, <code>$name</code> is the name you wrote (<code>u</code> for <code>fn ($u) =&gt; …</code>). In <code>PropertyPath</code> and builder trees it is always <code>source</code>. Each occurrence in the body is a separate object, so compare parameters by <code>$index</code>.</p>
+<p>In compiler-built <code>Expression</code> trees, <code>$name</code> is the name you wrote (<code>u</code> for <code>fn ($u) =&gt; …</code>). In <code>PropertyPath</code> and builder trees it is always <code>source</code>. Each occurrence in the body is a separate object, so compare parameters by <code>$index</code>. Inside a nested <code>LambdaExpression</code>, a parameter belongs to the nearest enclosing <code>LambdaExpression</code> that declares its <code>$name</code>, and <code>$index</code> is its position in that nested <code>fn</code>; a name no nested <code>fn</code> declares is the outer lambda's parameter.</p>
 </div>
 <h3 id="propertyaccessexpression">PropertyAccessExpression</h3>
 <div class="alert alert-secondary" role="alert"><h4><code>final class PropertyAccessExpression extends ExpressionNode</code></h4><br/><div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -922,7 +948,7 @@ public function __construct(ExpressionNode $object, string $property, string $ty
 readonly public ExpressionNode $object;
 readonly public string $property;
 </code></pre></div>
-<p>A null-safe property read, <code>$object?-&gt;property</code>. Only the segment written with <code>?-&gt;</code> gets this class: <code>$u-&gt;address?-&gt;city</code> is a <code>NullSafeAccessExpression</code> for <code>city</code> whose <code>object</code> is a plain <code>PropertyAccessExpression</code> for <code>address</code>. A SQL translator typically treats it like a property read; an in-memory evaluator returns <code>null</code> when <code>$object</code> evaluates to <code>null</code>.</p>
+<p>A null-safe property read, <code>$object?-&gt;property</code>. Only the segment written with <code>?-&gt;</code> gets this class: <code>$u-&gt;address?-&gt;city</code> is a <code>NullSafeAccessExpression</code> for <code>city</code> whose <code>object</code> is a plain <code>PropertyAccessExpression</code> for <code>address</code>. A SQL translator typically treats it like a property read. When evaluated, a <code>null</code> <code>$object</code> makes the rest of the chain <code>null</code> without reading it, as PHP does: in <code>$u-&gt;address?-&gt;city-&gt;name</code>, a missing address gives <code>null</code> rather than reading <code>name</code> on <code>null</code>.</p>
 </div>
 <h3 id="methodcallexpression">MethodCallExpression</h3>
 <div class="alert alert-secondary" role="alert"><h4><code>final class MethodCallExpression extends ExpressionNode</code></h4><br/><div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -1041,6 +1067,34 @@ readonly public string $targetType;
 <li>the runtime value of the variable for <code>$x instanceof $className</code>.</li>
 </ul>
 </div>
+<h3 id="nullsafemethodcallexpression">NullSafeMethodCallExpression</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class NullSafeMethodCallExpression extends ExpressionNode</code></h4><br/><div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+public function __construct(ExpressionNode $object, string $method, array&lt;ExpressionNode&gt; $arguments, string $type = &#039;mixed&#039;): void
+readonly public ExpressionNode $object;
+readonly public string $method;
+readonly public array&lt;ExpressionNode&gt; $arguments;
+</code></pre></div>
+<p>A null-safe method call, <code>$object?-&gt;method(...$arguments)</code>. When evaluated, a <code>null</code> <code>$object</code> gives <code>null</code> without evaluating the arguments or the rest of the chain.</p>
+</div>
+<h3 id="arrayexpression">ArrayExpression</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class ArrayExpression extends ExpressionNode</code></h4><br/><div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+public function __construct(array&lt;ArrayItem&gt; $items, string $type = &#039;array&#039;): void
+readonly public array&lt;ArrayItem&gt; $items;
+</code></pre></div>
+<p>An array literal. Each <code>ArrayItem</code> has <code>readonly ?ExpressionNode $key</code> and <code>readonly ExpressionNode $value</code>; a <code>null</code> key takes the next integer key, as in <code>[$a, $b]</code>. <code>['id' =&gt; $u-&gt;id, $u-&gt;name]</code> has two items: key <code>ConstantExpression('id')</code> with the <code>id</code> read, then a <code>null</code> key with the <code>name</code> read. Keys are evaluated before their values.</p>
+</div>
+<h3 id="lambdaexpression">LambdaExpression</h3>
+<div class="alert alert-secondary" role="alert"><h4><code>final class LambdaExpression extends ExpressionNode</code></h4><br/><div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+public function __construct(array&lt;ParameterExpression&gt; $parameters, ExpressionNode $body, string $returnType = &#039;mixed&#039;): void
+readonly public array&lt;ParameterExpression&gt; $parameters;
+readonly public ExpressionNode $body;
+readonly public string $returnType;
+</code></pre></div>
+<p>A nested arrow <code>fn</code> inside a tree body, usually a method argument: <code>$b-&gt;posts-&gt;any(fn ($p) =&gt; $p-&gt;rating &gt; 3)</code>. <code>$parameters</code> are the nested <code>fn</code>'s own parameters, with <code>index</code> counted within the nested <code>fn</code>. A <code>ParameterExpression</code> in <code>$body</code> belongs to the nearest enclosing <code>LambdaExpression</code> that declares its name, and otherwise to the outer lambda. <code>$type</code> is <code>'Closure'</code>: evaluating the node gives a <code>\Closure</code> that evaluates <code>$body</code>.</p>
+</div>
 <h2 id="walking-and-translating-trees">Walking and translating trees</h2>
 <h3 id="expressionvisitor">ExpressionVisitor</h3>
 <p><code>Tyhp\Expression\ExpressionVisitor</code> is an abstract base class for the visitor pattern. <code>visit($node)</code> calls <code>$node-&gt;accept($this)</code>, and each node class calls back into its own method — <code>visitBinary()</code> for a <code>BinaryExpression</code>, and so on. Override the methods for the nodes you handle.</p>
@@ -1115,25 +1169,40 @@ readonly public string $targetType;
 <td><code>visitInstanceof(InstanceofExpression $node): mixed</code></td>
 <td><code>InstanceofExpression</code></td>
 </tr>
+<tr>
+<td><code>visitNullSafeMethodCall(NullSafeMethodCallExpression $node): mixed</code></td>
+<td><code>NullSafeMethodCallExpression</code></td>
+</tr>
+<tr>
+<td><code>visitArray(ArrayExpression $node): mixed</code></td>
+<td><code>ArrayExpression</code></td>
+</tr>
+<tr>
+<td><code>visitLambda(LambdaExpression $node): mixed</code></td>
+<td><code>LambdaExpression</code></td>
+</tr>
 </tbody>
 </table></div>
 <p>All visitor methods are <code>public</code> and return <code>mixed</code>, so a visitor can produce any kind of result: SQL strings, a new tree, a validation rule, a boolean.</p>
 <h3 id="walking-every-node">Walking every node</h3>
-<p>Sometimes you need every node rather than a translation: to collect the properties a predicate uses, to find captured values, or to print a tree while debugging. A small helper that lists each node's children, plus a recursive walk, covers all fourteen node types:</p>
+<p>Sometimes you need every node rather than a translation: to collect the properties a predicate uses, to find captured values, or to print a tree while debugging. A small helper that lists each node's children, plus a recursive walk, covers all seventeen node types:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 namespace App;
 
 use Tyhp\Expression;
 use Tyhp\Expression\ArrayAccessExpression;
+use Tyhp\Expression\ArrayExpression;
 use Tyhp\Expression\BinaryExpression;
 use Tyhp\Expression\CastExpression;
 use Tyhp\Expression\CoalesceExpression;
 use Tyhp\Expression\ExpressionNode;
 use Tyhp\Expression\InstanceofExpression;
+use Tyhp\Expression\LambdaExpression;
 use Tyhp\Expression\MethodCallExpression;
 use Tyhp\Expression\NewExpression;
 use Tyhp\Expression\NullSafeAccessExpression;
+use Tyhp\Expression\NullSafeMethodCallExpression;
 use Tyhp\Expression\PropertyAccessExpression;
 use Tyhp\Expression\StaticMethodCallExpression;
 use Tyhp\Expression\TernaryExpression;
@@ -1153,7 +1222,7 @@ final class ExpressionTree {
         if ($node is ArrayAccessExpression) {
             return [$node-&gt;array, $node-&gt;index];
         }
-        if ($node is MethodCallExpression) {
+        if ($node is MethodCallExpression || $node is NullSafeMethodCallExpression) {
             return [$node-&gt;object, ...$node-&gt;arguments];
         }
         if ($node is StaticMethodCallExpression || $node is NewExpression) {
@@ -1166,6 +1235,19 @@ final class ExpressionTree {
             }
             $parts[] = $node-&gt;ifFalse;
             return $parts;
+        }
+        if ($node is ArrayExpression) {
+            array&lt;ExpressionNode&gt; $parts = [];
+            foreach ($node-&gt;items as $item) {
+                if ($item-&gt;key !== null) {
+                    $parts[] = $item-&gt;key;
+                }
+                $parts[] = $item-&gt;value;
+            }
+            return $parts;
+        }
+        if ($node is LambdaExpression) {
+            return [$node-&gt;body];
         }
         return [];   // ParameterExpression and ConstantExpression are leaves
     }
@@ -1580,6 +1662,22 @@ same(fn ($u) =&gt; $u-&gt;age &gt;= $minAge, fn ($x) =&gt; $x-&gt;age &gt;= $min
 <tr>
 <td><code>SerializedInstanceofExpression</code></td>
 <td><code>SerializedExpression $operand</code>, <code>string $targetType = ''</code></td>
+</tr>
+<tr>
+<td><code>SerializedNullSafeMethodCallExpression</code></td>
+<td><code>SerializedExpression $object</code>, <code>string $method = ''</code>, <code>array&lt;SerializedExpression&gt; $arguments = []</code></td>
+</tr>
+<tr>
+<td><code>SerializedArrayExpression</code></td>
+<td><code>array&lt;SerializedArrayItem&gt; $items = []</code></td>
+</tr>
+<tr>
+<td><code>SerializedArrayItem</code></td>
+<td><code>?SerializedExpression $key = null</code>, <code>SerializedExpression $value</code> (not a node; no <code>nodeType</code> or <code>type</code>)</td>
+</tr>
+<tr>
+<td><code>SerializedLambdaExpression</code></td>
+<td><code>string $returnType = ''</code>, <code>array&lt;SerializedExpression&gt; $parameters = []</code>, <code>SerializedExpression $body</code></td>
 </tr>
 </tbody>
 </table></div>

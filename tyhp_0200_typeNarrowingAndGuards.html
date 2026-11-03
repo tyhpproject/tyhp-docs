@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -389,6 +391,16 @@ if ($name !== null) {
     echo &quot;No name provided&quot;;
 }
 </code></pre></div>
+<p>Loose comparisons against <code>null</code> narrow the non-null side: <code>$name != null</code> (or <code>&lt;&gt;</code>) narrows to <code>string</code> when true, and <code>$name == null</code> narrows to <code>string</code> when false. The other side is not narrowed, because <code>==</code> also matches <code>''</code>, <code>0</code>, and <code>false</code>.</p>
+<h2 id="assertions">Assertions</h2>
+<p>A <code>\assert($condition);</code> statement narrows the code after it as if the condition held:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function label(?User $user): string {
+    \assert($user !== null);
+    return $user-&gt;getName();  // OK: $user is `User`
+}
+</code></pre></div>
 <h2 id="negated-guards-else-branches">Negated Guards (Else Branches)</h2>
 <p>When a type guard check fails (the else branch), the variable is narrowed to the remaining types -- the original type minus the guarded type. This is called negative narrowing.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -513,6 +525,17 @@ function handleValue(string|int|array $val): void {
     // $val is narrowed to `string|int` for all remaining code
     echo $val;
 }
+
+function cityOf(?User $user): string {
+    if ($user !== null) {
+        \logVisit($user);
+    } else {
+        return &quot;Unknown&quot;;
+    }
+
+    // The else branch returned, so only the then branch reaches here
+    return $user-&gt;getCity();
+}
 </code></pre></div>
 <h2 id="ternary-and-match-narrowing">Ternary and Match Narrowing</h2>
 <p>Type narrowing also works within ternary expressions and <code>match</code> expressions:</p>
@@ -530,6 +553,26 @@ string $result = match(true) {
     \is_int($value)    =&gt; (string) $value,   // narrowed to int
     default            =&gt; \number_format($value, 2), // narrowed to float
 };
+</code></pre></div>
+<p>In <code>match (true)</code> and <code>switch (true)</code>, arms are tried in order, so each arm's conditions and body also see every earlier condition as false, and <code>default</code> sees every condition as false:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function role(?User $user): string {
+    return match (true) {
+        $user === null    =&gt; &#039;guest&#039;,
+        $user-&gt;isAdmin()  =&gt; &#039;admin&#039;,          // $user is `User`: the first arm failed
+        default           =&gt; $user-&gt;getName(), // $user is `User`
+    };
+}
+
+function greet(?User $user): string {
+    switch (true) {
+        case $user === null:
+            return &#039;Hello&#039;;
+        default:
+            return &#039;Hello &#039; . $user-&gt;getName(); // $user is `User`
+    }
+}
 </code></pre></div>
 <h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Type narrowing is entirely a compile-time concept. The guard functions compile to normal PHP -- no runtime type tracking is added. The narrowing information only exists during the Tyhp compilation phase for type checking purposes.</p>
@@ -733,7 +776,7 @@ if (\is_string($value)) {
     $length = \strlen($value);  // OK: $value is narrowed to string
 }
 
-// ERROR: Property access on potentially null type
+// ERROR TYHP4198: member access on a possibly null value
 ?User $user = \findUser(42);
 // $name = $user-&gt;getName();  // $user might be null
 
@@ -744,6 +787,10 @@ if ($user !== null) {
 
 // Or use nullsafe operator (does not narrow, returns nullable)
 ?string $name = $user?-&gt;getName();
+
+// ERROR TYHP4198: the result of `?-&gt;` is nullable
+$address = $user?-&gt;getAddress();
+// $city = $address-&gt;city;  // $address might be null
 </code></pre></div>
 <h2 id="important-notes">Important Notes</h2>
 <ul>
@@ -753,6 +800,7 @@ if ($user !== null) {
 <li>The narrowed type is usually one of the types in the original union — except a shape guard, which refines <code>object</code> / <code>mixed</code> (or a union containing them) to the object-shape alias.</li>
 <li>Outside of the guarded scope, the variable reverts to its full declared type.</li>
 <li>Multiple guards compound: after checking <code>!== null</code> and then <code>is Foo</code>, the type is <code>Foo</code>.</li>
+<li>Property reads narrow like variables: after <code>if ($order-&gt;customer !== null)</code>, <code>$order-&gt;customer-&gt;name</code> is allowed. This also covers <code>$this-&gt;prop</code>, nested paths (<code>$order-&gt;customer-&gt;address</code>), and static properties (<code>self::$prop</code>, <code>Config::$current</code>). Assigning or <code>unset()</code>-ing a property path ends the narrowing of that path and every path under it. A method call result is not narrowed by checking it; assign it to a variable and check the variable.</li>
 <li>Custom type guard functions must actually return a boolean value at runtime -- the guard return type only tells the compiler about the narrowing effect.</li>
 </ul>
 

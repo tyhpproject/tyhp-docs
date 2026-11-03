@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -389,6 +391,19 @@ string $name = &quot;Alice&quot;;
 // To allow null, declare as nullable
 ?string $maybeName = null;  // OK
 string|null $alsoNullable = null;  // Also OK
+</code></pre></div>
+<p>A value that may be <code>null</code> must be <a href="tyhp_0200_typeNarrowingAndGuards.html">narrowed</a> before you read or write its properties, call its methods, or index it as a struct or <code>ArrayAccess</code> object (TYHP4198). Use <code>?-&gt;</code> when <code>null</code> should propagate instead:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function findUser(int $id): ?User { /* ... */ }
+
+$user = findUser(2);
+// echo $user-&gt;name;  // ERROR TYHP4198: $user may be null
+
+if ($user !== null) {
+    echo $user-&gt;name;  // OK: narrowed to User
+}
+echo $user?-&gt;name ?? &#039;guest&#039;;  // OK: null-safe access
 </code></pre></div>
 <h2 id="closure-and-arrow-parameter-inference">Closure and Arrow Parameter Inference</h2>
 <p>Named function and method parameters always need an explicit type. Closure and arrow-function parameters also need a type, unless the expected callable type supplies it. If there is no expected callable type (or the parameter cannot be inferred), the compiler requires an annotation.</p>

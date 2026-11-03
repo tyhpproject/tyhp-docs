@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -438,7 +440,7 @@
 <p><code>tyhp/io</code> is a compiled runtime package. The compiler does not add it for you; require it explicitly:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="plaintext hljs">composer require tyhp/io
 </code></pre></div>
-<p>Version pins follow the same <code>80N.X.Y</code> scheme as the other compiled <code>tyhp/*</code> helpers, where <code>80N</code> is the PHP version your project targets (<code>output.phpVersion</code>) and <code>X.Y</code> is the package's own version (currently <code>0.1</code>). A project targeting PHP 8.4 therefore pins <code>&quot;tyhp/io&quot;: &quot;804.0.1&quot;</code> or <code>&quot;804.0.*&quot;</code>. See <a href="project_composerPackages.html">Composer Runtime Packages</a> for how these versions work. The package requires PHP 8.2 or later, <code>tyhp/core</code>, and <code>tyhp/async</code>.</p>
+<p>Version pins follow the same <code>80N.X.Y</code> scheme as the other compiled <code>tyhp/*</code> helpers, where <code>80N</code> is the PHP version your project targets (<code>output.phpVersion</code>) and <code>X.Y</code> is the package's own version (currently <code>0.3</code>). A project targeting PHP 8.4 therefore pins <code>&quot;tyhp/io&quot;: &quot;804.0.3&quot;</code> or <code>&quot;804.0.*&quot;</code>. See <a href="project_composerPackages.html">Composer Runtime Packages</a> for how these versions work. The package requires PHP 8.2 or later, <code>tyhp/core</code>, and <code>tyhp/async</code>.</p>
 <h3 id="php-extensions">PHP extensions</h3>
 <p>The package installs without any optional extension. Each component checks for the extension it needs when you first use it and fails with <code>IoUnavailableException</code> when it is missing:</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">

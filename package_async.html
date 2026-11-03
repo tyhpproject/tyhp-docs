@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -1162,7 +1164,7 @@ async function syncWithDeadline(CancellationToken $callerToken, int $deadlineMs)
 <div class="alert alert-secondary" role="alert"><h4><code>public static function getInstance(): EventLoop</code></h4><br/><p>Returns the process-wide loop, creating it on first use. Every promise, timer, and stream watcher in the process uses this instance.</p>
 </div>
 <p><a id="eventloop-run"></a></p>
-<div class="alert alert-secondary" role="alert"><h4><code>public function run&lt;T extends __Awaited&lt;void|mixed&gt; = mixed&gt;(Promise&lt;T&gt; $rootPromise, ?CancellationToken $token = null): T</code></h4><br/><p>Runs the loop until <code>$rootPromise</code> has settled and no work is immediately runnable, then returns the root's value or throws its rejection reason. Timers that are not yet due, intervals, and stream watchers do not keep it running after the root has settled; they stay registered for the next time the loop runs.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>public function run&lt;T extends __Awaited&lt;void|mixed&gt; = mixed&gt;(Promise&lt;T&gt; $rootPromise, ?CancellationToken $token = null): T</code></h4><br/><p>Runs the loop until <code>$rootPromise</code> has settled and no work is immediately runnable, then returns the root's value or throws its rejection reason. <code>T</code> is inferred from <code>$rootPromise</code>, so the result has the promise's settled type; a <code>Promise&lt;void&gt;</code> (an <code>async</code> function declared <code>: void</code>) can be run for its effect. Timers that are not yet due, intervals, and stream watchers do not keep it running after the root has settled; they stay registered for the next time the loop runs.</p>
 <p>Throws <code>\LogicException</code> when the loop is already running. Exceptions thrown by timer, microtask, and stream callbacks propagate out of <code>run()</code>. If <code>stop()</code> ends the loop while the root is still pending, <code>run()</code> throws <code>InvalidPromiseStateException</code>.</p>
 <p>When <code>$token</code> is given, it is checked once per loop iteration, after the microtask, timer, and I/O phases. If it is cancelled while the root promise is still pending, <code>run()</code> shuts the whole loop down and throws <code>OperationCancelledException</code>; if the root settled in that same iteration, its own result or error wins and nothing is shut down. Shutting down:</p>
 <ul>

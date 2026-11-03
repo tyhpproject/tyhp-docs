@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -307,7 +309,7 @@
             </span>
             Note
         </h4>
-        <div class="callout-content"><p>Struct declarations are completely erased from PHP output. They exist only at compile time for type checking. Instantiation produces an associative array. PHP callers see <code>array</code>; the compiler does not emit a runtime shape check.</p>
+        <div class="callout-content"><p>A struct produces no PHP class or file of its own. Instantiation produces an associative array, and PHP callers see <code>array</code>; the compiler does not emit a runtime shape check. A named struct does register a runtime type descriptor (<code>\Tyhp\Type::register(...)</code>) in its namespace's <code>_functions.php</code>, which <code>typeof</code> and <code>is</code> use. See <a href="tyhp_0700_typeAliases.html">Type Aliases</a>.</p>
 </div>
     </div>
 </div>
@@ -341,8 +343,12 @@ type UserProfile = struct {
 };
 </code></pre></div>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">&lt;?php
-// PHP output — struct declarations are erased entirely.
-// No PHP code is generated for the struct definition.
+// PHP output — no class is generated. Each named struct registers a runtime
+// type descriptor in the namespace&#039;s _functions.php:
+
+\Tyhp\Type::register(&#039;Point&#039;, fn () =&gt; \Tyhp\Type::struct()-&gt;field(&#039;x&#039;, \Tyhp\Type::float())-&gt;field(&#039;y&#039;, \Tyhp\Type::float()));
+
+\Tyhp\Type::register(&#039;UserProfile&#039;, fn () =&gt; \Tyhp\Type::struct()-&gt;field(&#039;name&#039;, \Tyhp\Type::string())-&gt;field(&#039;email&#039;, \Tyhp\Type::string())-&gt;field(&#039;age&#039;, \Tyhp\Type::int())-&gt;optional(&#039;bio&#039;, \Tyhp\Type::nullable(\Tyhp\Type::string())));
 </code></pre></div>
 <h2 id="property-types-and-defaults">Property Types and Defaults</h2>
 <p>Every struct property must have an explicit type annotation. Type inference is not allowed in struct property declarations. Properties without an initializer (<code>=</code>) are <strong>required</strong> at <code>new</code> — there are no implicit zeros for non-nullable fields. Omitting a required key is <strong>TYHP CheckerStructRequiredPropertyNotSet</strong>. Nullable properties without an explicit default default to <code>null</code> and are optional.</p>

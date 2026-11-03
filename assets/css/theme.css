@@ -11,7 +11,7 @@
 }
 
 .docs-sidebar {
-  background: inherit;
+  background: var(--bs-body-bg);
 }
 
 .logo-icon-dark {
@@ -13401,7 +13401,41 @@ a.text-link:hover {
   background: inherit;
 }
 [data-bs-theme=dark] .docs-sidebar {
-  background: inherit;
+  background: var(--bs-body-bg);
+}
+[data-bs-theme=dark] .callout-block {
+  background: rgba(255, 255, 255, 0.04);
+}
+[data-bs-theme=dark] .callout-block code {
+  background: rgba(255, 255, 255, 0.1);
+}
+[data-bs-theme=dark] .callout-block.callout-block-info {
+  background: rgba(91, 153, 234, 0.12);
+}
+[data-bs-theme=dark] .callout-block.callout-block-info .callout-title,
+[data-bs-theme=dark] .callout-block.callout-block-info a {
+  color: rgb(136.2108108108, 181.1189189189, 239.7891891892);
+}
+[data-bs-theme=dark] .callout-block.callout-block-success {
+  background: rgba(92, 179, 119, 0.12);
+}
+[data-bs-theme=dark] .callout-block.callout-block-success .callout-title,
+[data-bs-theme=dark] .callout-block.callout-block-success a {
+  color: rgb(126.7824267782, 195.2175732218, 148.0209205021);
+}
+[data-bs-theme=dark] .callout-block.callout-block-warning {
+  background: rgba(238, 191, 65, 0.12);
+}
+[data-bs-theme=dark] .callout-block.callout-block-warning .callout-title,
+[data-bs-theme=dark] .callout-block.callout-block-warning a {
+  color: rgb(242.1884057971, 206.768115942, 111.8115942029);
+}
+[data-bs-theme=dark] .callout-block.callout-block-danger {
+  background: rgba(210, 109, 105, 0.12);
+}
+[data-bs-theme=dark] .callout-block.callout-block-danger .callout-title,
+[data-bs-theme=dark] .callout-block.callout-block-danger a {
+  color: rgb(221.7692307692, 147.1846153846, 144.2307692308);
 }
 [data-bs-theme=dark] .logo-icon-dark {
   display: initial;

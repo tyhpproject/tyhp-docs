@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -304,14 +306,14 @@
 <p>Compiled <code>tyhp/*</code> helpers (<code>core</code>, <code>async</code>, <code>decimal</code>, <code>lambda</code>, <code>io</code>, <code>parallel</code>) are versioned as <code>80N.X.Y</code> where <code>80N</code> is the PHP that artifact is for (<code>802</code> = 8.2, <code>803</code> = 8.3, <code>804</code> = 8.4, <code>805</code> = 8.5).</p>
 <p><code>tyhpdef/*</code> packages (<code>tyhpdef/php</code>, <code>tyhpdef/php-ext-*</code>, Composer-lib wrappers) publish that <code>composer.json</code> version as the Packagist tag. They do not use <code>80N.X.Y</code>.</p>
 <p><code>tyhp/compiler</code> is versioned with the compiler itself (<code>805.1.2-beta.3</code>), not as <code>80N.X.Y</code>. See <a href="package_compiler.html">The tyhp/compiler Package</a>.</p>
-<p>The compiled helpers currently ship at source version <code>0.1</code>, so the Packagist pins look like <code>804.0.1</code> for PHP 8.4 <code>tyhp/core</code>. If <code>tyhp/core</code> later becomes <code>1.4</code>, PHP 8.4 apps require <code>804.1.4</code> (or <code>804.1.*</code>). <code>tyhp/lambda</code> can be <code>2.0</code> at the same time. <code>tyhpdef/php</code> publishes the <code>version</code> in its <code>composer.json</code> (currently <code>0.0.2</code>); put it in <code>require-dev</code> as <strong><code>@dev</code></strong> rather than pinning that tag.</p>
+<p>The compiled helpers currently ship at source version <code>0.3</code>, so the Packagist pins look like <code>804.0.3</code> for PHP 8.4 <code>tyhp/core</code>. If <code>tyhp/core</code> later becomes <code>1.4</code>, PHP 8.4 apps require <code>804.1.4</code> (or <code>804.1.*</code>). <code>tyhp/lambda</code> can be <code>2.0</code> at the same time. <code>tyhpdef/php</code> publishes the <code>version</code> in its <code>composer.json</code> (currently <code>0.0.3</code>); put it in <code>require-dev</code> as <strong><code>@dev</code></strong> rather than pinning that tag.</p>
 <h2 id="version-map-compiled-tyhp-helpers">Version map (compiled <code>tyhp/*</code> helpers)</h2>
 <div class="table-responsive"><table class="table table-striped table-bordered">
 <thead>
 <tr>
 <th><code>output.phpVersion</code></th>
 <th>Package MAJOR</th>
-<th>Pin when the package is <code>0.1</code></th>
+<th>Pin when the package is <code>0.3</code></th>
 <th>Composer <code>php</code> on that artifact</th>
 </tr>
 </thead>
@@ -319,36 +321,37 @@
 <tr>
 <td><code>&quot;8.2&quot;</code></td>
 <td><code>802</code></td>
-<td><code>802.0.1</code></td>
+<td><code>802.0.3</code></td>
 <td><code>&gt;=8.2</code></td>
 </tr>
 <tr>
 <td><code>&quot;8.3&quot;</code></td>
 <td><code>803</code></td>
-<td><code>803.0.1</code></td>
+<td><code>803.0.3</code></td>
 <td><code>&gt;=8.3</code></td>
 </tr>
 <tr>
 <td><code>&quot;8.4&quot;</code></td>
 <td><code>804</code></td>
-<td><code>804.0.1</code></td>
+<td><code>804.0.3</code></td>
 <td><code>&gt;=8.4</code></td>
 </tr>
 <tr>
 <td><code>&quot;8.5&quot;</code></td>
 <td><code>805</code></td>
-<td><code>805.0.1</code></td>
+<td><code>805.0.3</code></td>
 <td><code>&gt;=8.5</code></td>
 </tr>
 </tbody>
 </table></div>
+<p>Compiled <code>tyhp/*</code> helpers are not published for <code>&quot;8.0&quot;</code> or <code>&quot;8.1&quot;</code>. When the compiled code needs one of them and <code>build.updateComposer</code> would pin it from Packagist, <code>tyhp build</code> reports <strong>TYHP7108</strong> and leaves <code>composer.json</code> unchanged.</p>
 <p><code>tyhp init</code> writes <strong><code>@dev</code></strong> for <code>tyhp/core</code> in <code>require</code> and for <code>tyhpdef/php</code> in <code>require-dev</code> (and <code>--vendor</code> adds the same constraint for missing runtime <code>tyhp/*</code> packages, and <code>@dev</code> in <code>require-dev</code> for missing <code>tyhpdef/php</code>). <code>tyhpdef/*</code> packages are compile-time stubs — prefer <code>require-dev</code> with <code>@dev</code>. Compiled <code>tyhp/*</code> helpers belong in <code>require</code> because emitted PHP loads them at runtime. <code>tyhp build</code> (when not using a compiler-checkout path repository, and when <code>build.updateComposer</code> writes pins) uses the pin for <strong>each compiled</strong> <code>tyhp/*</code> package from that package’s own <code>X.Y</code> plus your <code>output.phpVersion</code>. They do not all have to be the same version.</p>
 <h2 id="applications">Applications</h2>
 <p>An app targets <strong>one</strong> PHP version. Pin compiled <code>tyhp/*</code> helpers in <code>require</code> at that MAJOR and <strong>that package’s</strong> <code>X.Y</code>. Put <code>tyhpdef/*</code> in <code>require-dev</code> as <code>@dev</code>:</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
     &quot;require&quot;: {
         &quot;php&quot;: &quot;~8.4.0&quot;,
-        &quot;tyhp/core&quot;: &quot;804.0.1&quot;
+        &quot;tyhp/core&quot;: &quot;804.0.3&quot;
     },
     &quot;require-dev&quot;: {
         &quot;tyhpdef/php&quot;: &quot;@dev&quot;
@@ -507,7 +510,7 @@
 <p><code>tyhp init</code> writes that key. <code>tyhp composer</code>, <code>tyhp composer sync</code>, and <code>tyhp build --fix</code> also write it when missing and do not overwrite an explicit <code>false</code>. A raw <code>composer</code> command still needs the key already on disk. A <code>--no-dev</code> install does not rewrite <code>composer.json</code>.</p>
 <p>The first <code>composer require tyhp/core</code> often misses ambient tyhpdefs in that same transaction. Run <code>composer update</code> or <code>tyhp composer sync</code>. If extras are missing, <code>tyhp build</code> explains (<code>TYHP7701</code>) and <code>tyhp composer sync</code> / <code>tyhp build --fix</code> recovers. Ordinary <code>tyhp build</code> never auto-updates Composer. Details: <a href="cli_composer.html">CLI: Composer</a>.</p>
 <h2 id="path-repositories-compiler-checkout">Path repositories (compiler checkout)</h2>
-<p>If <code>tyhp build</code> can see a <code>tyhp-runtime-src</code> checkout, it pins each package’s <strong>source</strong> version (for example <code>0.1</code> or <code>0.0.2</code>) and adds Composer path repositories for the packages in it. It finds the checkout through the <code>TYHP_RUNTIME_SRC</code> environment variable (the checkout or its <code>packages</code> directory), otherwise a sibling <code>tyhp-runtime-src/packages</code> directory found by walking up from the compiler’s directory or the current directory. That is only for developing against the runtime packages themselves. Packagist consumers of compiled <code>tyhp/*</code> helpers use the <code>80N.X.Y</code> form. Packagist consumers of <code>tyhpdef/*</code> typically use <code>@dev</code> in <code>require-dev</code>; the published tag is the source version (currently <code>0.0.2</code> for <code>tyhpdef/php</code>).</p>
+<p>If <code>tyhp build</code> can see a <code>tyhp-runtime-src</code> checkout, it pins each package’s <strong>source</strong> version (for example <code>0.3</code> or <code>0.0.3</code>) and adds Composer path repositories for the packages in it. It finds the checkout through the <code>TYHP_RUNTIME_SRC</code> environment variable (the checkout or its <code>packages</code> directory), otherwise a sibling <code>tyhp-runtime-src/packages</code> directory found by walking up from the compiler’s directory or the current directory. That is only for developing against the runtime packages themselves. Packagist consumers of compiled <code>tyhp/*</code> helpers use the <code>80N.X.Y</code> form. Packagist consumers of <code>tyhpdef/*</code> typically use <code>@dev</code> in <code>require-dev</code>; the published tag is the source version (currently <code>0.0.3</code> for <code>tyhpdef/php</code>).</p>
 <div class="callout-block callout-block-success">
     <div class="content">
         <h4 class="callout-title">

@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -356,6 +358,34 @@ $result = \Tyhp\Generic::bind($h-&gt;identity(...), \Tyhp\Type::string())($value
 <p>A first-class callable of a generic function (<code>identity(...)</code> or <code>identity&lt;string&gt;(...)</code>) keeps its type-binding identity, also when it needs <a href="tyhp_1600_operatorOverloads.html#conversions-on-first-class-callables">implicit conversions</a> for a parameter. The compiler wraps it with <code>\Tyhp\Generic::wrapCallable</code>, and <code>\Tyhp\Generic::bind</code> on that value binds the type arguments while the conversions still apply.</p>
 <p>PHP builtin and overlay generics that omit the stamp stay erased / inlined. Same-compilation erased classes (no remaining runtime use and no remaining generic-typed properties) emit a plain <code>new</code> / plain call, still stamped <code>erased: true</code>.</p>
 <p><code>#[\Tyhp\EraseGeneric]</code> is compile-only (<code>#[\Tyhp\NoEmit]</code>). It is legal on a class, a property, or a promoted constructor parameter. On a method or function it is an error. The attribute is not inherited; a tracked child of an erased generic parent does not call <code>parent::__initGenerics__</code>.</p>
+<h3 id="declared-property-types-at-runtime">Declared property types at runtime</h3>
+<p>When a property's PHP type hint loses part of its Tyhp type (type arguments, a struct type, or a source type alias), the compiler adds <code>#[\Tyhp\PropertyType]</code> with the full type. Promoted constructor parameters get the same attribute.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+namespace App;
+
+class Blog {
+    public array&lt;Post&gt; $posts = [];
+    public ?Table&lt;Blog&gt; $related = null;
+    public function __construct(public array&lt;string, int&gt; $counts = []) {}
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">// PHP output
+class Blog
+{
+    #[\Tyhp\PropertyType(&#039;array&lt;App\\Post&gt;&#039;)]
+    public array $posts = [];
+    #[\Tyhp\PropertyType(&#039;?App\\Table&lt;App\\Blog&gt;&#039;)]
+    public ?\App\Table $related = null;
+    public function __construct(#[\Tyhp\PropertyType(&#039;array&lt;string, int&gt;&#039;)] public array $counts = []) {}
+}
+</code></pre></div>
+<p><code>\Tyhp\Type::fromProperty()</code> reads the declared type, and falls back to the reflected PHP type when there is no attribute:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">$posts = \Tyhp\Type::fromProperty(\App\Blog::class, &#039;posts&#039;);
+(string)$posts;                    // &#039;array&lt;App\Post&gt;&#039;
+(string)$posts-&gt;elementType();     // &#039;App\Post&#039;
+\Tyhp\Type::fromProperty(\App\Blog::class, &#039;related&#039;)-&gt;typeArguments();   // [Type for App\Blog]
+</code></pre></div>
+<p>The spelling is the format <code>\Tyhp\Type::parse()</code> reads: class names are fully qualified, structs are <code>struct App\Address</code>, and source type aliases use their registered name. A property whose type mentions a type parameter of its class (<code>array&lt;T&gt;</code>) has no attribute. When <code>fromProperty()</code> is called on an object of a generic class, a <code>T</code>-typed property returns the type argument bound for that object. The compiler writes the attribute; one written in source is replaced.</p>
 <h2 id="generic-interfaces">Generic Interfaces</h2>
 <p>Interfaces can declare generic type parameters. Classes that implement a generic interface must specify concrete type arguments, and the compiler validates that the implementing methods match the parameterized signatures.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp

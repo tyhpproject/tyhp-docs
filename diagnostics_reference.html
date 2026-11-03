@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -542,15 +544,16 @@ function area(int $w, int $h): float;
 <p>Keep the signatures and the implementation of one overload set together, in that order, with nothing declared between them.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP3033 (Warning)</code></h4><br/><p><strong>BinderOverloadLone.</strong> Message: <code><code>{0}</code> has a single overload signature; declare at least two overloads, or remove it and use the implementation's own signature</code>.</p>
-<p>A set with one signature hides the implementation's signature without adding a second call shape.</p>
+<p>An overload set with one signature hides the implementation's signature without adding a second call shape.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP3034 (Error)</code></h4><br/><p><strong>BinderOverloadDuplicate.</strong> Message: <code>Overload signature <code>{0}</code> has the same parameters and return type as an earlier overload</code>.</p>
-<p>The first matching signature always wins, so an identical later signature can never be selected. Remove it or change its parameter types.</p>
+<p>The first matching overload signature always wins, so an identical later signature can never be selected. Remove it or change its parameter types.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP3035 (Error)</code></h4><br/><p><strong>BinderOverloadModifierMismatch.</strong> Message: <code>Overload signature <code>{0}</code> must use the same modifiers (static, visibility, async, abstract, final) as the rest of its overload set</code>.</p>
 <p>Every signature of a method overload set and its implementation share one set of modifiers.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>TYHP3036 (Error)</code></h4><br/><p><strong>BinderOverloadConstructorNotSupported.</strong> Message: <code>Overload signatures are not supported on constructors or destructors (<code>{0}</code>); declare separate factory methods or use optional parameters</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP3036 (Error)</code></h4><br/><p><strong>BinderOverloadConstructorNotSupported.</strong> Message: <code>Overload signatures are not supported on constructors or destructors (<code>{0}</code>); declare separate factory methods or use optional parameters</code>.<br />
+Run <code>tyhp --explain TYHP3036</code> for the long-form explanation.</p>
 </div>
 <h2 id="checker-errors-tyhp4xxx">Checker Errors (TYHP4xxx)</h2>
 <p>Checker errors occur during type checking and semantic analysis.</p>
@@ -641,6 +644,7 @@ function getStatus(bool $active): string {
 }
 </code></pre></div>
 <p>Fix: Add a return statement for every code path, including <code>else</code> branches and after loops.</p>
+<p>A <code>switch</code> returns on every path when it has a <code>default</code> case and every case returns or throws, either directly or by falling through into a case that does. A <code>break</code> that leaves the switch, or a missing <code>default</code>, leaves a path that continues after the switch.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4012 (Warning)</code></h4><br/><p><strong>CheckerUnreachableCode.</strong> Message: <code>Unreachable code detected</code>.</p>
 <p>Code exists after a <code>return</code>, <code>throw</code>, <code>break</code>, <code>continue</code>, or <code>exit</code> statement and will never execute.</p>
@@ -719,18 +723,22 @@ class MySingleton extends Singleton { }  // Error: Cannot extend final class
 <p>A subclass attempts to override a method that is declared as <code>final</code> in the parent class.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4021 (Error)</code></h4><br/><p><strong>CheckerReadonlyPropertyReassigned.</strong> Message: <code>Cannot assign to readonly property <code>{0}</code></code>.</p>
-<p>A <code>readonly</code> property is being assigned outside of the constructor.</p>
+<p>A <code>readonly</code> property is assigned where PHP does not allow it. PHP lets a readonly property be initialized once, from inside its declaring class (and, from PHP 8.4, a subclass). This error is reported for a write through a receiver other than <code>$this</code> inside the class, and for a write from a function, the file scope, or an unrelated class. Every instance property of a <code>readonly class</code> is readonly, whether or not it repeats the modifier.</p>
+<p>A property with an explicit set visibility such as <code>public(set)</code> is not reported.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-class User {
-    public function __construct(
-        public readonly string $name
-    ) {}
+readonly class User {
+    public function __construct(public string $name) {}
 
-    public function rename(string $newName): void {
-        $this-&gt;name = $newName;  // Error: Cannot assign to readonly property
+    public function copyFrom(User $other): void {
+        $other-&gt;name = $this-&gt;name;  // Error: Cannot assign to readonly property `name`
     }
 }
+
+function rename(User $user): void {
+    $user-&gt;name = &#039;Ada&#039;;  // Error: Cannot assign to readonly property `name`
+}
 </code></pre></div>
+<p>Fix: Create a modified copy with <code>clone $user with [name =&gt; 'Ada']</code>, or set the value in the constructor.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4022 (Error)</code></h4><br/><p><strong>CheckerAbstractClassInstantiated.</strong> Message: <code>Cannot instantiate abstract class <code>{0}</code></code>.</p>
 <p>Code attempts to create an instance of an abstract class with <code>new</code>.</p>
@@ -743,8 +751,9 @@ enum Status: string {
 }
 </code></pre></div>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>TYHP4024 (Error)</code></h4><br/><p><strong>CheckerEnumMethodNotAllowed.</strong> Message: <code>Enum cannot have a constructor</code>.</p>
-<p>An enum declares a method that is not allowed (e.g., a constructor).</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4024 (Error)</code></h4><br/><p><strong>CheckerEnumMethodNotAllowed.</strong> Message: <code>Enum cannot declare magic method <code>{0}</code></code>.</p>
+<p>PHP does not allow an enum to declare these magic methods, and rejects the enum when it is loaded: <code>__construct</code>, <code>__destruct</code>, <code>__clone</code>, <code>__get</code>, <code>__set</code>, <code>__isset</code>, <code>__unset</code>, <code>__toString</code>, <code>__serialize</code>, <code>__unserialize</code>, <code>__sleep</code>, <code>__wakeup</code>, and <code>__set_state</code>. Enums may declare <code>__call</code>, <code>__callStatic</code>, and <code>__invoke</code>.</p>
+<p><code>__debugInfo()</code> is allowed on enums from PHP 8.6. Below that <code>output.phpVersion</code> it is reported as TYHP4379.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4025 (Error)</code></h4><br/><p><strong>CheckerMemberNotAccessible.</strong> Message: <code><code>{0}</code> is <code>{1}</code> and cannot be accessed from <code>{2}</code></code>.</p>
 <p>A private or protected member is accessed from outside its allowed scope.</p>
@@ -1021,8 +1030,7 @@ Run <code>tyhp --explain TYHP4094</code> for the long-form explanation.</p>
 Run <code>tyhp --explain TYHP4095</code> for the long-form explanation.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4096 (Error)</code></h4><br/><p><strong>CheckerSpreadNonIterable.</strong> Message: <code>Spread operator requires an iterable type, found <code>{0}</code></code>.</p>
-<p>A call argument spread (<code>f(...$x)</code>) needs an array or other iterable; a <code>mixed</code> value must be narrowed first.<br />
-Run <code>tyhp --explain TYHP4096</code> for the long-form explanation.</p>
+<p>A call argument spread (<code>f(...$x)</code>) needs an array or other iterable; a <code>mixed</code> value must be narrowed first.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4097 (Error)</code></h4><br/><p><strong>CheckerThisInStaticContext.</strong> Message: <code><code>$this</code> cannot be used in static context</code>.<br />
 Run <code>tyhp --explain TYHP4097</code> for the long-form explanation.</p>
@@ -1037,7 +1045,7 @@ Run <code>tyhp --explain TYHP4099</code> for the long-form explanation.</p>
 Run <code>tyhp --explain TYHP4100</code> for the long-form explanation.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4101 (Error)</code></h4><br/><p><strong>CheckerSymbolNameNotFound.</strong> Message: <code>Symbol <code>{0}</code> is not found for type <code>{1}</code></code>.</p>
-<p>A property read, method call, or static member access whose receiver type has no such member. This covers instance members of a fully-known class or interface (including bare <code>object</code>, which has no members) as well as scalar and other built-in receivers. The error is not reported when the class has a magic accessor (<code>__get</code>, <code>__call</code>, <code>__callStatic</code>), when part of its ancestry is unresolved, or when the member name is dynamic (<code>$obj-&gt;{$name}</code>).</p>
+<p>A property read, method call, or static member access names a symbol its receiver type does not have. This covers instance members of a fully-known class or interface (including bare <code>object</code>, which has no members) as well as scalar and other built-in receivers. The error is not reported when the class has a magic accessor (<code>__get</code>, <code>__call</code>, <code>__callStatic</code>), when part of its ancestry is unresolved, or when the member name is dynamic (<code>$obj-&gt;{$name}</code>).</p>
 <p>Inside the branch of <code>\property_exists($obj, 'name')</code> or <code>\method_exists($obj, 'name')</code> with a literal name, that member is known to exist.</p>
 <p>For a scalar or other built-in receiver, or a class, this is also what you see when the method belongs to an extension that is not in scope in the current file. A project-source extension applies in the file that declares it, in files that import it with <code>use extension</code>, and everywhere when a file declares it with <code>global use extension</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -1060,11 +1068,16 @@ Run <code>tyhp --explain TYHP4106</code> for the long-form explanation.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4107 (Error)</code></h4><br/><p><strong>CheckerPromotedVariadic.</strong> Message: <code>Variadic parameter cannot be a promoted property</code>.<br />
 Run <code>tyhp --explain TYHP4107</code> for the long-form explanation.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>TYHP4108 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassMutableProperty.</strong> Message: <code>Mutable property <code>{0}</code> in readonly class</code>.<br />
-Run <code>tyhp --explain TYHP4108</code> for the long-form explanation.</p>
-</div>
-<div class="alert alert-secondary" role="alert"><h4><code>TYHP4109 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassStaticProperty.</strong> Message: <code>Static property in readonly class</code>.<br />
-Run <code>tyhp --explain TYHP4109</code> for the long-form explanation.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4109 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassStaticProperty.</strong> Message: <code>Readonly class <code>{1}</code> cannot declare static property <code>{0}</code></code>.</p>
+<p>Every instance property of a <code>readonly class</code> is readonly, and PHP does not allow static properties in a readonly class at all. PHP rejects the class when it is loaded.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+readonly class Config {
+    public static int $instances = 0;   // Error: static property in a readonly class
+
+    public function __construct(public string $name) {}
+}
+</code></pre></div>
+<p>Fix: Move the static state to a separate, non-readonly class, or use a class constant.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4110 (Error)</code></h4><br/><p><strong>CheckerEnumCaseMissingValue.</strong> Message: <code>Backed enum case <code>{0}</code> must have a value</code>.<br />
 Run <code>tyhp --explain TYHP4110</code> for the long-form explanation.</p>
@@ -1099,7 +1112,6 @@ function narrow(int $a): int {   // the implementation does not accept `string`
     return $a;
 }
 </code></pre></div>
-<p>Run <code>tyhp --explain TYHP4118</code> for the long-form explanation.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4119 (Warning)</code></h4><br/><p><strong>CheckerIncomparableTypes.</strong> Message: <code>Comparing types <code>{0}</code> and <code>{1}</code> has no meaningful comparison</code>.<br />
 Run <code>tyhp --explain TYHP4119</code> for the long-form explanation.</p>
@@ -1277,7 +1289,12 @@ Run <code>tyhp --explain TYHP4156</code> for the long-form explanation.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4168 (Error)</code></h4><br/><p><strong>CheckerParameterizedStaticForbidden.</strong> Message: <code>Parameterized <code>static&lt;...&gt;</code> is not allowed; use bare <code>static</code>, <code>self&lt;...&gt;</code>, <code>parent&lt;...&gt;</code>, or an explicit class name</code>.</p>
 <p>Tyhp forbids parameterized <code>static&lt;...&gt;</code> in every scope, including <code>final</code> classes.</p>
 <p>Late-static binding names the late-bound class; it does not invent or rebind generic type arguments. Type arguments come from the call-site class spelling (<code>Child&lt;string&gt;::factory()</code>) or from the receiver/<code>$this</code> instantiation for instance methods.</p>
-<p>Use: - bare <code>static</code> for fluent / LSB returns that should follow the late-bound class - <code>self&lt;...&gt;</code> or the declaring class name for factories that stamp method generics onto the class (e.g. <code>_async&lt;T&gt;(...): self&lt;__Awaited&lt;T&gt;&gt;</code>) - <code>parent&lt;...&gt;</code> when an explicit parent instantiation is required</p>
+<p>Use:</p>
+<ul>
+<li>bare <code>static</code> for fluent / LSB returns that should follow the late-bound class</li>
+<li><code>self&lt;...&gt;</code> or the declaring class name for factories that stamp method generics onto the class (e.g. <code>_async&lt;T&gt;(...): self&lt;__Awaited&lt;T&gt;&gt;</code>)</li>
+<li><code>parent&lt;...&gt;</code> when an explicit parent instantiation is required</li>
+</ul>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">final class Promise&lt;TReturn extends __Awaited&lt;void|mixed&gt; = __Awaited&lt;mixed&gt;&gt; {
     public static function _async&lt;T extends void|mixed&gt;(callable(): T $fn): self&lt;__Awaited&lt;T&gt;&gt; { /* ... */ }
     public function then&lt;TResult&gt;(callable(TReturn): TResult $cb): static { /* ... */ }
@@ -1368,6 +1385,34 @@ Run <code>tyhp --explain TYHP4173</code> for the long-form explanation.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4197 (Error)</code></h4><br/><p><strong>CheckerUnresolvedReceiver.</strong> Message: <code>Cannot access a member, call a method, or index a value whose type could not be resolved</code>.</p>
 <p>When the checker cannot type a receiver, that expression is marked unresolved so a missing name does not cascade through assignability. Member access, method calls (including extension lookup), and indexing still require a resolved type and report TYHP4197.</p>
 <p>This diagnostic is omitted when the receiver subtree already has an error (for example <code>unknownFn()-&gt;x</code> reports only the undefined function). Unnarrowed <code>mixed</code> uses TYHP4160, not this code. Assignability of unresolved values is unchanged.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4198 (Error)</code></h4><br/><p><strong>CheckerPossiblyNullReceiver.</strong> Message: <code>Cannot access <code>{0}</code> on a possibly null value of type <code>{1}</code></code>.</p>
+<p>Values are non-nullable by default, so a <code>?T</code> / <code>T|null</code> value must be checked before its members are used. Reading or writing a property, calling a method, or indexing a struct or <code>ArrayAccess</code> object through a receiver that may be <code>null</code> is an error at runtime (PHP throws for method calls and property writes, and warns and yields <code>null</code> for property reads).</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">function findUser(int $id): ?User { /* … */ }
+
+$user = findUser(2);
+echo $user-&gt;name;          // TYHP4198
+
+if ($user !== null) {
+    echo $user-&gt;name;      // OK: narrowed to User
+}
+echo $user?-&gt;name ?? &#039;&#039;;   // OK: null-safe access
+</code></pre></div>
+<p>Narrow the receiver first (<code>!== null</code>, <code>instanceof</code> / <code>is</code>, an early <code>return</code> / <code>throw</code>, a type guard), or use <code>?-&gt;</code> when <code>null</code> should propagate. Property and index reads inside <code>isset</code>, <code>empty</code>, and the left side of <code>??</code> / <code>??=</code> may use a possibly null receiver; method calls there still require a non-null receiver. A method call result cannot be narrowed by checking it once; assign it to a variable and check the variable.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4199 (Error)</code></h4><br/><p><strong>CheckerTemplateStringUnsupportedHole.</strong> Message: <code>Template hole must be a string, int, or float type, or a literal or union of them; found {0}</code>.</p>
+<p>A template string type matches text, so each <code>${…}</code> hole must name a type whose values have a string form: <code>string</code>, <code>int</code>, <code>float</code>, a literal of one of them (<code>'GET'</code>, <code>3</code>, <code>2.5</code>), a template string or symbol-name type, a type parameter constrained to one of these, an alias for any of them, or a union of them. Types without a string form (<code>array</code>, <code>bool</code>, <code>null</code>, <code>mixed</code>, <code>object</code>, classes, enums, callables) cannot be matched against text, and a hole written as an expression (a variable, a call, a class constant, an operator, or an inline template) is not a type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">type Tagged = &quot;tag-${bool}&quot;;        // TYHP4199
+type Keyed  = &quot;key-${$name}&quot;;       // TYHP4199
+type Nested = &quot;a-${&quot;b${int}&quot;}&quot;;     // TYHP4199
+
+type Flag   = &#039;on&#039;|&#039;off&#039;;
+type Toggle = &quot;tag-${Flag}&quot;;        // OK: string literals
+type Items  = &quot;${int} items&quot;;       // OK
+type Inner  = &quot;b${int}&quot;;
+type Outer  = &quot;a-${Inner}&quot;;         // OK: name the inner template with an alias
+</code></pre></div>
+<p>Name the set of strings you mean with a string, numeric, or literal type, and give a nested template its own alias.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4200 (Warning)</code></h4><br/><p><strong>CheckerUnusedVariable.</strong> Message: <code>Variable <code>${0}</code> is assigned but never read</code>.<br />
 Run <code>tyhp --explain TYHP4200</code> for the long-form explanation.</p>
@@ -1522,13 +1567,13 @@ takes(fn ($u) =&gt; \strtolower($u-&gt;name));
 <p>Use only <code>-&gt;</code> or <code>?-&gt;</code> property accesses starting at the parameter — <code>takes(fn ($u) =&gt; $u-&gt;address-&gt;city)</code>.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4322 (Error)</code></h4><br/><p><strong>CheckerExpressionUnsupportedNode.</strong> Message: <code>Expression trees do not support <code>{0}</code> expressions; simplify the fn body</code>.</p>
-<p>The inline <code>fn</code> body contains an expression kind that cannot be represented in an expression tree. The message names the construct in words, for example <code>function call</code>, <code>array literal</code>, <code>first-class callable</code>, <code>shell command</code>, <code>string interpolation</code>, <code>assignment</code>, <code>match</code>, <code>nested fn</code>, <code>await</code>, or <code>isset</code>. These constructs are rejected so the emitted tree stays a faithful, inspectable data structure. See <a href="tyhp_3000_parsableLambdas.html#unsupported-expression-types">Parsable Lambdas and Expression Trees</a> for the full list.</p>
+<p>The inline <code>fn</code> body contains an expression kind that cannot be represented in an expression tree. Assignments, <code>await</code>, <code>yield</code>, <code>match</code>, <code>function</code> closures, array spread (<code>...$xs</code>), free function calls, <code>throw</code>, and similar constructs are rejected so the emitted tree stays a faithful, inspectable data structure. A nested arrow <code>fn</code> is part of the tree; its parameters cannot be by-reference, variadic, or defaulted, and its body follows the same rules.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 function takes(\Tyhp\Expression&lt;callable(User $u): bool&gt; $pred): void {}
 
 takes(fn ($u) =&gt; await $u-&gt;load());
 </code></pre></div>
-<p>Simplify the body to supported forms: property/method access, operators, casts, ternary/<code>??</code>, array access, <code>new</code>, <code>instanceof</code>/<code>is</code>, literals, and definitely-assigned captures.</p>
+<p>Simplify the body to supported forms: property/method access (including <code>?-&gt;</code>), operators, casts, <code>instanceof</code>/<code>is</code>, ternary/<code>??</code>, array access, array literals, nested arrow <code>fn</code>, <code>new</code>, literals, and definitely-assigned captures. See <a href="tyhp_3000_parsableLambdas.html#unsupported-expression-types">Parsable Lambdas and Expression Trees</a> for the full list.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4323 (Error)</code></h4><br/><p><strong>CheckerExpressionRequiresInlineFn.</strong> Message: <code>Parameter of type <code>Expression&lt;callable({0}): {1}&gt;</code> requires an inline fn expression</code>.</p>
 <p>A value that is not an inline <code>fn</code> was passed where <code>Expression&lt;callable(T $arg): R&gt;</code> is expected. The compiler builds the expression tree from the arrow function at compile time, so an already-built closure carries no tree it can lower.</p>
@@ -1813,6 +1858,18 @@ function demo(): void {
 }
 </code></pre></div>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4378 (Error)</code></h4><br/><p><strong>CheckerReadonlyPropertyDefaultRequiresPhp86.</strong> Message: <code>A default value on readonly property <code>{0}</code> requires PHP <code>8.6</code> or later; target is <code>{1}</code></code>.</p>
+<p>PHP 8.6 lets a readonly property declare a default value, which counts as its one initialization. Earlier PHP versions reject the class when it is loaded (&quot;cannot have default value&quot;). Tyhp emits the declaration as written, so it reports this error when <code>output.phpVersion</code> is below 8.6. This covers properties declared <code>readonly</code> and every property of a <code>readonly class</code>.</p>
+<p>Set the value in the constructor instead, or make it a promoted constructor parameter. A promoted parameter's default is a parameter default, which works on every target:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+final class Point {
+    public function __construct(public readonly int $x = 0) {}
+}
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4379 (Error)</code></h4><br/><p><strong>CheckerEnumDebugInfoRequiresPhp86.</strong> Message: <code><code>__debugInfo()</code> on enum <code>{0}</code> requires PHP <code>8.6</code> or later; target is <code>{1}</code></code>.</p>
+<p>PHP 8.6 lets an enum declare <code>__debugInfo()</code>, which controls what <code>var_dump()</code> shows for its cases. Earlier PHP versions reject the enum when it is loaded (&quot;cannot include magic method __debugInfo&quot;), so Tyhp reports this error when <code>output.phpVersion</code> is below 8.6. The other magic methods PHP does not allow on enums are TYHP4024 at every target.</p>
+</div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4500 (Warning)</code></h4><br/><p><strong>CheckerDeprecatedUsage.</strong> Message: <code><code>{0}</code> is deprecated{1}</code>.</p>
 <p>A use of a deprecated symbol. The compiler sets deprecation from <code>#[\Deprecated]</code> on the declaration and from the tyhpdef <code>deprecated</code> keyword. Both produce this same warning (TYHP4500).</p>
 <p>When <code>#[\Deprecated]</code> has a string-literal <code>$message</code>, that text is appended after a colon. <code>$since</code> is not part of the short message.</p>
@@ -1909,6 +1966,10 @@ Run <code>tyhp --explain TYHP5016</code> for the long-form explanation.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP5023 (Error)</code></h4><br/><p><strong>EmitterGenericRuntimeLayoutUnsupported.</strong> Message: <code><code>#[\Tyhp\GenericRuntime]</code> layouts <code>{0}</code> have no intersection with this compiler{1}</code>.<br />
 Run <code>tyhp --explain TYHP5023</code> for the long-form explanation.</p>
 </div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP5024 (Error)</code></h4><br/><p><strong>EmitterExpressionTreeUnsupportedNode.</strong> Message: <code>Cannot emit an expression tree for this fn: <code>{0}</code> has no tree form; simplify the fn body</code>.</p>
+<p>An inline <code>fn</code> passed where <code>Expression&lt;callable(...): R&gt;</code> is expected is compiled into an expression tree. The emitter found a construct in the body that it cannot rebuild as a tree node. Emitting the <code>fn</code> as an ordinary closure would hand the callee a value with no tree, so the build stops instead.</p>
+<p>The checker normally reports unsupported bodies as TYHP4322 before emit. Seeing TYHP5024 means the checker accepted a construct the emitter does not support; please report it with the <code>fn</code> body named in the message. Rewriting that part of the body with the forms listed under TYHP4322 avoids the error.</p>
+</div>
 <h2 id="configuration-errors-tyhp6xxx">Configuration Errors (TYHP6xxx)</h2>
 <p>Configuration errors are reported when <code>tyhp.json</code> or CLI options are invalid.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP6001 (Error)</code></h4><br/><p><strong>ConfigUnknownError.</strong> Message: <code>Configuration error</code>.</p>
@@ -1990,6 +2051,9 @@ Run <code>tyhp --explain TYHP7006</code> for the long-form explanation.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP7107 (Warning)</code></h4><br/><p><strong>BuildPublishContentUnmatched.</strong> Message: <code>Publish content src <code>{0}</code> matched no files</code>.</p>
 <p>An <code>output.publishContent</code> src pattern was unmatched: it matched no files. Set <code>required</code> to true if a missing match should fail the build.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP7108 (Error)</code></h4><br/><p><strong>BuildRuntimePackageNoPhpRelease.</strong> Message: <code>Runtime package <code>{0}</code> has no release for PHP <code>{1}</code>; compiled <code>tyhp/*</code> packages are published for PHP <code>{2}</code> through <code>{3}</code></code>.</p>
+<p>With <code>build.updateComposer</code>, the build adds a Composer constraint for each compiled <code>tyhp/*</code> runtime package the output uses. Those packages are published once per PHP minor version as <code>80N.X.Y</code>; for example, <code>tyhp/core</code> <code>805.0.3</code> is the PHP 8.5 build. When no build is published for <code>output.phpVersion</code>, there is no correct constraint, so the build reports this error and leaves <code>composer.json</code> unchanged rather than requiring another PHP version's build. Set <code>output.phpVersion</code> to one of the listed versions.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP7200 (Error)</code></h4><br/><p><strong>LintFileNotFound.</strong> Message: <code>File not found: <code>{0}</code></code>.</p>
 <p>The <code>--file</code> argument to <code>tyhp lint</code> specifies a file path that does not exist.</p>

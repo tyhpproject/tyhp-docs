@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -381,33 +383,8 @@ $app-&gt;run();
 <p>The emitter writes the <code>require_once</code> into the PHP output. Do not put <code>require_once 'vendor/autoload.php'</code> in Tyhp source.</p>
 <h2 id="how-the-compiler-distinguishes-tyhp-from-php">How the Compiler Distinguishes Tyhp from PHP</h2>
 <p>The lexer recognizes the tag that follows <code>&lt;?</code> and sets an internal language mode accordingly. When it sees <code>&lt;?tyhp</code> followed by whitespace, it emits a <code>T_TYHP_OPEN_TAG</code> token and enters Tyhp mode. When it sees <code>&lt;?tyhpdef</code> followed by whitespace, it emits a <code>T_TYHPDEF_OPEN_TAG</code> token and enters Tyhpdef mode. When it sees <code>&lt;?php</code>, it emits the standard <code>T_OPEN_TAG</code> token and enters PHP mode. When it sees <code>&lt;?=</code>, it enters PHP echo mode (<code>phpEcho</code>). A bare <code>&lt;?</code> that is not followed by <code>tyhp</code>, <code>tyhpdef</code>, or <code>php</code> is not a PHP short open tag. This language mode determines which keywords are active -- for example, <code>struct</code>, <code>async</code>, <code>await</code>, <code>is</code>, <code>typeof</code>, and <code>nameof</code> are only recognized as keywords in Tyhp mode.</p>
-<h2 id="mixing-tyhp-and-php-in-tyhp-files">Mixing <code>&lt;?tyhp</code> and <code>&lt;?php</code> in <code>.tyhp</code> Files</h2>
-<p>A <code>.tyhp</code> file can contain both <code>&lt;?tyhp</code> and <code>&lt;?php</code> code blocks. This is useful for gradual migration or when you need to include PHP code that uses features outside Tyhp's type system. Each block is independently parsed in its respective language mode:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
-// This block is Tyhp code -- type-checked
-$name = &quot;World&quot;;
-?&gt;
-
-&lt;!-- This is inline HTML output --&gt;
-&lt;h1&gt;Hello!&lt;/h1&gt;
-
-&lt;?php
-// This block is PHP code -- standard PHP rules apply
-$legacyVar = someOldFunction();
-?&gt;
-</code></pre></div>
-<div class="callout-block callout-block-info">
-    <div class="content">
-        <h4 class="callout-title">
-            <span class="callout-icon-holder me-1">
-                <i class="fas fa-info-circle"></i>
-            </span>
-            Note
-        </h4>
-        <div class="callout-content"><p>While mixing is allowed, the Tyhp compiler does not type-check PHP blocks within <code>.tyhp</code> files. PHP blocks are passed through as-is. Only <code>&lt;?tyhp</code> blocks receive the full benefit of Tyhp's type system.</p>
-</div>
-    </div>
-</div>
+<h2 id="php-code-belongs-in-php-files">PHP Code Belongs in <code>.php</code> Files</h2>
+<p>A <code>.tyhp</code> file contains Tyhp code, plus inline HTML between <code>&lt;?tyhp</code> blocks. It does not contain <code>&lt;?php</code> blocks. Put PHP code in a <code>.php</code> file in the same project. The compiler passes <code>.php</code> files through unchanged, and they can call your compiled Tyhp code like any other PHP.</p>
 <h2 id="compiled-php-output">Compiled PHP Output</h2>
 <p>Every <code>&lt;?tyhp</code> code block compiles to a <code>&lt;?php</code> block with <code>declare(strict_types=1)</code> automatically inserted. Tyhp-specific syntax (variable type declarations, generics, structs, etc.) is transformed into valid PHP. The <code>&lt;?tyhp</code> tag itself does not appear in the output.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -490,7 +467,7 @@ class HomeController {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use <code>&lt;?php</code> as the open tag for new Tyhp code. Code inside <code>&lt;?php</code> blocks is parsed in PHP mode without Tyhp's type checking, keywords, or compile-time features.</p>
+        <div class="callout-content"><p>Don't put <code>&lt;?php</code> blocks in a <code>.tyhp</code> file. Write PHP code in a <code>.php</code> file instead.</p>
 </div>
     </div>
 </div>
@@ -502,7 +479,7 @@ class HomeController {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use <code>&lt;?=</code> expecting Tyhp mode — that is PHP echo mode. Don't write a bare <code>&lt;?</code> as a PHP short open tag; it is not treated as PHP. Use <code>&lt;?tyhp</code> (or tagless source) for Tyhp, and <code>&lt;?php</code> only when you intend PHP mode.</p>
+        <div class="callout-content"><p>Don't use <code>&lt;?=</code> expecting Tyhp mode — that is PHP echo mode. Don't write a bare <code>&lt;?</code> as a PHP short open tag; it is not treated as PHP. Use <code>&lt;?tyhp</code> (or tagless source) for Tyhp, and <code>&lt;?php</code> only in <code>.php</code> files.</p>
 </div>
     </div>
 </div>

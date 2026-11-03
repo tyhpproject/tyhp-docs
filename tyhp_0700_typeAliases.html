@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -496,6 +498,82 @@ Point $p = new Point() with [x =&gt; 1.0, y =&gt; 2.0];
 type AnyString = &quot;${string}*&quot;;
 type ApiPath = &quot;api/${string}/items&quot;;
 type OptionalPrefix = &quot;${string}?id&quot;;
+</code></pre></div>
+<p>A hole can name another type alias, written the same way as anywhere else in type position: <code>${ApiMethod}</code>, <code>${App\Http\Method}</code>, <code>${self\Status}</code>, or <code>${Tagged&lt;'a'&gt;}</code>. A hole that names a template alias includes that alias's pattern, so templates compose. A hole naming an unknown type is an error.</p>
+<p>A hole must be a type whose values have a string form: <code>string</code>, <code>int</code>, <code>float</code>, a literal of one of them, a template string or symbol-name type, a type parameter constrained to one of these, or a union of them. A hole of any other type (<code>array</code>, <code>bool</code>, <code>null</code>, <code>mixed</code>, <code>object</code>, a class or enum) is an error (TYHP4199), and so is a hole written as an expression, such as <code>${$name}</code>, a call, a class constant, or an inline nested template. Give a nested template its own alias and name it in the hole:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type Version = &quot;v${int}&quot;;
+type Release = &quot;release-${Version}&quot;;  // OK
+type Flagged = &quot;flag-${bool}&quot;;        // Error: TYHP4199
+</code></pre></div>
+<p>A string literal that matches the pattern is assignable to the alias, and so is a double-quoted interpolation whose literal text and holes fit it. A <code>${string}</code> hole accepts any interpolated value, including an <code>int</code>, and can cover several interpolated values and the text between them. A narrower hole, such as <code>${ApiMethod}</code>, needs an interpolated value of that type. A value that may be <code>null</code> interpolates as <code>''</code> when it is null, so it fits a narrower hole only if that hole also accepts <code>''</code> (such as <code>${''|int}</code>), and a <code>${string}</code> hole only together with other text.</p>
+<p>Numeric holes accept the text that PHP's <code>(string)</code> cast produces for a value of that type:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Hole</th>
+<th>Accepts</th>
+<th>Rejects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>${int}</code></td>
+<td><code>'3'</code>, <code>'-12'</code>, <code>'0'</code></td>
+<td><code>'03'</code>, <code>'+3'</code>, <code>'-0'</code>, <code>'3.0'</code>, values outside the <code>int</code> range</td>
+</tr>
+<tr>
+<td><code>${float}</code></td>
+<td><code>'1.5'</code>, <code>'3'</code>, <code>'-0.25'</code>, <code>'1.0E+25'</code>, <code>'1.0E-5'</code></td>
+<td><code>'1.50'</code>, <code>'.5'</code>, <code>'1.5e3'</code>, <code>'0.00001'</code></td>
+</tr>
+<tr>
+<td><code>${1|2}</code></td>
+<td><code>'1'</code>, <code>'2'</code></td>
+<td><code>'01'</code>, <code>'3'</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Float text follows PHP's default <code>precision</code> of 14 significant digits. An interpolated <code>int</code> or <code>float</code> value fits a numeric hole of a type it is assignable to, and any <code>${string}</code> hole.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type ItemCount = &quot;${int} items&quot;;
+
+function itemsOf(int $n): ItemCount {
+    return &quot;{$n} items&quot;;
+}
+
+function firstPage(): &quot;page-${1|2}&quot; {
+    return &#039;page-1&#039;;
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type ApiMethod = &#039;GET&#039;|&#039;POST&#039;;
+type ApiPath = &quot;api/${string}/items&quot;;
+type UserRoute = &quot;${ApiMethod} /users/${string}&quot;;
+type Endpoint = &quot;${ApiMethod} ${ApiPath}&quot;;
+
+function itemsPath(string $segment): ApiPath {
+    return &quot;api/{$segment}/items&quot;;
+}
+
+function routeForUser(ApiMethod $method, int $id): UserRoute {
+    return &quot;{$method} /users/{$id}&quot;;
+}
+
+function itemsEndpoint(ApiMethod $method, string $segment): Endpoint {
+    return &quot;{$method} api/{$segment}/items&quot;;
+}
+
+function broken(string $segment): ApiPath {
+    return &quot;api/{$segment}/users&quot;; // Error: the text after the hole does not match
+}
+
+function wrongMethod(string $method, int $id): UserRoute {
+    return &quot;{$method} /users/{$id}&quot;; // Error: `string` is not an ApiMethod
+}
 </code></pre></div>
 <h2 id="class-level-type-aliases">Class-Level Type Aliases</h2>
 <p>Type aliases can be declared inside a class body. Class-level type aliases support visibility modifiers (public, protected, private), controlling whether the alias is accessible outside the class. The factory is a static method on the owning class with that visibility.</p>

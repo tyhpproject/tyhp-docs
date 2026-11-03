@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -418,9 +420,9 @@ OS:             ...
 </code></pre></div>
 <h2 id="runtime-packages">Runtime packages</h2>
 <p>Compiled projects need Composer packages such as <code>tyhpdef/php</code> (PHP builtin tyhpdefs) and <code>tyhp/core</code>. <code>tyhp init</code> adds <code>tyhp/core</code> as <strong><code>@dev</code></strong> in <code>require</code>, <code>tyhpdef/php</code> as <strong><code>@dev</code></strong> in <code>require-dev</code>, and <code>tyhp/compiler</code> in <code>require-dev</code> at the exact version of the compiler package that matches the CLI.</p>
-<p>After each build, <code>tyhp build</code> prints the other runtime packages your compiled code needs (for example <code>tyhp/async</code> when it uses <code>async</code>/<code>await</code>). When <code>build.updateComposer</code> is enabled, it writes them into the <code>composer.json</code> in <code>output.publishPath</code> and runs <code>composer install</code> there. The compiled <code>tyhp/*</code> versions it writes match <code>output.phpVersion</code> plus <strong>that package's own</strong> <code>X.Y</code> (<code>8.4</code> + core <code>0.2</code> → <code>tyhp/core: 804.0.2</code>). Otherwise, require them yourself. Packages you opt into, such as <code>tyhp/io</code> and <code>tyhp/parallel</code>, are never added for you; see <a href="package_intro.html">Runtime Packages Overview</a>.</p>
+<p>After each build, <code>tyhp build</code> prints the other runtime packages your compiled code needs (for example <code>tyhp/async</code> when it uses <code>async</code>/<code>await</code>). When <code>build.updateComposer</code> is enabled, it writes them into the <code>composer.json</code> in <code>output.publishPath</code> and runs <code>composer install</code> there. The compiled <code>tyhp/*</code> versions it writes match <code>output.phpVersion</code> plus <strong>that package's own</strong> <code>X.Y</code> (<code>8.4</code> + core <code>0.3</code> → <code>tyhp/core: 804.0.3</code>). Otherwise, require them yourself. Packages you opt into, such as <code>tyhp/io</code> and <code>tyhp/parallel</code>, are never added for you; see <a href="package_intro.html">Runtime Packages Overview</a>.</p>
 <p>How to pin versions for apps vs libraries is on the <a href="project_composerPackages.html">Composer Runtime Packages</a> page.</p>
-<p><code>tyhpdef/php</code> in this alpha is a <strong>PHP 8.2 baseline</strong>. APIs that exist only on PHP 8.3–8.5 may be missing from the stubs.</p>
+<p>One <code>tyhpdef/php</code> package covers PHP 8.2–8.5. APIs added in a later PHP minor are version-gated, and the compiler shows only the declarations available on your <code>output.phpVersion</code> target. See <a href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a>. Extensions outside PHP's always-present core (for example <code>mbstring</code>, <code>intl</code>, or <code>pdo</code>) are typed by the matching <code>tyhpdef/php-ext-*</code> packages.</p>
 
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">

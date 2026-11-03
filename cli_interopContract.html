@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -624,6 +626,11 @@
 <td><a href="tyhp_0500_generics.html">Generics</a></td>
 </tr>
 <tr>
+<td><strong><code>#[\Tyhp\PropertyType]</code></strong></td>
+<td>Runtime-visible stamp on a property or promoted constructor parameter whose PHP hint loses its Tyhp type (type arguments, struct types, source type aliases). Its one argument is the full type in the <code>\Tyhp\Type::parse()</code> format (<code>'array&lt;App\\Post&gt;'</code>); <code>\Tyhp\Type::fromProperty()</code> reads it. Types that mention a class type parameter are not stamped.</td>
+<td><a href="tyhp_0500_generics.html#declared-property-types-at-runtime">Generics</a></td>
+</tr>
+<tr>
 <td><strong>Structs</strong></td>
 <td>Declarations erased; values are associative arrays</td>
 <td><a href="tyhp_0400_structs.html">Structs</a></td>
@@ -701,6 +708,10 @@
 <tr>
 <td><code>\Tyhp\GenericRuntime</code></td>
 <td>Runtime-visible stamp on emitted generic declarations</td>
+</tr>
+<tr>
+<td><code>\Tyhp\PropertyType</code></td>
+<td>Runtime-visible declared-type stamp on properties and promoted constructor parameters</td>
 </tr>
 <tr>
 <td><code>\Tyhp\Concerns\UsesPropertyAccessors</code> / <code>HasPropertyAccessors</code> / <code>HandlesGet</code> / <code>HandlesSet</code> / <code>HandlesIsset</code> / <code>HandlesUnset</code> / <code>BootsTraits</code></td>
@@ -786,57 +797,48 @@
 <tbody>
 <tr>
 <td><code>\Tyhp\Expression</code></td>
-<td>Expression-tree root — <strong>Phase 2 emit target</strong>; runtime base for <code>PropertyPath</code></td>
+<td>Expression-tree root; runtime base for <code>PropertyPath</code></td>
+</tr>
+<tr>
+<td><code>\Tyhp\Expr</code></td>
+<td>Fluent tree builder — emit target for <code>Expression</code> arguments</td>
 </tr>
 <tr>
 <td><code>\Tyhp\Expression\ExpressionNode</code> (and <code>Expression\*</code> node types)</td>
-<td>Tree nodes — <strong>Phase 2 emit</strong> builds these directly</td>
+<td>Tree nodes, built by <code>\Tyhp\Expr</code></td>
 </tr>
 <tr>
 <td><code>\Tyhp\PropertyPath</code></td>
-<td>Property-path expressions — <strong>Phase 1 emit target</strong></td>
+<td>Property-path expressions — emit target through <code>PropertyPath::on</code></td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Phase 1 emit ABI:</strong> when a call argument targets <code>PropertyPath&lt;callable(T): R&gt;</code> and the argument is an inline property-chain <code>fn</code>, the emitter lowers to:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">new \Tyhp\PropertyPath(
-    \SourceType::class,   // or a builtin type string such as &#039;string&#039;
-    &#039;resultTypeString&#039;,
-    [&#039;segment&#039;, /* … */],
-    fn (/* … */) =&gt; /* original chain */
-);
+<p><strong>PropertyPath emit ABI:</strong> when a call argument targets <code>PropertyPath&lt;callable(T): R&gt;</code> and the argument is an inline property-chain <code>fn</code>, the emitter lowers to a chain with one property step per segment, ended by <code>backedBy</code> with the original <code>fn</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">\Tyhp\PropertyPath::on(\SourceType::class)   // or a builtin type string such as &#039;string&#039;
+    -&gt;segment
+    /* … */
+    -&gt;backedBy(fn (/* … */): ResultType =&gt; /* original chain */);
 </code></pre></div>
-<p>Constructor shape (required): <code>(string $sourceType, string $resultType, array $path, \Closure $callable, bool $allowEmpty = false, array $nullSafeFlags = [])</code>. Call sites omit <code>$allowEmpty</code>.</p>
-<p>A chain containing <code>?-&gt;</code> additionally passes the per-segment flags by name, so the runtime builds <code>NullSafeAccessExpression</code> nodes instead of <code>PropertyAccessExpression</code> for those segments:</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">new \Tyhp\PropertyPath(
-    \User::class,
-    &#039;?string&#039;,
-    [&#039;address&#039;, &#039;city&#039;],
-    fn (\User $u): ?string =&gt; $u?-&gt;address?-&gt;city,
-    nullSafeFlags: [true, true],
-);
+<p>A segment read through <code>?-&gt;</code> is preceded by <code>nullSafe()</code>, so the runtime builds a <code>NullSafeAccessExpression</code> for that hop instead of a <code>PropertyAccessExpression</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">\Tyhp\PropertyPath::on(\User::class)-&gt;billing-&gt;nullSafe()-&gt;city-&gt;backedBy(fn(\User $u): ?string =&gt; $u-&gt;billing?-&gt;city);
 </code></pre></div>
-<p><strong>Phase 2 emit ABI:</strong> when a call argument targets <code>Expression&lt;callable(T): R&gt;</code> and the argument is an inline arrow <code>fn</code>, the emitter lowers to a root <code>Expression</code> plus nested node constructors (additive — no contract version bump):</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">new \Tyhp\Expression(
-    body: new \Tyhp\Expression\BinaryExpression(
-        new \Tyhp\Expression\PropertyAccessExpression(
-            new \Tyhp\Expression\ParameterExpression(&#039;u&#039;, \User::class, 0),
-            &#039;age&#039;,
-            &#039;int&#039;
-        ),
-        &#039;&gt;&#039;,
-        new \Tyhp\Expression\ConstantExpression(18, &#039;int&#039;),
-        &#039;bool&#039;
-    ),
-    parameters: [
-        new \Tyhp\Expression\ParameterExpression(&#039;u&#039;, \User::class, 0),
-    ],
-    callable: fn (\User $u) =&gt; $u-&gt;age &gt; 18,
-    returnType: &#039;bool&#039;
-);
+<p><strong>Expression emit ABI:</strong> when a call argument targets <code>Expression&lt;callable(T): R&gt;</code> and the argument is an inline arrow <code>fn</code>, the emitter lowers to a <code>\Tyhp\Expr</code> chain ended by <code>backedBy</code> with the original <code>fn</code>, which returns the <code>\Tyhp\Expression</code>:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">\Tyhp\Expr::param(&#039;u&#039;, \User::class)-&gt;age-&gt;gt(18)-&gt;backedBy(fn(\User $u): bool =&gt; $u-&gt;age &gt; 18);
 </code></pre></div>
-<p>Supported nested FQNs include <code>ParameterExpression</code>, <code>PropertyAccessExpression</code>, <code>NullSafeAccessExpression</code>, <code>MethodCallExpression</code>, <code>StaticMethodCallExpression</code>, <code>BinaryExpression</code>, <code>UnaryExpression</code>, <code>ConstantExpression</code>, <code>TernaryExpression</code>, <code>CoalesceExpression</code>, <code>ArrayAccessExpression</code>, <code>CastExpression</code>, <code>NewExpression</code>, and <code>InstanceofExpression</code> (Phase 3 — <code>$x is T</code> / <code>$x instanceof T</code>). Captured outer variables emit as <code>ConstantExpression($var, $type)</code>.</p>
-<p><code>Expression</code> takes one type argument: the callable shape (<code>Expression&lt;callable(User): string&gt;</code>; <code>Expression&lt;callable(): R&gt;</code> for zero parameters). That shape is a checker/type-system convention; emit still constructs <code>new \Tyhp\Expression(...)</code>. No contract version bump.</p>
+<p>The chain uses these builder calls:</p>
+<ul>
+<li><code>Expr::param(name, type, index)</code> starts at a parameter; <code>index</code> is passed when the <code>fn</code> has several parameters.</li>
+<li>A property read is a property step (<code>-&gt;age</code>), or <code>prop('name')</code> when the name matches a builder method. <code>nullSafe()</code> precedes a <code>?-&gt;</code> hop.</li>
+<li><code>call(name, ...args)</code>, <code>staticCall(Class::class, name, ...args)</code>, and <code>make(Class::class, ...args)</code> build method calls, static calls, and <code>new</code>.</li>
+<li>Operators are builder methods: <code>gt</code>, <code>gte</code>, <code>lt</code>, <code>lte</code>, <code>eq</code> (<code>===</code>), <code>neq</code> (<code>!==</code>), <code>looseEq</code> (<code>==</code>), <code>looseNeq</code> (<code>!=</code>), <code>spaceship</code>, <code>plus</code>, <code>minus</code>, <code>times</code>, <code>dividedBy</code>, <code>mod</code>, <code>pow</code>, <code>concat</code>, <code>bitAnd</code>, <code>bitOr</code>, <code>bitXor</code>, <code>shiftLeft</code>, <code>shiftRight</code>, <code>not</code>, <code>neg</code>, <code>pos</code>, <code>bitNot</code>, <code>and</code>, <code>or</code>, <code>xor</code>, <code>coalesce</code>, <code>then</code> / <code>else</code>, <code>is</code>, <code>cast</code>, and <code>at</code> (array access).</li>
+<li>A nested arrow <code>fn</code> is <code>Expr::closure([Expr::param(...), …], &lt;body chain&gt;, 'returnType')</code>, and an array literal is <code>Expr::arrayOf([values], [keys])</code>.</li>
+<li>Captured variables, literals, and class constants are passed as plain PHP arguments (<code>-&gt;gt($minAge)</code>, <code>-&gt;value(User::FLAG)</code>), so their values are read when the chain runs.</li>
+</ul>
+<p>A nested <code>fn</code> passed to a method's <code>callable</code>, <code>Expression</code>, or <code>PropertyPath</code> parameter becomes an <code>Expr::closure</code> node:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">\Tyhp\Expr::param(&#039;u&#039;, \User::class)-&gt;tags-&gt;call(&#039;any&#039;, \Tyhp\Expr::closure([\Tyhp\Expr::param(&#039;t&#039;, \Tag::class)], \Tyhp\Expr::param(&#039;t&#039;, \Tag::class)-&gt;label-&gt;eq(&#039;vip&#039;), &#039;bool&#039;))-&gt;backedBy(fn(\User $u): bool =&gt; $u-&gt;tags-&gt;any(fn(\Tag $t): bool =&gt; $t-&gt;label === &#039;vip&#039;));
+</code></pre></div>
+<p>Parameter types use the <code>\Tyhp\Type::parse()</code> format. A parameter whose type has type arguments or is a struct is passed as a string (<code>'App\Table&lt;App\Blog&gt;'</code>, <code>'struct App\Address'</code>) instead of <code>Fqn::class</code>; a property node's type is the declared property type (<code>\Tyhp\Type::fromProperty()</code>). The tree's return type comes from the backing closure's return type.</p>
+<p><code>Expression</code> takes one type argument: the callable shape (<code>Expression&lt;callable(User): string&gt;</code>; <code>Expression&lt;callable(): R&gt;</code> for zero parameters). That shape is a checker/type-system convention; the emitted chain is the same for every shape.</p>
 <p><code>nameof(fn ($x) =&gt; $x-&gt;a-&gt;b)</code> is a compile-time fold to the last property segment (a string literal). It does not emit <code>PropertyPath</code> / <code>Expression</code> construction.</p>
 <p><code>ExpressionSerializer::toJson</code> / <code>equals</code> and <code>Expression::equals</code> are <strong>runtime library APIs</strong> (not emitter call patterns). User code that calls them depends on <code>tyhp/lambda</code> the same way any other package type does.</p>
 <p>When a <code>PropertyPath</code> / <code>Expression</code> value is passed where <code>\Closure</code> is expected, emit extracts the stored closure as <code>$expr-&gt;callable</code> (public readonly property on <code>\Tyhp\Expression</code>). Where <code>callable</code> is expected, the object is passed through (<code>__invoke</code>).</p>
@@ -884,7 +886,7 @@
 </tr>
 <tr>
 <td>Expression trees / PropertyPath</td>
-<td>Phase 1: <code>new \Tyhp\PropertyPath(…)</code> (plus <code>nullSafeFlags:</code> for <code>?-&gt;</code> chains); Phase 2: <code>new \Tyhp\Expression(…)</code> + nested <code>\Tyhp\Expression\*</code> nodes; Phase 3: <code>InstanceofExpression</code> for <code>is</code>/<code>instanceof</code>, multi-parameter <code>Expression&lt;callable(TArgs ...): TReturn&gt;</code> arity (still <code>new \Tyhp\Expression</code>); <code>\Closure</code> sites → <code>$path-&gt;callable</code></td>
+<td><code>\Tyhp\PropertyPath::on(…)-&gt;segment…-&gt;backedBy($fn)</code> (<code>nullSafe()</code> before <code>?-&gt;</code> hops); <code>\Tyhp\Expr::param(…)-&gt;…-&gt;backedBy($fn)</code> for <code>Expression</code> (nested <code>fn</code> → <code>Expr::closure</code>); <code>\Closure</code> sites → <code>$path-&gt;callable</code></td>
 <td><code>tests/Tyhp.Tests/Emitter/PropertyPathEmitterTests.cs</code>, <code>ExpressionEmitterTests.cs</code>; <a href="tyhp_3000_parsableLambdas.html">Parsable Lambdas</a></td>
 </tr>
 <tr>

@@ -89,6 +89,8 @@
 
 <li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
 
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
 <li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
 
 
@@ -297,7 +299,7 @@
     <h2 class="section-heading">Previous Releases</h2>
     
     <h2 id="80512-beta3-current-public-beta">805.1.2-beta.3 (current public beta)</h2>
-<p>Patch on the public beta. GitHub Release tag <code>v805.1.2-beta.3</code>. MAJOR <code>805</code> means the emit ceiling is PHP 8.5 (the compiler still targets 8.2–8.4 via <code>output.phpVersion</code>). Compiled <code>tyhp/*</code> runtime helpers version independently as <code>80N.X.Y</code> (source <code>0.2</code> → <code>802.0.2</code>–<code>805.0.2</code> for <code>tyhp/core</code>). <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>.</p>
+<p>Patch on the public beta. GitHub Release tag <code>v805.1.2-beta.3</code>. MAJOR <code>805</code> means the emit ceiling is PHP 8.5 (the compiler still targets 8.2–8.4 via <code>output.phpVersion</code>). Compiled <code>tyhp/*</code> runtime helpers version independently as <code>80N.X.Y</code> (source <code>0.3</code> → <code>802.0.3</code>–<code>805.0.3</code> for <code>tyhp/core</code>). <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>.</p>
 <p>This is a <strong>prerelease</strong>. Semver compatibility guarantees apply from the first stable <code>805.N.N</code>, not from beta. See <a href="release_roadmap.html">Roadmap</a> and <a href="release_planning.html">Release Planning</a>.</p>
 <h2 id="80511-beta3">805.1.1-beta.3</h2>
 <p>An untyped local initialized with a literal now keeps the widened scalar as its declared type, so a later assignment of another value of that scalar type-checks. A tyhpdef backed enum is treated as backed when the declaration has a backing type, so case values type-check.</p>
