@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -346,7 +350,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>exclude</code></h4><br/><p>Type: <code>array&lt;string&gt;</code>. Glob patterns for files to exclude from the project. Files matching these patterns are skipped even if they match an <code>include</code> pattern. Useful for excluding test files, vendor directories, or generated code.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>source.tagless</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, <code>.tyhp</code> and <code>.tyhpdef</code> files are parsed without requiring <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code>. Closing <code>?&gt;</code> is an error in this mode. Nested as <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>source.tagless</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, <code>.tyhp</code> and <code>.tyhpdef</code> files are parsed without requiring <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code>. Closing <code>?&gt;</code> is an error in a tagless file, except in a <code>.tyhp</code> file whose first six characters are <code>&lt;?tyhp</code>, which is parsed as a normal tagged <code>.tyhp</code> file (a template). Nested as <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code>.</p>
 </div>
 <h2 id="output-options">Output Options</h2>
 <p>These options are nested under the <code>&quot;output&quot;</code> key in <code>tyhp.json</code>.</p>
@@ -378,7 +382,19 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>output.namespacePrefix</code></h4><br/><p>Type: <code>string | null</code> (default: <code>null</code>). A namespace prefix added to or stripped from all namespaces in the output. Used when the compiled output needs a different namespace root than the source code.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>output.comments</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). Controls whether comments from the Tyhp source are preserved in the compiled PHP output. Set to <code>false</code> to strip comments for smaller output.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>output.comments</code></h4><br/><p>Type: <code>bool</code> (default: <code>true</code>). Controls whether comments from the Tyhp source are preserved in the compiled PHP output. Set to <code>false</code> to drop summary prose for smaller output. Emitter directives (<code>@tyhp…</code>, <code>/@@ … @@/</code> blocks) and analysis tags stay, including author tags such as repeated <code>@throws</code> and the generated PHPStan/Psalm tags. See <a href="cli_emittedDocblocks.html">Emitted Docblocks</a>.</p>
+</div>
+<h2 id="emit-options">Emit Options</h2>
+<p>These options are nested under the <code>&quot;emit&quot;</code> key in <code>tyhp.json</code>. Generated docblocks are written in every build profile (<code>debug</code>, <code>balanced</code>, and <code>release</code>) and do not depend on <code>output.comments</code>.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>emit.docblocks</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;lossy-only&quot;</code>). Static-analysis tags (<code>@param</code>, <code>@return</code>, <code>@var</code>, <code>@template</code>, and the related tags) generated from checked types.</p>
+<ul>
+<li><code>&quot;lossy-only&quot;</code> writes a tag only when the native PHP declaration drops type information.</li>
+<li><code>&quot;all&quot;</code> writes a tag for every signature type.</li>
+<li><code>&quot;off&quot;</code> writes no generated docblocks, including generated <code>@template</code> tags and <code>@property</code> tags for lowered property hooks.</li>
+</ul>
+<p>An invalid value is warning <strong>TYHP6003</strong>, and the default is kept. See <a href="cli_emittedDocblocks.html">Emitted Docblocks</a>.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>emit.docblockDialect</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;both&quot;</code>). <code>&quot;phpstan&quot;</code>, <code>&quot;psalm&quot;</code>, <code>&quot;both&quot;</code>, or <code>&quot;phpdoc&quot;</code>. Parsed and validated (an invalid value is warning <strong>TYHP6003</strong>). The setting does not change the emitted tags. Shared syntax is unprefixed. A <code>@phpstan-</code> or <code>@psalm-</code> prefix is used only where the dialects diverge, and no tag written today needs one.</p>
 </div>
 <h2 id="build-options">Build Options</h2>
 <p>These options are nested under the <code>&quot;build&quot;</code> key in <code>tyhp.json</code>, except where noted.</p>
@@ -394,7 +410,7 @@
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.allowEval</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, re-enables <code>eval()</code> usage in Tyhp code. By default, <code>eval()</code> is disabled for security and type-safety reasons.</p>
 </div>
-<div class="alert alert-secondary" role="alert"><h4><code>build.experimentalReadonlyCloneWith</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, allows <code>clone ... with</code> on <code>readonly</code> properties for PHP 8.2–8.4 by emitting a compiler wrapper. PHP 8.5+ supports this natively and does not need the flag. <code>new ... with</code> on <code>readonly</code> never requires it. In-place <code>$obj with [...]</code> still cannot set <code>readonly</code> after construction.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>build.experimentalReadonlyCloneWith</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, allows <code>clone ... with</code> on <code>readonly</code> properties of a class that is not <code>readonly</code> for PHP 8.3–8.4 by emitting a compiler wrapper. PHP 8.5+ supports this natively and does not need the flag. Below 8.3 the form reports TYHP4400 even with the flag. <code>clone ... with</code> on a <code>readonly class</code> below 8.5 reports TYHP4401. <code>new ... with</code> on <code>readonly</code> never requires the flag; below 8.3 it reports TYHP4400. In-place <code>$obj with [...]</code> still cannot set <code>readonly</code> after construction.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>build.runtimeGenericChecks</code></h4><br/><p>Type: <code>bool</code> (default: <code>false</code>). When true, the emitter inserts runtime type checks at generic parameter and return boundaries (in addition to compile-time checking). Off by default.</p>
 </div>
@@ -500,6 +516,11 @@
         &quot;strictTypes&quot;: true,
         &quot;namespacePrefix&quot;: null,
         &quot;comments&quot;: true
+    },
+
+    &quot;emit&quot;: {
+        &quot;docblocks&quot;: &quot;lossy-only&quot;,
+        &quot;docblockDialect&quot;: &quot;both&quot;
     },
 
     &quot;build&quot;: {

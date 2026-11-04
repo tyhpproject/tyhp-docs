@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -355,9 +359,15 @@
 <li>output.publishContent — Array of copy rules for extra files written into <code>output.publishPath</code> after emit. <code>src</code> / <code>dst</code> / <code>exclude</code> interpolate; <code>dst</code> may also use per-file variables such as <code>{fileName}</code>. See <a href="project_optionsList.html#string-interpolation">Project Options List</a>.</li>
 <li>output.phpVersion — Target PHP version: &quot;8.0&quot; through &quot;8.5&quot;. If omitted, defaults to <strong>&quot;8.2&quot;</strong> and emits warning <strong>TYHP4306</strong> once per compilation. This is the compiler check/emit target, not the managed PHP used by <code>tyhp generate_tyhpdef</code>. For <code>tyhpdef/php</code> / <code>tyhpdef/php-ext-*</code>, it also selects which version-gated APIs are visible (8.2–8.5 matrix). <code>{phpVersion.id}</code> in other keys is the Tyhp PHP id (<code>&quot;8.2&quot;</code> → <code>802</code>). See <a href="cli_lint.html#php-version-matrix-8285">CLI: Lint</a>.</li>
 <li>output.strictTypes — Add declare(strict_types=1) to all output files (default: true).</li>
-<li>output.comments — Include comments from source in the output (default: true).</li>
+<li>output.comments — Include comments from source in the output (default: true). <code>false</code> drops summary prose and keeps emitter directives and analysis tags. See <a href="cli_emittedDocblocks.html">Emitted Docblocks</a>.</li>
 <li>output.namespacePrefix — Optional prefix added to all namespaces in output.</li>
 </ul>
+<h2 id="emit-configuration">Emit Configuration</h2>
+<ul>
+<li>emit.docblocks — PHPStan/Psalm tags where the native PHP declaration drops type information: <code>&quot;lossy-only&quot;</code> (default), <code>&quot;all&quot;</code>, or <code>&quot;off&quot;</code>. On in every build profile (<code>debug</code>, <code>balanced</code>, <code>release</code>), independent of <code>output.comments</code>. <code>&quot;off&quot;</code> emits no generated docblocks.</li>
+<li>emit.docblockDialect — <code>&quot;both&quot;</code> (default), <code>&quot;phpstan&quot;</code>, <code>&quot;psalm&quot;</code>, or <code>&quot;phpdoc&quot;</code>. Parsed and validated. It does not change the tags. Shared syntax is unprefixed; a <code>@phpstan-</code> or <code>@psalm-</code> prefix is used only where the dialects diverge.</li>
+</ul>
+<p>An invalid value for either key is warning <strong>TYHP6003</strong>, and the default is kept. See <a href="cli_emittedDocblocks.html">Emitted Docblocks</a> and <a href="project_optionsList.html#emit-options">Project Options List</a>.</p>
 <h2 id="build-configuration">Build Configuration</h2>
 <ul>
 <li>build.generateSourcemap — When <code>true</code>, write a <code>.php.map</code> file next to each compiled <code>.php</code> file and append <code>//# sourceMappingURL=</code> (default: <code>false</code>).</li>
@@ -365,7 +375,7 @@
 <li>build.generateTyhpdef — For <strong>applications</strong>, write <code>package.tyhpdef</code> in the publish directory when <code>true</code>. <strong>Libraries always emit</strong> <code>package.tyhpdef</code> and additive-merge <code>extra.tyhp.package</code> on publish-directory <code>composer.json</code>; this key is ignored for <code>&quot;type&quot;: &quot;library&quot;</code>.</li>
 <li>build.updateComposer — Generate or update composer.json in <code>output.publishPath</code> with PSR-4 autoloading for the compiled PHP (default: false).</li>
 <li>build.allowEval — Re-enable the eval() function, which is disabled by default in Tyhp (default: false).</li>
-<li>build.experimentalReadonlyCloneWith — Allow <code>clone ... with</code> on <code>readonly</code> properties for PHP 8.2–8.4 (default: false). PHP 8.5+ does not need this flag.</li>
+<li>build.experimentalReadonlyCloneWith — Allow <code>clone ... with</code> on <code>readonly</code> properties of a class that is not <code>readonly</code>, for PHP 8.3–8.4 (default: false). PHP 8.5+ does not need this flag. Below 8.3 the form reports TYHP4400. A <code>readonly class</code> below 8.5 reports TYHP4401.</li>
 <li>build.runtimeGenericChecks — Emit runtime type checks at generic boundaries (default: false).</li>
 <li>build.entryPointAutoloader — Optional map of named autoloader paths injected into entry points.</li>
 <li>psr4 — PSR-4 namespace-to-directory mappings for the output.</li>

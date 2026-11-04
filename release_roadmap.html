@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -301,7 +305,7 @@
     <span class="badge bg-primary me-1">Tier 3 · Story 30</span><span class="badge bg-secondary">Complete</span>
 </p>
     <p>Tyhp is built in a deliberately ordered sequence of stories, grouped into four tiers. The guiding principle is a thin vertical slice that compiles and runs end-to-end as early as possible.</p>
-<p><strong>This beta (805.1.2-beta.3)</strong> completes Tiers 0–2, apart from the deferred web playground (Story 22). Tier 3 is next. Features listed under Tier 3 and Future Plans are not in this beta.</p>
+<p><strong>This beta (805.1.2-beta.4)</strong> completes Tiers 0–2, apart from the deferred web playground (Story 22). Tier 3 is next. Features listed under Tier 3 and Future Plans are not in this beta.</p>
 <p>Stories are numbered contiguously from 01 to 30 with additive sub-stories (<code>08.5</code>, <code>10.5</code>, <code>14.5</code>, <code>16.5</code>, <code>19.5</code>, <code>20.5</code>, <code>24.1</code>, <code>27.1</code>, <code>27.2</code>, <code>27.3</code>). Each documentation page carries a Tier/Story badge.</p>
 <div class="callout-block callout-block-info">
     <div class="content">
@@ -374,7 +378,6 @@
 <h2 id="future-plans--not-scheduled">Future Plans — not scheduled</h2>
 <p>These ideas are planned after Tier 3. None has a release target yet, and their order depends on feedback.</p>
 <ul>
-<li><strong>Static-analysis docblocks in emitted PHP:</strong> generate <code>@param</code>, <code>@return</code>, <code>@var</code>, <code>@template</code>, <code>@extends</code>, and <code>@implements</code> tags (including array shapes and <code>class-string</code>), so PHPStan, Psalm, and PhpStorm see the same types the Tyhp checker proved.</li>
 <li><strong>Conditional return types:</strong> <code>T extends X ? A : B</code>, a <code>match (T) { … }</code> form for multi-way cases, and flag-presence checks for bitmask arguments such as <code>JSON_THROW_ON_ERROR</code>. Overloads become shorthand for the same checker model. A later version adds <code>infer</code>, opt-in distribution over unions, and recursive conditional types.</li>
 <li><strong>Opt-in runtime checks:</strong> at public PHP-callable boundaries, check struct shapes (and later generic bounds) that the compiler already verified in Tyhp code.</li>
 <li><strong>Compiler plugins:</strong> Composer-packaged plugins that add checks, emit hooks, and custom syntax islands.</li>

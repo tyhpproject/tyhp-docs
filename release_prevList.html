@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -298,9 +302,12 @@
 				<section class="docs-section" id="Previous_Releases">
     <h2 class="section-heading">Previous Releases</h2>
     
-    <h2 id="80512-beta3-current-public-beta">805.1.2-beta.3 (current public beta)</h2>
-<p>Patch on the public beta. GitHub Release tag <code>v805.1.2-beta.3</code>. MAJOR <code>805</code> means the emit ceiling is PHP 8.5 (the compiler still targets 8.2–8.4 via <code>output.phpVersion</code>). Compiled <code>tyhp/*</code> runtime helpers version independently as <code>80N.X.Y</code> (source <code>0.3</code> → <code>802.0.3</code>–<code>805.0.3</code> for <code>tyhp/core</code>). <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>.</p>
+    <h2 id="80512-beta4-current-public-beta">805.1.2-beta.4 (current public beta)</h2>
+<p>Patch on the public beta. GitHub Release tag <code>v805.1.2-beta.4</code>. MAJOR <code>805</code> means the emit ceiling is PHP 8.5 (the compiler still targets 8.2–8.4 via <code>output.phpVersion</code>). Compiled <code>tyhp/*</code> runtime helpers version independently as <code>80N.X.Y</code>. <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>.</p>
+<p>Emitted PHP can include PHPStan and Psalm docblocks. In a <code>.tyhp</code> file, <code>&lt;?=</code> is a Tyhp echo and inline HTML stays in source order. Expression trees accept nested arrow functions, array literals, and <code>?-&gt;</code> method calls. A double-quoted interpolation that fits a template string type is assignable to it. Reading through a possibly null value without narrowing it reports TYHP4198, and a <code>?-&gt;</code> read is nullable. Readonly classes follow PHP, including a generic <code>readonly class</code> on PHP 8.2. <code>EventLoop::run</code> accepts <code>Promise&lt;void&gt;</code>.</p>
 <p>This is a <strong>prerelease</strong>. Semver compatibility guarantees apply from the first stable <code>805.N.N</code>, not from beta. See <a href="release_roadmap.html">Roadmap</a> and <a href="release_planning.html">Release Planning</a>.</p>
+<h2 id="80512-beta3">805.1.2-beta.3</h2>
+<p>Patch on the public beta. GitHub Release tag <code>v805.1.2-beta.3</code>. MAJOR <code>805</code> means the emit ceiling is PHP 8.5 (the compiler still targets 8.2–8.4 via <code>output.phpVersion</code>). Compiled <code>tyhp/*</code> runtime helpers version independently as <code>80N.X.Y</code> (source <code>0.3</code> → <code>802.0.3</code>–<code>805.0.3</code> for <code>tyhp/core</code>). <code>tyhpdef/*</code> packages use the version in that package’s <code>composer.json</code>.</p>
 <h2 id="80511-beta3">805.1.1-beta.3</h2>
 <p>An untyped local initialized with a literal now keeps the widened scalar as its declared type, so a later assignment of another value of that scalar type-checks. A tyhpdef backed enum is treated as backed when the declaration has a backing type, so case values type-check.</p>
 <h2 id="release-history">Release History</h2>
@@ -312,6 +319,10 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>805.1.2-beta.4</td>
+<td>Public beta. Docblocks on emitted PHP, Tyhp <code>&lt;?=</code> echoes, expression-tree additions, template-string assignability, null-safe checks, and readonly-class fixes.</td>
+</tr>
 <tr>
 <td>805.1.2-beta.3</td>
 <td>Public beta.</td>

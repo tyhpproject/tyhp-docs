@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -315,16 +319,13 @@
 // Or use closures/callables for dynamic behavior
 </code></pre></div>
 <p>If you absolutely need eval-like functionality, write that code in a plain PHP file and declare it into your Tyhp project via a tyhpdef file. This keeps the security boundary clear and the eval usage isolated from type-checked code. <code>build.allowEval</code> only suppresses the informational diagnostic; it does not change how eval behaves at runtime.</p>
-<h2 id="short-open-tags--disabled">Short Open Tags — Disabled</h2>
-<p>Short open tags (&lt;?) and echo short tags (&lt;?=) are not supported in Tyhp. Tyhp files must use the &lt;?tyhp opening tag. PHP files in the same project can still use &lt;?php.</p>
-<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">// ERROR: Short open tags are not valid in Tyhp
-// &lt;? echo &#039;hello&#039;; ?&gt;
-// &lt;?= $variable ?&gt;
-
-// CORRECT: Use &lt;?tyhp for Tyhp files
-&lt;?tyhp
-echo &#039;hello&#039;;
-echo $variable;
+<h2 id="short-open-tags">Short Open Tags</h2>
+<p>A bare <code>&lt;?</code> is not a PHP short open tag. <code>&lt;? echo 'hello'; ?&gt;</code> is not accepted. Tyhp statements use <code>&lt;?tyhp</code>.</p>
+<p>In a <code>.tyhp</code> file, <code>&lt;?= expr ?&gt;</code> is a Tyhp echo: the expression is parsed and checked as Tyhp and emitted as <code>echo</code>, with no escaping. Tyhp keywords such as <code>is</code>, <code>typeof</code>, <code>with</code>, and <code>nameof</code> work inside it. In a <code>.php</code> file, <code>&lt;?=</code> stays a PHP echo. See <a href="tyhp_0010_templates.html">Templates</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+$title = &#039;hello&#039;;
+?&gt;
+&lt;p&gt;&lt;?= $title ?&gt;&lt;/p&gt;
 </code></pre></div>
 <h2 id="dynamic-properties--restricted">Dynamic Properties — Restricted</h2>
 <p>Undeclared property <strong>writes</strong> (<code>$obj-&gt;newProp = value</code> where <code>newProp</code> is not declared) are legal only when the receiver’s type is exactly the global engine class <code>\stdClass</code>. Other classes — including subclasses such as <code>class Bag extends \stdClass</code> — must declare the property or implement <code>__set</code> (TYHP4134). <code>#[\AllowDynamicProperties]</code> is not an opt-in (TYHP4126, and writes still TYHP4134).</p>
@@ -627,7 +628,7 @@ string|null $title = null;
 <p>The following table summarizes the status of each changed feature, why it is restricted, and the Tyhp alternative.</p>
 <ul>
 <li>eval() — INFO 4800 — Security risk, impossible to type-check — suppressed by <code>build.allowEval</code>; alternative: write PHP and declare via tyhpdef</li>
-<li>Short open tags (&lt;?, &lt;?=) — DISABLED — Use &lt;?tyhp instead</li>
+<li>Short open tag (<code>&lt;?</code>) — not a PHP short open tag — use <code>&lt;?tyhp</code>. <code>&lt;?=</code> in a <code>.tyhp</code> file is a Tyhp echo; in a <code>.php</code> file it stays a PHP echo</li>
 <li>Dynamic properties — RESTRICTED — Undeclared writes only on exact <code>\stdClass</code>; other types (including <code>extends \stdClass</code>) declare properties or use <code>__get</code>/<code>__set</code> (TYHP4134). <code>(object)</code> converts non-objects to <code>\stdClass</code> and is identity on existing objects</li>
 <li>Nested named functions/methods — DISABLED — Use a private method or a closure assigned to a typed local</li>
 <li>Variable variables ($$var) — DISABLED — TYHP4133; use <code>variable_exists($name)</code> on a simple variable</li>
@@ -698,7 +699,7 @@ string|null $title = null;
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Using &lt;? or &lt;?= in Tyhp files. Always use &lt;?tyhp as the opening tag for Tyhp source files.</p>
+        <div class="callout-content"><p>Using a bare <code>&lt;?</code> short open tag. Statements use <code>&lt;?tyhp</code>. In a <code>.tyhp</code> file, <code>&lt;?=</code> is the Tyhp echo used by templates.</p>
 </div>
     </div>
 </div>

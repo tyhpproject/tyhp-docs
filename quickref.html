@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -306,6 +310,15 @@
 declare(output_file=&#039;public/index.php&#039;);
 
 $greeting = &#039;Hello, Tyhp!&#039;;
+</code></pre></div>
+<h2 id="templates">Templates</h2>
+<p>In a <code>.tyhp</code> file, HTML between <code>&lt;?tyhp</code> blocks is emitted as written, and <code>&lt;?= expr ?&gt;</code> is a Tyhp echo (checked as Tyhp, emitted as <code>echo</code>, no escaping). Loops and conditionals use <code>&lt;?tyhp</code> blocks. <code>.php</code> files keep a PHP <code>&lt;?=</code>.</p>
+<p><a href="tyhp_0010_templates.html">See full documentation →</a></p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function userCard(Person $user): void { ?&gt;
+    &lt;h1&gt;&lt;?= $user-&gt;name ?&gt;&lt;/h1&gt;
+&lt;?tyhp }
 </code></pre></div>
 <h2 id="php-version-gating">PHP Version Gating</h2>
 <p><code>declare(php=&quot;…&quot;)</code> and <code>#[\Tyhp\Php(&quot;…&quot;)]</code> filter declarations against <code>output.phpVersion</code> (Composer constraints; <code>&quot;8.2&quot;</code> means <code>8.2.*</code>). File-level inactive declare skips the file silently. <code>output.phpVersion</code> is the oldest PHP the build runs on: a gate true for every later version emits nothing, and one true for only some emits a <code>\PHP_VERSION_ID</code> check. <code>#[\Tyhp\Php]</code> is illegal on <code>struct</code> / <code>extension</code> (<strong>TYHP4304</strong>), and in <code>.tyhp</code> on a property, class constant, enum case, or interface method (<strong>TYHP4371</strong>). Omit <code>output.phpVersion</code> → default <code>&quot;8.2&quot;</code> and one <strong>TYHP4306</strong> warning.</p>
@@ -784,7 +797,7 @@ if (\class_exists($name)) {
 <p><code>include</code>/<code>require</code>/<code>include_once</code>/<code>require_once</code> all require static string paths or constants — no dynamic includes. The compiler performs PSR-4 output splitting with one PHP file per class.</p>
 <p><a href="tyhp_0300_includingFiles.html">See full documentation →</a></p>
 <h2 id="lost-and-changed-functionality">Lost and Changed Functionality</h2>
-<p>Tyhp disables <code>eval()</code>, short open tags (<code>&lt;?</code>), and untyped catch blocks. Undeclared property writes are allowed only on exact <code>\stdClass</code>; other types declare properties or use <code>__get</code>/<code>__set</code>. All types must be declared or inferred. All catch blocks require a typed variable. Dynamic features require type narrowing.</p>
+<p>Tyhp disables <code>eval()</code> and a bare <code>&lt;?</code> short open tag. In a <code>.tyhp</code> file, <code>&lt;?=</code> is a Tyhp echo. Undeclared property writes are allowed only on exact <code>\stdClass</code>; other types declare properties or use <code>__get</code>/<code>__set</code>. All types must be declared or inferred. All catch blocks require a typed variable. Dynamic features require type narrowing.</p>
 <p><a href="tyhp_2900_lostFunctionality.html">See full documentation →</a></p>
 
 </section>

@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -231,6 +233,8 @@
 <li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
@@ -559,7 +563,7 @@ class Child extends Base {
 }
 </code></pre></div>
 <h2 id="clone-and-the-with-keyword">__clone and the with Keyword</h2>
-<p><code>clone ... with</code> on <code>readonly</code> properties does not require you to write <code>__clone()</code>. On PHP 8.5+ the compiler emits native <code>clone($obj, [...])</code>. On PHP 8.2–8.4 it uses a compiler-generated wrapper (opt-in via <code>build.experimentalReadonlyCloneWith</code>). You can still write your own <code>__clone()</code> for other clone-time work.</p>
+<p><code>clone ... with</code> on <code>readonly</code> properties does not require you to write <code>__clone()</code>. On PHP 8.5+ the compiler emits native <code>clone($obj, [...])</code>. On PHP 8.3–8.4, for a class that is not <code>readonly</code>, it uses a compiler-generated wrapper (opt-in via <code>build.experimentalReadonlyCloneWith</code>). Below 8.3 that form reports TYHP4400. <code>clone ... with</code> on a <code>readonly class</code> below 8.5 reports TYHP4401. You can still write your own <code>__clone()</code> for other clone-time work.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Point {
@@ -678,12 +682,12 @@ Point $p2 = clone $p1 with [x =&gt; 10]; // $p2-&gt;x is 10, $p2-&gt;y is 2
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Assuming <code>clone ... with</code> on <code>readonly</code> works on PHP 8.2–8.4 without <code>build.experimentalReadonlyCloneWith: true</code>. Enable that flag, or target PHP 8.5+.</p>
+        <div class="callout-content"><p>Assuming <code>clone ... with</code> on <code>readonly</code> works below PHP 8.5 without <code>build.experimentalReadonlyCloneWith: true</code>. On 8.3–8.4, enable that flag for a class that is not <code>readonly</code>, or target PHP 8.5+. Below 8.3 it reports TYHP4400. A <code>readonly class</code> below 8.5 reports TYHP4401.</p>
 </div>
     </div>
 </div>
 <h2 id="compiled-php-output">Compiled PHP Output</h2>
-<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated generic-tracking members when needed (<code>HasGenerics</code> trait, <code>__initGenerics__tyhpGeneric</code>). Property hooks on <code>output.phpVersion</code> below 8.4 emit the <code>UsesPropertyAccessors</code> polyfill rather than native PHP 8.4 hook syntax. Readonly <code>clone ... with</code> on PHP &lt; 8.5 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
+<p>Magic methods compile to standard PHP magic methods. The compiler does not transform the magic method signatures or bodies — they pass through to PHP directly. The only additions are auto-generated generic-tracking members when needed (<code>HasGenerics</code> trait, <code>__initGenerics__tyhpGeneric</code>). Property hooks on <code>output.phpVersion</code> below 8.4 emit the <code>UsesPropertyAccessors</code> polyfill rather than native PHP 8.4 hook syntax. Readonly <code>clone ... with</code> on PHP 8.3–8.4 may emit a separate wrapper, not a replacement of your own <code>__clone()</code>.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
 
 class Entity {

@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link active" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -300,7 +304,7 @@
     <p class="tyhp-status-badge mb-3">
     <span class="badge bg-primary me-1">Tier 0 · Story 06</span><span class="badge bg-secondary">Complete</span>
 </p>
-    <p>Two of the first differences you will notice in Tyhp are a new open tag and a new file extension. These allow the Tyhp compiler to distinguish Tyhp code from PHP code and apply its type-checking and compilation rules only to the appropriate sections. The new open tags work the same way as the existing PHP open tag <code>&lt;?php</code>. The echo open tag <code>&lt;?=</code> is PHP echo mode (not Tyhp). A bare <code>&lt;?</code> is not a PHP short open tag — Tyhp uses <code>&lt;?</code> only as the start of <code>&lt;?tyhp</code>, <code>&lt;?tyhpdef</code>, or <code>&lt;?php</code>.</p>
+    <p>Two of the first differences you will notice in Tyhp are a new open tag and a new file extension. These allow the Tyhp compiler to distinguish Tyhp code from PHP code and apply its type-checking and compilation rules only to the appropriate sections. The new open tags work the same way as the existing PHP open tag <code>&lt;?php</code>. In a <code>.tyhp</code> file, <code>&lt;?=</code> is a Tyhp echo: the expression is parsed and checked as Tyhp and emitted as <code>echo</code>. In a <code>.php</code> file, <code>&lt;?=</code> stays a PHP echo. A bare <code>&lt;?</code> is not a PHP short open tag — Tyhp uses <code>&lt;?</code> only as the start of <code>&lt;?tyhp</code>, <code>&lt;?tyhpdef</code>, or <code>&lt;?php</code>. See <a href="tyhp_0010_templates.html">Templates</a>.</p>
 <h2 id="the-tyhp-open-tag">The <code>&lt;?tyhp</code> Open Tag</h2>
 <p>The <code>&lt;?tyhp</code> open tag marks the start of a Tyhp code block. It is the primary open tag for all Tyhp source files. Like <code>&lt;?php</code>, it must be followed by at least one whitespace character. Tyhp code blocks can be closed with <code>?&gt;</code> for inline output (same as PHP), and the file can contain multiple Tyhp code blocks interleaved with inline HTML.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -329,7 +333,27 @@ class PaymentGateway {
 </ul>
 <p>The compiler uses the file extension to determine how to parse the file. A <code>.tyhp</code> file is parsed starting with the <code>tyhpSrcFile</code> grammar rule, which expects <code>&lt;?tyhp</code> blocks (with optional inline HTML output between blocks). A <code>.tyhpdef</code> file is parsed starting with the <code>tyhpdefSrcFile</code> grammar rule, which expects a single <code>&lt;?tyhpdef</code> block.</p>
 <h2 id="tagless-source-sourcetagless">Tagless source (<code>source.tagless</code>)</h2>
-<p>Set <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code> in <code>tyhp.json</code> (or <code>source.tagless</code> on a package's <code>extra.tyhp.package</code>) to parse <code>.tyhp</code> / <code>.tyhpdef</code> files as Tyhp/tyhpdef from the first token, without an open tag. Closing <code>?&gt;</code> is not allowed in that mode. Use this for files that are entirely Tyhp (no interleaved HTML). The default remains tagged <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code> files.</p>
+<p>Set <code>&quot;source&quot;: { &quot;tagless&quot;: true }</code> in <code>tyhp.json</code> (or <code>source.tagless</code> on a package's <code>extra.tyhp.package</code>) to parse <code>.tyhp</code> / <code>.tyhpdef</code> files as Tyhp/tyhpdef from the first token, without an open tag. A <code>.tyhp</code> code file in a tagless project omits <code>&lt;?tyhp</code>. A <code>.tyhpdef</code> file cannot contain <code>?&gt;</code>. The default remains tagged <code>&lt;?tyhp</code> / <code>&lt;?tyhpdef</code> files.</p>
+<h3 id="templates-in-a-tagless-project">Templates in a tagless project</h3>
+<p>In a tagless project, a <code>.tyhp</code> file whose first six characters are exactly <code>&lt;?tyhp</code> is parsed as a normal tagged <code>.tyhp</code> file. Any other <code>.tyhp</code> file is code and is parsed with no open tag. A blank line or any text before <code>&lt;?tyhp</code> keeps that entry, so <code>&lt;?tyhp</code> is not accepted there. A leading <code>&lt;div&gt;</code> or <code>&lt;?=</code> is a syntax error.</p>
+<p>A template can therefore have an empty first section (<code>&lt;?tyhp ?&gt;</code> or <code>&lt;?tyhp?&gt;</code>). After <code>?&gt;</code> the file can hold inline HTML and <code>&lt;?= … ?&gt;</code>, and <code>&lt;?tyhp</code> opens another section later. Inline HTML and echoes are emitted in source order, including inside functions and control-flow blocks. Each <code>&lt;?= … ?&gt;</code> is a Tyhp echo: parsed and checked as Tyhp, emitted as <code>echo</code>, with no escaping. A <code>&lt;?php</code> block in a <code>.tyhp</code> file is an error (TYHP2005). See <a href="tyhp_0010_templates.html">Templates</a>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+string $title = &#039;Hello&#039;;
+int $count = 3;
+?&gt;
+&lt;h1&gt;&lt;?= $title ?&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;?= $count ?&gt;&lt;/p&gt;
+&lt;?tyhp
+echo $title;
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp ?&gt;
+&lt;h1&gt;Hello&lt;/h1&gt;
+&lt;?tyhp
+int $count = 3;
+?&gt;
+&lt;p&gt;&lt;?= $count ?&gt;&lt;/p&gt;
+</code></pre></div>
+<p>A file that starts with anything else, including a blank line, is parsed as code with no open tag. <code>&lt;?tyhp</code> in that file is not an open tag. A file that starts with <code>&lt;div&gt;</code> or <code>&lt;?=</code> and has no leading <code>&lt;?tyhp</code> is a syntax error. A file that starts with <code>&lt;?tyhp</code> and never closes it is code. <code>&lt;?php</code> in a <code>.tyhp</code> file is an error in every mode (TYHP2005).</p>
 <h2 id="strict-types-are-always-enabled">Strict Types Are Always Enabled</h2>
 <p>In Tyhp, compiled PHP output always includes <code>declare(strict_types=1);</code>. Every <code>.tyhp</code> file is compiled with strict types enforced. This means PHP's type coercion rules do not apply in Tyhp code -- passing an <code>int</code> where a <code>string</code> is expected always produces a type error, never a silent conversion.</p>
 <div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
@@ -382,7 +406,7 @@ $app-&gt;run();
 </ul>
 <p>The emitter writes the <code>require_once</code> into the PHP output. Do not put <code>require_once 'vendor/autoload.php'</code> in Tyhp source.</p>
 <h2 id="how-the-compiler-distinguishes-tyhp-from-php">How the Compiler Distinguishes Tyhp from PHP</h2>
-<p>The lexer recognizes the tag that follows <code>&lt;?</code> and sets an internal language mode accordingly. When it sees <code>&lt;?tyhp</code> followed by whitespace, it emits a <code>T_TYHP_OPEN_TAG</code> token and enters Tyhp mode. When it sees <code>&lt;?tyhpdef</code> followed by whitespace, it emits a <code>T_TYHPDEF_OPEN_TAG</code> token and enters Tyhpdef mode. When it sees <code>&lt;?php</code>, it emits the standard <code>T_OPEN_TAG</code> token and enters PHP mode. When it sees <code>&lt;?=</code>, it enters PHP echo mode (<code>phpEcho</code>). A bare <code>&lt;?</code> that is not followed by <code>tyhp</code>, <code>tyhpdef</code>, or <code>php</code> is not a PHP short open tag. This language mode determines which keywords are active -- for example, <code>struct</code>, <code>async</code>, <code>await</code>, <code>is</code>, <code>typeof</code>, and <code>nameof</code> are only recognized as keywords in Tyhp mode.</p>
+<p>The lexer recognizes the tag that follows <code>&lt;?</code> and sets an internal language mode accordingly. When it sees <code>&lt;?tyhp</code> followed by whitespace, it emits a <code>T_TYHP_OPEN_TAG</code> token and enters Tyhp mode. When it sees <code>&lt;?tyhpdef</code> followed by whitespace, it emits a <code>T_TYHPDEF_OPEN_TAG</code> token and enters Tyhpdef mode. When it sees <code>&lt;?php</code>, it emits the standard <code>T_OPEN_TAG</code> token and enters PHP mode. In a <code>.tyhp</code> file, <code>&lt;?=</code> stays in Tyhp mode, so <code>is</code>, <code>typeof</code>, <code>with</code>, and <code>nameof</code> work inside the echo. In a <code>.php</code> file, <code>&lt;?=</code> is a PHP echo. A bare <code>&lt;?</code> that is not followed by <code>tyhp</code>, <code>tyhpdef</code>, or <code>php</code> is not a PHP short open tag. This language mode determines which keywords are active -- for example, <code>struct</code>, <code>async</code>, <code>await</code>, <code>is</code>, <code>typeof</code>, and <code>nameof</code> are only recognized as keywords in Tyhp mode.</p>
 <h2 id="php-code-belongs-in-php-files">PHP Code Belongs in <code>.php</code> Files</h2>
 <p>A <code>.tyhp</code> file contains Tyhp code, plus inline HTML between <code>&lt;?tyhp</code> blocks. It does not contain <code>&lt;?php</code> blocks. Put PHP code in a <code>.php</code> file in the same project. The compiler passes <code>.php</code> files through unchanged, and they can call your compiled Tyhp code like any other PHP.</p>
 <h2 id="compiled-php-output">Compiled PHP Output</h2>
@@ -479,7 +503,7 @@ class HomeController {
             </span>
             Danger
         </h4>
-        <div class="callout-content"><p>Don't use <code>&lt;?=</code> expecting Tyhp mode — that is PHP echo mode. Don't write a bare <code>&lt;?</code> as a PHP short open tag; it is not treated as PHP. Use <code>&lt;?tyhp</code> (or tagless source) for Tyhp, and <code>&lt;?php</code> only in <code>.php</code> files.</p>
+        <div class="callout-content"><p>Don't write a bare <code>&lt;?</code> as a PHP short open tag; it is not treated as PHP. In a <code>.tyhp</code> file, <code>&lt;?=</code> is a Tyhp echo, and Tyhp statements still use <code>&lt;?tyhp</code> (or tagless source). Use <code>&lt;?php</code> only in <code>.php</code> files. In a <code>.php</code> file, <code>&lt;?=</code> stays a PHP echo.</p>
 </div>
     </div>
 </div>
@@ -520,7 +544,7 @@ string $name = &quot;hello&quot;;
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
     <div class="docs-prev"><a class="btn btn-outline-primary" href="other_typescript.html">&larr; TypeScript</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0100_typesAndLocals.html">Types and Locals &rarr;</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="tyhp_0010_templates.html">Templates &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">

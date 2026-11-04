@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -232,6 +234,8 @@
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
 
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
@@ -306,7 +310,7 @@
             </span>
             Beta
         </h4>
-        <div class="callout-content"><p>Tyhp <strong>805.1.2-beta.3</strong> is a public beta. The compiler, type checker, emitter, CLI (<code>build</code> / <code>lint</code> / <code>init</code> / <code>install</code> / <code>composer</code> / <code>language_server</code> / <code>xdebug_proxy</code> / <code>generate_tyhpdef</code>), sourcemaps, and parsable lambdas work. Syntax and package versions may still change.</p>
+        <div class="callout-content"><p>Tyhp <strong>805.1.2-beta.4</strong> is a public beta. The compiler, type checker, emitter, CLI (<code>build</code> / <code>lint</code> / <code>init</code> / <code>install</code> / <code>composer</code> / <code>language_server</code> / <code>xdebug_proxy</code> / <code>generate_tyhpdef</code>), sourcemaps, and parsable lambdas work. Syntax and package versions may still change.</p>
 </div>
     </div>
 </div>
@@ -330,7 +334,7 @@
 </ul>
 <h2 id="why-tyhp">Why Tyhp</h2>
 <p>PHP checks type declarations when the code runs. Static analyzers such as PHPStan and Psalm catch more before that, but generics, array shapes, and similar types live in PHPDoc comments.</p>
-<p>Tyhp makes those types part of the language. The compiler checks types, nullability, and generic constraints, and does not emit PHP until the program type-checks. Type errors in <code>.tyhp</code> files are compile errors, and you adopt Tyhp file by file instead of baselining existing issues. Tyhp does not replace the PHP runtime: you deploy the compiled output on the PHP you already run.</p>
+<p>Tyhp makes those types part of the language. The compiler checks types, nullability, and generic constraints, and does not emit PHP until the program type-checks. Type errors in <code>.tyhp</code> files are compile errors, and you adopt Tyhp file by file instead of baselining existing issues. Tyhp does not replace the PHP runtime: you deploy the compiled output on the PHP you already run. Where a PHP declaration drops a type the checker proved, the emitted file keeps a PHPStan/Psalm tag so those tools can see it. See <a href="cli_emittedDocblocks.html">Emitted Docblocks</a>.</p>
 <ul>
 <li>Build-time errors — type and null errors are reported before the code runs</li>
 <li>Types in the syntax — generics, structs, and type aliases are part of the language, not PHPDoc comments</li>

@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -231,6 +233,8 @@
 <li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
 
 <li class="nav-item"><a class="nav-link active" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
@@ -843,6 +847,12 @@
 <p><code>ExpressionSerializer::toJson</code> / <code>equals</code> and <code>Expression::equals</code> are <strong>runtime library APIs</strong> (not emitter call patterns). User code that calls them depends on <code>tyhp/lambda</code> the same way any other package type does.</p>
 <p>When a <code>PropertyPath</code> / <code>Expression</code> value is passed where <code>\Closure</code> is expected, emit extracts the stored closure as <code>$expr-&gt;callable</code> (public readonly property on <code>\Tyhp\Expression</code>). Where <code>callable</code> is expected, the object is passed through (<code>__invoke</code>).</p>
 <p>Feature detail: <a href="tyhp_3000_parsableLambdas.html">Parsable Lambdas</a>.</p>
+<h2 id="emitted-docblocks">Emitted docblocks</h2>
+<p>PHP that calls compiled Tyhp, and PHPStan or Psalm run on that PHP, can rely on docblock tags wherever the native declaration drops a type Tyhp checked. The tags are on in every build profile and do not depend on <code>output.comments</code>.</p>
+<p><code>emit.docblocks</code> defaults to <code>&quot;lossy-only&quot;</code>: a tag is written only when it says more than the PHP hint (<code>array&lt;int, User&gt;</code> becomes native <code>array</code> plus <code>@param array&lt;int, \App\User&gt;</code>). <code>&quot;all&quot;</code> tags every signature type. <code>&quot;off&quot;</code> writes none of the generated tags. <code>emit.docblockDialect</code> (<code>&quot;both&quot;</code> by default, or <code>&quot;phpstan&quot;</code>, <code>&quot;psalm&quot;</code>, <code>&quot;phpdoc&quot;</code>) is parsed and validated and does not change the text. Shared tags are unprefixed.</p>
+<p>What a consumer can rely on, when the checker had the type: <code>@param</code>, <code>@param-out</code> for a by-ref parameter, <code>@return</code>, <code>@var</code>, <code>@template</code> (with <code>of</code>, variance, and a default when the parameter has them), <code>@extends</code>, <code>@implements</code>, <code>@use</code>, and <code>@internal</code>. <code>@throws</code> is not generated; an author <code>@throws</code> is kept. Symbol names in generated tags are fully qualified, and a <code>use … as</code> alias is the real name. <code>self</code>, <code>parent</code>, and <code>static</code> stay relative. A struct is <code>array{…}</code> with optional keys as <code>key?:</code>. A callable is <code>callable(int): string</code>. <code>class-string</code> is used for a class, interface, or enum name.</p>
+<p>An author docblock's summary stays above the tags. <code>@tyhp</code> emitter directives and <code>/@@ … @@/</code> blocks pass through. An author analysis tag wins per key; the generator fills gaps. <code>output.comments: false</code> drops the prose and keeps the directives and the analysis tags.</p>
+<p>The compiler does not run PHPStan or Psalm. The full spelling and merge rules are on <a href="cli_emittedDocblocks.html">Emitted Docblocks</a>.</p>
 <h2 id="lowering-protocols-index">Lowering protocols (index)</h2>
 <p>Brief map from Tyhp construct → PHP runtime pattern. Goldens live under the conformance suite; prefer those over re-deriving internals from this page.</p>
 <div class="table-responsive"><table class="table table-striped table-bordered">
@@ -921,7 +931,7 @@
 </section>
 				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
     <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_composer.html">&larr; CLI: Composer</a></div>
-    <div class="docs-next"><a class="btn btn-outline-primary" href="cli_lint.html">CLI: Lint &rarr;</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="cli_emittedDocblocks.html">Emitted Docblocks &rarr;</a></div>
 </nav>
 
 			    <footer class="footer">

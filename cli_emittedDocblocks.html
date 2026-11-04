@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto"> 
+<head>
+    <title>Emitted Docblocks - Tyhp</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tyhp is a typed superset of the PHP language. The compiler type-checks Tyhp source and emits readable PHP.">
+    <meta name="author" content="Site designed By: Xiaoying Riley at 3rd Wave Media">    
+    <link rel="shortcut icon" href="favicon.ico"> 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/plugins/simplelightbox/simple-lightbox.min.css">
+    <link id="theme-style" rel="stylesheet" href="assets/css/theme.css">
+</head> 
+<body class="docs-page">    
+    <header class="header fixed-top">	    
+        <div class="branding docs-branding">
+            <div class="container-fluid position-relative py-2">
+                <div class="docs-logo-wrapper">
+					<button id="docs-sidebar-toggler" class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none" type="button">
+	                    <span></span>
+	                    <span></span>
+	                    <span></span>
+	                </button>
+	                <div class="site-logo"><a class="navbar-brand" href="index.html">
+						<img class="logo-icon me-2 logo-icon-dark" src="assets/images/tyhp-logo.svg" alt="logo"/>
+						<img class="logo-icon me-2 logo-icon-light" src="assets/images/tyhp-logo-alt.svg" alt="logo"/>
+						<span class="logo-text">Tyhp <span class="text-alt"></span></span>
+					</a></div>
+                </div>
+	            <div class="docs-top-utilities d-flex justify-content-end align-items-center">
+	                <!-- <div class="top-search-box d-none d-lg-flex">
+		                <form class="search-form">
+				            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+				            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+				        </form>
+	                </div> -->
+					<ul class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex">
+						<li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li>
+			            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+		                <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li> -->
+		            </ul>
+		            <a href="https://github.com/tyhpproject/tyhp/releases" class="btn btn-primary d-none d-lg-flex">Releases</a>
+	            </div>
+            </div>
+        </div>
+    </header>
+    <div class="docs-wrapper">
+	    <div id="docs-sidebar" class="docs-sidebar">
+		    <!-- <div class="top-search-box d-lg-none p-3">
+                <form class="search-form">
+		            <input type="text" placeholder="Search the docs..." name="search" class="form-control search-input">
+		            <button type="submit" class="btn search-btn" value="Search"><i class="fas fa-search"></i></button>
+		        </form>
+            </div> -->
+		    <nav id="docs-nav" class="docs-nav navbar">
+			    <ul class="section-items list-unstyled nav flex-column pb-3">
+					
+<li class="nav-item section-title"><a class="nav-link" href="section_Introduction.html"><span class="theme-icon-holder me-2"><i class="fas fa-chalkboard-user"></i></span>Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro.html">What is Tyhp?</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_installation.html">Installing Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_gettingStarted.html">Getting Started</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_upgradeGuides.html">Upgrade Guides</a></li>
+
+<li class="nav-item"><a class="nav-link" href="intro_newSyntaxCreation.html">How New Syntax is Created in Tyhp</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Quick_Reference.html"><span class="theme-icon-holder me-2"><i class="fas fa-bolt"></i></span>Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref.html">Tyhp Quick Reference</a></li>
+
+<li class="nav-item"><a class="nav-link" href="quickref_tyhpdef.html">Tyhpdef Quick Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Alternative_and_Similar_Projects.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-compare"></i></span>Alternative and Similar Projects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_hack.html">Hack / HHVM</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_pxp.html">PXP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_reactphp.html">ReactPHP</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typephp.html">TypePHP (Swoole AOT)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typephp_runtime.html">TypePHP (Runtime Type Checker)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="other_typescript.html">TypeScript</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp.html"><span class="theme-icon-holder me-2"><i class="fas fa-code"></i></span>Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0151_newFunctions.html">New and Changed Functions and Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0200_typeNarrowingAndGuards.html">Type Narrowing and Guards in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0300_includingFiles.html">Including Files</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0310_declarationGating.html">Declaration Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0320_phpVersionGating.html">PHP Version Gating</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0330_phpEngineAttributes.html">PHP Engine Attributes</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0350_useStatements.html">Use Statements and Imports</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0400_structs.html">Structs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0500_generics.html">Generics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0600_theMixedType.html">The Mixed Type</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0700_typeAliases.html">Type Aliases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_0800_staticValueTypes.html">Static Value Types</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1000_scalarPseudoObjects.html">Scalar Pseudo-Objects</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1100_shortFunctionSyntax.html">Short Function Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1200_functionOverloads.html">Function and Method Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1300_newObjectDeclSyntax.html">New Object Declaration Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_1600_operatorOverloads.html">Operator Overloads</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2000_traitRequirements.html">Trait Requirements</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2100_extensions.html">Extensions</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2200_withKeyword.html">The with Keyword</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2300_disposables.html">Disposables and the := Operator</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2400_dynamicLanguageFeatures.html">Dynamic Language Features in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2500_phpMagicMethods.html">PHP Magic Methods in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2600_asyncAndAwait.html">Async and Await in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2700_compileTimeConstructs.html">Compile-Time Constructs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2800_importPHPVar.html">Importing PHP Variables and Constants</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_2900_lostFunctionality.html">Lost and Changed Functionality in Tyhp</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3000_parsableLambdas.html">Parsable Lambdas and Expression Trees</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3100_internalModifier.html">The internal Visibility Modifier</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3300_nullConditionalAssignment.html">Null-Conditional Assignment</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3400_newTypeConstraint.html">Object Shapes and <code>__New&lt;T&gt;</code></a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhp_3500_genericDefaults.html">Generic Type Parameter Defaults</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Compiler_Diagnostics.html"><span class="theme-icon-holder me-2"><i class="fas fa-triangle-exclamation"></i></span>Compiler Diagnostics</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_overview.html">Compiler Diagnostics Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="diagnostics_reference.html">Diagnostic Code Reference</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhpdef.html"><span class="theme-icon-holder me-2"><i class="fas fa-book-atlas"></i></span>Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_about.html">About Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overlays.html">Tyhpdef Overlays</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extern.html">Extern Types in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_openTag.html">The &lt;?tyhpdef Open Tag</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_interfaces.html">Interfaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_classes.html">Classes in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_enums.html">Enums in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_traits.html">Traits in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_structs.html">Structs in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_variablesAndConstants.html">Variables and Constants in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_functions.html">Functions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_extensions.html">Extensions in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_typeAliases.html">Type Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_namespaces.html">Namespaces in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_importAliases.html">Import Aliases in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_overloadedFunctions.html">Overloaded Functions and Methods in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_deprecatedKeyword.html">The deprecated and obsolete Keywords in Tyhpdef</a></li>
+
+<li class="nav-item"><a class="nav-link" href="tyhpdef_runTimeErrorsAndExceptions.html">Runtime Errors and Exceptions in Tyhpdef</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Releases.html"><span class="theme-icon-holder me-2"><i class="fas fa-code-branch"></i></span>Tyhp Releases</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_planning.html">Release Planning</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_roadmap.html">Roadmap</a></li>
+
+<li class="nav-item"><a class="nav-link" href="release_prevList.html">Previous Releases</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link active" href="section_Tyhp_CLI.html"><span class="theme-icon-holder me-2"><i class="fas fa-terminal"></i></span>Tyhp CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_intro.html">CLI: Introduction</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_build.html">CLI: Build</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link active" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_languageServer.html">CLI: Language Server (LSP)</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_xdebugProxy.html">CLI: XDebug Proxy</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_sourcemapGeneration.html">CLI: Source Map Generation</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_overlay.html">CLI: Overlay</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_symbolTree.html">CLI: Symbol Tree</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_tyhpdefGeneration.html">CLI: Tyhpdef Generation</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Tyhp_Project_File_and_Configuration.html"><span class="theme-icon-holder me-2"><i class="fas fa-screwdriver-wrench"></i></span>Tyhp Project File and Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_intro.html">Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_composerPackages.html">Composer Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="project_optionsList.html">Project Options List</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_Runtime_Packages.html"><span class="theme-icon-holder me-2"><i class="fas fa-box-open"></i></span>Runtime Packages</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_intro.html">Runtime Packages Overview</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_core.html">The tyhp/core Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_async.html">The tyhp/async Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_decimal.html">The tyhp/decimal Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_lambda.html">The tyhp/lambda Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_io.html">The tyhp/io Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_parallel.html">The tyhp/parallel Package</a></li>
+
+<li class="nav-item"><a class="nav-link" href="package_compiler.html">The tyhp/compiler Package</a></li>
+
+
+<li class="nav-item section-title"><a class="nav-link" href="section_FAQs.html"><span class="theme-icon-holder me-2"><i class="fas fa-lightbulb"></i></span>FAQs</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_general.html">FAQ: General</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpSyntax.html">FAQ: Tyhp Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_tyhpdefSyntax.html">FAQ: Tyhpdef Syntax</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_cli.html">FAQ: CLI</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_project.html">FAQ: Project Configuration</a></li>
+
+<li class="nav-item"><a class="nav-link" href="faq_other.html">FAQ: Other</a></li>
+
+
+			    </ul>
+		    </nav>
+	    </div>
+	    <div class="docs-content">
+		    <div class="container">
+				<section class="docs-section" id="Emitted_Docblocks">
+    <h2 class="section-heading">Emitted Docblocks</h2>
+    
+    <p>The compiler writes PHPStan and Psalm docblock tags on the emitted PHP wherever the native declaration drops type information the checker has. A generic, an array shape, a <code>class-string</code>, or a callable signature stays visible to those tools and to an IDE that reads the same tags. The tags are on for every build profile (<code>debug</code>, <code>balanced</code>, and <code>release</code>). They do not depend on <code>output.comments</code>.</p>
+<p>Tyhp does not run PHPStan or Psalm. Run those tools on the emitted PHP the same way you would on any other PHP project. The tags are there so the tools see the types Tyhp already checked.</p>
+<h2 id="configuration">Configuration</h2>
+<p>Both keys live under <code>emit</code> in <code>tyhp.json</code>. An invalid value is warning <strong>TYHP6003</strong> (<code>ConfigInvalidValue</code>), and the key keeps its default.</p>
+<div class="alert alert-secondary" role="alert"><h4><code>emit.docblocks</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;lossy-only&quot;</code>).</p>
+<ul>
+<li><code>&quot;lossy-only&quot;</code> writes a tag only when it says more than the native PHP type. A parameter declared <code>int $x</code> does not get <code>@param int $x</code>. A parameter declared <code>array&lt;int, User&gt; $ids</code> is native <code>array</code> and gets <code>@param array&lt;int, \App\User&gt; $ids</code>.</li>
+<li><code>&quot;all&quot;</code> writes a tag for every signature type, including types PHP already states.</li>
+<li><code>&quot;off&quot;</code> writes no generated docblocks. That includes generated <code>@template</code> tags and the <code>@property</code> tags written for public property hooks that compile to magic accessors. An author docblock still follows <code>output.comments</code>.</li>
+</ul>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>emit.docblockDialect</code></h4><br/><p>Type: <code>string</code> (default: <code>&quot;both&quot;</code>). <code>&quot;phpstan&quot;</code>, <code>&quot;psalm&quot;</code>, <code>&quot;both&quot;</code>, or <code>&quot;phpdoc&quot;</code>. The value is parsed and validated. It does not change the emitted tags. Shared syntax is unprefixed. A <code>@phpstan-</code> or <code>@psalm-</code> prefix is used only where those dialects diverge, and no tag the compiler writes today needs one.</p>
+</div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="json hljs">{
+    &quot;emit&quot;: {
+        &quot;docblocks&quot;: &quot;lossy-only&quot;,
+        &quot;docblockDialect&quot;: &quot;both&quot;
+    }
+}
+</code></pre></div>
+<p>See <a href="project_optionsList.html#emit-options">Project Options List</a> and <a href="cli_build.html">CLI: Build</a>.</p>
+<h2 id="tags">Tags</h2>
+<p>The generator writes a tag when the checker has the type:</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Tag</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@param</code></td>
+<td>A parameter whose docblock type is richer than the native hint. A variadic is <code>...$name</code>.</td>
+</tr>
+<tr>
+<td><code>@param-out</code></td>
+<td>A by-ref parameter, in addition to <code>@param</code>.</td>
+</tr>
+<tr>
+<td><code>@return</code></td>
+<td>A return type the native hint does not already state.</td>
+</tr>
+<tr>
+<td><code>@var</code></td>
+<td>A property or constant whose native type is lossier than the checked type.</td>
+</tr>
+<tr>
+<td><code>@template</code></td>
+<td>A type parameter. The tag is <code>@template-covariant</code> or <code>@template-contravariant</code> when that parameter's variance is covariant or contravariant. A bound is <code>of Type</code>. A default is <code>= Type</code>.</td>
+</tr>
+<tr>
+<td><code>@extends</code>, <code>@implements</code>, <code>@use</code></td>
+<td>A parent, interface, or trait reference. With <code>&quot;lossy-only&quot;</code>, the tag is written when that reference has type arguments.</td>
+</tr>
+<tr>
+<td><code>@internal</code></td>
+<td>A declaration marked <code>internal</code>.</td>
+</tr>
+<tr>
+<td><code>@property</code>, <code>@property-read</code>, <code>@property-write</code></td>
+<td>A public hooked property that is emitted as a magic accessor (PHP older than 8.4).</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>@throws</code> is not generated. An author <code>@throws</code> is kept, including every repeat.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+class Box&lt;T&gt; {
+    public function get(T $value): T {
+        return $value;
+    }
+}
+</code></pre></div>
+<p>The emitted class carries <code>@template T</code>. The method's native signature is <code>mixed</code>, and the docblock keeps the parameter:</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">/**
+ * @template T
+ */
+class Box
+{
+    /**
+     * @param T $value
+     * @return T
+     */
+    public function get(mixed $value): mixed
+    {
+        return $value;
+    }
+}
+</code></pre></div>
+<p>A generic class still carries <code>#[\Tyhp\GenericRuntime]</code> as well. See <a href="tyhp_0500_generics.html">Generics</a>.</p>
+<h2 id="how-types-are-spelled">How types are spelled</h2>
+<p>Symbol names in a generated tag are fully qualified. A <code>use … as X</code> alias is expanded to the real name. <code>self</code>, <code>parent</code>, and <code>static</code> stay <code>self</code>, <code>parent</code>, and <code>static</code>.</p>
+<p><code>class-string</code> and <code>class-string&lt;T&gt;</code> are used for class, interface, and enum name brands (<code>__ClassName</code>, and the interface and enum equivalents). A trait name, a used-trait name, or a struct name is <code>string</code>. A function-name brand is <code>callable-string</code>.</p>
+<p>A struct parameter is an array shape. A field is optional (<code>key?:</code>) when it has a default or is nullable. A nullable field is <code>key?: ?type</code>.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+type Money = struct {
+    int $cents;
+    string $currency = &quot;USD&quot;;
+    ?string $note;
+};
+
+function price(Money $money): int {
+    return $money-&gt;cents;
+}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">/**
+ * @param array{cents: int, currency?: string, note?: ?string} $money
+ */
+function price(array $money): int
+</code></pre></div>
+<p>A callable is <code>callable(int): string</code>. A return of <code>string|null</code> is written <code>callable(int): ?string</code>. A union return is parenthesized, <code>callable(): (int|string)</code> and <code>callable(int): (string|int)</code>, so the <code>|</code> stays inside the callable. A callable that is itself nullable is <code>(callable(int): string)|null</code>, so the <code>|null</code> is not read as the return type.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+function apply(callable(int): string $fn): string {
+    return $fn(1);
+}
+
+function callbacks(callable(int): string|null $a, callable(int): (string|int) $b): void {}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">/**
+ * @param callable(int): string $fn
+ */
+function apply(callable $fn): string
+
+/**
+ * @param callable(int): ?string $a
+ * @param callable(int): (string|int) $b
+ */
+function callbacks(callable $a, callable $b): void {}
+</code></pre></div>
+<h2 id="author-docblocks">Author docblocks</h2>
+<p>An author docblock is merged with the generated tags.</p>
+<ul>
+<li>Summary prose stays above the tags.</li>
+<li><code>@tyhp</code> emitter directives and <code>/@@ … @@/</code> signed blocks pass through in their original order.</li>
+<li>An author analysis tag wins per key. The generator fills the gaps. The author's wording is copied, including a description and a short name the author wrote.</li>
+<li>Order is prose, then directives, then the generated keys (an author tag that wins occupies that key's place, in signature order), then author tags that have no generated counterpart.</li>
+</ul>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+
+namespace App\Users;
+
+class User {}
+
+/**
+ * Loads users.
+ *
+ * @throws \RuntimeException when the store is down
+ * @throws \LogicException when the ids are invalid
+ * @param array&lt;int, User&gt; $ids the ids, never empty
+ */
+function load(array&lt;int, User&gt; $ids, array&lt;string, User&gt; $byName): void {}
+</code></pre></div>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="php hljs">/**
+ * Loads users.
+ *
+ * @param array&lt;int, User&gt; $ids the ids, never empty
+ * @param array&lt;string, \App\Users\User&gt; $byName
+ * @throws \RuntimeException when the store is down
+ * @throws \LogicException when the ids are invalid
+ */
+function load(array $ids, array $byName): void {}
+</code></pre></div>
+<p>The author's <code>@param $ids</code> is kept as written. The generator adds <code>@param</code> for <code>$byName</code>, with the real class name. Both <code>@throws</code> tags are kept.</p>
+<p><code>output.comments: false</code> drops the summary prose and keeps directives, every author analysis tag (including repeated <code>@throws</code>), and the generated tags.</p>
+<h2 id="php-consumers">PHP consumers</h2>
+<p>A PHP file, or a tool that never sees the <code>.tyhp</code> source, can rely on these tags for the types the native declaration lost: generic arguments, array shapes, <code>class-string</code>, and callable signatures. The native hints stay the types PHP itself can declare. <code>&quot;lossy-only&quot;</code> does not repeat a type the hint already states. <code>&quot;off&quot;</code> leaves only whatever the author wrote, subject to <code>output.comments</code>.</p>
+<p>See <a href="cli_interopContract.html#emitted-docblocks">CLI: Interop Contract</a>.</p>
+
+</section>
+				<nav class="docs-prev-next d-flex justify-content-between align-items-center my-4 py-3 border-top border-bottom" aria-label="Page navigation">
+    <div class="docs-prev"><a class="btn btn-outline-primary" href="cli_interopContract.html">&larr; CLI: Interop Contract</a></div>
+    <div class="docs-next"><a class="btn btn-outline-primary" href="cli_lint.html">CLI: Lint &rarr;</a></div>
+</nav>
+
+			    <footer class="footer">
+					<div class="container text-center py-5">
+						<h3 class="mb-2 text-white mb-3"></h3>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">Copyright 2026 &#169; Anthony Rainer. All Rights Reserved.</div>
+						<div class="section-intro text-white mb-3 single-col-max mx-auto">PHP is a trademark of the PHP Group. Tyhp is not affiliated with, endorsed, or sponsored by the PHP Group.</div>
+					</div>
+				    <div class="container text-center py-5">
+				        <ul class="social-list list-unstyled pt-4 mb-0">
+						    <li class="list-inline-item"><a href="https://github.com/tyhpproject"><i class="fab fa-github fa-fw"></i></a></li> 
+				            <!-- <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>
+				            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li> -->
+				        </ul>
+						<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+			            <small class="copyright">Designed with <span class="sr-only">love</span><i class="fas fa-heart" style="color: #fb866a;"></i> by <a class="theme-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
+				    </div>
+			    </footer>
+		    </div> 
+	    </div>
+    </div>
+    <script src="assets/plugins/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/plugins/smoothscroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="assets/js/highlight-tyhp.js"></script>
+	<script src="assets/js/highlight-custom.js"></script>
+    <script src="assets/plugins/simplelightbox/simple-lightbox.min.js"></script>      
+    <script src="assets/plugins/gumshoe/gumshoe.polyfills.min.js"></script> 
+    <script src="assets/js/docs.js"></script> 
+	<script src="assets/js/color-modes.js"></script> 
+</body>
+</html>

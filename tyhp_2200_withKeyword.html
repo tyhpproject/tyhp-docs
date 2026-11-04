@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -231,6 +233,8 @@
 <li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
@@ -366,10 +370,11 @@ return clone($cfg, [&#039;enabled&#039; =&gt; false]);
 return \Tyhp\ObjectHelper::with(clone $cfg, [&#039;enabled&#039; =&gt; false]);
 return \Tyhp\ObjectHelper::with(new Widget(), [&#039;color&#039; =&gt; &quot;blue&quot;]);
 </code></pre></div>
-<p><strong>Readonly <code>clone ... with</code> on PHP 8.2–8.4</strong> (requires <code>build.experimentalReadonlyCloneWith: true</code>) emits a reflection IIFE: an anonymous subclass with <code>$__tyhp_overrides</code>, <code>ReflectionClass::newInstanceWithoutConstructor()</code>, a property copy via <code>ReflectionObject</code>, then <code>clone $__wrapper</code>. It is not a simple <code>__clone()</code> wrapper around the source object.</p>
+<p><strong>Readonly <code>clone ... with</code> on PHP 8.3–8.4</strong> (requires <code>build.experimentalReadonlyCloneWith: true</code>, and the class must not be <code>readonly</code>) emits a reflection IIFE: an anonymous subclass with an empty constructor, <code>ReflectionClass::newInstanceWithoutConstructor()</code>, a property copy via <code>ReflectionObject</code>, overrides on a static <code>$__tyhp_overrides</code> stack, then <code>clone $__wrapper</code>. Below 8.3 this is TYHP4400. On a <code>readonly class</code> below 8.5 it is TYHP4401.</p>
 <p><strong>Readonly <code>new ... with</code>:</strong></p>
 <ul>
-<li>PHP 8.2–8.4: <code>clone (new class(...) extends \Color { public function __clone(): void { ... } })</code></li>
+<li>Below PHP 8.3: TYHP4400 (the <code>__clone()</code> wrapper cannot assign a readonly property, and <code>new readonly class</code> does not parse)</li>
+<li>PHP 8.3–8.4: <code>clone (new class(...) extends \Color { public function __clone(): void { ... } })</code>, or <code>new readonly class(...) extends</code> when the class is <code>readonly</code></li>
 <li>PHP 8.5: <code>clone(new Color(), ['alpha' =&gt; 128])</code></li>
 </ul>
 <h2 id="in-place-with-on-an-existing-instance">In-Place with on an Existing Instance</h2>
@@ -478,7 +483,7 @@ $app-&gt;config = \Tyhp\ObjectHelper::with(clone $defaultConfig, [&#039;debug&#0
 </code></pre></div>
 <h2 id="with-and-readonly-properties">with and readonly Properties</h2>
 <p><code>readonly</code> properties cannot be assigned after construction. <code>new ... with</code> and <code>clone ... with</code> are allowed to set them on the new or cloned instance. Direct assignment and in-place <code>$obj with [...]</code> after construction are not. Every instance property of a <code>readonly class</code>, including promoted constructor parameters, follows these rules whether or not it repeats <code>readonly</code>.</p>
-<p>On PHP 8.5+, <code>clone ... with</code> uses native <code>clone($obj, [...])</code>. On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> (the compiler emits a reflection IIFE: <code>newInstanceWithoutConstructor</code>, <code>$__tyhp_overrides</code>, then <code>clone $__wrapper</code> — not a simple <code>__clone()</code> wrapper around the source). <code>new ... with</code> on <code>readonly</code> does not need that flag (PHP 8.4 emits an anonymous class with <code>__clone()</code>; PHP 8.5 uses <code>clone(new Color(), [...])</code>). <code>readonly</code> plus <code>with</code> is the immutable-update pattern.</p>
+<p>On PHP 8.5+, <code>clone ... with</code> uses native <code>clone($obj, [...])</code>. On PHP 8.3–8.4, <code>clone ... with</code> on <code>readonly</code> properties of a class that is not <code>readonly</code> requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code> (the compiler emits a reflection IIFE: an empty subclass constructor, <code>newInstanceWithoutConstructor</code>, a static <code>$__tyhp_overrides</code> stack, then <code>clone $__wrapper</code>). Below 8.3 that form reports TYHP4400. <code>clone ... with</code> on a <code>readonly class</code> below 8.5 reports TYHP4401. <code>new ... with</code> on <code>readonly</code> does not need the flag; below 8.3 it reports TYHP4400, and on 8.3–8.4 it emits an anonymous class with <code>__clone()</code> (<code>new readonly class</code> when the class is <code>readonly</code>). PHP 8.5 uses <code>clone(new Color(), [...])</code>. <code>readonly</code> plus <code>with</code> is the immutable-update pattern.</p>
 <div class="alert alert-secondary" role="alert"><h4><code>(no modifier)</code></h4><br/><p>Set in constructor: Yes. Set after construction: Yes. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: Yes.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>readonly</code></h4><br/><p>Set in constructor: Yes. Set after construction: No. Set via <code>new</code>/<code>clone</code> with: Yes. Set via in-place with: No.</p>
@@ -668,14 +673,16 @@ $c = clone $a with [name =&gt; &#039;Bob&#039;];
             </span>
             Warning
         </h4>
-        <div class="callout-content"><p>On PHP 8.2–8.4, <code>clone ... with</code> on <code>readonly</code> properties requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code>. PHP 8.5+ supports it natively. <code>new ... with</code> on readonly does not need the flag.</p>
+        <div class="callout-content"><p>On PHP 8.3–8.4, <code>clone ... with</code> on <code>readonly</code> properties of a class that is not <code>readonly</code> requires <code>build.experimentalReadonlyCloneWith: true</code> in <code>tyhp.json</code>. Below 8.3 it reports TYHP4400. <code>clone ... with</code> on a <code>readonly class</code> below 8.5 reports TYHP4401. PHP 8.5+ supports <code>clone ... with</code> natively. <code>new ... with</code> on readonly does not need the flag; below 8.3 it reports TYHP4400.</p>
 </div>
     </div>
 </div>
 <h2 id="compiler-errors">Compiler Errors</h2>
 <ul>
 <li>Setting a readonly property via in-place <code>$obj with [...]</code> after construction.</li>
-<li><code>clone ... with</code> on a readonly property on PHP &lt; 8.5 without <code>build.experimentalReadonlyCloneWith</code>.</li>
+<li><code>clone ... with</code> on a readonly property on PHP 8.3–8.4 without <code>build.experimentalReadonlyCloneWith</code>.</li>
+<li>Readonly <code>new ... with</code> or <code>clone ... with</code> when <code>output.phpVersion</code> is below 8.3 (TYHP4400).</li>
+<li><code>clone ... with</code> on a <code>readonly class</code> when <code>output.phpVersion</code> is below 8.5 (TYHP4401).</li>
 <li>Setting a non-existent property via with.</li>
 <li>Setting a private or protected property via with from outside the class.</li>
 <li>Applying with to an expression that is not a new expression, a clone expression, or an addressable object/struct instance.</li>

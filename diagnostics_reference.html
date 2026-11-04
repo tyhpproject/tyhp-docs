@@ -98,6 +98,8 @@
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0000_openTag.html">The <code>&lt;?tyhp</code> and <code>&lt;?tyhpdef</code> Open Tags</a></li>
 
+<li class="nav-item"><a class="nav-link" href="tyhp_0010_templates.html">Templates</a></li>
+
 <li class="nav-item"><a class="nav-link" href="tyhp_0100_typesAndLocals.html">Types and Locals</a></li>
 
 <li class="nav-item"><a class="nav-link" href="tyhp_0150_newTypes.html">New and Changed Types in Tyhp</a></li>
@@ -231,6 +233,8 @@
 <li class="nav-item"><a class="nav-link" href="cli_composer.html">CLI: Composer</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_interopContract.html">CLI: Interop Contract</a></li>
+
+<li class="nav-item"><a class="nav-link" href="cli_emittedDocblocks.html">Emitted Docblocks</a></li>
 
 <li class="nav-item"><a class="nav-link" href="cli_lint.html">CLI: Lint</a></li>
 
@@ -384,6 +388,9 @@ class User
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP2004 (Error)</code></h4><br/><p><strong>VisitorUnsupportedConstruct.</strong> Message: <code>Language construct <code>{0}</code> is not yet supported</code>.</p>
 <p>The code uses a PHP language construct that the Tyhp compiler does not yet support.</p>
 <p>Fix: Use an alternative approach that is supported by the compiler. Check the Tyhp documentation for supported constructs and any known limitations.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP2005 (Error)</code></h4><br/><p><strong>PhpOpenTagNotAllowedInTyhpFile.</strong> Message: <code><code>&lt;?php</code> is not allowed in a <code>.tyhp</code> file; put PHP code in a <code>.php</code> file</code>.<br />
+Run <code>tyhp --explain TYHP2005</code> for the long-form explanation.</p>
 </div>
 <h2 id="binder-errors-tyhp3xxx">Binder Errors (TYHP3xxx)</h2>
 <p>Binder errors occur during symbol resolution and scope management.</p>
@@ -1869,6 +1876,40 @@ final class Point {
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4379 (Error)</code></h4><br/><p><strong>CheckerEnumDebugInfoRequiresPhp86.</strong> Message: <code><code>__debugInfo()</code> on enum <code>{0}</code> requires PHP <code>8.6</code> or later; target is <code>{1}</code></code>.</p>
 <p>PHP 8.6 lets an enum declare <code>__debugInfo()</code>, which controls what <code>var_dump()</code> shows for its cases. Earlier PHP versions reject the enum when it is loaded (&quot;cannot include magic method __debugInfo&quot;), so Tyhp reports this error when <code>output.phpVersion</code> is below 8.6. The other magic methods PHP does not allow on enums are TYHP4024 at every target.</p>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4380 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassTraitProperty.</strong> Message: <code>Readonly class <code>{0}</code> cannot use trait with non-readonly property <code>{1}::{2}</code></code>.</p>
+<p>A <code>readonly class</code> may use a trait only when every property the trait contributes is a readonly instance property. PHP rejects the class when it is loaded if the trait declares a property without <code>readonly</code>, or a static property (a static property cannot be readonly). The same trait is fine on a class that is not readonly.</p>
+<p>This is reported when <code>output.phpVersion</code> is 8.2 or newer, the versions that have readonly classes. Mark the trait property <code>readonly</code>, or move a static property to a class that is not readonly.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+trait Counts {
+    public readonly int $hits;
+}
+
+readonly class UsesCounts {
+    use Counts;
+
+    public function __construct() {
+        $this-&gt;hits = 0;
+    }
+}
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4400 (Error)</code></h4><br/><p><strong>CheckerReadonlyWithRequiresPhp83.</strong> Message: <code>Readonly <code>with</code> on property <code>{0}</code> requires PHP <code>8.3</code> or later; target is <code>{1}</code></code>.</p>
+<p>PHP 8.3 lets <code>__clone()</code> assign a readonly property again. That is how <code>new … with</code> on a readonly property is lowered when <code>output.phpVersion</code> is below 8.5, and how experimental <code>clone … with</code> is lowered for a class that is not readonly. PHP 8.2 rejects the assignment (&quot;Cannot modify readonly property&quot;) and cannot parse <code>new readonly class</code>, so Tyhp reports this error instead of emitting code that fails when it runs.</p>
+<p>Raise <code>output.phpVersion</code> to 8.3 or newer, or pass the final values to the constructor.</p>
+<div class="docs-code-block"><pre class="shadow-lg rounded"><code class="tyhp hljs">&lt;?tyhp
+class Color {
+    public function __construct(public readonly int $alpha) {}
+}
+
+function make(): Color {
+    return new Color(128);
+}
+</code></pre></div>
+</div>
+<div class="alert alert-secondary" role="alert"><h4><code>TYHP4401 (Error)</code></h4><br/><p><strong>CheckerReadonlyClassCloneWithRequiresPhp85.</strong> Message: <code>Clone <code>with</code> on readonly class <code>{0}</code> requires PHP <code>8.5</code> or later; target is <code>{1}</code></code>.</p>
+<p>Below PHP 8.5, <code>clone … with</code> on a readonly property is lowered to a subclass that applies the new values from <code>__clone()</code>. A <code>readonly class</code> can only be extended by another readonly class, and that subclass cannot store the override list (a readonly class cannot declare a static property or a mutable one). PHP 8.5 <code>clone($obj, […])</code> does not need the subclass.</p>
+<p>Raise <code>output.phpVersion</code> to 8.5. <code>new … with</code> on the same class is available from PHP 8.3.</p>
 </div>
 <div class="alert alert-secondary" role="alert"><h4><code>TYHP4500 (Warning)</code></h4><br/><p><strong>CheckerDeprecatedUsage.</strong> Message: <code><code>{0}</code> is deprecated{1}</code>.</p>
 <p>A use of a deprecated symbol. The compiler sets deprecation from <code>#[\Deprecated]</code> on the declaration and from the tyhpdef <code>deprecated</code> keyword. Both produce this same warning (TYHP4500).</p>
